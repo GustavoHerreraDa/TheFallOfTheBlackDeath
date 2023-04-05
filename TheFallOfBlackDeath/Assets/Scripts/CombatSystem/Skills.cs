@@ -17,8 +17,8 @@ public abstract class Skill : MonoBehaviour
 
     private void Animate()
     {
-        var go = Instantiate(this.effectPrfb, this.receiver.transform.position, Quaternion.identity);
-        Destroy(go, this.animationDuration);
+        //var go = Instantiate(this.effectPrfb, this.receiver.transform.position, Quaternion.identity);
+        //Destroy(go, this.animationDuration);
     }
 
     public void Run()
