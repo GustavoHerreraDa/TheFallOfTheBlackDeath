@@ -19,6 +19,7 @@ public class Stats
     {
         this.level = level;
         this.maxHealth = maxHealth;
+        this.health = maxHealth;
         this.attack = attack;
         this.deffense = deffense;
         this.spirit = spirit;
@@ -31,6 +32,6 @@ public class Stats
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
