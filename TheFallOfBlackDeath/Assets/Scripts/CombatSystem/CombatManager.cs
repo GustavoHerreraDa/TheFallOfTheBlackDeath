@@ -97,7 +97,7 @@ public class CombatManager : MonoBehaviour
     {
         if (this.fighterIndex == 0)
         {
-            return this.fighters[1];
+            return this.fighters[2];
         }
         else
         {
