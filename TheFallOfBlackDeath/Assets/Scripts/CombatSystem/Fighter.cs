@@ -11,6 +11,9 @@ public abstract class Fighter : MonoBehaviour
 
     protected Skill[] skills;
 
+    [SerializeField]
+    public Transform CameraPivot;
+
     public bool isAlive
     {
         get => this.stats.health > 0;

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum CombatStatus
 {
@@ -12,13 +13,19 @@ public enum CombatStatus
 public class CombatManager : MonoBehaviour
 {
     public Fighter[] fighters;
+    [SerializeField]
     private int fighterIndex;
+
+    public int FighterIndex { get => fighterIndex; }
 
     private bool isCombatActive;
 
     private CombatStatus combatStatus;
 
     private Skill currentFighterSkill;
+
+    public List<PlayerFighter> playerFighters = new List<PlayerFighter>();
+    public List<EnemyFighter> enemyFighters = new List<EnemyFighter>();
 
     void Start()
     {
@@ -27,6 +34,12 @@ public class CombatManager : MonoBehaviour
         foreach (var fgtr in this.fighters)
         {
             fgtr.combatManager = this;
+
+            if (fgtr.GetType() == typeof(PlayerFighter))
+                playerFighters.Add(fgtr.GetComponent<PlayerFighter>());
+
+            if (fgtr.GetType() == typeof(EnemyFighter))
+                enemyFighters.Add(fgtr.GetComponent<EnemyFighter>());
         }
 
         this.combatStatus = CombatStatus.NEXT_TURN;
