@@ -10,7 +10,11 @@ public class EnemyFighter : Fighter
 
     public override void InitTurn()
     {
-        StartCoroutine(this.IA());
+        if (stats.health > 0)
+            StartCoroutine(this.IA());
+        else
+            StartCoroutine(this.Death());
+
     }
 
     IEnumerator IA()
@@ -20,9 +24,18 @@ public class EnemyFighter : Fighter
         Skill skill = this.skills[Random.Range(0, this.skills.Length)];
 
         skill.SetEmitterAndReceiver(
-            this, this.combatManager.GetOpposingFighter()
-        );
+            this, this.combatManager.GetOpposingCharacter());
 
         this.combatManager.OnFighterSkill(skill);
+    }
+
+    IEnumerator Death()
+    {
+        yield return new WaitForSeconds(1f);
+
+
+
+        this.combatManager.OnFighterDead();
+
     }
 }
