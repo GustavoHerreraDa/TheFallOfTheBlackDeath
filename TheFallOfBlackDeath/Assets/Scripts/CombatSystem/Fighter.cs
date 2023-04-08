@@ -21,7 +21,6 @@ public abstract class Fighter : MonoBehaviour
 
     protected virtual void Start()
     {
-        Debug.Log("health " + this.stats.health);
         this.statusPanel.SetStats(this.idName, this.stats);
         this.skills = this.GetComponentsInChildren<Skill>();
     }

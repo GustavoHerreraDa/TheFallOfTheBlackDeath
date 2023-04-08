@@ -34,7 +34,7 @@ public class PlayerFighter : Fighter
         Skill skill = this.skills[index];
 
         skill.SetEmitterAndReceiver(
-            this, this.combatManager.GetOpposingFighter()
+            this, this.combatManager.GetOpposingEnemy()
         );
 
         this.combatManager.OnFighterSkill(skill);

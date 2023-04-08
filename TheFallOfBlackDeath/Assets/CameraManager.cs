@@ -34,7 +34,6 @@ public class CameraManager : MonoBehaviour
 
     private void ChangeCameraPositionToCurrentFighter()
     {
-        Debug.Log("Cambiar camera");
 
         var currentFighter = combatManager.fighters[FighterIndex];
 
