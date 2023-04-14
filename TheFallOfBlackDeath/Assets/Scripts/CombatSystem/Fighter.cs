@@ -14,6 +14,9 @@ public abstract class Fighter : MonoBehaviour
     [SerializeField]
     public Transform CameraPivot;
 
+    [SerializeField]
+    public Transform DamagePivot;
+
     public bool isAlive
     {
         get => this.stats.health > 0;
