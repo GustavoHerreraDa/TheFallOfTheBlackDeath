@@ -19,14 +19,14 @@ public abstract class Skill : MonoBehaviour
     {
         if (this.effectPrfb)
             InstantatioEffect();
-    else
-        Debug.Log("NO  EFECTO!");
+    //else
+    //    Debug.Log("NO  EFECTO!");
 
     }
 
 private void InstantatioEffect()
     {
-        Debug.Log("EFECTO!");
+        //Debug.Log("EFECTO!");
         var go = Instantiate(this.effectPrfb, this.receiver.DamagePivot.transform.position, Quaternion.identity);
         Destroy(go, this.animationDuration);
     }
