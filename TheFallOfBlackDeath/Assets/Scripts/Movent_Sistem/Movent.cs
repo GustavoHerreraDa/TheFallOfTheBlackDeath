@@ -4,22 +4,27 @@ using UnityEngine;
 
 public class Movent : MonoBehaviour
 {
-
+  
     [SerializeField] private Rigidbody RGB;
     [SerializeField] private int Speed;
     [SerializeField] private Transform Camera;
     [SerializeField] private float Transition;
 
+    private Animator Anim;
+
+    float movent = 0;
+    
+
     void Start()
     {
-        
+        Anim = GetComponentInChildren<Animator>();
     }
 
     private void FixedUpdate()
     {
         float Horizontal = Input.GetAxis("Horizontal");
         float Vertical = Input.GetAxis("Vertical");
-
+        Vector3 movement = Vector3.zero;
 
         if (Horizontal !=0 || Vertical !=0)
         {
@@ -32,12 +37,13 @@ public class Movent : MonoBehaviour
             right.Normalize();
 
             Vector3 direction = forward * Vertical + right * Horizontal;
+            movent = Mathf.Clamp01(direction.magnitude);
             direction.Normalize();
+
+            
 
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Transition); 
 
-
-            
 
         }
 
@@ -45,6 +51,7 @@ public class Movent : MonoBehaviour
         input.Normalize();
         RGB.velocity = input * Time.deltaTime * Speed;
 
+        Anim.SetFloat("Movent", movent);
 
 
 
