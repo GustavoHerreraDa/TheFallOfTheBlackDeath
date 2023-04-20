@@ -28,6 +28,8 @@ public class Movent : MonoBehaviour
 
         if (Horizontal !=0 || Vertical !=0)
         {
+            
+
             Vector3 forward = Camera.forward;
             forward.y = 0;
             forward.Normalize();
@@ -40,7 +42,7 @@ public class Movent : MonoBehaviour
             movent = Mathf.Clamp01(direction.magnitude);
             direction.Normalize();
 
-            
+            movement = direction * Speed * Time.deltaTime;
 
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Transition); 
 
@@ -49,7 +51,7 @@ public class Movent : MonoBehaviour
 
         Vector3 input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         input.Normalize();
-        RGB.velocity = input * Time.deltaTime * Speed;
+        RGB.velocity = movement;
 
         Anim.SetFloat("Movent", movent);
 
