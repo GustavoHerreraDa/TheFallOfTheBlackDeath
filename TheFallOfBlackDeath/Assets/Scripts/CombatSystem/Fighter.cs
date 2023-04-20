@@ -11,6 +11,12 @@ public abstract class Fighter : MonoBehaviour
 
     protected Skill[] skills;
 
+    [SerializeField]
+    public Transform CameraPivot;
+
+    [SerializeField]
+    public Transform DamagePivot;
+
     public bool isAlive
     {
         get => this.stats.health > 0;
@@ -18,7 +24,6 @@ public abstract class Fighter : MonoBehaviour
 
     protected virtual void Start()
     {
-        Debug.Log("health " + this.stats.health);
         this.statusPanel.SetStats(this.idName, this.stats);
         this.skills = this.GetComponentsInChildren<Skill>();
     }

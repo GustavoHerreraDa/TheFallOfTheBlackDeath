@@ -6,6 +6,7 @@ public class PlayerSkillPanel : MonoBehaviour
 {
     public GameObject[] skillButtons;
     public Text[] skillButtonLabels;
+    public GameObject skillPanel;
 
     private void Awake()
     {
@@ -25,11 +26,11 @@ public class PlayerSkillPanel : MonoBehaviour
 
     public void Show()
     {
-        this.gameObject.SetActive(true);
+        this.skillPanel.SetActive(true);
     }
 
     public void Hide()
     {
-        this.gameObject.SetActive(false);
+        this.skillPanel.SetActive(false);
     }
 }

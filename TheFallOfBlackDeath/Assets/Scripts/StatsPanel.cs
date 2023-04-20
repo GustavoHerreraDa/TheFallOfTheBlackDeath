@@ -12,7 +12,7 @@ public class Stats
     public int level;
     public float attack;
     public float deffense;
-    //Spirit = mana
+    //Spirit = mana bug
     public float spirit;
 
     public Stats(int level, float maxHealth, float attack, float deffense, float spirit)
