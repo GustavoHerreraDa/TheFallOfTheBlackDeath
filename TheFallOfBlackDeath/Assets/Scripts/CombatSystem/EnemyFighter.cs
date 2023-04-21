@@ -12,8 +12,8 @@ public class EnemyFighter : Fighter
     {
         if (stats.health > 0)
             StartCoroutine(this.IA());
-        else
-            StartCoroutine(this.Death());
+        //else
+        //    StartCoroutine(this.Death());
 
     }
 
@@ -29,13 +29,16 @@ public class EnemyFighter : Fighter
         this.combatManager.OnFighterSkill(skill);
     }
 
-    IEnumerator Death()
+    //IEnumerator Death()
+    //{
+    //    //yield return new WaitForSeconds(1f);
+    //    this.combatManager.OnFighterDead(this);
+
+    //}
+
+    public override void Death()
     {
-        yield return new WaitForSeconds(1f);
-
-
-
-        this.combatManager.OnFighterDead();
-
+        if (!isAlive)
+            combatManager.RemoveEnemy(this);
     }
 }
