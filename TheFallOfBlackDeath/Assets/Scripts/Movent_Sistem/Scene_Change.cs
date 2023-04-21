@@ -12,7 +12,10 @@ public class Scene_Change : MonoBehaviour
 
     private void OnTriggerEnter(Collider Box)
     {
-        SceneManager.LoadSceneAsync(1);
+        SceneManager.LoadScene(1);
+
+        Cursor.lockState = CursorLockMode.None;
+
         Debug.Log("1");
     }
 }
