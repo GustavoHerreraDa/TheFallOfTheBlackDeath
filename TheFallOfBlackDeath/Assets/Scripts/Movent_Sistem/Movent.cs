@@ -49,8 +49,7 @@ public class Movent : MonoBehaviour
 
         }
 
-        Vector3 input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        input.Normalize();
+        
         RGB.velocity = movement;
 
         Anim.SetFloat("Movent", movent);
