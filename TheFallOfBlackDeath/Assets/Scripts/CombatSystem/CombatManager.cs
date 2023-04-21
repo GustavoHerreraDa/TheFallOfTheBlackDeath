@@ -28,6 +28,9 @@ public class CombatManager : MonoBehaviour
     [SerializeField]
     private int countEnemyStart = 0;
 
+    internal int opposingEnemyIndex = 999;
+
+
     void Start()
     {
         LogPanel.Write("Battle initiated.");
@@ -140,6 +143,9 @@ public class CombatManager : MonoBehaviour
 
     public Fighter GetOpposingEnemy()
     {
+        if (opposingEnemyIndex != 999)
+            return enemyFighters[opposingEnemyIndex];
+
         foreach (var enemyFighter in this.enemyFighters)
         {
             if (enemyFighter.GetCurrentStats().health > 0)
@@ -148,6 +154,13 @@ public class CombatManager : MonoBehaviour
             }
         }
         return enemyFighters[0];
+
+    }
+
+    public void SetOpposingEnemy(int indexEnemy)
+    {
+        opposingEnemyIndex = indexEnemy;
+        //return enemyFighters[0];
     }
 
     public void OnFighterSkill(Skill skill)

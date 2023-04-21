@@ -40,6 +40,19 @@ public class PlayerFighter : Fighter
         this.combatManager.OnFighterSkill(skill);
     }
 
+    public void ExecuteSkill(int index, int enemyIndex)
+    {
+        this.skillPanel.Hide();
+
+        Skill skill = this.skills[index];
+
+        skill.SetEmitterAndReceiver(
+            this, this.combatManager.GetOpposingEnemy()
+        );
+
+        this.combatManager.OnFighterSkill(skill);
+    }
+
     public override void Death()
     {
         if (!isAlive)
