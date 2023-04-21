@@ -36,14 +36,25 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+    //private void ChangeCameraPositionToCurrentFighter()
+    //{
+    //    var currentFighter = combatManager.fighters[FighterIndex];
+
+    //    // Utiliza Lerp para interpolar suavemente entre la posición actual de la cámara y la nueva posición
+    //    //Vector3 targetDirection = lookTarget.position - camera.transform.position;
+    //    //Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+
+    //    StartCoroutine(MoveCameraSmoothly(camera.transform.position, currentFighter.CameraPivot.position, camera.transform.rotation, currentFighter.CameraPivot.rotation, cameraSpeed));
+    //}
+
     private void ChangeCameraPositionToCurrentFighter()
     {
+
         var currentFighter = combatManager.fighters[FighterIndex];
 
-        // Utiliza Lerp para interpolar suavemente entre la posición actual de la cámara y la nueva posición
-        //Vector3 targetDirection = lookTarget.position - camera.transform.position;
-        //Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
-
+        //gameObjectFighter = currentFighter.gameObject;
+        //camera.transform.position = currentFighter.CameraPivot.position;
+        //camera.transform.LookAt(currentFighter.transform);
         StartCoroutine(MoveCameraSmoothly(camera.transform.position, currentFighter.CameraPivot.position, camera.transform.rotation, currentFighter.CameraPivot.rotation, cameraSpeed));
     }
 
@@ -59,8 +70,8 @@ public class CameraManager : MonoBehaviour
             camera.transform.rotation = Quaternion.Slerp(startRot, endRot, t);
             yield return null;
         }
-        Debug.Log("Final del traslado Smooth " );
-        
+        Debug.Log("Final del traslado Smooth ");
+
         //camera.transform.rotation = Quaternion.RotateTowards(camera.transform.rotation, targetRotation, 45);
 
 

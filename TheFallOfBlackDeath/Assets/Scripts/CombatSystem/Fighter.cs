@@ -43,5 +43,7 @@ public abstract class Fighter : MonoBehaviour
         return this.stats;
     }
 
+    public abstract void Death();
+
     public abstract void InitTurn();
 }
