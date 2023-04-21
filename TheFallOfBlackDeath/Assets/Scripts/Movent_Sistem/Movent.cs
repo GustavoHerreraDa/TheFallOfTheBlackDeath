@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Movent : MonoBehaviour
 {
@@ -9,6 +10,31 @@ public class Movent : MonoBehaviour
     [SerializeField] private int Speed;
     [SerializeField] private Transform Camera;
     [SerializeField] private float Transition;
+    public GameObject itemIconPrefab;
+    public Transform inventoryContent;
+    private List<GameObject> uiInventory;
+    private List<Item> inventory;
+    private int potions = 0;
+    private void Awake()
+    {
+        inventory = new List<Item>();
+        uiInventory = new List<GameObject>();
+    }
+    public void AddToInventory(Item item)
+
+    {
+        inventory.Add(item);
+        GameObject go = Instantiate(itemIconPrefab, inventoryContent);
+        Image im = go.GetComponent<Image>();
+        im.sprite = item.itemIcon;
+        uiInventory.Add(go);
+
+    }
+    public void AddPotions(int potions)
+    {
+        potions += potions;
+    }
+
 
     private Animator Anim;
 
@@ -56,6 +82,15 @@ public class Movent : MonoBehaviour
 
 
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IIntereractable intereractable = other.GetComponent<IIntereractable>();
+        if (intereractable != null)
+        {
+            intereractable.Interact(Player: this);
+        }
     }
 
 }
