@@ -1379,6 +1379,42 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: b14f85d2b6744a24eb402bac93e6e6e1, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3952874bfd35e054288f9cb357c45c11, type: 3}
+--- !u!1 &865034024 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1522700346, guid: 7857b0192e49cbf45b21f340c6c6e6f9, type: 3}
+  m_PrefabInstance: {fileID: 3613054456453487220}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &865034026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865034024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  amount: 30
+--- !u!114 &865034027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865034024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Rabia
+  animationDuration: 1
+  selfInflicted: 1
+  effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
+  message: (receiver) raises attack!
 --- !u!1 &874071435
 GameObject:
   m_ObjectHideFlags: 0
@@ -2947,7 +2983,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Debilitar
-  animationDuration: 2
+  animationDuration: 1
   selfInflicted: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
   message: (receiver) loses deffense!
@@ -3203,7 +3239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Motivar
-  animationDuration: 2
+  animationDuration: 1
   selfInflicted: 1
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
   message: (receiver) attack raises!
@@ -4328,6 +4364,10 @@ PrefabInstance:
       propertyPath: selfInflicted
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1348095314520277603, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
+      propertyPath: m_Name
+      value: "Pu\xF1etazo"
+      objectReference: {fileID: 0}
     - target: {fileID: 1443639437503016498, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
       propertyPath: m_Name
       value: Asassin
@@ -4434,12 +4474,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 1173570327}
     m_Modifications:
     - target: {fileID: 1103270536, guid: 7857b0192e49cbf45b21f340c6c6e6f9, type: 3}
+      propertyPath: amount
+      value: -45
+      objectReference: {fileID: 0}
+    - target: {fileID: 1103270536, guid: 7857b0192e49cbf45b21f340c6c6e6f9, type: 3}
       propertyPath: effectPrfb
       value: 
       objectReference: {fileID: 8189500006840025469, guid: e359e440bbee8ee49b2e19a6a8f649de, type: 3}
     - target: {fileID: 1103270536, guid: 7857b0192e49cbf45b21f340c6c6e6f9, type: 3}
+      propertyPath: critiChance
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1103270536, guid: 7857b0192e49cbf45b21f340c6c6e6f9, type: 3}
       propertyPath: animationDuration
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1522700346, guid: 7857b0192e49cbf45b21f340c6c6e6f9, type: 3}
+      propertyPath: m_Name
+      value: Rabia
       objectReference: {fileID: 0}
     - target: {fileID: 1522700348, guid: 7857b0192e49cbf45b21f340c6c6e6f9, type: 3}
       propertyPath: effectPrfb
@@ -4565,7 +4617,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -84.031
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1522700348, guid: 7857b0192e49cbf45b21f340c6c6e6f9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7857b0192e49cbf45b21f340c6c6e6f9, type: 3}
 --- !u!1001 &6020914222724104610
 PrefabInstance:
@@ -4574,6 +4627,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1173570327}
     m_Modifications:
+    - target: {fileID: 14619575, guid: 9027b0e166cfc55469d1a1cb136f4d5f, type: 3}
+      propertyPath: amount
+      value: -45
+      objectReference: {fileID: 0}
+    - target: {fileID: 14619575, guid: 9027b0e166cfc55469d1a1cb136f4d5f, type: 3}
+      propertyPath: critiChance
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 14619575, guid: 9027b0e166cfc55469d1a1cb136f4d5f, type: 3}
+      propertyPath: animationDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1173603027, guid: 9027b0e166cfc55469d1a1cb136f4d5f, type: 3}
+      propertyPath: amount
+      value: -35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1173603027, guid: 9027b0e166cfc55469d1a1cb136f4d5f, type: 3}
+      propertyPath: critiChance
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1173603027, guid: 9027b0e166cfc55469d1a1cb136f4d5f, type: 3}
+      propertyPath: animationDuration
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6020914221276081700, guid: 9027b0e166cfc55469d1a1cb136f4d5f, type: 3}
       propertyPath: statusPanel
       value: 
