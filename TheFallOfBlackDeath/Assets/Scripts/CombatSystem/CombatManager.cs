@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
 public enum CombatStatus
 {
     WAITING_FOR_FIGHTER,
@@ -14,10 +13,7 @@ public enum CombatStatus
 public class CombatManager : MonoBehaviour
 {
     public Fighter[] fighters;
-    [SerializeField]
     private int fighterIndex;
-
-    public int FighterIndex { get => fighterIndex; }
 
     private bool isCombatActive;
 
@@ -25,8 +21,15 @@ public class CombatManager : MonoBehaviour
 
     private Skill currentFighterSkill;
 
+    public int FighterIndex { get => fighterIndex; }
+
     public List<PlayerFighter> playerFighters = new List<PlayerFighter>();
     public List<EnemyFighter> enemyFighters = new List<EnemyFighter>();
+    [SerializeField]
+    private int countEnemyStart = 0;
+
+    internal int opposingEnemyIndex = 999;
+
 
     void Start()
     {
@@ -38,16 +41,20 @@ public class CombatManager : MonoBehaviour
 
             if (fgtr.GetType() == typeof(PlayerFighter))
                 playerFighters.Add(fgtr.GetComponent<PlayerFighter>());
-
             if (fgtr.GetType() == typeof(EnemyFighter))
                 enemyFighters.Add(fgtr.GetComponent<EnemyFighter>());
         }
 
         this.combatStatus = CombatStatus.NEXT_TURN;
-
+        countEnemyStart = enemyFighters.Count;
         this.fighterIndex = -1;
         this.isCombatActive = true;
         StartCoroutine(this.CombatLoop());
+    }
+
+    internal void removeFighter(PlayerFighter playerFighter)
+    {
+        throw new System.NotImplementedException();
     }
 
     IEnumerator CombatLoop()
@@ -84,7 +91,7 @@ public class CombatManager : MonoBehaviour
                             countEnemyDown += 1;
                         }
                     }
-                    if (countEnemyDown == enemyFighters.Count)
+                    if (countEnemyDown == countEnemyStart)
                     {
                         this.isCombatActive = false;
 
@@ -111,14 +118,10 @@ public class CombatManager : MonoBehaviour
                 case CombatStatus.SKIP_TURN:
                     //yield return new WaitForSeconds(1f);
                     this.fighterIndex = (this.fighterIndex + 1) % this.fighters.Length;
-
-                     currentTurn = this.fighters[this.fighterIndex];
-
+                    currentTurn = this.fighters[this.fighterIndex];
                     //LogPanel.Write($"{currentTurn.idName} has the turn.");
                     currentTurn.InitTurn();
-
                     this.combatStatus = CombatStatus.WAITING_FOR_FIGHTER;
-
                     break;
             }
         }
@@ -128,17 +131,21 @@ public class CombatManager : MonoBehaviour
     {
         foreach (var playerFighter in this.playerFighters)
         {
-            if (playerFighter.GetCurrentStats().health > 0)
             {
-                return playerFighter;
+                if (playerFighter.GetCurrentStats().health > 0)
+                {
+                    return playerFighter;
+                }
             }
         }
-
         return playerFighters[0];
     }
 
     public Fighter GetOpposingEnemy()
     {
+        if (opposingEnemyIndex != 999)
+            return enemyFighters[opposingEnemyIndex];
+
         foreach (var enemyFighter in this.enemyFighters)
         {
             if (enemyFighter.GetCurrentStats().health > 0)
@@ -146,18 +153,51 @@ public class CombatManager : MonoBehaviour
                 return enemyFighter;
             }
         }
-
         return enemyFighters[0];
+
     }
+
+    public void SetOpposingEnemy(int indexEnemy)
+    {
+        opposingEnemyIndex = indexEnemy;
+        //return enemyFighters[0];
+    }
+
     public void OnFighterSkill(Skill skill)
     {
         this.currentFighterSkill = skill;
         this.combatStatus = CombatStatus.FIGHTER_ACTION;
     }
 
-    public void OnFighterDead()
+    internal void RemoveEnemy(EnemyFighter deadEnemyFighter)
     {
-        //Debug.Log("Muerto");
-        this.combatStatus = CombatStatus.SKIP_TURN;
+        //this.enemyFighters.Remove(deadEnemyFighter);
+        UpdateArrayFighter(deadEnemyFighter.idName);
+
+
+    }
+
+    internal void RemoveFighter(PlayerFighter deadPlayerFighter)
+    {
+        //this.playerFighters.Remove(deadPlayerFighter);
+        UpdateArrayFighter(deadPlayerFighter.idName);
+
+    }
+
+    private void UpdateArrayFighter(string name)
+    {
+        Fighter[] nuevoFighter = new Fighter[fighters.Length - 1];
+
+        int j = 0;
+        for (int i = 0; i < fighters.Length; i++)
+        {
+            if (fighters[i].idName != name)
+            {
+                nuevoFighter[j] = fighters[i];
+                j++;
+            }
+        }
+
+        fighters = nuevoFighter;
     }
 }

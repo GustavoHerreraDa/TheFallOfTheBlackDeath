@@ -17,6 +17,7 @@ public class HealthModSkill : Skill
         float amount = this.GetModification();
 
         this.receiver.ModifyHealth(amount);
+        this.receiver.Death();
     }
 
     public float GetModification()
