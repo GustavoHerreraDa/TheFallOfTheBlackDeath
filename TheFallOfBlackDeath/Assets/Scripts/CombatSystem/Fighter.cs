@@ -12,7 +12,10 @@ public abstract class Fighter : MonoBehaviour
 
     protected Stats stats;
 
+
     protected Skill[] skills;
+
+    public StatusCondition statusCondition;
 
     [SerializeField]
     public Transform CameraPivot;
@@ -50,6 +53,17 @@ public abstract class Fighter : MonoBehaviour
         }
         return modedStats;
     }
+    public StatusCondition GetCurrentStatusCondition()
+        {
+            if (this.statusCondition != null && this.statusCondition.hasExpired)
+        {
+            Destroy(this.statusCondition.gameObject);
+            this.statusCondition = null;
+        }
+
+        return this.statusCondition;
+    }
+
 
     public abstract void Death();
 
