@@ -7,7 +7,7 @@ public class StatusModSkill : Skill
 
     protected StatusMod mod;
 
-    protected override void OnRun()
+    protected override void OnRun(Fighter receiver)
     {
         if (this.mod == null)
         {

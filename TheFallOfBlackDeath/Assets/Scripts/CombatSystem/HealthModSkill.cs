@@ -14,7 +14,7 @@ public class HealthModSkill : Skill
     [Range(0f, 1f)]
     public float critiChance = 0;
 
-    protected override void OnRun()
+    protected override void OnRun(Fighter receiver)
     {
         float amount = this.GetModification();
 

@@ -48,7 +48,7 @@ private void InstantatioEffect()
 
         this.Animate();
 
-        this.OnRun();
+        this.OnRun(receiver);
     }
 
     public void SetEmitterAndReceiver(Fighter _emitter, Fighter _receiver)
@@ -65,5 +65,5 @@ private void InstantatioEffect()
             return null;
     }
 
-    protected abstract void OnRun();
+    protected abstract void OnRun(Fighter receiver);
 }
