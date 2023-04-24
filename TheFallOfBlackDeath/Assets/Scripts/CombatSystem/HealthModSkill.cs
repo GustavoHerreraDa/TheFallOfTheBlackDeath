@@ -11,11 +11,19 @@ public class HealthModSkill : Skill
     public float amount;
 
     public HealthModType modType;
+    [Range(0f, 1f)]
+    public float critiChance = 0;
 
-    protected override void OnRun()
+    protected override void OnRun(Fighter receiver)
     {
         float amount = this.GetModification();
 
+        float dice = Random.Range(0f, 1f);
+        if (dice <= this.critiChance)
+        {
+            amount *= 2f;
+            this.messages.Enqueue("Critical hit");
+        }
         this.receiver.ModifyHealth(amount);
         this.receiver.Death();
     }

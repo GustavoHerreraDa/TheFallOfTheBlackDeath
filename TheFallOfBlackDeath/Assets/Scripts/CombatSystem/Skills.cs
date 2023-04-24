@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Skill : MonoBehaviour
@@ -14,6 +15,13 @@ public abstract class Skill : MonoBehaviour
     //Quien la recibe y quien emite la habilidad
     protected Fighter emitter;
     protected Fighter receiver;
+    //Cola de mensajes 
+    protected Queue<string> messages;
+
+    private void Awake()
+    {
+        this.messages = new Queue<string>();
+    }
 
     private void Animate()
     {
@@ -40,7 +48,7 @@ private void InstantatioEffect()
 
         this.Animate();
 
-        this.OnRun();
+        this.OnRun(receiver);
     }
 
     public void SetEmitterAndReceiver(Fighter _emitter, Fighter _receiver)
@@ -48,6 +56,14 @@ private void InstantatioEffect()
         this.emitter = _emitter;
         this.receiver = _receiver;
     }
+    
+    public string GetNextMessages()
+    {
+        if (this.messages.Count != 0)
+            return this.messages.Dequeue();
+        else
+            return null;
+    }
 
-    protected abstract void OnRun();
+    protected abstract void OnRun(Fighter receiver);
 }

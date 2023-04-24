@@ -5,9 +5,10 @@ public enum CombatStatus
 {
     WAITING_FOR_FIGHTER,
     FIGHTER_ACTION,
+    CHECK_ACTION_MESSAGES,
     CHECK_FOR_VICTORY,
     NEXT_TURN,
-    SKIP_TURN
+    CHECK_FIGHTER_STATUS_CONDITION
 }
 
 public class CombatManager : MonoBehaviour
@@ -77,11 +78,25 @@ public class CombatManager : MonoBehaviour
 
                     // Wait for fighter skill animation
                     yield return new WaitForSeconds(currentFighterSkill.animationDuration);
-                    this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
+                    this.combatStatus = CombatStatus.CHECK_ACTION_MESSAGES;
 
-                    currentFighterSkill = null;
+                    
                     break;
-
+                  case CombatStatus.CHECK_ACTION_MESSAGES:
+                    
+                    string nextMessage = this.currentFighterSkill.GetNextMessages();
+                    if (nextMessage != null)
+                    {
+                        LogPanel.Write(nextMessage);
+                        yield return new WaitForSeconds(2f);
+                    }
+                    else
+                    {
+                        this.currentFighterSkill = null;
+                        this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
+                        yield return null;
+                    }
+                    break;
                 case CombatStatus.CHECK_FOR_VICTORY:
                     var countEnemyDown = 0;
                     foreach (var fgtr in this.enemyFighters)
@@ -105,22 +120,51 @@ public class CombatManager : MonoBehaviour
                     break;
                 case CombatStatus.NEXT_TURN:
                     yield return new WaitForSeconds(1f);
-                    this.fighterIndex = (this.fighterIndex + 1) % this.fighters.Length;
+                    Fighter current = null;
 
-                    var currentTurn = this.fighters[this.fighterIndex];
+                    do
+                    {
+                        this.fighterIndex = (this.fighterIndex + 1) % this.fighters.Length;
 
-                    LogPanel.Write($"{currentTurn.idName} has the turn.");
-                    currentTurn.InitTurn();
+                        current = this.fighters[this.fighterIndex];
+                    } while (current.isAlive == false);
+
+                    this.combatStatus = CombatStatus.CHECK_FIGHTER_STATUS_CONDITION;
+
+                        break;
+
+                case CombatStatus.CHECK_FIGHTER_STATUS_CONDITION:
+
+                    var currentFighter = this.fighters[this.fighterIndex];
+
+                    var statusCondition = currentFighter.GetCurrentStatusCondition();
+
+                    if (statusCondition != null)
+                    {
+                        statusCondition.Apply();
+                        while (true)
+                        {
+                            string nextSCMessage = statusCondition.GetNextMessage();
+                            if (nextSCMessage == null)
+                            {
+                                break;
+                            }
+                            LogPanel.Write(nextSCMessage);
+                            yield return new WaitForSeconds(2f);
+                        }
+                        if (statusCondition.BlocksTurn())
+                        {
+                            this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
+                            break;
+                        }
+                    }
+                    LogPanel.Write($"{currentFighter.idName} has the turn.");
+                    currentFighter.InitTurn();
 
                     this.combatStatus = CombatStatus.WAITING_FOR_FIGHTER;
-
                     break;
-                case CombatStatus.SKIP_TURN:
-                    //yield return new WaitForSeconds(1f);
-                    this.fighterIndex = (this.fighterIndex + 1) % this.fighters.Length;
-                    currentTurn = this.fighters[this.fighterIndex];
-                    //LogPanel.Write($"{currentTurn.idName} has the turn.");
-                    currentTurn.InitTurn();
+
+
                     this.combatStatus = CombatStatus.WAITING_FOR_FIGHTER;
                     break;
             }
