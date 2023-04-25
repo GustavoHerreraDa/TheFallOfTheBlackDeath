@@ -15,7 +15,6 @@ public class CombatManager : MonoBehaviour
 {
     public Fighter[] fighters;
     private int fighterIndex;
-
     private bool isCombatActive;
 
     private CombatStatus combatStatus;
@@ -70,11 +69,13 @@ public class CombatManager : MonoBehaviour
 
                 case CombatStatus.FIGHTER_ACTION:
                     LogPanel.Write($"{this.fighters[this.fighterIndex].idName} uses {currentFighterSkill.skillName}.");
+                   
 
                     yield return null;
 
                     // Executing fighter skill
                     currentFighterSkill.Run();
+
 
                     // Wait for fighter skill animation
                     yield return new WaitForSeconds(currentFighterSkill.animationDuration);
@@ -164,9 +165,6 @@ public class CombatManager : MonoBehaviour
                     this.combatStatus = CombatStatus.WAITING_FOR_FIGHTER;
                     break;
 
-
-                    this.combatStatus = CombatStatus.WAITING_FOR_FIGHTER;
-                    break;
             }
         }
     }

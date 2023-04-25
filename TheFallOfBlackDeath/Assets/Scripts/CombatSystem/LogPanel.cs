@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,5 +17,10 @@ public class LogPanel : MonoBehaviour
     public static void Write(string message)
     {
         current.logLabel.text = message;
+    }
+
+    internal static void Write(string idName, string v)
+    {
+        throw new NotImplementedException();
     }
 }

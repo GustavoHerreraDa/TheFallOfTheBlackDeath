@@ -13,7 +13,7 @@ public class EnemyFighter : Fighter
         if (stats.health > 0)
             StartCoroutine(this.IA());
         //else
-        //    StartCoroutine(this.Death());
+        //    StartCoroutine(this.Die());
 
     }
 
