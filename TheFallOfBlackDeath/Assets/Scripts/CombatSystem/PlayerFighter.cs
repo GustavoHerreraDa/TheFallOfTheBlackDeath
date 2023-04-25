@@ -53,9 +53,5 @@ public class PlayerFighter : Fighter
         this.combatManager.OnFighterSkill(skill);
     }
 
-    public override void Death()
-    {
-        if (!isAlive)
-            this.combatManager.removeFighter(this);
-    }
+
 }

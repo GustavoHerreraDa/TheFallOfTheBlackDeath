@@ -34,6 +34,11 @@ public abstract class Fighter : MonoBehaviour
         this.skills = this.GetComponentsInChildren<Skill>();
         this.statusMods = new List<StatusMod>();
     }
+    public void Die()
+    {
+        this.statusPanel.gameObject.SetActive(false);
+        this.gameObject.SetActive(false);
+    }
 
     public void ModifyHealth(float amount)
     {
@@ -41,6 +46,11 @@ public abstract class Fighter : MonoBehaviour
 
         this.stats.health = Mathf.Round(this.stats.health);
         this.statusPanel.SetHealth(this.stats.health, this.stats.maxHealth);
+
+        if  (this.isAlive == false)
+        {
+            Invoke("Die", 0.75f);
+        }
     }
 
     public Stats GetCurrentStats()
@@ -63,9 +73,6 @@ public abstract class Fighter : MonoBehaviour
 
         return this.statusCondition;
     }
-
-
-    public abstract void Death();
 
     public abstract void InitTurn();
 }

@@ -25,7 +25,7 @@ public class HealthModSkill : Skill
             this.messages.Enqueue("Critical hit");
         }
         this.receiver.ModifyHealth(amount);
-        this.receiver.Death();
+
     }
 
     public float GetModification()

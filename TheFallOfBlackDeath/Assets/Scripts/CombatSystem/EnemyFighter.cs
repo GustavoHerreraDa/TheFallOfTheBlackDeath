@@ -29,16 +29,4 @@ public class EnemyFighter : Fighter
         this.combatManager.OnFighterSkill(skill);
     }
 
-    //IEnumerator Death()
-    //{
-    //    //yield return new WaitForSeconds(1f);
-    //    this.combatManager.OnFighterDead(this);
-
-    //}
-
-    public override void Death()
-    {
-        if (!isAlive)
-            combatManager.RemoveEnemy(this);
-    }
 }
