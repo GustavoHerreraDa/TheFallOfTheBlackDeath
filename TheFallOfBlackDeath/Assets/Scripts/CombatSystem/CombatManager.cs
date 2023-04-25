@@ -15,7 +15,6 @@ public class CombatManager : MonoBehaviour
 {
     public Fighter[] fighters;
     private int fighterIndex;
-    public float amount;
     private bool isCombatActive;
 
     private CombatStatus combatStatus;

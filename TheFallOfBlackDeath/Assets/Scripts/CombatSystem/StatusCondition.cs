@@ -48,7 +48,7 @@ public abstract class StatusCondition : MonoBehaviour
 
         if (this.hasExpired)
         {
-            this.messages.Enqueue(this.expireMessage.Replace("{receiver}", this.receiver.idName));
+            this.messages.Enqueue(this.expireMessage.Replace("(receiver)", this.receiver.idName));
         }
     }
     public string GetNextMessage()
@@ -60,7 +60,7 @@ public abstract class StatusCondition : MonoBehaviour
     }
     public string GetReceptionMessage()
     {
-        return this.receptionMessage.Replace("{receiver}", this.receiver.idName);
+        return this.receptionMessage.Replace("(receiver)", this.receiver.idName);
     }
     public abstract void OnApply();
     public abstract bool BlocksTurn();
