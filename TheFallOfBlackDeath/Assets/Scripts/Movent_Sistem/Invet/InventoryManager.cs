@@ -61,5 +61,47 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    
+    public InventoryUI prefab;
+    public Transform inventoryUI;
+
+    List<InventoryUI> pool = new List<InventoryUI>();
+
+    public void updateinventory()
+    {
+        for (int i = 0; i < pool.Count; i++)
+        {
+            if (i < inventory.Count)
+            {
+                InventoryObjectID o = inventory[i];
+                pool[i].sprite.sprite = datebase.DateBase[o.id].sprite;
+                pool[i].amount.text = o.amount.ToString();
+                pool[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                pool[i].gameObject.SetActive(false);
+            }
+            
+            
+
+        }
+        if (inventory.Count > pool.Count)
+        {
+            for (int i = pool.Count; i < inventory.Count; i++)
+            {
+                InventoryUI oi = Instantiate(prefab, inventoryUI);
+                pool.Add(oi);
+
+                oi.transform.position = Vector3.zero;
+                oi.transform.localScale = Vector3.one;
+
+                InventoryObjectID o = inventory[i];
+                pool[i].sprite.sprite = datebase.DateBase[o.id].sprite;
+                pool[i].amount.text = o.amount.ToString();
+
+                pool[i].gameObject.SetActive(true);
+            }
+        }
+    }
+
 }
