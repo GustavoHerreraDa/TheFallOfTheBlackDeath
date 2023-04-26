@@ -16,7 +16,7 @@ public class PickObj : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             //Debug.Log("A");
-
+            
 
 
             Ray ray = new Ray(transform.position, transform.forward);

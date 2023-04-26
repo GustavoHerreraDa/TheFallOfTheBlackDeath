@@ -20,6 +20,7 @@ public class Menu : MonoBehaviour
         {
             if (Pause)
             {
+                
                 Resumegame();
             }
             else
@@ -32,6 +33,7 @@ public class Menu : MonoBehaviour
 
     private void PauseGame()
     {
+        
         Pausemenu.SetActive(true);
         Time.timeScale = 0f;
         Pause = true;
@@ -39,6 +41,7 @@ public class Menu : MonoBehaviour
 
     private void Resumegame()
     {
+        
         Pausemenu.SetActive(false);
         Time.timeScale = 1f;
         Pause = false;
