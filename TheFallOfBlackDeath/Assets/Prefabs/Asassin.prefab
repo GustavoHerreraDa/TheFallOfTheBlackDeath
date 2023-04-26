@@ -1,5 +1,56 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1585225520
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1585225521}
+  - component: {fileID: 1585225522}
+  m_Layer: 0
+  m_Name: Maldicion hijo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1585225521
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585225520}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3302782770964871340}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1585225522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585225520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51e2ef5a84f96f409ceb956945277e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
+  animationDuration: 1
+  receptionMessage: (receiver) is cursed
+  applyMessage: Curses damages (receiver)
+  expireMessage: Curse fades
+  turnDuration: 3
+  percentage: -0.1
 --- !u!1 &1284403506246166845
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,9 +60,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3302782770964871340}
-  - component: {fileID: 6957905096055743676}
+  - component: {fileID: 1238772087}
   m_Layer: 0
-  m_Name: Bomba Venenosa
+  m_Name: Maldicion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,11 +79,12 @@ Transform:
   m_LocalPosition: {x: -4.280013, y: 0, z: 0.92631006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1585225521}
   m_Father: {fileID: 2252651694320841864}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6957905096055743676
+--- !u!114 &1238772087
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,15 +93,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1284403506246166845}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Bomba
-  animationDuration: 0
+  skillName: Maldicion
+  animationDuration: 1
   selfInflicted: 0
-  effectPrfb: {fileID: 0}
-  amount: -20
-  modType: 0
+  effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
 --- !u!1 &1348095314520277603
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,7 +111,7 @@ GameObject:
   - component: {fileID: 5299461713390175436}
   - component: {fileID: 452391405009561511}
   m_Layer: 0
-  m_Name: Sanar
+  m_Name: "Pu\xF1etazo"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,12 +144,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Cimitarra
+  skillName: "Pu\xF1etazo"
   animationDuration: 3
-  selfInflicted: 1
-  effectPrfb: {fileID: 1348095314520277603}
+  selfInflicted: 0
+  effectPrfb: {fileID: 0}
   amount: -30
   modType: 0
+  critiChance: 0.8
 --- !u!1 &1443639437503016498
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +218,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 99eb70ff2afa77f4a8a311628cd4531a, type: 2}
+  - {fileID: 2100000, guid: 9ae313b99d107a14c835495e919a4f86, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -204,6 +255,8 @@ MonoBehaviour:
   idName: Assasin
   statusPanel: {fileID: 0}
   combatManager: {fileID: 0}
+  statusMods: []
+  statusCondition: {fileID: 0}
   CameraPivot: {fileID: 5099093193033445559}
   DamagePivot: {fileID: 2016478929276450250}
   skillPanel: {fileID: 0}
@@ -249,7 +302,7 @@ GameObject:
   - component: {fileID: 7680177492671640172}
   - component: {fileID: 6438794107168270299}
   m_Layer: 0
-  m_Name: Dagas
+  m_Name: Cimitarra
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -282,12 +335,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Dagas
+  skillName: Cimitarra
   animationDuration: 1
   selfInflicted: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 7c98c80539066d047a95b84f01f9ad5c, type: 3}
-  amount: -40
+  amount: -20
   modType: 0
+  critiChance: 0.6
 --- !u!1 &7731341569124741256
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,7 +366,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7731341569124741256}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -1.67, z: 0.53}
+  m_LocalPosition: {x: 0, y: 0.35, z: 0.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

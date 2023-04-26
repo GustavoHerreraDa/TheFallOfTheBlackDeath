@@ -55,7 +55,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3759694154198413685}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -0.54, z: 0.28}
+  m_LocalPosition: {x: -0, y: 0.37, z: 0.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -71,9 +71,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5365537781766933014}
-  - component: {fileID: 2483079378262132075}
+  - component: {fileID: 1379128044}
+  - component: {fileID: 1379128045}
   m_Layer: 0
-  m_Name: Bomba Venenosa
+  m_Name: Debilitar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,7 +95,7 @@ Transform:
   m_Father: {fileID: 7943538130402282915}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2483079378262132075
+--- !u!114 &1379128044
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,15 +104,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 6234800638412072538}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Bomba
-  animationDuration: 3
+  type: 1
+  amount: -10
+--- !u!114 &1379128045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6234800638412072538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Debilitar
+  animationDuration: 1
   selfInflicted: 0
-  effectPrfb: {fileID: 8189500006840025469, guid: 7c98c80539066d047a95b84f01f9ad5c, type: 3}
-  amount: -20
-  modType: 0
+  effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
+  message: (receiver) loses deffense!
 --- !u!1 &6269091029499419658
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,9 +135,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8696734938166610363}
-  - component: {fileID: 196991377421893644}
+  - component: {fileID: 1640209252}
+  - component: {fileID: 1640209253}
   m_Layer: 0
-  m_Name: Sanar
+  m_Name: Motivar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144,7 +159,7 @@ Transform:
   m_Father: {fileID: 7943538130402282915}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &196991377421893644
+--- !u!114 &1640209252
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,15 +168,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 6269091029499419658}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Sanar
-  animationDuration: 3
+  skillName: Motivar
+  animationDuration: 1
   selfInflicted: 1
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
-  amount: 0.2
-  modType: 2
+  message: (receiver) attack raises!
+--- !u!114 &1640209253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6269091029499419658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  amount: 30
 --- !u!1 &7311256974603474713
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,7 +257,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2d5ab278741ea8b47a4c6915681be081, type: 2}
+  - {fileID: 2100000, guid: 2f97cf6b32f9e4a44b530d38d771c76d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -266,6 +294,8 @@ MonoBehaviour:
   idName: BadDoctor
   statusPanel: {fileID: 0}
   combatManager: {fileID: 0}
+  statusMods: []
+  statusCondition: {fileID: 0}
   CameraPivot: {fileID: 282413377629612678}
   DamagePivot: {fileID: 5898992332701915067}
   skillPanel: {fileID: 0}
@@ -280,7 +310,7 @@ GameObject:
   - component: {fileID: 6288930029892525461}
   - component: {fileID: 3824356785343299998}
   m_Layer: 0
-  m_Name: Dagas
+  m_Name: Baston
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -319,3 +349,4 @@ MonoBehaviour:
   effectPrfb: {fileID: 8189500006840025469, guid: 3ec25404e40d38040b62a0b63742a8ea, type: 3}
   amount: -20
   modType: 0
+  critiChance: 0.1
