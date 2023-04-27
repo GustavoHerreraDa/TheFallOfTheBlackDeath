@@ -17,10 +17,10 @@ public class InventoryManager : MonoBehaviour
         }
 
 
-        public void Addamount(int amount)
-        {
-            this.amount += amount;
-        }
+        //public void Addamount(int amount)
+        //{
+        //    this.amount += amount;
+        //}
 
 
     }
@@ -40,7 +40,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (inventory[i].id == id)
             {
-                inventory[i].Addamount(amount);
+                inventory[i] = new InventoryObjectID(inventory[i].id, inventory[i].amount + amount);
                 updateinventory();
                 return;
             }
@@ -56,7 +56,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (inventory[i].id == id)
             {
-                inventory[i].Addamount(-amount);
+                inventory[i] = new InventoryObjectID(inventory[i].id, inventory[i].amount - amount); ;
                 if (inventory[i].amount <= 0)
                 {
                     inventory.Remove(inventory[i]);
@@ -81,6 +81,7 @@ public class InventoryManager : MonoBehaviour
 
     public void updateinventory()
     {
+        Debug.Log("funciono");
         for (int i = 0; i < pool.Count; i++)
         {
             if (i < inventory.Count)
