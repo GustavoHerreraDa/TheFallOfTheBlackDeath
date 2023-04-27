@@ -24,7 +24,11 @@ public class InventoryManager : MonoBehaviour
 
 
     }
+
     
+
+
+
     public InventoryDateBase datebase;
     public List<InventoryObjectID> inventory;
 
@@ -37,12 +41,14 @@ public class InventoryManager : MonoBehaviour
             if (inventory[i].id == id)
             {
                 inventory[i].Addamount(amount);
+                updateinventory();
                 return;
             }
+        
         }
         
         inventory.Add(new InventoryObjectID(id, amount));
-           
+        updateinventory();
     }
     public void DestroyItem(int id, int amount)
     {
@@ -54,12 +60,19 @@ public class InventoryManager : MonoBehaviour
                 if (inventory[i].amount <= 0)
                 {
                     inventory.Remove(inventory[i]);
+                    updateinventory();
                     return;
                 }
                 
             }
         }
     }
+
+    public void Start()
+    {
+        updateinventory();
+    }
+
 
     public InventoryUI prefab;
     public Transform inventoryUI;

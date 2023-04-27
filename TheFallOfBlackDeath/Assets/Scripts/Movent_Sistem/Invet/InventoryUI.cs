@@ -6,8 +6,8 @@ using TMPro;
 
 public class InventoryUI : MonoBehaviour
 {
-     public TextMeshPro amount;
+     public TMP_Text amount;
      public Image sprite;
 
-    
+   
 }

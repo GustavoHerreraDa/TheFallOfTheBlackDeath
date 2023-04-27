@@ -823,9 +823,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 938049069}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 800448451}
@@ -834,8 +834,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -348.025, y: -518.1}
-  m_SizeDelta: {x: 46.961, y: 809.14}
+  m_AnchoredPosition: {x: -618.52, y: -297.1}
+  m_SizeDelta: {x: 46.961, y: 485.81}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &938049071
 MonoBehaviour:
@@ -880,8 +880,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 601839324}
   m_HandleRect: {fileID: 601839323}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 0.49999595
+  m_Size: 0.72943485
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1619,9 +1619,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   datebase: {fileID: 11400000, guid: 467447c068a205c4da7da0fd9218144b, type: 2}
-  inventory: []
-  prefab: {fileID: 0}
-  inventoryUI: {fileID: 0}
+  inventory:
+  - id: 0
+    amount: 1
+  prefab: {fileID: 4463044231049171882, guid: fea44ec7c7d72e442ac64ecfa5824a92, type: 3}
+  inventoryUI: {fileID: 1514615474}
 --- !u!1 &1514615473
 GameObject:
   m_ObjectHideFlags: 0
@@ -1634,7 +1636,7 @@ GameObject:
   - component: {fileID: 1514615476}
   - component: {fileID: 1514615475}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: layout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1657,7 +1659,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.014, y: 0.0009994507}
+  m_AnchoredPosition: {x: 2.014, y: 0.00073739566}
   m_SizeDelta: {x: 547.083, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1514615475
@@ -2175,7 +2177,7 @@ GameObject:
   - component: {fileID: 1927565303}
   - component: {fileID: 1927565302}
   m_Layer: 5
-  m_Name: Fondo
+  m_Name: Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2199,8 +2201,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -665.75, y: -518.1}
-  m_SizeDelta: {x: -1331.508, y: -1036.193}
+  m_AnchoredPosition: {x: -800.99976, y: -297.1008}
+  m_SizeDelta: {x: -1602, y: -594.1964}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1927565300
 MonoBehaviour:
