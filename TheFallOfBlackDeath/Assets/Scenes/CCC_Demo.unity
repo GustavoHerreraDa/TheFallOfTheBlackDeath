@@ -1309,32 +1309,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1111cbbf39a0e8f438194379fec8e38d, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba0ea540324d1914a81f762ae8b1d1da, type: 3}
---- !u!1 &748664210 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 709217421945358738, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
-  m_PrefabInstance: {fileID: 7617738348244095935}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &748664211 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6654959466667760136, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
-  m_PrefabInstance: {fileID: 7617738348244095935}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &748664212
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 748664210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Paralisis
-  animationDuration: 1
-  selfInflicted: 0
-  effectPrfb: {fileID: 8189500006840025469, guid: e359e440bbee8ee49b2e19a6a8f649de, type: 3}
 --- !u!4 &770003518 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3952874bfd35e054288f9cb357c45c11, type: 3}
@@ -1345,6 +1319,32 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5432812748963631038, guid: bc955e4e0954c7847b4c7624a3f70977, type: 3}
   m_PrefabInstance: {fileID: 1538700046}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &817704191 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7832234712161264204, guid: 9027b0e166cfc55469d1a1cb136f4d5f, type: 3}
+  m_PrefabInstance: {fileID: 6020914222724104610}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &817704192 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5170883358836647959, guid: 9027b0e166cfc55469d1a1cb136f4d5f, type: 3}
+  m_PrefabInstance: {fileID: 6020914222724104610}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &817704193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817704191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Paralisis
+  animationDuration: 1
+  selfInflicted: 0
+  effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
 --- !u!1001 &827670299
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2785,6 +2785,57 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1196157240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1196157241}
+  - component: {fileID: 1196157242}
+  m_Layer: 0
+  m_Name: Paralisis hijo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1196157241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196157240}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 817704192}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1196157242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196157240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e0fb08401cd127498845e9e30306566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
+  animationDuration: 1
+  receptionMessage: (receiver) esta paralizado
+  applyMessage: (receiver) esta paralizado
+  expireMessage: (receiver) ya no esta paralizado
+  turnDuration: 2
+  blockChance: 1
 --- !u!1 &1212336640
 GameObject:
   m_ObjectHideFlags: 0
@@ -3007,57 +3058,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   amount: -10
---- !u!1 &1434751467
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1434751468}
-  - component: {fileID: 1434751469}
-  m_Layer: 0
-  m_Name: Paralisis hijo
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1434751468
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1434751467}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 748664211}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1434751469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1434751467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e0fb08401cd127498845e9e30306566, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectPrfb: {fileID: 8189500006840025469, guid: e359e440bbee8ee49b2e19a6a8f649de, type: 3}
-  animationDuration: 1
-  receptionMessage: (receiver) esta paralizado
-  applyMessage: (receiver) esta paralizado
-  expireMessage: (receiver) ya no esta paralizado
-  turnDuration: 2
-  blockChance: 1
 --- !u!4 &1491647030 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 45b085951f04f84458f807cc0ec3a21c, type: 3}
@@ -4196,6 +4196,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3492222240921374550, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492222240921374550, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.00007
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492222240921374550, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0012
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492222240921374550, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.00487
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492222240921374550, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492222240921374550, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492222240921374550, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492222240921374550, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492222240921374550, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492222240921374550, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
 --- !u!4 &1786470318 stripped
@@ -4839,6 +4879,10 @@ PrefabInstance:
       propertyPath: skillName
       value: Mot
       objectReference: {fileID: 0}
+    - target: {fileID: 282413377629612678, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3824356785343299998, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: skillName
       value: Walking stick
@@ -4846,6 +4890,14 @@ PrefabInstance:
     - target: {fileID: 3824356785343299998, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: critiChance
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5365537781766933014, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5898992332701915067, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5898992332701915067, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4866,6 +4918,10 @@ PrefabInstance:
     - target: {fileID: 6269091029499419658, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: m_Name
       value: Motivate
+      objectReference: {fileID: 0}
+    - target: {fileID: 6288930029892525461, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7311256974603474713, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: m_Name
@@ -4930,6 +4986,10 @@ PrefabInstance:
     - target: {fileID: 7943538130402282915, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8696734938166610363, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9112524821064447692, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: m_Materials.Array.data[0]
