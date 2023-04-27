@@ -6,14 +6,14 @@ public class PickObj : MonoBehaviour
 {
 
 
-    InventoryManager m;
-    statsOBJ o;
+    private InventoryManager m;
+    
     
     
     
     void Start()
     {
-        o = GetComponent<statsOBJ>();
+        
         m = GetComponent<InventoryManager>();
     }
 
