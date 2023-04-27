@@ -50,6 +50,7 @@ MonoBehaviour:
   effectPrfb: {fileID: 8189500006840025469, guid: e359e440bbee8ee49b2e19a6a8f649de, type: 3}
   amount: -20
   modType: 0
+  critiChance: 0
 --- !u!1 &1173603025
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,6 +101,7 @@ MonoBehaviour:
   effectPrfb: {fileID: 8189500006840025469, guid: 7f9254042e04b1a4b92f1d86cc0fd977, type: 3}
   amount: -10
   modType: 0
+  critiChance: 0
 --- !u!1 &6020914221644011460
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,6 +137,7 @@ Transform:
   - {fileID: 14619574}
   - {fileID: 1319403557789154449}
   - {fileID: 2036174515144482912}
+  - {fileID: 5170883358836647959}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 88.237}
@@ -203,6 +206,8 @@ MonoBehaviour:
   idName: Skeleton Red
   statusPanel: {fileID: 0}
   combatManager: {fileID: 0}
+  statusMods: []
+  statusCondition: {fileID: 0}
   CameraPivot: {fileID: 1319403557789154449}
   DamagePivot: {fileID: 2036174515144482912}
 --- !u!1 &7383185301598330323
@@ -236,6 +241,37 @@ Transform:
   m_Father: {fileID: 6020914221644499940}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 77.853, y: -88.958, z: -94.256}
+--- !u!1 &7832234712161264204
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5170883358836647959}
+  m_Layer: 0
+  m_Name: Paralisis
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5170883358836647959
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7832234712161264204}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6020914221644499940}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9159698595058386725
 GameObject:
   m_ObjectHideFlags: 0
