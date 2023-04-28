@@ -28,13 +28,11 @@ public class HealthModSkill : Skill
         }
 
         if
-
         (this.selfInflicted)
         {
             this.messages.Enqueue("Heal for " + amount);
         }
         else
-
         {
             this.messages.Enqueue("Hit for " + amount);
         }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour, IIntereractable
+public class Item : MonoBehaviour
 {
     public Sprite itemIcon;
     public int amount;
@@ -10,7 +10,7 @@ public class Item : MonoBehaviour, IIntereractable
     public void Interact(Movent player)
     {
         Destroy(this.gameObject);
-        player.AddToInventory(item:this);
+
         
     }
 }
