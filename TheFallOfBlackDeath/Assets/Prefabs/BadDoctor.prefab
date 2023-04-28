@@ -104,8 +104,9 @@ GameObject:
   - component: {fileID: 5365537781766933014}
   - component: {fileID: 1379128044}
   - component: {fileID: 1379128045}
+  - component: {fileID: 6080034682011355539}
   m_Layer: 0
-  m_Name: Debilitar
+  m_Name: Weaken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,11 +153,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Debilitar
+  skillName: Weaken
   animationDuration: 1
   selfInflicted: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
   message: (receiver) loses deffense!
+--- !u!114 &6080034682011355539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6234800638412072538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  amount: -10
 --- !u!1 &6269091029499419658
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,7 +184,7 @@ GameObject:
   - component: {fileID: 1640209252}
   - component: {fileID: 1640209253}
   m_Layer: 0
-  m_Name: Motivar
+  m_Name: Motivate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -202,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Motivar
+  skillName: Motivate
   animationDuration: 1
   selfInflicted: 1
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
@@ -342,7 +357,7 @@ GameObject:
   - component: {fileID: 6288930029892525461}
   - component: {fileID: 3824356785343299998}
   m_Layer: 0
-  m_Name: Baston
+  m_Name: Walking stick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -375,8 +390,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Baston
-  animationDuration: 1
+  skillName: Walking stick
+  animationDuration: 2.5
   selfInflicted: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 3ec25404e40d38040b62a0b63742a8ea, type: 3}
   amount: -20
