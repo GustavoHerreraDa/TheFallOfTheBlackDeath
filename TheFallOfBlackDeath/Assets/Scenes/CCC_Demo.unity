@@ -812,7 +812,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Blessed
-  animationDuration: 1
+  animationDuration: 3
   selfInflicted: 1
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
 --- !u!1 &372303678
@@ -1770,7 +1770,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 65.019, y: -198.436, z: -184.868}
 --- !u!114 &705507996
 MonoBehaviour:
@@ -2029,7 +2029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Paralisis
-  animationDuration: 1
+  animationDuration: 3
   selfInflicted: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
 --- !u!1001 &827670299
@@ -3002,6 +3002,30 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1c7d2ac58a3617044af0faf467132c4c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 116282cdd5615cc4e8f175ec853f0aea, type: 3}
+--- !u!1 &1071327242 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3412323366584801750, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+  m_PrefabInstance: {fileID: 7617738348244095935}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1071327244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071327242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Sanar
+  animationDuration: 3
+  selfInflicted: 1
+  effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
+  amount: 0.1
+  modType: 2
+  critiChance: 0
 --- !u!114 &1074256361 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2808314296040147932, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
@@ -3606,6 +3630,42 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1169192245}
   m_Mesh: {fileID: -35792860858594424, guid: 551e13ab9108f804bb603c9998f23190, type: 3}
+--- !u!1 &1173216430 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4864400700348379872, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
+  m_PrefabInstance: {fileID: 1786169536772773933}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1173216432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173216430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Intimidate
+  animationDuration: 2
+  selfInflicted: 0
+  effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
+  message: (receiver) decreased his attack!
+--- !u!114 &1173216433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173216430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  amount: -20
 --- !u!1 &1173570326
 GameObject:
   m_ObjectHideFlags: 0
@@ -3684,7 +3744,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
-  animationDuration: 1
+  animationDuration: 3
   receptionMessage: (receiver) esta paralizado
   applyMessage: (receiver) esta paralizado
   expireMessage: (receiver) ya no esta paralizado
@@ -5720,7 +5780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
-  animationDuration: 1
+  animationDuration: 3
   receptionMessage: (receiver) is blessed
   applyMessage: The blessing heals (receiver)
   expireMessage: the blessing fade
@@ -5889,6 +5949,14 @@ PrefabInstance:
       propertyPath: skillName
       value: Curse
       objectReference: {fileID: 0}
+    - target: {fileID: 1238772087, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
+      propertyPath: animationDuration
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1585225522, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
+      propertyPath: animationDuration
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 452391405009561511, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
       propertyPath: skillName
       value: Back Stab
@@ -5907,7 +5975,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 452391405009561511, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
       propertyPath: animationDuration
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1083162007021228007, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -6008,6 +6076,10 @@ PrefabInstance:
     - target: {fileID: 6438794107168270299, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
       propertyPath: critiChance
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6438794107168270299, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
+      propertyPath: animationDuration
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6957905096055743676, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
       propertyPath: effectPrfb
@@ -6165,17 +6237,33 @@ PrefabInstance:
       propertyPath: skillName
       value: Weaken
       objectReference: {fileID: 0}
+    - target: {fileID: 1379128045, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+      propertyPath: animationDuration
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1640209252, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: skillName
       value: Motivate
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640209252, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+      propertyPath: animationDuration
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640209253, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+      propertyPath: type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640209253, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+      propertyPath: amount
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 196991377421893644, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: skillName
       value: Mot
       objectReference: {fileID: 0}
-    - target: {fileID: 282413377629612678, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
-      propertyPath: m_RootOrder
-      value: 3
+    - target: {fileID: 3412323366584801750, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+      propertyPath: m_Name
+      value: Sanar
       objectReference: {fileID: 0}
     - target: {fileID: 3824356785343299998, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: skillName
@@ -6187,15 +6275,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3824356785343299998, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: animationDuration
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5365537781766933014, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5898992332701915067, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5898992332701915067, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6216,10 +6296,6 @@ PrefabInstance:
     - target: {fileID: 6269091029499419658, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: m_Name
       value: Motivate
-      objectReference: {fileID: 0}
-    - target: {fileID: 6288930029892525461, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7311256974603474713, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: m_Name
@@ -6284,10 +6360,6 @@ PrefabInstance:
     - target: {fileID: 7943538130402282915, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8696734938166610363, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9112524821064447692, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: m_Materials.Array.data[0]
