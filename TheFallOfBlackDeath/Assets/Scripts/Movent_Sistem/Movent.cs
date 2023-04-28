@@ -12,13 +12,10 @@ public class Movent : MonoBehaviour
     [SerializeField] private float Transition;
     public GameObject itemIconPrefab;
     public Transform inventoryContent;
-    private List<GameObject> uiInventory;
-    private List<Item> inventory;
-    private int potions = 0;
+
     private void Awake()
     {
-        inventory = new List<Item>();
-        uiInventory = new List<GameObject>();
+
     }
 
 
