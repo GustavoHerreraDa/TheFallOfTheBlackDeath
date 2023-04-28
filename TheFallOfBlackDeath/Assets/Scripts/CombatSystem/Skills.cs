@@ -3,6 +3,7 @@ using UnityEngine;
 
 public abstract class Skill : MonoBehaviour
 {
+
     [Header("Base Skill")]
     //Nombre de la habilidad
     public string skillName;
@@ -45,10 +46,11 @@ private void InstantatioEffect()
         {
             this.receiver = this.emitter;
         }
-
+     
         this.Animate();
 
         this.OnRun(receiver);
+
     }
 
     public void SetEmitterAndReceiver(Fighter _emitter, Fighter _receiver)

@@ -24,9 +24,22 @@ public class HealthModSkill : Skill
         {
             amount *= 2f;
             this.messages.Enqueue("Critical hit");
+
         }
-       this.receiver.ModifyHealth(amount);
-        this.messages.Enqueue("hit for" + amount);
+
+        if
+
+        (this.selfInflicted)
+        {
+            this.messages.Enqueue("Heal for " + amount);
+        }
+        else
+
+        {
+            this.messages.Enqueue("Hit for " + amount);
+        }
+        this.receiver.ModifyHealth(amount);
+
     }
 
     public float GetModification()

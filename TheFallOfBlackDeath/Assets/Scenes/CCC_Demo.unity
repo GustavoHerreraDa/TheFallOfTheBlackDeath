@@ -2028,7 +2028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Paralisis
+  skillName: Paralysis
   animationDuration: 3
   selfInflicted: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
@@ -3019,7 +3019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Sanar
+  skillName: Heal
   animationDuration: 3
   selfInflicted: 1
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
@@ -3665,7 +3665,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  amount: -20
+  amount: -10
 --- !u!1 &1173570326
 GameObject:
   m_ObjectHideFlags: 0
@@ -3745,9 +3745,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
   animationDuration: 3
-  receptionMessage: (receiver) esta paralizado
-  applyMessage: (receiver) esta paralizado
-  expireMessage: (receiver) ya no esta paralizado
+  receptionMessage: (receiver) is paralyzed
+  applyMessage: (receiver) is paralyzed
+  expireMessage: (receiver) is no more paralyzed!
   turnDuration: 2
   blockChance: 1
 --- !u!1 &1212336640
@@ -4090,25 +4090,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1379128042 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6234800638412072538, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
-  m_PrefabInstance: {fileID: 7617738348244095935}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1379128044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1379128042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 1
-  amount: -10
 --- !u!4 &1491647030 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 45b085951f04f84458f807cc0ec3a21c, type: 3}
@@ -5249,6 +5230,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1173570327}
     m_Modifications:
+    - target: {fileID: 1432456572024712324, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
+      propertyPath: m_Name
+      value: Rage
+      objectReference: {fileID: 0}
     - target: {fileID: 1432456572108598838, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
       propertyPath: skillName
       value: ShootHead
@@ -5256,6 +5241,14 @@ PrefabInstance:
     - target: {fileID: 1432456572108598838, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
       propertyPath: critiChance
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1432456573195025594, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
+      propertyPath: skillName
+      value: Rage
+      objectReference: {fileID: 0}
+    - target: {fileID: 1432456573195025594, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
+      propertyPath: animationDuration
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2433419667151408271, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
       propertyPath: statusPanel
@@ -5967,7 +5960,7 @@ PrefabInstance:
       objectReference: {fileID: 8189500006840025469, guid: 7c98c80539066d047a95b84f01f9ad5c, type: 3}
     - target: {fileID: 452391405009561511, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
       propertyPath: critiChance
-      value: 0.5
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 452391405009561511, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
       propertyPath: selfInflicted
@@ -6060,6 +6053,10 @@ PrefabInstance:
     - target: {fileID: 2252651694320841864, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864400700348379872, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
+      propertyPath: m_Name
+      value: Intimidate
       objectReference: {fileID: 0}
     - target: {fileID: 5980398620794730536, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
       propertyPath: m_Name
@@ -6263,7 +6260,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3412323366584801750, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: m_Name
-      value: Sanar
+      value: Heal
       objectReference: {fileID: 0}
     - target: {fileID: 3824356785343299998, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: skillName
@@ -6369,4 +6366,5 @@ PrefabInstance:
     - {fileID: 2483079378262132075, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
     - {fileID: 196991377421893644, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
     - {fileID: 2995562918508585699, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+    - {fileID: 6080034682011355539, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
