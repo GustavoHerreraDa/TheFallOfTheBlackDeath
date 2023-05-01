@@ -34,7 +34,7 @@ public class HealthModSkill : Skill
         }
         else
         {
-            this.messages.Enqueue("Hit for " + amount);
+            this.messages.Enqueue("Hit for " + (int) amount);
         }
         this.receiver.ModifyHealth(amount);
 
