@@ -35,14 +35,25 @@ public class SkillManager : MonoBehaviour
         currentCharacterIndex = combatManager.FighterIndex;
 
         currentCharacterObj = combatManager.fighters[currentCharacterIndex].gameObject;
+        var Skills = currentCharacterObj.GetComponentsInChildren<Skill>();
+        var selfInflicted = Skills[index];
+        Debug.Log(selfInflicted.skillName);
+        if (selfInflicted.selfInflicted)
+        {
+            enemySelection.EnableButtonsWithPlayers();
+        }
+        else
+        {
+            enemySelection.EnableButtonsWithEnemy();
+
+        }
         
         skillPanel.Hide();
         enemySelection.Show();
 
-
-        enemySelection.EnableButtonsWithEnemy();
-
         SetSkill = index;
+
+    
     }
 
     public void ExecuteSkill(int EnemyIndex)
@@ -54,4 +65,5 @@ public class SkillManager : MonoBehaviour
         enemySelection.Hide();
 
     }
+
 }
