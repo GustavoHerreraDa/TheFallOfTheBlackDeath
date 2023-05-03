@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
+    public static InventoryManager ins;
+
+    void Awake()
+    {
+        if (InventoryManager.ins == null)
+        {
+            InventoryManager.ins = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
+
+
     [System.Serializable]
     public struct InventoryObjectID
     {
