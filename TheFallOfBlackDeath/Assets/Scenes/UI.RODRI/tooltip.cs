@@ -14,7 +14,7 @@ public class tooltip : MonoBehaviour
     public void mouseOverPunch(string message)
     {
         skillNameTxT.enabled = true;
-        skillNameTxT.GetComponent<Text>().text = "Ataque Fisico";
+        skillNameTxT.GetComponent<Text>().text = "Golpeas con el baston al enemigo (daño fisico)";
 
         Debug.Log("mouse over");
     }
@@ -22,6 +22,30 @@ public class tooltip : MonoBehaviour
     public void disableSkillTxT()
     {
         skillNameTxT.enabled = false;
+    }
+
+    public void mouseOverMotivate(string message)
+    {
+        skillNameTxT.enabled = true;
+        skillNameTxT.GetComponent<Text>().text = "Recordaste una charla ted y te motivaste (sube el ataque)";
+
+        Debug.Log("mouse over");
+    }
+
+    public void mouseOverWeaken(string message)
+    {
+        skillNameTxT.enabled = true;
+        skillNameTxT.GetComponent<Text>().text = "Disminuye considerablemente la defensa del rival";
+
+        Debug.Log("mouse over");
+    }
+
+    public void mouseOverHeal(string message)
+    {
+        skillNameTxT.enabled = true;
+        skillNameTxT.GetComponent<Text>().text = "Utilizas tus conocimientos medicos para sanarte";
+
+        Debug.Log("mouse over");
     }
 
 
