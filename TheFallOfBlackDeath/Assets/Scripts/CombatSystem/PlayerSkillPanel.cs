@@ -7,7 +7,8 @@ public class PlayerSkillPanel : MonoBehaviour
     public GameObject[] skillButtons;
     public Text[] skillButtonLabels;
     public GameObject skillPanel;
-
+    private InventoryManager inv;
+    
     private void Awake()
     {
         this.Hide();

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum HealthModType
@@ -5,8 +6,12 @@ public enum HealthModType
     STAT_BASED, FIXED, PERCENTAGE
 }
 
-public class HealthModSkill : Skill
+public class HealthModSkill : Skill 
 {
+    public List<InventoryManager.InventoryObjectID> inventory;
+
+
+
     [Header("Health Mod")]
     public float amount;
 
