@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 public enum CombatStatus
 {
     WAITING_FOR_FIGHTER,
@@ -110,8 +111,9 @@ public class CombatManager : MonoBehaviour
                     if (countEnemyDown == countEnemyStart)
                     {
                         this.isCombatActive = false;
-
+                        
                         LogPanel.Write("Victory!");
+                        SceneManager.LoadScene(0);
                     }
                     else
                     {
@@ -242,4 +244,6 @@ public class CombatManager : MonoBehaviour
 
         fighters = nuevoFighter;
     }
+
+    
 }

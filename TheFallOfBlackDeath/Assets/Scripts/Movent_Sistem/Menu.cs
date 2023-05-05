@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
@@ -60,6 +61,13 @@ public class Menu : MonoBehaviour
                 Inventoryfalse();
             }
         }
+    
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(0);
+        }
+    
+    
     }
 
     private void Inventorytrue()
