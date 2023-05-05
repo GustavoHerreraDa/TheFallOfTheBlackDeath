@@ -12,10 +12,6 @@ public class Singletons : InventoryManager
         {
 
         }
-
-         
-        
-    
     }
 
     private void Update()

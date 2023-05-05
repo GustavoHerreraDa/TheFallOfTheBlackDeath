@@ -6,12 +6,8 @@ public enum HealthModType
     STAT_BASED, FIXED, PERCENTAGE
 }
 
-public class HealthModSkill : Skill 
+public class HealthModSkill : Skill
 {
-    public List<InventoryManager.InventoryObjectID> inventory;
-
-
-
     [Header("Health Mod")]
     public float amount;
 
@@ -39,7 +35,7 @@ public class HealthModSkill : Skill
         }
         else
         {
-            this.messages.Enqueue("Hit for " + (int) amount);
+            this.messages.Enqueue("Hit for " + (int)amount);
         }
         this.receiver.ModifyHealth(amount);
 

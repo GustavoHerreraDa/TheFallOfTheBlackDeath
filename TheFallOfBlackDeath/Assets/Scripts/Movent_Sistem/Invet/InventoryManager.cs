@@ -1,16 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class InventoryManager : MonoBehaviour
 {
-    public static InventoryManager ins;
+    public static InventoryManager instance;
+    public InventoryDateBase datebase;
+    public List<InventoryObjectID> inventory;
+    public InventoryUI prefab;
+    public Transform inventoryUI;
+    List<InventoryUI> pool = new List<InventoryUI>();
 
     void Awake()
     {
-        if (InventoryManager.ins == null)
+        if (InventoryManager.instance == null)
         {
-            InventoryManager.ins = this;
+            InventoryManager.instance = this;
             DontDestroyOnLoad(gameObject);
         }
     }
@@ -28,25 +34,7 @@ public class InventoryManager : MonoBehaviour
             this.id = id;
             this.amount = amount;
         }
-
-
-        //public void Addamount(int amount)
-        //{
-        //    this.amount += amount;
-        //}
-
-
     }
-
-    
-
-
-
-    public InventoryDateBase datebase;
-    public List<InventoryObjectID> inventory;
-
-    
-
     public void AddItem(int id, int amount)
     {
         for (int i = 0; i < inventory.Count; i++)
@@ -57,9 +45,7 @@ public class InventoryManager : MonoBehaviour
                 updateinventory();
                 return;
             }
-        
         }
-        
         inventory.Add(new InventoryObjectID(id, amount));
         updateinventory();
     }
@@ -76,25 +62,16 @@ public class InventoryManager : MonoBehaviour
                     updateinventory();
                     return;
                 }
-                
             }
         }
     }
-
     public void Start()
     {
         updateinventory();
     }
-
-
-    public InventoryUI prefab;
-    public Transform inventoryUI;
-
-    List<InventoryUI> pool = new List<InventoryUI>();
-
     public void updateinventory()
     {
-        Debug.Log("funciono");
+        Debug.Log("updateinventory funciono");
         for (int i = 0; i < pool.Count; i++)
         {
             if (i < inventory.Count)
@@ -108,9 +85,6 @@ public class InventoryManager : MonoBehaviour
             {
                 pool[i].gameObject.SetActive(false);
             }
-            
-            
-
         }
         if (inventory.Count > pool.Count)
         {
@@ -129,6 +103,24 @@ public class InventoryManager : MonoBehaviour
                 pool[i].gameObject.SetActive(true);
             }
         }
+    }
+    public bool HasItemInIventory(List<InventoryObjectID> itemsNeeded)
+    {
+
+        if (itemsNeeded.Count == 0)
+            return true;
+
+        var hasItemInIventory = false;
+
+        foreach (var itemNeed in itemsNeeded )
+        {
+            var itemInventory = inventory.Where(x => x.id == itemNeed.id).FirstOrDefault();
+
+            if (itemInventory.amount >= itemNeed.amount)
+                hasItemInIventory = true;
+        }
+
+        return hasItemInIventory;
     }
 
 }
