@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class Movent : MonoBehaviour
 {
-  
+
     [SerializeField] private Rigidbody RGB;
     [SerializeField] private int Speed;
     [SerializeField] private Transform Camera;
@@ -13,17 +13,20 @@ public class Movent : MonoBehaviour
     public GameObject itemIconPrefab;
     public Transform inventoryContent;
 
-    private void Awake()
-    {
+    //void Awake()
+    //{
+    //    GameStateManager.Instance.Ongamestatechanged += Ongamestatechange;
+    //}
 
-    }
-
-
+    //void OnDestroy()
+    //{
+    //    GameStateManager.Instance.Ongamestatechanged -= Ongamestatechange;
+    //}
 
     private Animator Anim;
 
     float movent = 0;
-    
+
 
     void Start()
     {
@@ -36,9 +39,9 @@ public class Movent : MonoBehaviour
         float Vertical = Input.GetAxis("Vertical");
         Vector3 movement = Vector3.zero;
 
-        if (Horizontal !=0 || Vertical !=0)
+        if (Horizontal != 0 || Vertical != 0)
         {
-            
+
 
             Vector3 forward = Camera.forward;
             forward.y = 0;
@@ -52,22 +55,24 @@ public class Movent : MonoBehaviour
             movent = Mathf.Clamp01(direction.magnitude);
             direction.Normalize();
 
-            movement = direction * Speed * Time.deltaTime;
+            movement = Speed * Time.deltaTime * direction;
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Transition); 
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Transition);
 
 
         }
 
-        
+
         RGB.velocity = movement;
 
         Anim.SetFloat("Movent", movent);
 
-
-
     }
 
+    //private void Ongamestatechange(GameState.Gamestate newgamestate)
+    //{
+    //  enabled = newgamestate == GameState.Gamestate.gameplay;
+    //}
    
 
 }
