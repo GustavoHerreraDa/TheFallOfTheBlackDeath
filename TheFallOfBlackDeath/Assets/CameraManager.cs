@@ -70,7 +70,7 @@ public class CameraManager : MonoBehaviour
             camera.transform.rotation = Quaternion.Slerp(startRot, endRot, t);
             yield return null;
         }
-        Debug.Log("Final del traslado Smooth ");
+        //Debug.Log("Final del traslado Smooth ");
 
         //camera.transform.rotation = Quaternion.RotateTowards(camera.transform.rotation, targetRotation, 45);
 
