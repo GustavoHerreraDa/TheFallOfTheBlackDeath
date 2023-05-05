@@ -9,9 +9,6 @@ public class EnemySelectionPanel : MonoBehaviour
     public GameObject enemySelectionPanel;
     private CombatManager combatManager;
 
-
-
-
     private void Awake()
     {
         this.Hide();

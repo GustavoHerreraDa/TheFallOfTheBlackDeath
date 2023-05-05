@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class PickObj : MonoBehaviour
 {
-
-
-    private InventoryManager m;
-    
-    
     
     
     void Start()
-    {
+    {  
         
-        m = GetComponent<InventoryManager>();
     }
 
     // Update is called once per frame
@@ -23,10 +17,6 @@ public class PickObj : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.E))
         {
-            //Debug.Log("A");
-            
-
-
             Ray ray = new Ray(transform.position, transform.forward);
             RaycastHit hitinfo;
 
@@ -38,16 +28,26 @@ public class PickObj : MonoBehaviour
                     {
                         Debug.Log("a");
                         statsOBJ i = hitinfo.collider.GetComponent<statsOBJ>();
-                        m.AddItem(i.id, i.amount);
+                        InventoryManager.instance.AddItem(i.id, i.amount);
                     }
-                    
-                    
                     Destroy(hitinfo.collider.gameObject);
                 }
             }
         }
     }
 
-    
-
+    private void OnTriggerStay(Collider other)
+    {
+        Debug.Log(other.gameObject.name);
+        if (other.gameObject.tag == "Object" && Input.GetKeyDown(KeyCode.E))
+        {
+            if (other.gameObject.GetComponent<statsOBJ>() != null)
+            {
+                Debug.Log("a");
+                statsOBJ i = other.gameObject.GetComponent<statsOBJ>();
+                InventoryManager.instance.AddItem(i.id, i.amount);
+            }
+            Destroy(other.gameObject);
+        }
+    }
 }

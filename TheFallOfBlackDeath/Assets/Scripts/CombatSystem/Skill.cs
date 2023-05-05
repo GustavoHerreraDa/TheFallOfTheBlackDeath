@@ -19,6 +19,8 @@ public abstract class Skill : MonoBehaviour
     //Cola de mensajes 
     protected Queue<string> messages;
 
+    public List<InventoryManager.InventoryObjectID> ItemsNeeded;
+
     private void Awake()
     {
         this.messages = new Queue<string>();
