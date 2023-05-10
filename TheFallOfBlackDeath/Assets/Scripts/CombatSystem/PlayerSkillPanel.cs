@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -57,5 +58,8 @@ public class PlayerSkillPanel : MonoBehaviour
         this.skillPanel.SetActive(false);
     }
 
-
+    internal void SetActive(bool v)
+    {
+        throw new NotImplementedException();
+    }
 }

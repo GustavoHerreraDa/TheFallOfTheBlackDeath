@@ -66,5 +66,14 @@ public class SkillManager : MonoBehaviour
         enemySelection.Hide();
 
     }
+    public void OpenPanel (GameObject Panel)
+    {
+        
+        Panel.SetActive(true);
+        enemySelection.Hide();
+        skillPanel.Show();
+        Debug.Log("fuiste para atras");
+    }
+
 
 }

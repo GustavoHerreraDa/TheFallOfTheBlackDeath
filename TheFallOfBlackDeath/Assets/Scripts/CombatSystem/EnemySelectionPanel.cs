@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -73,5 +74,10 @@ public class EnemySelectionPanel : MonoBehaviour
     private void GetSkillTypeFromCharacter()
     {
 
+    }
+
+    internal void SetActive(bool v)
+    {
+        throw new NotImplementedException();
     }
 }
