@@ -90,7 +90,7 @@ public class CombatManager : MonoBehaviour
                     if (nextMessage != null)
                     {
                         LogPanel.Write(nextMessage);
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(1f);
                     }
                     else
                     {
@@ -153,7 +153,7 @@ public class CombatManager : MonoBehaviour
                                 break;
                             }
                             LogPanel.Write(nextSCMessage);
-                            yield return new WaitForSeconds(2f);
+                            yield return new WaitForSeconds(1f);
                         }
                         if (statusCondition.BlocksTurn())
                         {

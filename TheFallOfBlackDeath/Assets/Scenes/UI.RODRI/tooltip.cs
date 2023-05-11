@@ -4,13 +4,17 @@ using UnityEngine;
 public class tooltip : MonoBehaviour
 
 {
+    public SkillManager skillManager;
+    private static tooltip instance;
     public Image tool;
     public Text skillNameTxT;
     // Start is called before the first frame update
     void Start()
     {
+        skillManager = FindObjectOfType<SkillManager>();
         tool.enabled = false;
         skillNameTxT.enabled = false;
+        instance = this;
     }
 
     public void mouseOverPunch(string message)
@@ -21,7 +25,14 @@ public class tooltip : MonoBehaviour
 
         Debug.Log("mouse over");
     }
+    public void mouseOver(int SkillIndex)
+    {
+        tool.enabled = true;
+        skillNameTxT.enabled = true;
+        skillNameTxT.GetComponent<Text>().text = skillManager.GetSkillDescription(SkillIndex);
 
+        Debug.Log("mouse over");
+    }
     public void disableSkillTxT()
     {
         tool.enabled = false;
@@ -60,5 +71,23 @@ public class tooltip : MonoBehaviour
     void Update()
     {
 
+    }
+    private void ShowTooltip(string tooltipString)
+    {
+        gameObject.SetActive(true);
+    }
+    private void HideTooltip()
+    {
+        gameObject.SetActive(false);
+    }
+    public static void ShowTooltip_static(string tooltipString)
+    {
+        instance.ShowTooltip(tooltipString);
+
+    }
+
+    public static void ShowTooltip_static()
+    {
+        instance.HideTooltip();
     }
 }

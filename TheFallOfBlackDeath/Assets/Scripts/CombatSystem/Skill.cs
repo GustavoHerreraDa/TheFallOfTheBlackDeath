@@ -18,6 +18,7 @@ public abstract class Skill : MonoBehaviour
     protected Fighter receiver;
     //Cola de mensajes 
     protected Queue<string> messages;
+    public string SkillDesc;
 
     public List<InventoryManager.InventoryObjectID> ItemsNeeded;
 

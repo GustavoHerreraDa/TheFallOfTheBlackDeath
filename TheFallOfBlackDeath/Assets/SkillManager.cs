@@ -31,7 +31,7 @@ public class SkillManager : MonoBehaviour
     public void SetExecuteSkill(int index)
     {
         Debug.Log("SetExecuteSkill " + index);
-
+       
         currentCharacterIndex = combatManager.FighterIndex;
 
         currentCharacterObj = combatManager.fighters[currentCharacterIndex].gameObject;
@@ -54,7 +54,17 @@ public class SkillManager : MonoBehaviour
 
         SetSkill = index;
 
+
     
+    }
+    public string GetSkillDescription(int Skillindex)
+    {
+        currentCharacterIndex = combatManager.FighterIndex;
+        currentCharacterObj = combatManager.fighters[currentCharacterIndex].gameObject;
+        var Skills = currentCharacterObj.GetComponentsInChildren<Skill>();
+        var selfInflicted = Skills[Skillindex];
+        return selfInflicted.SkillDesc;
+
     }
 
     public void ExecuteSkill(int EnemyIndex)
