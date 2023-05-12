@@ -35,7 +35,7 @@ public class Menu : MonoBehaviour
             //    : GameState.Gamestate.gameplay;
 
             //GameStateManager.Instance.Setstate(newgamestate);
-            
+            Inventorymenu.SetActive(false);
           
             
             if (Pause)
@@ -50,6 +50,9 @@ public class Menu : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
+
+            Pausemenu.SetActive(false);
+
             //Debug.Log("hola");
             if (inventory)
             {
@@ -92,10 +95,10 @@ public class Menu : MonoBehaviour
        Pausemenu.SetActive(true);
        Time.timeScale = 0f;
        Pause = true;
+       
 
-        Audio.mute = true;
+       Audio.mute = true;
         
-
     }
 
     private void Resumegame()
@@ -105,7 +108,7 @@ public class Menu : MonoBehaviour
         Time.timeScale = 1f;
         Pause = false;
         Audio.mute = false;
-       
+        
     }
 
     

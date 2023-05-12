@@ -113,7 +113,11 @@ public class CombatManager : MonoBehaviour
                         this.isCombatActive = false;
                         
                         LogPanel.Write("Victory!");
-                        SceneManager.LoadScene(0);
+                        SceneManager.LoadSceneAsync(0);
+                        
+                            
+                        
+                       
                     }
                     else
                     {

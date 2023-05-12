@@ -7,15 +7,24 @@ public class Scene_Change : MonoBehaviour
 {
 
     [SerializeField] private Collider Box;
-
+    [SerializeField] private GameObject player;
     
+   
 
-    private void OnTriggerEnter(Collider Box)
+    public void OnTriggerEnter(Collider Box)
     {
-        SceneManager.LoadScene(1);
+        PlayerPrefs.SetFloat("PosX", player.transform.position.x);
+        PlayerPrefs.SetFloat("PosY", player.transform.position.y);
+        PlayerPrefs.SetFloat("PosZ", player.transform.position.z);
 
+        SceneManager.LoadSceneAsync(1);
+        
         Cursor.lockState = CursorLockMode.None;
 
-        Debug.Log("1");
+        float A;
+
+        A = PlayerPrefs.GetFloat("PosX");
+
+        Debug.Log(A);
     }
 }
