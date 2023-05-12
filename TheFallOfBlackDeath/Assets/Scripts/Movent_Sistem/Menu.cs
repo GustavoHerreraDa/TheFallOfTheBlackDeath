@@ -8,7 +8,7 @@ public class Menu : MonoBehaviour
 {
     [SerializeField] GameObject Pausemenu;
     [SerializeField] GameObject Inventorymenu;
-    [SerializeField] AudioSource Audio;
+
 
 
     bool inventory;
@@ -97,7 +97,6 @@ public class Menu : MonoBehaviour
        Pause = true;
        
 
-       Audio.mute = true;
         
     }
 
@@ -107,7 +106,6 @@ public class Menu : MonoBehaviour
         Pausemenu.SetActive(false);
         Time.timeScale = 1f;
         Pause = false;
-        Audio.mute = false;
         
     }
 
