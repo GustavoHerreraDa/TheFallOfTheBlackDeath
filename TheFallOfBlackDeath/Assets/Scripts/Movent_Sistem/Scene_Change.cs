@@ -17,7 +17,7 @@ public class Scene_Change : MonoBehaviour
         PlayerPrefs.SetFloat("PosY", player.transform.position.y);
         PlayerPrefs.SetFloat("PosZ", player.transform.position.z);
 
-        SceneManager.LoadSceneAsync(1);
+        SceneManager.LoadSceneAsync(2);
         
         Cursor.lockState = CursorLockMode.None;
 
