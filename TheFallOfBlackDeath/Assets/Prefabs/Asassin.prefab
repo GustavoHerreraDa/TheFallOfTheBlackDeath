@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
-  animationDuration: 1
+  animationDuration: 3
   receptionMessage: (receiver) is cursed
   applyMessage: Curses damages (receiver)
   expireMessage: Curse fades
@@ -97,9 +97,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Curse
-  animationDuration: 1
+  animationDuration: 3
   selfInflicted: 0
-  effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
+  effectPrfb: {fileID: 8189500006840025469, guid: 0d1ac179e53c00e4684fbb0cc5e0991d, type: 3}
+  SkillDesc: Maldice al enemigo (Pierde puntos de salud por turno)
+  ItemsNeeded: []
 --- !u!1 &1348095314520277603
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,12 +147,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Back Stab
-  animationDuration: 1
+  animationDuration: 2
   selfInflicted: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 7c98c80539066d047a95b84f01f9ad5c, type: 3}
-  amount: -30
+  SkillDesc: "Apu\xF1alas la espalda del enemigo (Altas % de critico)"
+  ItemsNeeded: []
+  amount: -45
   modType: 0
-  critiChance: 0.5
+  critiChance: 0.6
 --- !u!1 &1443639437503016498
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,8 +305,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1643196187747143319}
+  - component: {fileID: 1173216432}
+  - component: {fileID: 1173216433}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Intimidate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -323,6 +329,39 @@ Transform:
   m_Father: {fileID: 2252651694320841864}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1173216432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4864400700348379872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Intimidate
+  animationDuration: 2
+  selfInflicted: 0
+  effectPrfb: {fileID: 4864400700348379872}
+  SkillDesc: Baja considerablemente el ataque del enemigo
+  ItemsNeeded: []
+  message: (receiver) decreased his attack!
+--- !u!114 &1173216433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4864400700348379872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  amount: -10
 --- !u!1 &5980398620794730536
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,10 +407,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Scimitar
-  animationDuration: 1
+  animationDuration: 2
   selfInflicted: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 7c98c80539066d047a95b84f01f9ad5c, type: 3}
-  amount: -25
+  SkillDesc: Golpe de simitarra (considerable % de critico)
+  ItemsNeeded: []
+  amount: -40
   modType: 0
   critiChance: 0.3
 --- !u!1 &7731341569124741256

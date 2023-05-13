@@ -1,5 +1,6 @@
 using UnityEngine.UI;
 using UnityEngine;
+using System.Collections;
 
 public class tooltip : MonoBehaviour
 
@@ -31,6 +32,7 @@ public class tooltip : MonoBehaviour
         skillNameTxT.enabled = true;
         skillNameTxT.GetComponent<Text>().text = skillManager.GetSkillDescription(SkillIndex);
 
+        var couritine = StartCoroutine("HideTooltipEnum");
         Debug.Log("mouse over");
     }
     public void disableSkillTxT()
@@ -80,10 +82,14 @@ public class tooltip : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+    IEnumerator HideTooltipEnum()
+    {
+        yield return new WaitForSeconds(1f);
+        disableSkillTxT();
+    }
     public static void ShowTooltip_static(string tooltipString)
     {
         instance.ShowTooltip(tooltipString);
-
     }
 
     public static void ShowTooltip_static()
