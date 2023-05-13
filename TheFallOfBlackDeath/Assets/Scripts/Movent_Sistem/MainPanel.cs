@@ -16,7 +16,7 @@ public class MainPanel : MonoBehaviour
     [Header("Panels")]
     public GameObject mainPanel;
     public GameObject optionsPanel;
-
+    public GameObject controlesPanel;
 
     private void Awake()
     {
@@ -40,8 +40,10 @@ public class MainPanel : MonoBehaviour
     {
         mainPanel.SetActive(false);
         optionsPanel.SetActive(false);
+        controlesPanel.SetActive(false);
         panel1.SetActive(true);
         PlaySoundButton();
+
     }
 
     public void ChangeVolumenMaster(float v)
@@ -60,4 +62,5 @@ public class MainPanel : MonoBehaviour
     {
         Application.Quit();
     }
+
 }
