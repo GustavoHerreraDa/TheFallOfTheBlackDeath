@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    [SerializeField] GameObject Pausemenu;
+    public GameObject Pausemenu;
     [SerializeField] GameObject Inventorymenu;
 
 
@@ -89,7 +89,7 @@ public class Menu : MonoBehaviour
     
     
     
-    private void PauseGame()
+    public void PauseGame()
     {
        Cursor.lockState = CursorLockMode.None;
        Pausemenu.SetActive(true);
@@ -100,7 +100,7 @@ public class Menu : MonoBehaviour
         
     }
 
-    private void Resumegame()
+    public void Resumegame()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Pausemenu.SetActive(false);
