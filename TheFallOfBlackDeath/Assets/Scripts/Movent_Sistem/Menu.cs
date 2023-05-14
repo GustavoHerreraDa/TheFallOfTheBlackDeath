@@ -13,6 +13,7 @@ public class Menu : MonoBehaviour
 
     bool inventory;
     bool Pause;
+    
 
     
 
@@ -102,11 +103,12 @@ public class Menu : MonoBehaviour
 
     public void Resumegame()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Pausemenu.SetActive(false);
-        Time.timeScale = 1f;
-        Pause = false;
+
+       Pausemenu.SetActive(false);
+       Time.timeScale = 1f;
+       Pause = false;
         
+
     }
 
     

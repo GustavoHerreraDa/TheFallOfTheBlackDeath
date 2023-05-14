@@ -18,14 +18,7 @@ public class tooltip : MonoBehaviour
         instance = this;
     }
 
-    public void mouseOverPunch(string message)
-    {
-        tool.enabled = true;
-        skillNameTxT.enabled = true;
-        skillNameTxT.GetComponent<Text>().text = "Golpeas con el baston al enemigo (daño fisico)";
 
-        Debug.Log("mouse over");
-    }
     public void mouseOver(int SkillIndex)
     {
         tool.enabled = true;
@@ -39,33 +32,6 @@ public class tooltip : MonoBehaviour
     {
         tool.enabled = false;
         skillNameTxT.enabled = false;
-    }
-
-    public void mouseOverMotivate(string message)
-    {
-        tool.enabled = true;
-        skillNameTxT.enabled = true;
-        skillNameTxT.GetComponent<Text>().text = "Recordaste una charla ted y te motivaste (sube el ataque)";
-
-        Debug.Log("mouse over");
-    }
-
-    public void mouseOverWeaken(string message)
-    {
-        tool.enabled = true;
-        skillNameTxT.enabled = true;
-        skillNameTxT.GetComponent<Text>().text = "Disminuye considerablemente la defensa del rival";
-
-        Debug.Log("mouse over");
-    }
-
-    public void mouseOverHeal(string message)
-    {
-        tool.enabled = true;
-        skillNameTxT.enabled = true;
-        skillNameTxT.GetComponent<Text>().text = "Utilizas tus conocimientos medicos para sanarte";
-
-        Debug.Log("mouse over");
     }
 
 
@@ -84,7 +50,7 @@ public class tooltip : MonoBehaviour
     }
     IEnumerator HideTooltipEnum()
     {
-        yield return new WaitForSeconds(20f);
+        yield return new WaitForSeconds(10f);
         disableSkillTxT();
     }
     public static void ShowTooltip_static(string tooltipString)
