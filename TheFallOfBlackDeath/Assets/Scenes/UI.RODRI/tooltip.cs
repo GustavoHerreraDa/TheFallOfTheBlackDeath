@@ -9,6 +9,7 @@ public class tooltip : MonoBehaviour
     private static tooltip instance;
     public Image tool;
     public Text skillNameTxT;
+    public GameObject ActionsButtonsPanel;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +26,7 @@ public class tooltip : MonoBehaviour
         skillNameTxT.enabled = true;
         skillNameTxT.GetComponent<Text>().text = skillManager.GetSkillDescription(SkillIndex);
 
-        var couritine = StartCoroutine("HideTooltipEnum");
+        //var couritine = StartCoroutine("HideTooltipEnum");
         Debug.Log("mouse over");
     }
     public void disableSkillTxT()
@@ -38,7 +39,11 @@ public class tooltip : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (ActionsButtonsPanel == null)
+            return;
 
+        if (!ActionsButtonsPanel.activeSelf)
+            disableSkillTxT();
     }
     private void ShowTooltip(string tooltipString)
     {
@@ -48,6 +53,7 @@ public class tooltip : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
     IEnumerator HideTooltipEnum()
     {
         yield return new WaitForSeconds(10f);
