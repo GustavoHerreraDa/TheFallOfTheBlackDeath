@@ -1,6 +1,5 @@
-
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public abstract class StatusCondition : MonoBehaviour
 {
@@ -23,17 +22,18 @@ public abstract class StatusCondition : MonoBehaviour
     {
         this.messages = new Queue<string>();
     }
-    
+
     public void SetReceiver(Fighter recv)
     {
         this.receiver = recv;
     }
-    
+
     private void Animate()
     {
         var go = Instantiate(this.effectPrfb, this.receiver.transform.position, Quaternion.identity);
         Destroy(go, this.animationDuration);
     }
+
     public void Apply()
     {
         if (this.receiver == null)
@@ -41,8 +41,10 @@ public abstract class StatusCondition : MonoBehaviour
             throw new System.InvalidOperationException("StatusCondition needs a receiver");
         }
 
-        this.Animate();
-        this.OnApply();
+        if (this.OnApply())
+        {
+            this.Animate();
+        }
 
         turnDuration--;
 
@@ -51,17 +53,20 @@ public abstract class StatusCondition : MonoBehaviour
             this.messages.Enqueue(this.expireMessage.Replace("(receiver)", this.receiver.idName));
         }
     }
+
     public string GetNextMessage()
     {
-        if (this.messages.Count !=0)
+        if (this.messages.Count != 0)
             return this.messages.Dequeue();
         else
             return null;
     }
+
     public string GetReceptionMessage()
     {
         return this.receptionMessage.Replace("(receiver)", this.receiver.idName);
     }
-    public abstract void OnApply();
+
+    public abstract bool OnApply();
     public abstract bool BlocksTurn();
 }

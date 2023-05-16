@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class StatusModSkill : Skill
@@ -11,12 +12,12 @@ public class StatusModSkill : Skill
     {
         if (this.mod == null)
         {
-            this.mod = this.GetComponent<StatusMod>(); 
+            this.mod = this.GetComponent<StatusMod>();
         }
-        // (receiver) is sad!
-        // The monster (receiver) gained strength
-        this.messages.Enqueue(this.message.Replace("(receiver)", this.receiver.idName));
 
-        this.receiver.statusMods.Add(this.mod);
+
+        this.messages.Enqueue(this.message.Replace("{receiver}", receiver.idName));
+
+        receiver.statusMods.Add(this.mod);
     }
 }

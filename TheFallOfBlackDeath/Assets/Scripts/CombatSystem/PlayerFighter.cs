@@ -4,52 +4,57 @@ public class PlayerFighter : Fighter
 {
     [Header("UI")]
     public PlayerSkillPanel skillPanel;
+    public EnemiesPanel enemiesPanel;
+
+    private Skill skillToBeExecuted;
 
     void Awake()
     {
-        this.stats = new Stats(21, 60, 50, 45, 20);
+        this.stats = new Stats(21, 60, 50, 45, 20, 20);
     }
 
     public override void InitTurn()
     {
-        this.skillPanel.Show();
+
+        this.skillPanel.ShowForPlayer(this);
 
         for (int i = 0; i < this.skills.Length; i++)
         {
-            this.skillPanel.ConfigureButtons(i, this.skills[i].skillName, skills[i].ItemsNeeded);
+            this.skillPanel.ConfigureButton(i, this.skills[i].skillName);
         }
     }
 
     /// ================================================
     /// <summary>
-    /// Se llama desde los botones del panel de habilidades.
+    /// Se llama desde EnemiesPanel.
     /// </summary>
     /// <param name="index"></param>
     public void ExecuteSkill(int index)
     {
-        this.skillPanel.Hide();
+        this.skillToBeExecuted = this.skills[index];
+        this.skillToBeExecuted.SetEmitter(this);
 
-        Skill skill = this.skills[index];
+        if (this.skillToBeExecuted.needsManualTargeting)
+        {
+            Fighter[] receivers = this.GetSkillTargets(this.skillToBeExecuted);
+            this.enemiesPanel.Show(this, receivers);
+        }
+        else
+        {
+            this.AutoConfigureSkillTargeting(this.skillToBeExecuted);
 
-        skill.SetEmitterAndReceiver(
-            this, this.combatManager.GetOpposingEnemy()
-        );
-
-        this.combatManager.OnFighterSkill(skill);
+            this.combatManager.OnFighterSkill(this.skillToBeExecuted);
+            this.skillPanel.Hide();
+        }
     }
 
-    public void ExecuteSkill(int index, int enemyIndex)
+    public void SetTargetAndAttack(Fighter enemyFigther)
     {
+        this.skillToBeExecuted.AddReceiver(enemyFigther);
+
+        this.combatManager.OnFighterSkill(this.skillToBeExecuted);
+
         this.skillPanel.Hide();
-
-        Skill skill = this.skills[index];
-
-        skill.SetEmitterAndReceiver(
-            this, this.combatManager.GetOpposingEnemy()
-        );
-
-        this.combatManager.OnFighterSkill(skill);
+        this.enemiesPanel.Hide();
     }
-
-
 }

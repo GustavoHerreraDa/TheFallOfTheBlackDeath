@@ -1,7 +1,9 @@
+
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+
 public enum CombatStatus
 {
     WAITING_FOR_FIGHTER,
@@ -14,48 +16,85 @@ public enum CombatStatus
 
 public class CombatManager : MonoBehaviour
 {
+    public Fighter[] playerTeam;
+    public Fighter[] enemyTeam;
+
     public Fighter[] fighters;
-    private int fighterIndex;
+    public int fighterIndex;
+
     public bool isCombatActive;
 
     private CombatStatus combatStatus;
 
     private Skill currentFighterSkill;
 
-    public int FighterIndex { get => fighterIndex; }
-
-    public List<PlayerFighter> playerFighters = new List<PlayerFighter>();
-    public List<EnemyFighter> enemyFighters = new List<EnemyFighter>();
-    [SerializeField]
-    private int countEnemyStart = 0;
-
-    internal int opposingEnemyIndex = 999;
-
+    private List<Fighter> returnBuffer;
 
     void Start()
     {
+        this.returnBuffer = new List<Fighter>();
+
+        this.fighters = GameObject.FindObjectsOfType<Fighter>();
+
+        this.SortFightersBySpeed();
+        this.MakeTeams();
+
         LogPanel.Write("Battle initiated.");
 
-        foreach (var fgtr in this.fighters)
-        {
-            fgtr.combatManager = this;
-
-            if (fgtr.GetType() == typeof(PlayerFighter))
-                playerFighters.Add(fgtr.GetComponent<PlayerFighter>());
-            if (fgtr.GetType() == typeof(EnemyFighter))
-                enemyFighters.Add(fgtr.GetComponent<EnemyFighter>());
-        }
-
         this.combatStatus = CombatStatus.NEXT_TURN;
-        countEnemyStart = enemyFighters.Count;
+
         this.fighterIndex = -1;
         this.isCombatActive = true;
         StartCoroutine(this.CombatLoop());
     }
 
-    internal void removeFighter(PlayerFighter playerFighter)
+    private void SortFightersBySpeed()
     {
-        throw new System.NotImplementedException();
+        bool sorted = false;
+        while (!sorted)
+        {
+            sorted = true;
+
+            for (int i = 0; i < this.fighters.Length - 1; i++)
+            {
+                Fighter a = this.fighters[i];
+                Fighter b = this.fighters[i + 1];
+
+                float aSpeed = a.GetCurrentStats().speed;
+                float bSpeed = b.GetCurrentStats().speed;
+
+                if (bSpeed > aSpeed)
+                {
+                    this.fighters[i] = b;
+                    this.fighters[i + 1] = a;
+
+                    sorted = false;
+                }
+            }
+        }
+    }
+
+    private void MakeTeams()
+    {
+        List<Fighter> playersBuffer = new List<Fighter>();
+        List<Fighter> enemiesBuffer = new List<Fighter>();
+
+        foreach (var fgtr in this.fighters)
+        {
+            if (fgtr.team == Team.PLAYERS)
+            {
+                playersBuffer.Add(fgtr);
+            }
+            else if (fgtr.team == Team.ENEMIES)
+            {
+                enemiesBuffer.Add(fgtr);
+            }
+
+            fgtr.combatManager = this;
+        }
+
+        this.playerTeam = playersBuffer.ToArray();
+        this.enemyTeam = enemiesBuffer.ToArray();
     }
 
     IEnumerator CombatLoop()
@@ -70,23 +109,20 @@ public class CombatManager : MonoBehaviour
 
                 case CombatStatus.FIGHTER_ACTION:
                     LogPanel.Write($"{this.fighters[this.fighterIndex].idName} uses {currentFighterSkill.skillName}.");
-                   
 
                     yield return null;
 
                     // Executing fighter skill
                     currentFighterSkill.Run();
 
-
                     // Wait for fighter skill animation
                     yield return new WaitForSeconds(currentFighterSkill.animationDuration);
                     this.combatStatus = CombatStatus.CHECK_ACTION_MESSAGES;
 
-                    
                     break;
-                  case CombatStatus.CHECK_ACTION_MESSAGES:
-                    
-                    string nextMessage = this.currentFighterSkill.GetNextMessages();
+                case CombatStatus.CHECK_ACTION_MESSAGES:
+                    string nextMessage = this.currentFighterSkill.GetNextMessage();
+
                     if (nextMessage != null)
                     {
                         LogPanel.Write(nextMessage);
@@ -99,34 +135,48 @@ public class CombatManager : MonoBehaviour
                         yield return null;
                     }
                     break;
+
                 case CombatStatus.CHECK_FOR_VICTORY:
-                    var countEnemyDown = 0;
-                    foreach (var fgtr in this.enemyFighters)
+                    bool arePlayersAlive = false;
+                    foreach (var figther in this.playerTeam)
                     {
-                        if (fgtr.isAlive == false)
-                        {
-                            countEnemyDown += 1;
-                        }
+                        arePlayersAlive |= figther.isAlive;
                     }
-                    if (countEnemyDown == countEnemyStart)
+
+                    // if (this.playerTeam[0].isAlive OR this.playerTeam[1].isAlive)
+
+                    bool areEnemiesAlive = false;
+                    foreach (var figther in this.enemyTeam)
                     {
+                        areEnemiesAlive |= figther.isAlive;
+                    }
+
+                    bool victory = areEnemiesAlive == false;
+                    bool defeat = arePlayersAlive == false;
+
+                    if (victory)
+                    {
+                        LogPanel.Write("Victoria!");
                         this.isCombatActive = false;
-                        
-                        LogPanel.Write("Victory!");
-                        SceneManager.LoadSceneAsync(0);
-                        
-                            
-                        
-                       
+                        SceneManager.LoadSceneAsync(1);
                     }
-                    else
+
+                    if (defeat)
+                    {
+                        LogPanel.Write("Derrota!");
+                        this.isCombatActive = false;
+                    }
+
+                    if (this.isCombatActive)
                     {
                         this.combatStatus = CombatStatus.NEXT_TURN;
                     }
+
                     yield return null;
                     break;
                 case CombatStatus.NEXT_TURN:
                     yield return new WaitForSeconds(1f);
+
                     Fighter current = null;
 
                     do
@@ -138,10 +188,9 @@ public class CombatManager : MonoBehaviour
 
                     this.combatStatus = CombatStatus.CHECK_FIGHTER_STATUS_CONDITION;
 
-                        break;
+                    break;
 
                 case CombatStatus.CHECK_FIGHTER_STATUS_CONDITION:
-
                     var currentFighter = this.fighters[this.fighterIndex];
 
                     var statusCondition = currentFighter.GetCurrentStatusCondition();
@@ -149,6 +198,7 @@ public class CombatManager : MonoBehaviour
                     if (statusCondition != null)
                     {
                         statusCondition.Apply();
+
                         while (true)
                         {
                             string nextSCMessage = statusCondition.GetNextMessage();
@@ -156,59 +206,74 @@ public class CombatManager : MonoBehaviour
                             {
                                 break;
                             }
+
                             LogPanel.Write(nextSCMessage);
-                            yield return new WaitForSeconds(1f);
+                            yield return new WaitForSeconds(2f);
                         }
+
                         if (statusCondition.BlocksTurn())
                         {
                             this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
                             break;
                         }
                     }
+
                     LogPanel.Write($"{currentFighter.idName} has the turn.");
                     currentFighter.InitTurn();
 
                     this.combatStatus = CombatStatus.WAITING_FOR_FIGHTER;
                     break;
-
             }
         }
     }
 
-    public Fighter GetOpposingCharacter()
+    public Fighter[] FilterJustAlive(Fighter[] team)
     {
-        foreach (var playerFighter in this.playerFighters)
+        this.returnBuffer.Clear();
+
+        foreach (var fgtr in team)
         {
+            if (fgtr.isAlive)
             {
-                if (playerFighter.GetCurrentStats().health > 0)
-                {
-                    return playerFighter;
-                }
+                this.returnBuffer.Add(fgtr);
             }
         }
-        return playerFighters[0];
+
+        return this.returnBuffer.ToArray();
     }
 
-    public Fighter GetOpposingEnemy()
+    public Fighter[] GetOpposingTeam()
     {
-        if (opposingEnemyIndex != 999)
-            return enemyFighters[opposingEnemyIndex];
+        Fighter currentFighter = this.fighters[this.fighterIndex];
 
-        foreach (var enemyFighter in this.enemyFighters)
+        Fighter[] team = null;
+        if (currentFighter.team == Team.PLAYERS)
         {
-            if (enemyFighter.GetCurrentStats().health > 0)
-            {
-                return enemyFighter;
-            }
+            team = this.enemyTeam;
         }
-        return enemyFighters[0];
+        else if (currentFighter.team == Team.ENEMIES)
+        {
+            team = this.playerTeam;
+        }
 
+        return this.FilterJustAlive(team);
     }
 
-    public void SetOpposingEnemy(int indexEnemy)
+    public Fighter[] GetAllyTeam()
     {
-        opposingEnemyIndex = indexEnemy;
-        //return enemyFighters[0];
+        Fighter currentFighter = this.fighters[this.fighterIndex];
+
+        Fighter[] team = null;
+        if (currentFighter.team == Team.PLAYERS)
+        {
+            team = this.playerTeam;
+        }
+        else
+        {
+            team = this.enemyTeam;
+        }
+
+        return this.FilterJustAlive(team);
     }
 
     public void OnFighterSkill(Skill skill)
@@ -216,38 +281,4 @@ public class CombatManager : MonoBehaviour
         this.currentFighterSkill = skill;
         this.combatStatus = CombatStatus.FIGHTER_ACTION;
     }
-
-    internal void RemoveEnemy(EnemyFighter deadEnemyFighter)
-    {
-        //this.enemyFighters.Remove(deadEnemyFighter);
-        UpdateArrayFighter(deadEnemyFighter.idName);
-
-
-    }
-
-    internal void RemoveFighter(PlayerFighter deadPlayerFighter)
-    {
-        //this.playerFighters.Remove(deadPlayerFighter);
-        UpdateArrayFighter(deadPlayerFighter.idName);
-
-    }
-
-    private void UpdateArrayFighter(string name)
-    {
-        Fighter[] nuevoFighter = new Fighter[fighters.Length - 1];
-
-        int j = 0;
-        for (int i = 0; i < fighters.Length; i++)
-        {
-            if (fighters[i].idName != name)
-            {
-                nuevoFighter[j] = fighters[i];
-                j++;
-            }
-        }
-
-        fighters = nuevoFighter;
-    }
-
-    
 }

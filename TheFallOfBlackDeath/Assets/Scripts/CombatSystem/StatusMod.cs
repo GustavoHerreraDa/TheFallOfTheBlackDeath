@@ -3,8 +3,7 @@ using UnityEngine;
 public enum StatusModType
 {
     ATTACK_MOD,
-    DEFFENSE_MOD,
-
+    DEFFENSE_MOD
 }
 
 public class StatusMod : MonoBehaviour
@@ -16,13 +15,13 @@ public class StatusMod : MonoBehaviour
     {
         Stats modedStats = stats.Clone();
 
-        switch(this.type)
+        switch (this.type)
         {
             case StatusModType.ATTACK_MOD:
                 modedStats.attack += this.amount;
                 break;
             case StatusModType.DEFFENSE_MOD:
-                modedStats.deffense += amount;
+                modedStats.deffense += this.amount;
                 break;
         }
 

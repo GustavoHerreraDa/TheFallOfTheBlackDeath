@@ -20,21 +20,22 @@ public class CameraManager : MonoBehaviour
     }
     void Start()
     {
-        currentCameraIndex = combatManager.FighterIndex;
+        currentCameraIndex = combatManager.fighterIndex;
     }
 
     // Update is called once per frame
     void Update()
     {
-        FighterIndex = combatManager.FighterIndex;
+        FighterIndex = combatManager.fighterIndex;
 
-        if (currentCameraIndex != combatManager.FighterIndex)
+        if (currentCameraIndex != combatManager.fighterIndex)
         {
-            currentCameraIndex = combatManager.FighterIndex;
+            currentCameraIndex = combatManager.fighterIndex;
             ChangeCameraPositionToCurrentFighter();
 
         }
     }
+
 
     //private void ChangeCameraPositionToCurrentFighter()
     //{

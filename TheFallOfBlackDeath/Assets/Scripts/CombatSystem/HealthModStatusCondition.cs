@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class HealthModStatusCondition : StatusCondition
@@ -7,13 +6,16 @@ public class HealthModStatusCondition : StatusCondition
     [Header("Health mod")]
     public float percentage;
 
-    public override void OnApply()
+    public override bool OnApply()
     {
         Stats rStats = receiver.GetCurrentStats();
 
         this.receiver.ModifyHealth(rStats.maxHealth * this.percentage);
 
         this.messages.Enqueue(this.applyMessage.Replace("(receiver)", this.receiver.idName));
+
+        return true;
     }
+
     public override bool BlocksTurn() => false;
 }

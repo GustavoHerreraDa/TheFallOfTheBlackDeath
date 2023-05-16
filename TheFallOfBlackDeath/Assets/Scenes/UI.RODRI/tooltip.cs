@@ -22,11 +22,11 @@ public class tooltip : MonoBehaviour
     public void mouseOver(int SkillIndex)
     {
         tool.enabled = true;
-        skillNameTxT.enabled = true;
-        skillNameTxT.GetComponent<Text>().text = skillManager.GetSkillDescription(SkillIndex);
 
         var couritine = StartCoroutine("HideTooltipEnum");
         Debug.Log("mouse over");
+        skillNameTxT.enabled = true;
+        skillNameTxT.GetComponent<Text>().text = skillManager.GetSkillDescription(SkillIndex);
     }
     public void disableSkillTxT()
     {
