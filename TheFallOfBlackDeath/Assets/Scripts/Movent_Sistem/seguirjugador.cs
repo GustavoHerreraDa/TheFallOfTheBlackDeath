@@ -13,7 +13,7 @@ public class seguirjugador : MonoBehaviour
         enemigo = GetComponent<UnityEngine.AI.NavMeshAgent>();
     }
     
-    void OnTriggerColider(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Character")
         {
