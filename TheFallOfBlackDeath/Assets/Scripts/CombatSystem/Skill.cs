@@ -16,6 +16,7 @@ public abstract class Skill : MonoBehaviour
     public string SkillDesc;
     protected Queue<string> messages;
 
+    public List<InventoryManager.InventoryObjectID> ItemsNeeded;
     public bool needsManualTargeting
     { 
 
