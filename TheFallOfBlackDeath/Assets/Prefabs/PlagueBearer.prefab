@@ -144,8 +144,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Rage
   animationDuration: 3
-  selfInflicted: 1
+  targeting: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
+  SkillDesc: 
   message: (receiver) raises attack!
 --- !u!1 &1432456572108598840
 GameObject:
@@ -193,11 +194,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: ShootHead
   animationDuration: 2
-  selfInflicted: 0
+  targeting: 0
   effectPrfb: {fileID: 8189500006840025469, guid: e359e440bbee8ee49b2e19a6a8f649de, type: 3}
+  SkillDesc: 
   amount: -55
   modType: 0
-  critiChance: 0.2
+  critChance: 0
 --- !u!1 &1570228253414095661
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,6 +267,7 @@ Transform:
   - {fileID: 3231402603016140349}
   - {fileID: 3492222240921374550}
   - {fileID: 1973113760}
+  - {fileID: 2595741948687451423}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 1.217, y: 88.237, z: 0}
@@ -330,6 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cafa976afee2e8a41aedf9756702ba62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  team: 0
   idName: Plague Rat
   statusPanel: {fileID: 0}
   combatManager: {fileID: 0}
@@ -337,6 +341,37 @@ MonoBehaviour:
   statusCondition: {fileID: 0}
   CameraPivot: {fileID: 3231402603016140349}
   DamagePivot: {fileID: 3492222240921374550}
+--- !u!1 &3477739932435891976
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2595741948687451423}
+  m_Layer: 0
+  m_Name: Infected Bite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2595741948687451423
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3477739932435891976}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2433419667633760900}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8989368093674230195
 GameObject:
   m_ObjectHideFlags: 0
