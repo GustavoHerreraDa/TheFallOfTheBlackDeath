@@ -8,6 +8,8 @@ public class PlayerFighter : Fighter
 
     private Skill skillToBeExecuted;
 
+    Animator anim;
+
     void Awake()
     {
         this.stats = new Stats(21, 60, 50, 45, 20, 20);
@@ -15,7 +17,7 @@ public class PlayerFighter : Fighter
 
     public override void InitTurn()
     {
-
+        anim = GetComponentInChildren<Animator>();
         this.skillPanel.ShowForPlayer(this);
 
         for (int i = 0; i < this.skills.Length; i++)
@@ -29,6 +31,7 @@ public class PlayerFighter : Fighter
     /// Se llama desde EnemiesPanel.
     /// </summary>
     /// <param name="index"></param>
+
     public void ExecuteSkill(int index)
     {
         this.skillToBeExecuted = this.skills[index];

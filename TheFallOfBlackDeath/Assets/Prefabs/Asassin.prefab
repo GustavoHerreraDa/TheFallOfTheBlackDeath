@@ -82,7 +82,7 @@ Transform:
   m_Children:
   - {fileID: 1585225521}
   m_Father: {fileID: 2252651694320841864}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1238772087
 MonoBehaviour:
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Curse
   animationDuration: 3
-  selfInflicted: 0
+  targeting: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 0d1ac179e53c00e4684fbb0cc5e0991d, type: 3}
   SkillDesc: Maldice al enemigo (Pierde puntos de salud por turno)
   ItemsNeeded: []
@@ -132,7 +132,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2252651694320841864}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &452391405009561511
 MonoBehaviour:
@@ -148,13 +148,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Back Stab
   animationDuration: 2
-  selfInflicted: 0
+  targeting: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 7c98c80539066d047a95b84f01f9ad5c, type: 3}
   SkillDesc: "Apu\xF1alas la espalda del enemigo (Altas % de critico)"
   ItemsNeeded: []
   amount: -45
   modType: 0
-  critiChance: 0.6
+  critChance: 0
 --- !u!1 &1443639437503016498
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,8 +164,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2252651694320841864}
-  - component: {fileID: 2948975203174316845}
-  - component: {fileID: 1083162007021228007}
   - component: {fileID: 1786169535298114428}
   m_Layer: 0
   m_Name: Asassin
@@ -186,6 +184,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1903415838774016224}
   - {fileID: 7680177492671640172}
   - {fileID: 5299461713390175436}
   - {fileID: 3302782770964871340}
@@ -195,56 +194,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -85.763, z: 0}
---- !u!33 &2948975203174316845
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1443639437503016498}
-  m_Mesh: {fileID: -810390348708521058, guid: f331ac32ae3e3c64c95cc32c73ad9748, type: 3}
---- !u!23 &1083162007021228007
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1443639437503016498}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 9ae313b99d107a14c835495e919a4f86, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &1786169535298114428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,6 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54cd0b67e51238547a59bd64b5935e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  team: 0
   idName: Assasin
   statusPanel: {fileID: 0}
   combatManager: {fileID: 0}
@@ -265,6 +215,7 @@ MonoBehaviour:
   CameraPivot: {fileID: 5099093193033445559}
   DamagePivot: {fileID: 2016478929276450250}
   skillPanel: {fileID: 0}
+  enemiesPanel: {fileID: 0}
 --- !u!1 &2490764866123647546
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,7 +245,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2252651694320841864}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4864400700348379872
 GameObject:
@@ -327,7 +278,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2252651694320841864}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1173216432
 MonoBehaviour:
@@ -343,7 +294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Intimidate
   animationDuration: 2
-  selfInflicted: 0
+  targeting: 0
   effectPrfb: {fileID: 4864400700348379872}
   SkillDesc: Baja considerablemente el ataque del enemigo
   ItemsNeeded: []
@@ -392,7 +343,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2252651694320841864}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6438794107168270299
 MonoBehaviour:
@@ -408,13 +359,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Scimitar
   animationDuration: 2
-  selfInflicted: 0
+  targeting: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 7c98c80539066d047a95b84f01f9ad5c, type: 3}
   SkillDesc: Golpe de simitarra (considerable % de critico)
   ItemsNeeded: []
   amount: -40
   modType: 0
-  critiChance: 0.3
+  critChance: 0
 --- !u!1 &7731341569124741256
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,5 +395,67 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2252651694320841864}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2152988780838477579
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2252651694320841864}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.280013
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.92631006
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_Name
+      value: Paladin J Nordstrom
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+--- !u!4 &1903415838774016224 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+  m_PrefabInstance: {fileID: 2152988780838477579}
+  m_PrefabAsset: {fileID: 0}
