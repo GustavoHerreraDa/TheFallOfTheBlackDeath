@@ -12,10 +12,7 @@ public abstract class Fighter : MonoBehaviour
     public List<StatusMod> statusMods;
 
     protected Stats stats;
-
-
     protected Skill[] skills;
-
     public StatusCondition statusCondition;
 
     [SerializeField]
@@ -103,6 +100,7 @@ public abstract class Fighter : MonoBehaviour
         if (this.isAlive == false)
         {
             Invoke("Die", 0.75f);
+            
         }
     }
 
