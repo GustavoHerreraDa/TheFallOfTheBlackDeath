@@ -62,7 +62,7 @@ public class Movent : MonoBehaviour
 
         }
 
-
+        movement.y = RGB.velocity.y;
         RGB.velocity = movement;
 
         Anim.SetFloat("Movent", movent);
