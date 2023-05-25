@@ -3,17 +3,24 @@ using System.Collections;
 
 public class EnemyFighter : Fighter
 {
-   
+    public EnemyDataBase EnemyDateBase;
+    public int EnemyIndex;
+
     void Awake()
     {
-        this.stats = new Stats(20, 50, 40, 30, 60, 15);
+        var data = EnemyDateBase.EnemyDB[EnemyIndex];
+
+        if (data.level != 0)
+            this.stats = new Stats(data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed);
+        else
+            this.stats = new Stats(20, 50, 40, 30, 60, 15);
     }
 
     public override void InitTurn()
     {
 
         StartCoroutine(this.IA());
-   
+
     }
 
     IEnumerator IA()
