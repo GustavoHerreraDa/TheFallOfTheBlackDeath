@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class seguirjugador : MonoBehaviour
 {
+
+
+    public GameObject enemigoGameObject;
     public Transform jugador;
     UnityEngine.AI.NavMeshAgent enemigo;
     private bool dentro = false;
@@ -41,5 +44,6 @@ public class seguirjugador : MonoBehaviour
         {
             enemigo.destination = this.transform.position;
         }
+ 
     }
 }
