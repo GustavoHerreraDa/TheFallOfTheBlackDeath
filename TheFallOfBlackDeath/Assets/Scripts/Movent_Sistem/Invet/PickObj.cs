@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PickObj : MonoBehaviour
 {
-
+    public Animator Anim;
     public GameObject PickUpMeessage;
+
+    
+    
     void Start()
     {
 
@@ -26,6 +29,8 @@ public class PickObj : MonoBehaviour
                 {
                     if (hitinfo.collider.GetComponent<statsOBJ>() != null)
                     {
+
+                        Anim.Play("Pick");
                         Debug.Log("a");
                         statsOBJ i = hitinfo.collider.GetComponent<statsOBJ>();
                         InventoryManager.instance.AddItem(i.id, i.amount);

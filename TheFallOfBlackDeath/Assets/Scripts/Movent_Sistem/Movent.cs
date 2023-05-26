@@ -27,7 +27,7 @@ public class Movent : MonoBehaviour
     private Animator Anim;
 
     float movent = 0;
-
+  
 
     void Start()
     {
@@ -67,6 +67,13 @@ public class Movent : MonoBehaviour
         RGB.velocity = movement;
 
         Anim.SetFloat("Movent", movent);
+
+
+
+        
+        
+        
+
 
     }
 
