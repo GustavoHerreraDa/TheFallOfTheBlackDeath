@@ -12,6 +12,7 @@ public class Movent : MonoBehaviour
     [SerializeField] private float Transition;
     public GameObject itemIconPrefab;
     public Transform inventoryContent;
+ 
 
     //void Awake()
     //{
@@ -73,6 +74,5 @@ public class Movent : MonoBehaviour
     //{
     //  enabled = newgamestate == GameState.Gamestate.gameplay;
     //}
-   
 
 }

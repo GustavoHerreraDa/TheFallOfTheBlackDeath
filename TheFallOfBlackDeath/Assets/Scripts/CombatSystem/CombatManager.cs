@@ -158,13 +158,14 @@ public class CombatManager : MonoBehaviour
                     {
                         LogPanel.Write("Victoria!");
                         this.isCombatActive = false;
-                        SceneManager.LoadSceneAsync(1);
+                        SceneManager.LoadScene(1);
                     }
 
                     if (defeat)
                     {
                         LogPanel.Write("Derrota!");
                         this.isCombatActive = false;
+                        SceneManager.LoadSceneAsync(0);
                     }
 
                     if (this.isCombatActive)
