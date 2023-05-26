@@ -16,6 +16,7 @@ public enum CombatStatus
 
 public class CombatManager : MonoBehaviour
 {
+    public string groupEnemyName;
     public Fighter[] playerTeam;
     public Fighter[] enemyTeam;
 
@@ -156,8 +157,10 @@ public class CombatManager : MonoBehaviour
 
                     if (victory)
                     {
+                        
                         LogPanel.Write("Victoria!");
                         this.isCombatActive = false;
+                        PlayerPrefs.SetString("GrupoEnemigo", groupEnemyName);
                         SceneManager.LoadScene(1);
                     }
 

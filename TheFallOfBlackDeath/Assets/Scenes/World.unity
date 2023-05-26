@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0.00050812913, b: 0.011968249, a: 1}
+  m_IndirectSpecularColor: {r: 0.0007058928, g: 0.009222985, b: 0.11116792, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -610,6 +610,53 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c78d0023572bcc84a887629bede56ed8, type: 3}
+--- !u!1 &486906680
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 486906682}
+  - component: {fileID: 486906681}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &486906681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486906680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31c778c0c9a01244ab3e21d38d0bcab7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  character: {fileID: 1495737503}
+  lastPos: {x: 0, y: 0, z: 0}
+  enemies: []
+--- !u!4 &486906682
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486906680}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.10414696, y: -3.2662075, z: 14.535277}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 25
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &512642666 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5352328091520404058, guid: 27fd170434c11ec4bb70625d7c5ba2c8, type: 3}
@@ -991,6 +1038,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1083142257}
   m_CullTransparentMesh: 1
+--- !u!1 &1113889121 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8929900903749318460, guid: efc81bb57a23e0b44b9cb1811ee232c4, type: 3}
+  m_PrefabInstance: {fileID: 8929900904076477557}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1113889127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113889121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e494086eb5cdea4b951503382d37d7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GroupName: Zombie
 --- !u!1 &1131429252
 GameObject:
   m_ObjectHideFlags: 0
@@ -2482,8 +2547,10 @@ GameObject:
   - component: {fileID: 1978304188}
   - component: {fileID: 1978304189}
   - component: {fileID: 1978304190}
+  - component: {fileID: 1978304191}
+  - component: {fileID: 1978304192}
   m_Layer: 0
-  m_Name: Wizard
+  m_Name: DemonWizard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2555,6 +2622,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemigoGameObject: {fileID: 1978304186}
   jugador: {fileID: 1495737508}
+--- !u!114 &1978304191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978304186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d01c474de404bd749881b56f80d6e633, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  figthScene: 3
+--- !u!114 &1978304192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978304186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e494086eb5cdea4b951503382d37d7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GroupName: DemonWizard
 --- !u!1001 &1988637326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2768,6 +2861,8 @@ GameObject:
   - component: {fileID: 2081864233}
   - component: {fileID: 2081864234}
   - component: {fileID: 2081864235}
+  - component: {fileID: 2081864236}
+  - component: {fileID: 2081864237}
   m_Layer: 0
   m_Name: Drake
   m_TagString: Untagged
@@ -2841,6 +2936,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemigoGameObject: {fileID: 2081864231}
   jugador: {fileID: 1495737508}
+--- !u!114 &2081864236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2081864231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d01c474de404bd749881b56f80d6e633, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  figthScene: 4
+--- !u!114 &2081864237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2081864231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e494086eb5cdea4b951503382d37d7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GroupName: Drake
 --- !u!1 &2097795009
 GameObject:
   m_ObjectHideFlags: 0
@@ -3202,9 +3323,13 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1495737503}
+    - target: {fileID: 8929900903749318457, guid: efc81bb57a23e0b44b9cb1811ee232c4, type: 3}
+      propertyPath: figthScene
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8929900903749318460, guid: efc81bb57a23e0b44b9cb1811ee232c4, type: 3}
       propertyPath: m_Name
-      value: Enemy
+      value: Zombie
       objectReference: {fileID: 0}
     - target: {fileID: 8929900903749318462, guid: efc81bb57a23e0b44b9cb1811ee232c4, type: 3}
       propertyPath: m_RootOrder

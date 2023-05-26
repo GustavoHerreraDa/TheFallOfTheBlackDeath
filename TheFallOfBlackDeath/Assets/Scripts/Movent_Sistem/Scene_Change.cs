@@ -22,8 +22,8 @@ public class Scene_Change : MonoBehaviour
         PlayerPrefs.SetFloat("PosY", player.transform.position.y);
         PlayerPrefs.SetFloat("PosZ", player.transform.position.z);
         */
-        
-        
+
+        Destroy(this.gameObject);
         SceneManager.LoadScene(figthScene);
 
 
