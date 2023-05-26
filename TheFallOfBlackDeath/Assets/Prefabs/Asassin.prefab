@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51e2ef5a84f96f409ceb956945277e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
+  effectPrfb: {fileID: 8189500006840025469, guid: 0d1ac179e53c00e4684fbb0cc5e0991d, type: 3}
   animationDuration: 3
   receptionMessage: (receiver) is cursed
   applyMessage: Curses damages (receiver)
@@ -98,10 +98,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Curse
   animationDuration: 3
-  targeting: 0
+  targeting: 4
   effectPrfb: {fileID: 8189500006840025469, guid: 0d1ac179e53c00e4684fbb0cc5e0991d, type: 3}
   SkillDesc: Maldice al enemigo (Pierde puntos de salud por turno)
-  ItemsNeeded: []
+  ItemsNeeded:
+  - id: 6
+    amount: 1
 --- !u!1 &1348095314520277603
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,13 +150,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Back Stab
   animationDuration: 2
-  targeting: 0
+  targeting: 4
   effectPrfb: {fileID: 8189500006840025469, guid: 7c98c80539066d047a95b84f01f9ad5c, type: 3}
   SkillDesc: "Apu\xF1alas la espalda del enemigo (Altas % de critico)"
   ItemsNeeded: []
   amount: -45
   modType: 0
-  critChance: 0
+  critChance: 0.6
 --- !u!1 &1443639437503016498
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,7 +242,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2490764866123647546}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.91, y: 1.103, z: -2.14}
+  m_LocalPosition: {x: 0.17, y: 1.43, z: -3.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -294,11 +296,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Intimidate
   animationDuration: 2
-  targeting: 0
-  effectPrfb: {fileID: 4864400700348379872}
+  targeting: 4
+  effectPrfb: {fileID: 8189500006840025469, guid: 0a19654f0adc9c6429eff011c5724442, type: 3}
   SkillDesc: Baja considerablemente el ataque del enemigo
   ItemsNeeded: []
-  message: (receiver) decreased his attack!
+  message: '{receiver} decreased his attack!'
 --- !u!114 &1173216433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,13 +361,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Scimitar
   animationDuration: 2
-  targeting: 0
+  targeting: 4
   effectPrfb: {fileID: 8189500006840025469, guid: 7c98c80539066d047a95b84f01f9ad5c, type: 3}
   SkillDesc: Golpe de simitarra (considerable % de critico)
   ItemsNeeded: []
   amount: -40
   modType: 0
-  critChance: 0
+  critChance: 0.2
 --- !u!1 &7731341569124741256
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,16 +411,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.280013
+      value: 0.14
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.92631006
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -456,6 +470,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Paladin J Nordstrom
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: e0358503d5cd0454da05775080055ac0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
 --- !u!4 &1903415838774016224 stripped

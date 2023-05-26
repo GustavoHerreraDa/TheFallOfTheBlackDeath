@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  amount: 30
+  amount: 10
 --- !u!114 &1432456573195025594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
   SkillDesc: 
   ItemsNeeded: []
-  message: (receiver) raises attack!
+  message: '{receiver} raises attack!'
 --- !u!1 &1432456572108598840
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,13 +112,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: ShootHead
   animationDuration: 2
-  targeting: 0
+  targeting: 4
   effectPrfb: {fileID: 8189500006840025469, guid: e359e440bbee8ee49b2e19a6a8f649de, type: 3}
   SkillDesc: 
   ItemsNeeded: []
-  amount: -55
+  amount: -61
   modType: 0
-  critChance: 0
+  critChance: 0.1
 --- !u!1 &1570228253414095661
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,14 +142,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1570228253414095661}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0002, y: 0.0073, z: -0.0235}
+  m_LocalRotation: {x: -0, y: -0.25881907, z: -0, w: 0.9659259}
+  m_LocalPosition: {x: 1.17, y: 1.83, z: -3.67}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2433419667633760900}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -30, z: 0}
 --- !u!1 &2433419667633993380
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,7 +176,7 @@ Transform:
   m_GameObject: {fileID: 2433419667633993380}
   m_LocalRotation: {x: 0.007624233, y: 0.6961053, z: -0.0073931697, w: 0.7178611}
   m_LocalPosition: {x: -11.08, y: -0.78, z: -5.88}
-  m_LocalScale: {x: 130, y: 130, z: 130}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1432456572024712325}
@@ -200,8 +200,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cafa976afee2e8a41aedf9756702ba62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 0
-  idName: Plague Rat
+  team: 1
+  idName: Parasite
   statusPanel: {fileID: 0}
   combatManager: {fileID: 0}
   statusMods: []
@@ -209,7 +209,7 @@ MonoBehaviour:
   CameraPivot: {fileID: 3231402603016140349}
   DamagePivot: {fileID: 3492222240921374550}
   EnemyDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
-  EnemyIndex: 1
+  EnemyIndex: 0
 --- !u!1 &3477739932435891976
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,6 +219,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2595741948687451423}
+  - component: {fileID: 1117089037}
   m_Layer: 0
   m_Name: Infected Bite
   m_TagString: Untagged
@@ -241,6 +242,27 @@ Transform:
   m_Father: {fileID: 2433419667633760900}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1117089037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3477739932435891976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Infected Bite
+  animationDuration: 2
+  targeting: 2
+  effectPrfb: {fileID: 8189500006840025469, guid: 7f9254042e04b1a4b92f1d86cc0fd977, type: 3}
+  SkillDesc: 
+  ItemsNeeded: []
+  amount: -50
+  modType: 0
+  critChance: 0.2
 --- !u!1 &8989368093674230195
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,7 +287,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8989368093674230195}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.00007, y: 0.0012, z: 0.00487}
+  m_LocalPosition: {x: -0.13, y: 1.38, z: 0.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -301,7 +323,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c055094a6b029a4e834f61123b24e6d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.64
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c055094a6b029a4e834f61123b24e6d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -338,6 +360,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9c055094a6b029a4e834f61123b24e6d, type: 3}
       propertyPath: m_Name
       value: Parasite L Starkie
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190329752880227948, guid: 9c055094a6b029a4e834f61123b24e6d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c055094a6b029a4e834f61123b24e6d, type: 3}
