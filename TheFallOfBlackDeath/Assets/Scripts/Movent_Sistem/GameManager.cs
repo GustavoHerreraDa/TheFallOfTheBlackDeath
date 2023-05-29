@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
         enemies = FindObjectsOfType<EnemiesGroup>();
         if (_instance == null)
         {
-            
+
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     }
     public void FindPlayer()
     {
-        character =  FindObjectOfType<Movent>().gameObject;
+        character = FindObjectOfType<Movent>().gameObject;
     }
     private int enemyIndex;
     public void FindEnemies()
@@ -45,20 +45,24 @@ public class GameManager : MonoBehaviour
     }
     private void OnLevelWasLoaded(int level)
     {
-        if(level == 1)
+        if (level == 1)
         {
             GameManager.Instance.FindEnemies();
             GameManager.Instance.FindPlayer();
             GameManager.Instance.character.transform.position = GameManager.Instance.lastPos;
             string nombre = PlayerPrefs.GetString("GrupoEnemigo");
-                for (int i = 0; i < enemies.Length; i++)
+
+            if (nombre == string.Empty)
+                return;
+
+            for (int i = 0; i < enemies.Length; i++)
             {
                 if (enemies[i].name == nombre)
-                    enemyIndex = i; 
+                    enemyIndex = i;
             }
-            Destroy (enemies[enemyIndex].gameObject);
+            Destroy(enemies[enemyIndex].gameObject);
         }
-       
+
     }
 
 }
