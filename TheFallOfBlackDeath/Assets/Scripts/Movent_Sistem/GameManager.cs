@@ -33,6 +33,13 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        if(!GameObject.Find("Character"))
+        {
+            GameObject Hero = Instantiate(character, Vector3.zero, Quaternion.identity) as GameObject;
+            Hero.name = "Character";
+        }
+        
     }
     public void FindPlayer()
     {
