@@ -11,20 +11,38 @@ public class SceneLoadManager : MonoBehaviour
 
     public void SceneLoad(int sceneIndex)
     {
-        loadPanel.SetActive(true);
 
         StartCoroutine(LoadAsync(sceneIndex));
     }
 
     IEnumerator LoadAsync (int sceneIndex)
     {
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneIndex);
+        loadbar.value = 0;
+        loadPanel.SetActive(true);
 
-        while(!asyncOperation.isDone)
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneIndex);
+        asyncOperation.allowSceneActivation = false;
+        float progress = 0;
+
+        while (!asyncOperation.isDone)
         {
-            Debug.Log(asyncOperation.progress);
-            loadbar.value = asyncOperation.progress / 0.9f;
+            progress = Mathf.MoveTowards(progress, asyncOperation.progress, Time.deltaTime);
+            loadbar.value = progress;
+            if (progress >= 0.9f)
+            {
+                loadbar.value = 1;
+                asyncOperation.allowSceneActivation = true;
+            }
             yield return null;
         }
+
+        //AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneIndex);
+
+        //while(!asyncOperation.isDone)
+        //{
+        //    Debug.Log(asyncOperation.progress);
+        //    loadbar.value = asyncOperation.progress / 0.9f;
+        //    yield return null;
+        //}
     }
 }
