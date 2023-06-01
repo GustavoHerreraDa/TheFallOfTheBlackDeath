@@ -64,7 +64,7 @@ public class PickObj : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log(other.gameObject.name);
+        //Debug.Log(other.gameObject.name);
 
     }
 }

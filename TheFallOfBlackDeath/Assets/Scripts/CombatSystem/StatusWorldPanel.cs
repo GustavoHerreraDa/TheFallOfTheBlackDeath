@@ -1,37 +1,26 @@
-using TMPro;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 
-public class StatusPanel : MonoBehaviour
+public class StatusWorldPanel : MonoBehaviour
 {
-    public Text nameLabel;
-    public Text levelLabel;
-
+    // Start is called before the first frame update
     public Slider healthSlider;
     public Image healthSliderBar;
-    public Text healthLabel;
-    public TextMeshProUGUI nameTextLabel;
-
-
-
+    public TextMeshProUGUI nameLabel;
     public void SetStats(string name, Stats stats)
     {
-        if (nameLabel != null)
-            this.nameLabel.text = name;
+        this.nameLabel.text = name;
 
-        if (nameTextLabel != null)
-            this.nameTextLabel.text = name;
-
-        if (levelLabel != null)
-            this.levelLabel.text = $"N. {stats.level}";
-
+        //this.levelLabel.text = $"N. {stats.level}";
         this.SetHealth(stats.health, stats.maxHealth);
     }
     public void SetHealth(float health, float maxHealth)
     {
         //Matfh convierte el flotante health en numeros enteros para que no salgan decimales
-        if (healthLabel != null)
-            this.healthLabel.text = $"{Mathf.RoundToInt(health)} / {Mathf.RoundToInt(maxHealth)}";
+        //this.healthLabel.text = $"{Mathf.RoundToInt(health)} / {Mathf.RoundToInt(maxHealth)}";
         float percentage = health / maxHealth;
 
         this.healthSlider.value = percentage;
