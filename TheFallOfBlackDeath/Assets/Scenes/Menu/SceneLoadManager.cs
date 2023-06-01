@@ -12,8 +12,8 @@ public class SceneLoadManager : MonoBehaviour
     public void SceneLoad(int sceneIndex)
     {
         loadPanel.SetActive(true);
+
         StartCoroutine(LoadAsync(sceneIndex));
-        
     }
 
     IEnumerator LoadAsync (int sceneIndex)
