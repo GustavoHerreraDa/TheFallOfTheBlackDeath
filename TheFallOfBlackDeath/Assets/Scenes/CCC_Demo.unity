@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.00028264857, g: 0.00842314, b: 0.104659714, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0.004773809, b: 0.06303059, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1081,6 +1081,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 116282cdd5615cc4e8f175ec853f0aea, type: 3}
   m_PrefabInstance: {fileID: 1611486767}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &318181214 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5325848180068869378, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
+  m_PrefabInstance: {fileID: 1786470317}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 842f3c42f93eaf74eb25f2a545c3e32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &360543676 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1173603025, guid: 9027b0e166cfc55469d1a1cb136f4d5f, type: 3}
@@ -2154,17 +2165,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
---- !u!114 &725567037 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2622027733461515284, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
-  m_PrefabInstance: {fileID: 1691333297}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 842f3c42f93eaf74eb25f2a545c3e32a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &730966333
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5034,11 +5034,11 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 5e5aa117bcb0a1e4cb4ea65518e1482b, type: 3}
     - target: {fileID: 3733760895438205603, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3733760895438205603, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3733760896463149540, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
       propertyPath: m_Type
@@ -5067,6 +5067,10 @@ PrefabInstance:
     - target: {fileID: 3733760897121980189, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
       propertyPath: m_Name
       value: StatusPanel_SkeletonRed
+      objectReference: {fileID: 0}
+    - target: {fileID: 3733760897121980189, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3928753467820345708, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
       propertyPath: m_Sprite
@@ -5236,6 +5240,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StatusPanel_PLAGUERAT
       objectReference: {fileID: 0}
+    - target: {fileID: 6398893352879435692, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6398893352879435693, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -5254,11 +5262,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6398893354391245330, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6398893354391245330, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6398893354391245331, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
       propertyPath: m_Type
@@ -5640,7 +5648,7 @@ PrefabInstance:
     - target: {fileID: 2433419667151408271, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
       propertyPath: statusPanel
       value: 
-      objectReference: {fileID: 1851871650}
+      objectReference: {fileID: 318181214}
     - target: {fileID: 2433419667151408271, guid: d1c42aec5e088e243b0988c2165a0e24, type: 3}
       propertyPath: combatManager
       value: 
@@ -5916,17 +5924,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1851871650 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5728231341359471781, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
-  m_PrefabInstance: {fileID: 1691333297}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 842f3c42f93eaf74eb25f2a545c3e32a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1864388732
 GameObject:
   m_ObjectHideFlags: 0
@@ -6103,6 +6100,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ba0ea540324d1914a81f762ae8b1d1da, type: 3}
   m_PrefabInstance: {fileID: 742227626}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1970342124 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1768862934, guid: 9027b0e166cfc55469d1a1cb136f4d5f, type: 3}
+  m_PrefabInstance: {fileID: 6020914222724104610}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 842f3c42f93eaf74eb25f2a545c3e32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1976962912
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6653,7 +6661,7 @@ PrefabInstance:
     - target: {fileID: 6020914221276081700, guid: 9027b0e166cfc55469d1a1cb136f4d5f, type: 3}
       propertyPath: statusPanel
       value: 
-      objectReference: {fileID: 725567037}
+      objectReference: {fileID: 1970342124}
     - target: {fileID: 6020914221276081700, guid: 9027b0e166cfc55469d1a1cb136f4d5f, type: 3}
       propertyPath: EnemyDateBase
       value: 
