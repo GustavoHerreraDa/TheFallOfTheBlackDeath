@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickObj : MonoBehaviour
+public class PickObj : MonoBehaviour 
 {
     public Animator Anim;
     public GameObject PickUpMeessage;
-
+    public Movent movent;
     
     
     void Start()
@@ -29,8 +29,8 @@ public class PickObj : MonoBehaviour
                 {
                     if (hitinfo.collider.GetComponent<statsOBJ>() != null)
                     {
-
-                        Anim.Play("Pick");
+                        
+                        Anim.Play("Pick"); 
                         Debug.Log("a");
                         statsOBJ i = hitinfo.collider.GetComponent<statsOBJ>();
                         InventoryManager.instance.AddItem(i.id, i.amount);
