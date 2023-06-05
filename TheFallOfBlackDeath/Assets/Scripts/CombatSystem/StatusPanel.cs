@@ -6,10 +6,11 @@ public class StatusPanel : MonoBehaviour
 {
     public Text nameLabel;
     public Text levelLabel;
+    public Text healthLabel;
 
     public Slider healthSlider;
     public Image healthSliderBar;
-    public TextMeshProUGUI healthLabel;
+    public TextMeshProUGUI healthLabelPro;
     public TextMeshProUGUI nameTextLabel;
 
 
@@ -33,8 +34,12 @@ public class StatusPanel : MonoBehaviour
     public void SetHealth(float health, float maxHealth)
     {
         //Matfh convierte el flotante health en numeros enteros para que no salgan decimales
+        if (healthLabelPro != null)
+            this.healthLabelPro.text = $"{Mathf.RoundToInt(health)} / {Mathf.RoundToInt(maxHealth)}";
+
         if (healthLabel != null)
             this.healthLabel.text = $"{Mathf.RoundToInt(health)} / {Mathf.RoundToInt(maxHealth)}";
+
         float percentage = health / maxHealth;
 
         this.healthSlider.value = percentage;
