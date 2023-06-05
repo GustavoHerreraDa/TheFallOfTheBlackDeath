@@ -64,6 +64,7 @@ GameObject:
   - component: {fileID: 1173603026}
   - component: {fileID: 360543678}
   - component: {fileID: 3892533151839292962}
+  - component: {fileID: 3305272551616700482}
   m_Layer: 0
   m_Name: Blessed
   m_TagString: Untagged
@@ -106,6 +107,24 @@ MonoBehaviour:
   SkillDesc: 
   ItemsNeeded: []
 --- !u!114 &3892533151839292962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173603025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Blessed
+  animationDuration: 3
+  targeting: 3
+  effectPrfb: {fileID: 8189500006840025469, guid: e62b22954c59c2f49b53a190dd1291ef, type: 3}
+  SkillDesc: 
+  ItemsNeeded: []
+--- !u!114 &3305272551616700482
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,6 +206,8 @@ GameObject:
   - component: {fileID: 382689290}
   - component: {fileID: 735317449879777577}
   - component: {fileID: 984632178760413287}
+  - component: {fileID: 4078137386834061177}
+  - component: {fileID: 1386415934776244790}
   m_Layer: 0
   m_Name: Fortalecer
   m_TagString: Untagged
@@ -257,6 +278,39 @@ MonoBehaviour:
   type: 1
   amount: 10
 --- !u!114 &984632178760413287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5053761451003738699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Fortalecer
+  animationDuration: 1
+  targeting: 3
+  effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
+  SkillDesc: 
+  ItemsNeeded: []
+  message: '{receiver} raises deffense!'
+--- !u!114 &4078137386834061177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5053761451003738699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  amount: 10
+--- !u!114 &1386415934776244790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -379,6 +433,7 @@ GameObject:
   - component: {fileID: 5170883358836647959}
   - component: {fileID: 817704193}
   - component: {fileID: 8249284316444302521}
+  - component: {fileID: 3832890275401867228}
   m_Layer: 0
   m_Name: Paralisis
   m_TagString: Untagged
@@ -421,6 +476,24 @@ MonoBehaviour:
   SkillDesc: 
   ItemsNeeded: []
 --- !u!114 &8249284316444302521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7832234712161264204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Paralysis
+  animationDuration: 3
+  targeting: 4
+  effectPrfb: {fileID: 1717075959720994568, guid: 2f48691469e7d394bac81990c3ec94be, type: 3}
+  SkillDesc: 
+  ItemsNeeded: []
+--- !u!114 &3832890275401867228
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -693,6 +766,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3478575304372653751, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_Name
+      value: HP
+      objectReference: {fileID: 0}
     - target: {fileID: 4201492329203201003, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
       propertyPath: m_Name
       value: CanvasWorldEnemy
@@ -705,6 +782,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8733481953672816824, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: healthLabel
+      value: 
+      objectReference: {fileID: 8450045975793799451}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
 --- !u!114 &1768862934 stripped
@@ -723,3 +804,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2475196814315695594, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
   m_PrefabInstance: {fileID: 8733481955160317038}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8450045975793799451 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 898212607443717493, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+  m_PrefabInstance: {fileID: 8733481955160317038}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

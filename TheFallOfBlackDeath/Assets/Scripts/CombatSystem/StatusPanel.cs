@@ -9,7 +9,7 @@ public class StatusPanel : MonoBehaviour
 
     public Slider healthSlider;
     public Image healthSliderBar;
-    public Text healthLabel;
+    public TextMeshProUGUI healthLabel;
     public TextMeshProUGUI nameTextLabel;
 
 
@@ -20,8 +20,11 @@ public class StatusPanel : MonoBehaviour
             this.nameLabel.text = name;
 
         if (nameTextLabel != null)
+        {
             this.nameTextLabel.text = name;
+            this.nameTextLabel.fontSize = name.Length > 8 ?  4 : 10;
 
+        }
         if (levelLabel != null)
             this.levelLabel.text = $"N. {stats.level}";
 
