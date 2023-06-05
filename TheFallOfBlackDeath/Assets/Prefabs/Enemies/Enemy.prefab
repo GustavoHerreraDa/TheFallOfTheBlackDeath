@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 8929900903749318462}
   - component: {fileID: 8929900903749318458}
   - component: {fileID: 8929900903749318459}
-  - component: {fileID: 8929900903749318456}
   - component: {fileID: 8929900903749318457}
+  - component: {fileID: 1113889127}
+  - component: {fileID: 1113889133}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -46,7 +47,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1.5131274
-  m_Speed: 1
+  m_Speed: 2
   m_Acceleration: 4
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -72,19 +73,6 @@ CapsuleCollider:
   m_Height: 1.9270768
   m_Direction: 1
   m_Center: {x: -0.0000030987967, y: 0.68000853, z: -0.10784221}
---- !u!114 &8929900903749318456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8929900903749318460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f633edd83a631b448a18bfa05479561, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jugador: {fileID: 0}
 --- !u!114 &8929900903749318457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,8 +85,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d01c474de404bd749881b56f80d6e633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Box: {fileID: 8929900903749318459}
+  figthScene: 2
+--- !u!114 &1113889127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8929900903749318460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e494086eb5cdea4b951503382d37d7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GroupName: Zombie
+--- !u!114 &1113889133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8929900903749318460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0197832d7eed0c649a48c7fa50b49d71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  navMeshAgent: {fileID: 8929900903749318458}
   player: {fileID: 0}
+  destinations:
+  - {fileID: 0}
+  - {fileID: 0}
+  distanceToFollowPlayer: 20
 --- !u!1001 &4287452253464739890
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -116,7 +134,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4bdc418758f2568409cd59de6d5a57b2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.6
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4bdc418758f2568409cd59de6d5a57b2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -164,13 +182,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 655733a458f0d8e41886b5c49611c8b8, type: 2}
     - target: {fileID: 5866666021909216657, guid: 4bdc418758f2568409cd59de6d5a57b2, type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
-        'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:RightArm'\n\tTransform
-        'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tTransform 'mixamorig:RightFoot'\n\tTransform
-        'mixamorig:Head'\n\tTransform 'mixamorig:LeftUpLeg'\n\tand more ...\n\tFrom
-        animation clip 'mixamo.com'"
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4bdc418758f2568409cd59de6d5a57b2, type: 3}
