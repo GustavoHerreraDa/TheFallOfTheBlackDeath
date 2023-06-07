@@ -5,10 +5,11 @@ public class EnemyFighter : Fighter
 {
     public EnemyDataBase EnemyDateBase;
     public int EnemyIndex;
-
+    public IAEnemySimple iAEnemySimple;
     void Awake()
     {
         var data = EnemyDateBase.EnemyDB[EnemyIndex];
+        iAEnemySimple = gameObject.GetComponent<IAEnemySimple>();
 
         if (data.level != 0)
             this.stats = new Stats(data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed);
@@ -25,8 +26,6 @@ public class EnemyFighter : Fighter
 
     IEnumerator IA()
     {
-
-
         yield return new WaitForSeconds(1f);
 
         Skill skill = this.skills[Random.Range(0, this.skills.Length)];

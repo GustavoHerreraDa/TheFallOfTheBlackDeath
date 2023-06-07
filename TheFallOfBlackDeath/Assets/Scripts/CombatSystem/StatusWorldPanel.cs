@@ -6,31 +6,15 @@ using UnityEngine.UI;
 
 public class StatusWorldPanel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public Slider healthSlider;
-    public Image healthSliderBar;
-    public TextMeshProUGUI nameLabel;
-    public void SetStats(string name, Stats stats)
-    {
-        this.nameLabel.text = name;
+    private Camera mainCamera;
 
-        //this.levelLabel.text = $"N. {stats.level}";
-        this.SetHealth(stats.health, stats.maxHealth);
+    void Start()
+    {
+        mainCamera = Camera.main;
     }
-    public void SetHealth(float health, float maxHealth)
+
+    public void LateUpdate()
     {
-        //Matfh convierte el flotante health en numeros enteros para que no salgan decimales
-        //this.healthLabel.text = $"{Mathf.RoundToInt(health)} / {Mathf.RoundToInt(maxHealth)}";
-        float percentage = health / maxHealth;
-
-        this.healthSlider.value = percentage;
-        //Si el porcentaje de vida es menor al 33% el color de la vida se vuelve rojo
-        if (percentage < 0.33f)
-        {
-            this.healthSliderBar.color = Color.red;
-        }
-        {
-
-        }
+        transform.LookAt(transform.position + mainCamera.transform.rotation * Vector3.forward, mainCamera.transform.rotation * Vector3.up);
     }
 }

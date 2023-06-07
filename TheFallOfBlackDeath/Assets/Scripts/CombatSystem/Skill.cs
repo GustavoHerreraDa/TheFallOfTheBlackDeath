@@ -1,6 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+public enum SkillType
+{
+    AttackSimple,
+    SpecialHability,
+    Heal,
+    BossHability
+}
+
 public abstract class Skill : MonoBehaviour
 {
     [Header("Base Skill")]
@@ -15,13 +23,12 @@ public abstract class Skill : MonoBehaviour
     protected List<Fighter> receivers;
     public string SkillDesc;
     protected Queue<string> messages;
+    public SkillType skillType;
 
     public List<InventoryManager.InventoryObjectID> ItemsNeeded;
     public bool needsManualTargeting
-    { 
-
+    {
         get
-
         {
             switch (this.targeting)
             {
