@@ -95,8 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 402a46de75eaef043afd88e6dba651b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemy: {fileID: 0}
-  MaxPhisicalAttacks: 0
+  Enemy: {fileID: 7758305694475628395}
+  MaxPhisicalAttacks: 1
   _skills: []
 --- !u!1 &7758305694778269741
 GameObject:
@@ -246,7 +246,7 @@ MonoBehaviour:
   targeting: 3
   effectPrfb: {fileID: 8189500006840025469, guid: e62b22954c59c2f49b53a190dd1291ef, type: 3}
   SkillDesc: 
-  skillType: 0
+  skillType: 1
   ItemsNeeded: []
 --- !u!1 &7758305695446568113
 GameObject:
@@ -298,7 +298,7 @@ MonoBehaviour:
   applyMessage: The blessing heals (receiver)
   expireMessage: the blessing fade
   turnDuration: 2
-  percentage: 0.2
+  percentage: 0.1
 --- !u!1 &7758305696185124285
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,6 +337,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7758305694475628396}
     m_Modifications:
+    - target: {fileID: 1805037467662848541, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2475196814315695594, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
