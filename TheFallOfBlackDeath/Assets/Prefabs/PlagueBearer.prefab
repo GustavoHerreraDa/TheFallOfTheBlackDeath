@@ -214,6 +214,7 @@ MonoBehaviour:
   DamagePivot: {fileID: 3492222240921374550}
   EnemyDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
   EnemyIndex: 0
+  _IAEnemySimple: {fileID: 8801026399383167280}
 --- !u!114 &8801026399383167280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,6 +227,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 402a46de75eaef043afd88e6dba651b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enemy: {fileID: 0}
+  MaxPhisicalAttacks: 0
+  _skills: []
 --- !u!1 &3477739932435891976
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,8 +240,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2595741948687451423}
   - component: {fileID: 1117089037}
-  - component: {fileID: 4583699336857428879}
-  - component: {fileID: 7239437195250253638}
   m_Layer: 0
   m_Name: Infected Bite
   m_TagString: Untagged
@@ -278,50 +280,6 @@ MonoBehaviour:
   effectPrfb: {fileID: 8189500006840025469, guid: 7f9254042e04b1a4b92f1d86cc0fd977, type: 3}
   SkillDesc: 
   skillType: 1
-  ItemsNeeded: []
-  amount: -50
-  modType: 0
-  critChance: 0.2
---- !u!114 &4583699336857428879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3477739932435891976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Infected Bite
-  animationDuration: 2
-  targeting: 2
-  effectPrfb: {fileID: 8189500006840025469, guid: 7f9254042e04b1a4b92f1d86cc0fd977, type: 3}
-  SkillDesc: 
-  skillType: 1
-  ItemsNeeded: []
-  amount: -50
-  modType: 0
-  critChance: 0.2
---- !u!114 &7239437195250253638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3477739932435891976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Infected Bite
-  animationDuration: 2
-  targeting: 2
-  effectPrfb: {fileID: 8189500006840025469, guid: 7f9254042e04b1a4b92f1d86cc0fd977, type: 3}
-  SkillDesc: 
-  skillType: 0
   ItemsNeeded: []
   amount: -50
   modType: 0

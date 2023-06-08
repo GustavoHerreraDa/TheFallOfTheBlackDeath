@@ -1,5 +1,59 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &831748748909087653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 255904020242143857}
+  - component: {fileID: 7191941661361471529}
+  m_Layer: 0
+  m_Name: Club
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &255904020242143857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831748748909087653}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6322357313249168421}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7191941661361471529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831748748909087653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Wood Club
+  animationDuration: 1.5
+  targeting: 4
+  effectPrfb: {fileID: 8189500006840025469, guid: 7c98c80539066d047a95b84f01f9ad5c, type: 3}
+  SkillDesc: 
+  skillType: 0
+  ItemsNeeded: []
+  amount: -5
+  modType: 1
+  critChance: 0
 --- !u!1 &6322357312663779558
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,7 +85,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6322357313249168421}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6322357312663779561
 MonoBehaviour:
@@ -60,10 +114,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: PROTECT
-  animationDuration: 3
+  animationDuration: 1.5
   targeting: 3
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
   SkillDesc: 
+  skillType: 1
   ItemsNeeded: []
   message: '{receiver} deffense raises!'
 --- !u!1 &6322357312826015370
@@ -95,7 +150,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6322357313249168421}
-  m_RootOrder: 2
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6322357312839991346
 GameObject:
@@ -126,7 +181,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6322357313249168421}
-  m_RootOrder: 1
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6322357313249168419
 GameObject:
@@ -139,6 +194,7 @@ GameObject:
   - component: {fileID: 6322357313249168421}
   - component: {fileID: 6322357313249168420}
   - component: {fileID: 6322357313249168422}
+  - component: {fileID: 170947224118647310}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -159,10 +215,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5780157948720082366}
-  - {fileID: 6322357312839991347}
-  - {fileID: 6322357312826015371}
+  - {fileID: 255904020242143857}
   - {fileID: 6322357312663779559}
   - {fileID: 6322357314168544233}
+  - {fileID: 6322357312839991347}
+  - {fileID: 6322357312826015371}
   - {fileID: 8494963287231560814}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -209,6 +266,20 @@ MonoBehaviour:
   DamagePivot: {fileID: 6322357312826015371}
   EnemyDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
   EnemyIndex: 4
+  _IAEnemySimple: {fileID: 0}
+--- !u!114 &170947224118647310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6322357313249168419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402a46de75eaef043afd88e6dba651b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxPhisicalAttacks: 2
 --- !u!1 &6322357314168544232
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +310,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6322357313249168421}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6322357314168544234
 MonoBehaviour:
@@ -254,10 +325,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Heal
-  animationDuration: 3
+  animationDuration: 1.5
   targeting: 3
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
   SkillDesc: 
+  skillType: 2
   ItemsNeeded: []
   amount: 15
   modType: 1
@@ -279,7 +351,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2475196814315695594, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2475196814315695594, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
       propertyPath: m_AnchorMax.x
@@ -408,7 +480,7 @@ PrefabInstance:
     - target: {fileID: 8733481953672816824, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
       propertyPath: healthLabel
       value: 
-      objectReference: {fileID: 6614259398542433521}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
 --- !u!114 &3354629673432594748 stripped
@@ -420,17 +492,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 842f3c42f93eaf74eb25f2a545c3e32a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6614259398542433521 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 898212607443717493, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
-  m_PrefabInstance: {fileID: 6322357312742543748}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &8494963287231560814 stripped
@@ -505,6 +566,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: goblin_d_shareyko
       objectReference: {fileID: 0}
+    - target: {fileID: 6374709604153893705, guid: fd440dd638c245e40b33205744efffd1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b11cd99236425c4f8040e38a80e2f83, type: 2}
+    - target: {fileID: 6860641434701783778, guid: fd440dd638c245e40b33205744efffd1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b11cd99236425c4f8040e38a80e2f83, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd440dd638c245e40b33205744efffd1, type: 3}
 --- !u!4 &5780157948720082366 stripped
@@ -517,26 +586,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fd440dd638c245e40b33205744efffd1, type: 3}
   m_PrefabInstance: {fileID: 6322357314227604053}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &6322357314227604056
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6592407472377181956}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: fd440dd638c245e40b33205744efffd1, type: 3}
-  m_Controller: {fileID: 9100000, guid: 17794cf10885751418c239d00ab3f824, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!54 &1017149066
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -567,3 +616,23 @@ CapsuleCollider:
   m_Height: 2.0902636
   m_Direction: 1
   m_Center: {x: 0.17515928, y: 0.89718944, z: -0.12298259}
+--- !u!95 &6322357314227604056
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6592407472377181956}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: fd440dd638c245e40b33205744efffd1, type: 3}
+  m_Controller: {fileID: 9100000, guid: 17794cf10885751418c239d00ab3f824, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

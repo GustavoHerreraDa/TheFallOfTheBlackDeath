@@ -63,7 +63,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 442510234456092526}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &121216533997593732
 MonoBehaviour:
@@ -96,6 +96,7 @@ MonoBehaviour:
   targeting: 0
   effectPrfb: {fileID: 3214120463587388561, guid: 3fb84dd4fc3577e4bac8a39ad77c8ce0, type: 3}
   SkillDesc: 
+  skillType: 1
   ItemsNeeded: []
   message: Drake attack raises!
 --- !u!1 &121216534202181019
@@ -127,7 +128,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 442510234456092526}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: -30, z: 0}
 --- !u!1 &121216534467938606
 GameObject:
@@ -158,7 +159,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 442510234456092526}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &121216535032899502
 GameObject:
@@ -171,7 +172,7 @@ GameObject:
   - component: {fileID: 121216535032899503}
   - component: {fileID: 121216535032899496}
   m_Layer: 0
-  m_Name: 19 PROPS NUEVOS
+  m_Name: Mordiscos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -190,7 +191,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 442510234456092526}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &121216535032899496
 MonoBehaviour:
@@ -204,11 +205,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: 19 new props
-  animationDuration: 3
+  skillName: Bites
+  animationDuration: 1.5
   targeting: 2
   effectPrfb: {fileID: 8189500006840025469, guid: 7f9254042e04b1a4b92f1d86cc0fd977, type: 3}
   SkillDesc: 
+  skillType: 1
   ItemsNeeded: []
   amount: -40
   modType: 0
@@ -244,7 +246,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 442510234456092526}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &121216535127587783
 MonoBehaviour:
@@ -272,11 +274,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: INTIMIDACION
+  skillName: Intimidate
   animationDuration: 3
   targeting: 2
   effectPrfb: {fileID: 8189500006840025469, guid: 0a19654f0adc9c6429eff011c5724442, type: 3}
   SkillDesc: 
+  skillType: 1
   ItemsNeeded: []
   message: The attack of the group low considerably
 --- !u!1 &266143044722412227
@@ -492,6 +495,7 @@ GameObject:
   - component: {fileID: 442510234456092526}
   - component: {fileID: 5819829816794756372}
   - component: {fileID: 121216534234633975}
+  - component: {fileID: 4149423033628591000}
   - component: {fileID: 543450653444804878}
   - component: {fileID: 543450653444804877}
   m_Layer: 0
@@ -515,6 +519,7 @@ Transform:
   m_Children:
   - {fileID: 3871258790104641966}
   - {fileID: 5364999342232211450}
+  - {fileID: 8989126374203011156}
   - {fileID: 121216535032899503}
   - {fileID: 121216535127587781}
   - {fileID: 121216533997593786}
@@ -566,6 +571,19 @@ MonoBehaviour:
   DamagePivot: {fileID: 121216534467938607}
   EnemyDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
   EnemyIndex: 3
+  _IAEnemySimple: {fileID: 0}
+--- !u!114 &4149423033628591000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968216857696450004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 402a46de75eaef043afd88e6dba651b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &543450653444804878
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2387,6 +2405,60 @@ Transform:
   m_Father: {fileID: 1430296337288250217}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8804799175209063184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8989126374203011156}
+  - component: {fileID: 7659239777156398645}
+  m_Layer: 0
+  m_Name: Rasgunios
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8989126374203011156
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8804799175209063184}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 442510234456092526}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7659239777156398645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8804799175209063184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Scratch
+  animationDuration: 1
+  targeting: 4
+  effectPrfb: {fileID: 8189500006840025469, guid: 7f9254042e04b1a4b92f1d86cc0fd977, type: 3}
+  SkillDesc: 
+  skillType: 0
+  ItemsNeeded: []
+  amount: -30
+  modType: 0
+  critChance: 0.2
 --- !u!1 &8816264428093044602
 GameObject:
   m_ObjectHideFlags: 0
@@ -2596,7 +2668,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2475196814315695594, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2475196814315695594, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2725,7 +2797,7 @@ PrefabInstance:
     - target: {fileID: 8733481953672816824, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
       propertyPath: healthLabel
       value: 
-      objectReference: {fileID: 4726495030167131466}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
 --- !u!114 &3806520503917932679 stripped
@@ -2737,17 +2809,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 842f3c42f93eaf74eb25f2a545c3e32a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4726495030167131466 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 898212607443717493, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
-  m_PrefabInstance: {fileID: 5611755253154650175}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &8050571125471589845 stripped
