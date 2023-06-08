@@ -31,7 +31,10 @@ public class HealthModSkill : Skill
 
         else
         {
-            this.messages.Enqueue("Hit for " + (int)amount);
+            if (skillType == SkillType.Heal)
+                this.messages.Enqueue("Heal for " + (int)amount);
+            else
+                this.messages.Enqueue("Hit for " + (int)amount);
         }
 
 
