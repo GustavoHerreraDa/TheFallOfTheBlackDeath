@@ -223,9 +223,16 @@ public class CombatManager : MonoBehaviour
                     }
 
                     LogPanel.Write($"{currentFighter.idName} has the turn.");
-                    currentFighter.InitTurn();
-
-                    this.combatStatus = CombatStatus.WAITING_FOR_FIGHTER;
+                    if (currentFighter.gameObject.activeInHierarchy)
+                    {
+                        currentFighter.InitTurn();
+                        this.combatStatus = CombatStatus.WAITING_FOR_FIGHTER;
+                    }
+                    else
+                    {
+                        this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
+                     
+                    }
                     break;
             }
         }

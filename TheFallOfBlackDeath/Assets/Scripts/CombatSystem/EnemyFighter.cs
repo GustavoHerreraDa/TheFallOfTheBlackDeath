@@ -20,34 +20,36 @@ public class EnemyFighter : Fighter
 
     public override void InitTurn()
     {
-        StartCoroutine(this.IA());
+         StartCoroutine(IA());
         _IAEnemySimple.SetSkills(this.skills);
     }
 
     IEnumerator IA()
     {
         yield return new WaitForSeconds(1f);
+        
+        
+            //Skill skill = this.skills[Random.Range(0, this.skills.Length)];
+            Skill skill = _IAEnemySimple.ExecuteState();
+            if (skill == null) skill = this.skills[Random.Range(0, this.skills.Length)];
 
+            skill.SetEmitter(this);
 
-        //Skill skill = this.skills[Random.Range(0, this.skills.Length)];
-        Skill skill = _IAEnemySimple.ExecuteState();
-        if(skill == null) skill = this.skills[Random.Range(0, this.skills.Length)];
+            if (skill.needsManualTargeting)
+            {
+                Fighter[] targets = this.GetSkillTargets(skill);
 
-        skill.SetEmitter(this);
+                Fighter target = targets[Random.Range(0, targets.Length)];
 
-        if (skill.needsManualTargeting)
-        {
-            Fighter[] targets = this.GetSkillTargets(skill);
+                skill.AddReceiver(target);
+            }
+            else
+            {
+                this.AutoConfigureSkillTargeting(skill);
+            }
 
-            Fighter target = targets[Random.Range(0, targets.Length)];
+            this.combatManager.OnFighterSkill(skill);
+        
 
-            skill.AddReceiver(target);
-        }
-        else
-        {
-            this.AutoConfigureSkillTargeting(skill);
-        }
-
-        this.combatManager.OnFighterSkill(skill);
     }
 }
