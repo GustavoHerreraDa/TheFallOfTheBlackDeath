@@ -53,7 +53,7 @@ MonoBehaviour:
   ItemsNeeded: []
   amount: -70
   modType: 0
-  critChance: 0.2
+  critChance: 0.15
 --- !u!1 &7079441431008907282
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,7 +107,7 @@ MonoBehaviour:
   ItemsNeeded: []
   amount: -70
   modType: 0
-  critChance: 0.2
+  critChance: 0.005
 --- !u!1 &7079441431096640557
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,7 +171,7 @@ MonoBehaviour:
   DamagePivot: {fileID: 7079441432757280552}
   EnemyDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
   EnemyIndex: 2
-  _IAEnemySimple: {fileID: 0}
+  _IAEnemySimple: {fileID: 9084931801636704438}
 --- !u!114 &9084931801636704438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,7 +184,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 402a46de75eaef043afd88e6dba651b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxPhisicalAttacks: 1
+  Enemy: {fileID: 0}
+  MaxPhisicalAttacks: 3
+  _skills: []
 --- !u!1 &7079441431698002108
 GameObject:
   m_ObjectHideFlags: 0

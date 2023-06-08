@@ -22,10 +22,9 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        enemies = FindObjectsOfType<EnemiesGroup>();
+        //enemies = FindObjectsOfType<EnemiesGroup>();
         if (_instance == null)
         {
-
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
@@ -34,20 +33,26 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if(!GameObject.Find("Character"))
+        if (!GameObject.Find("Character"))
         {
             GameObject Hero = Instantiate(character, Vector3.zero, Quaternion.identity) as GameObject;
             Hero.name = "Character";
         }
-        
+
     }
     public void FindPlayer()
     {
         character = FindObjectOfType<Movent>().gameObject;
+        if (character != null)
+        {
+            character.transform.position = new Vector3(character.transform.position.x - 0.5f, character.transform.position.y, character.transform.position.z - 0.5f);
+        }
     }
     private int enemyIndex;
     public void FindEnemies()
     {
+        Debug.Log("Buscando enemigos");
+
         enemies = FindObjectsOfType<EnemiesGroup>();
     }
     private void OnLevelWasLoaded(int level)
@@ -59,14 +64,17 @@ public class GameManager : MonoBehaviour
             GameManager.Instance.character.transform.position = GameManager.Instance.lastPos;
             string nombre = PlayerPrefs.GetString("GrupoEnemigo");
 
+
             if (nombre == string.Empty)
                 return;
 
             for (int i = 0; i < enemies.Length; i++)
             {
-                if (enemies[i].name == nombre)
+                if (enemies[i].GroupName == nombre)
                     enemyIndex = i;
             }
+            Debug.Log("GrupoEnemigo " + nombre + " enemyIndex " + enemyIndex);
+
             Destroy(enemies[enemyIndex].gameObject);
         }
 
