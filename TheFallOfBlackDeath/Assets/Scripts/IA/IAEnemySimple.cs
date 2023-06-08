@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 
 public enum EnemyStateSimple
@@ -12,30 +14,39 @@ public class IAEnemySimple : MonoBehaviour
 {
     private EnemyStateSimple currentState;
     private Skill lastSkill;
+    [SerializeField]
     private EnemyFighter Enemy;
-    private int Attacks;
+    [SerializeField]
+    private int MaxPhisicalAttacks;
+
+    private int phisicalAttacks;
+    public List<Skill> _skills;
     // Use this for initialization
     void Start()
     {
-
+        if (MaxPhisicalAttacks == 0) MaxPhisicalAttacks = 2;
+        Enemy = gameObject.GetComponent<EnemyFighter>();
     }
 
     // Update is called once per frame
-    void ExecuteState()
+    public Skill ExecuteState()
     {
+        Skill execute_Skill = null;
         switch (currentState)
         {
             case EnemyStateSimple.Attack:
-                AttackState();
+                execute_Skill = AttackState();
                 // Comprobar las condiciones de transición
-                if (Attacks > 2)
+                if (phisicalAttacks > MaxPhisicalAttacks)
                 {
-                    Attacks = 0;
+                    phisicalAttacks = 0;
                     currentState = EnemyStateSimple.UseAbility;
+                    execute_Skill = UseAbilityState();
                 }
                 else if (Enemy.GetCurrentStats().health * 100 / Enemy.GetCurrentStats().health < 50 && lastSkill.skillType != SkillType.Heal)
                 {
                     currentState = EnemyStateSimple.Heal;
+                    execute_Skill = HealState();
                 }
                 break;
 
@@ -45,34 +56,52 @@ public class IAEnemySimple : MonoBehaviour
                 if (lastSkill.skillType == SkillType.SpecialHability)
                 {
                     currentState = EnemyStateSimple.Attack;
+                    execute_Skill = AttackState();
+                }
+                if (Enemy.GetCurrentStats().health * 100 / Enemy.GetCurrentStats().health < 50 && lastSkill.skillType != SkillType.Heal)
+                {
+                    currentState = EnemyStateSimple.Heal;
+                    execute_Skill = HealState();
                 }
                 break;
-
-            // Implementar los otros estados de manera similar
-
             default:
                 break;
         }
+
+        Debug.Log("_IAEnemySimple Skill " + currentState.ToString());
+
+        lastSkill = execute_Skill;
+
+        return execute_Skill;
     }
 
-    private void AttackState()
+    private Skill AttackState()
     {
-        // Lógica para seleccionar a qué personaje atacar
-        // Lógica para realizar el ataque
+        phisicalAttacks += 1;
+        var attackSkill = _skills.Where(x => x.skillType == SkillType.AttackSimple).FirstOrDefault();
+
+        return attackSkill = attackSkill ? attackSkill : _skills[0];
     }
 
-    private void UseAbilityState()
+    private Skill UseAbilityState()
     {
-        // Lógica para seleccionar y usar una habilidad
+        var specialHabilities = _skills.Where(x => x.skillType == SkillType.SpecialHability).ToList();
+
+        Skill specialSkill = specialHabilities[Random.Range(0, specialHabilities.Count)];
+
+        return specialSkill = specialSkill ? specialSkill : _skills[0];
     }
 
-    private void HealState()
+    private Skill HealState()
     {
-        // Lógica para curarse utilizando un objeto de curación
+        var healSkill = _skills.Where(x => x.skillType == SkillType.Heal).FirstOrDefault();
+
+        return healSkill = healSkill ? healSkill : _skills[0];
     }
 
-    private void FleeState()
+    public void SetSkills(Skill[] skills)
     {
-        // Lógica para huir del combate
+        List<Skill> lista = new List<Skill>(skills);
+        _skills = lista;
     }
 }

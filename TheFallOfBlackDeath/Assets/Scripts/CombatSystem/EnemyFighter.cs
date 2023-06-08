@@ -5,11 +5,12 @@ public class EnemyFighter : Fighter
 {
     public EnemyDataBase EnemyDateBase;
     public int EnemyIndex;
-    public IAEnemySimple iAEnemySimple;
+    public IAEnemySimple _IAEnemySimple;
     void Awake()
     {
         var data = EnemyDateBase.EnemyDB[EnemyIndex];
-        iAEnemySimple = gameObject.GetComponent<IAEnemySimple>();
+        //_IAEnemySimple = gameObject.GetComponent<IAEnemySimple>();
+        //
 
         if (data.level != 0)
             this.stats = new Stats(data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed);
@@ -19,16 +20,19 @@ public class EnemyFighter : Fighter
 
     public override void InitTurn()
     {
-
         StartCoroutine(this.IA());
-
+        _IAEnemySimple.SetSkills(this.skills);
     }
 
     IEnumerator IA()
     {
         yield return new WaitForSeconds(1f);
 
-        Skill skill = this.skills[Random.Range(0, this.skills.Length)];
+
+        //Skill skill = this.skills[Random.Range(0, this.skills.Length)];
+        Skill skill = _IAEnemySimple.ExecuteState();
+        if(skill == null) skill = this.skills[Random.Range(0, this.skills.Length)];
+
         skill.SetEmitter(this);
 
         if (skill.needsManualTargeting)

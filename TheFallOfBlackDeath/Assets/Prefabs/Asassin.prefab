@@ -97,10 +97,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Curse
-  animationDuration: 3
+  animationDuration: 1.5
   targeting: 4
   effectPrfb: {fileID: 8189500006840025469, guid: 0d1ac179e53c00e4684fbb0cc5e0991d, type: 3}
   SkillDesc: You curse the enemy producing a reduction of life per turn.
+  skillType: 0
   ItemsNeeded:
   - id: 6
     amount: 1
@@ -149,10 +150,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Back Stab
-  animationDuration: 2
+  animationDuration: 1.5
   targeting: 4
   effectPrfb: {fileID: 8189500006840025469, guid: 7c98c80539066d047a95b84f01f9ad5c, type: 3}
   SkillDesc: You sneak behind the enemy delivering a critical blow.
+  skillType: 0
   ItemsNeeded: []
   amount: -45
   modType: 0
@@ -295,10 +297,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Intimidate
-  animationDuration: 2
+  animationDuration: 1.5
   targeting: 4
   effectPrfb: {fileID: 8189500006840025469, guid: 0a19654f0adc9c6429eff011c5724442, type: 3}
   SkillDesc: Low the attack of the enemy
+  skillType: 0
   ItemsNeeded: []
   message: '{receiver} decreased his attack!'
 --- !u!114 &1173216433
@@ -360,10 +363,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Scimitar
-  animationDuration: 2
+  animationDuration: 1.5
   targeting: 4
   effectPrfb: {fileID: 8189500006840025469, guid: 7c98c80539066d047a95b84f01f9ad5c, type: 3}
   SkillDesc: Slash the enemy with the scimitar (High chance of a critical hit.
+  skillType: 0
   ItemsNeeded: []
   amount: -40
   modType: 0
@@ -476,6 +480,41 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: e0358503d5cd0454da05775080055ac0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+--- !u!1 &1234437314483741274 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}
+  m_PrefabInstance: {fileID: 2152988780838477579}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &2606988595817487482
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234437314483741274}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
+--- !u!136 &7028067166134261129
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234437314483741274}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.6909609
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.8533467, z: 0}
 --- !u!4 &1903415838774016224 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f58279b1a5c5192499e94f91bb8e5fb0, type: 3}

@@ -24,8 +24,7 @@ public class tooltip : MonoBehaviour
     {
         tool.enabled = true;
 
-        //var couritine = StartCoroutine("HideTooltipEnum");
-        Debug.Log("mouse over");
+        //var couritine = StartCoroutine("HideTooltipEnum"); 
         skillNameTxT.enabled = true;
         skillNameTxT.GetComponent<Text>().text = skillManager.GetSkillDescription(SkillIndex);
     }
