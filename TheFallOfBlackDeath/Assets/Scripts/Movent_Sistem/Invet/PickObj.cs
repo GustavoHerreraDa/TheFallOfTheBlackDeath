@@ -23,7 +23,7 @@ public class PickObj : MonoBehaviour
             Ray ray = new Ray(transform.position, transform.forward);
             RaycastHit hitinfo;
 
-            if (Physics.Raycast(ray, out hitinfo))
+            if (Physics.Raycast(ray, out hitinfo, 2f))
             {
                 if (hitinfo.collider.gameObject.tag == "Object")
                 {
