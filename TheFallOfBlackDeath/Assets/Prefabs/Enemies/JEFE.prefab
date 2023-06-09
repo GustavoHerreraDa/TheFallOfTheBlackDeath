@@ -1,5 +1,56 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6582401737636880300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2461341281798134371}
+  - component: {fileID: 8376739404348647104}
+  m_Layer: 0
+  m_Name: Paralisis hijo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2461341281798134371
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6582401737636880300}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3374937791065817901}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8376739404348647104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6582401737636880300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e0fb08401cd127498845e9e30306566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectPrfb: {fileID: 8189500006840025469, guid: 5ab3d01e5aa444641bba8bf8160d827b, type: 3}
+  animationDuration: 3
+  receptionMessage: (receiver) is paralyzed
+  applyMessage: (receiver) is paralyzed
+  expireMessage: (receiver) is no more paralyzed!
+  turnDuration: 1
+  blockChance: 1
 --- !u!1 &7801787576626880302
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,6 +432,7 @@ Transform:
   - {fileID: 8939530135407975056}
   - {fileID: 8900571049549332368}
   - {fileID: 6797687931687996133}
+  - {fileID: 3374937791065817901}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -442,6 +494,58 @@ MonoBehaviour:
   Enemy: {fileID: 0}
   MaxPhisicalAttacks: 2
   _skills: []
+--- !u!1 &9192354974218694909
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3374937791065817901}
+  - component: {fileID: 6779043471246249337}
+  m_Layer: 0
+  m_Name: Paralisis
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3374937791065817901
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9192354974218694909}
+  m_LocalRotation: {x: -0.5076331, y: 0.49224862, z: 0.49224862, w: 0.5076331}
+  m_LocalPosition: {x: 2.9114592, y: -0.019999996, z: 5.1660485}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2461341281798134371}
+  m_Father: {fileID: 8939530135699772974}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6779043471246249337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9192354974218694909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Paralysis
+  animationDuration: 1.5
+  targeting: 4
+  effectPrfb: {fileID: 1717075959720994568, guid: 2f48691469e7d394bac81990c3ec94be, type: 3}
+  SkillDesc: 
+  skillType: 1
+  ItemsNeeded: []
 --- !u!1001 &8939530133938513679
 PrefabInstance:
   m_ObjectHideFlags: 0
