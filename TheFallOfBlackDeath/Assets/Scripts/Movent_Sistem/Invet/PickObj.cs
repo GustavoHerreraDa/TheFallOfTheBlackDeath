@@ -44,11 +44,11 @@ public class PickObj : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Object Enter");
+        //Debug.Log("Object Enter");
 
         if (other.gameObject.tag == "Object")
         {
-            Debug.Log("Object Enter");
+            //Debug.Log("Object Enter");
 
             if (other.gameObject.GetComponent<statsOBJ>() != null)
             {

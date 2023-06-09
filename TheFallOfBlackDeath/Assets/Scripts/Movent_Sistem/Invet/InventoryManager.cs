@@ -71,7 +71,7 @@ public class InventoryManager : MonoBehaviour
     }
     public void updateinventory()
     {
-        Debug.Log("updateinventory funciono");
+        //Debug.Log("updateinventory funciono");
         for (int i = 0; i < pool.Count; i++)
         {
             if (i < inventory.Count)

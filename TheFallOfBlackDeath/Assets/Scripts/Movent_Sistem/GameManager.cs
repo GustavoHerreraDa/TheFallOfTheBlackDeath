@@ -64,7 +64,6 @@ public class GameManager : MonoBehaviour
             GameManager.Instance.FindPlayer();
 
             if (GameManager.Instance.lastPos != Vector3.zero)
-
                 GameManager.Instance.character.transform.position = GameManager.Instance.lastPos;
             else
             {

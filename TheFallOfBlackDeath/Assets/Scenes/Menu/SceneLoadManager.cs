@@ -17,6 +17,8 @@ public class SceneLoadManager : MonoBehaviour
 
     IEnumerator LoadAsync (int sceneIndex)
     {
+        PlayerPrefs.SetString("GrupoEnemigo", string.Empty);
+
         loadbar.value = 0;
         loadPanel.SetActive(true);
 
