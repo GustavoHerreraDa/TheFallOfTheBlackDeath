@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     static public GameManager _instance;
     public GameObject character;
     public Vector3 lastPos;
+    public Transform startPost;
     /*public GameObject Character
     {
         get { return FindObjectOfType<Movent>().gameObject; }
@@ -61,7 +62,16 @@ public class GameManager : MonoBehaviour
         {
             GameManager.Instance.FindEnemies();
             GameManager.Instance.FindPlayer();
-            GameManager.Instance.character.transform.position = GameManager.Instance.lastPos;
+
+            if (GameManager.Instance.lastPos != Vector3.zero)
+
+                GameManager.Instance.character.transform.position = GameManager.Instance.lastPos;
+            else
+            {
+                GameManager.Instance.character.transform.position = startPost.position;
+                Debug.Log("Start Post es " + startPost.position.x + " " + startPost.position.y + " " + startPost.position.z);
+            }
+
             string nombre = PlayerPrefs.GetString("GrupoEnemigo");
 
 
