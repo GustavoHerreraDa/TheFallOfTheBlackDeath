@@ -13,7 +13,7 @@ public class Menu : MonoBehaviour
 
     bool inventory;
     bool Pause;
-    
+    public CombatManager combatManager;
 
     
 
@@ -104,14 +104,23 @@ public class Menu : MonoBehaviour
     public void Resumegame()
     {
 
-       Pausemenu.SetActive(false);
-       Time.timeScale = 1f;
-       Pause = false;
+       if (combatManager.isCombatActive == true)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Pausemenu.SetActive(false);
+            Time.timeScale = 1f;
+            Pause = false;
+        }
+       else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Pausemenu.SetActive(false);
+            Time.timeScale = 1f;
+            Pause = false;
+        }
         
 
     }
-
-    
 
 }
 
