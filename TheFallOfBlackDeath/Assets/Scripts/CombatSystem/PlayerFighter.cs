@@ -38,6 +38,7 @@ public class PlayerFighter : Fighter
         {
             Fighter[] receivers = this.GetSkillTargets(this.skillToBeExecuted);
             this.enemiesPanel.Show(this, receivers);
+            this.skillPanel.Hide();
         }
         else
         {

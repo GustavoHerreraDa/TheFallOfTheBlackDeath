@@ -61,7 +61,7 @@ public class EnemiesPanel : MonoBehaviour
 
     public void Hide()
     {
-        this.gameObject.SetActive(false);
+        this.sampleButton.SetActive(false);
 
         foreach (var btn in this.buttons)
         {
@@ -102,5 +102,9 @@ public class EnemiesPanel : MonoBehaviour
         this.buttons.Add(btn);
 
         return btn;
+    }
+    public void Show()
+    {
+        this.sampleButton.SetActive(true);
     }
 }
