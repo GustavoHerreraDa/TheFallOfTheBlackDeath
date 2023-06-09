@@ -50,7 +50,7 @@ public abstract class Skill : MonoBehaviour
 
     private void Animate(Fighter receiver)
     {
-        var go = Instantiate(this.effectPrfb, receiver.transform.position, Quaternion.identity);
+        var go = Instantiate(this.effectPrfb, receiver.DamagePivot.position, Quaternion.identity);
         Destroy(go, this.animationDuration);
     }
 
