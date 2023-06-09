@@ -46,10 +46,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: ShootHead
   animationDuration: 0
-  selfInflicted: 0
+  targeting: 0
   effectPrfb: {fileID: 0}
+  SkillDesc: 
+  skillType: 0
+  ItemsNeeded: []
   amount: -25
   modType: 0
+  critChance: 0
 --- !u!1 &1522700346
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,10 +100,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Attack
   animationDuration: 0
-  selfInflicted: 0
+  targeting: 0
   effectPrfb: {fileID: 0}
+  SkillDesc: 
+  skillType: 0
+  ItemsNeeded: []
   amount: -10
   modType: 0
+  critChance: 0
 --- !u!1 &444600648293484435
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +205,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 39bff43c439e80144830336b1382c438, type: 2}
+  - {fileID: 2100000, guid: 039ff2a720e493543b7c268e9c396b26, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -231,11 +239,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cafa976afee2e8a41aedf9756702ba62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  team: 0
   idName: Skeleton Orange
   statusPanel: {fileID: 0}
   combatManager: {fileID: 0}
+  statusMods: []
+  statusCondition: {fileID: 0}
   CameraPivot: {fileID: 0}
   DamagePivot: {fileID: 2564736258318283752}
+  EnemyDateBase: {fileID: 0}
+  EnemyIndex: 0
+  _IAEnemySimple: {fileID: 0}
 --- !u!1 &8007889483420183821
 GameObject:
   m_ObjectHideFlags: 0
