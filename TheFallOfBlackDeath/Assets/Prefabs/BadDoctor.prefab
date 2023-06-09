@@ -29,8 +29,62 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7943538130402282915}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1307833225789353702
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1786081191262668867}
+  - component: {fileID: 4713714396842961680}
+  m_Layer: 0
+  m_Name: Curse
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1786081191262668867
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307833225789353702}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.0947181, y: 0.01999998, z: 1.1602895}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1916751031433966080}
+  m_Father: {fileID: 7943538130402282915}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4713714396842961680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307833225789353702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Curse
+  animationDuration: 1.5
+  targeting: 4
+  effectPrfb: {fileID: 8189500006840025469, guid: 0d1ac179e53c00e4684fbb0cc5e0991d, type: 3}
+  SkillDesc: You curse the enemy producing a reduction of life per turn.
+  skillType: 0
+  ItemsNeeded:
+  - id: 6
+    amount: 1
 --- !u!1 &3412323366584801750
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,7 +115,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7943538130402282915}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1071327244
 MonoBehaviour:
@@ -116,7 +170,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7943538130402282915}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6234800638412072538
 GameObject:
@@ -149,7 +203,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7943538130402282915}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1379128044
 MonoBehaviour:
@@ -216,7 +270,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7943538130402282915}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1640209252
 MonoBehaviour:
@@ -252,6 +306,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   amount: 10
+--- !u!1 &6276327488946913769
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1916751031433966080}
+  - component: {fileID: 5154900016592543569}
+  m_Layer: 0
+  m_Name: Maldicion hijo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1916751031433966080
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6276327488946913769}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1786081191262668867}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5154900016592543569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6276327488946913769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51e2ef5a84f96f409ceb956945277e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectPrfb: {fileID: 8189500006840025469, guid: 0d1ac179e53c00e4684fbb0cc5e0991d, type: 3}
+  animationDuration: 3
+  receptionMessage: (receiver) is cursed
+  applyMessage: Curses damages (receiver)
+  expireMessage: Curse fades
+  turnDuration: 3
+  percentage: -0.1
 --- !u!1 &7311256974603474713
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,12 +390,12 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1436344258720529718}
-  - {fileID: 6288930029892525461}
   - {fileID: 8696734938166610363}
   - {fileID: 5365537781766933014}
   - {fileID: 282413377629612678}
   - {fileID: 5898992332701915067}
   - {fileID: 2114793669930718209}
+  - {fileID: 1786081191262668867}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -85.763, z: 0}
@@ -411,60 +516,6 @@ MonoBehaviour:
   m_ExecuteInEditor: 1
   m_Bindings: []
   m_VisualEffect: {fileID: 543450651650416159}
---- !u!1 &7458643172263496357
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6288930029892525461}
-  - component: {fileID: 3824356785343299998}
-  m_Layer: 0
-  m_Name: Walking stick
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6288930029892525461
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7458643172263496357}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7943538130402282915}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3824356785343299998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7458643172263496357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Walking stick
-  animationDuration: 1.5
-  targeting: 4
-  effectPrfb: {fileID: 8189500006840025469, guid: 3ec25404e40d38040b62a0b63742a8ea, type: 3}
-  SkillDesc: You hit the enemy whith the stick (phisical attack).
-  skillType: 0
-  ItemsNeeded: []
-  amount: -31
-  modType: 0
-  critChance: 0
 --- !u!1001 &1469389552250002141
 PrefabInstance:
   m_ObjectHideFlags: 0

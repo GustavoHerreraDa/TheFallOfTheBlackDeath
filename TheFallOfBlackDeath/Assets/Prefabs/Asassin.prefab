@@ -1,56 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1585225520
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1585225521}
-  - component: {fileID: 1585225522}
-  m_Layer: 0
-  m_Name: Maldicion hijo
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1585225521
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1585225520}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3302782770964871340}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1585225522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1585225520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b51e2ef5a84f96f409ceb956945277e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectPrfb: {fileID: 8189500006840025469, guid: 0d1ac179e53c00e4684fbb0cc5e0991d, type: 3}
-  animationDuration: 3
-  receptionMessage: (receiver) is cursed
-  applyMessage: Curses damages (receiver)
-  expireMessage: Curse fades
-  turnDuration: 3
-  percentage: -0.1
 --- !u!1 &1284403506246166845
 GameObject:
   m_ObjectHideFlags: 0
@@ -60,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3302782770964871340}
-  - component: {fileID: 1238772087}
+  - component: {fileID: 3441648550257695403}
   m_Layer: 0
   m_Name: Curse
   m_TagString: Untagged
@@ -79,12 +28,11 @@ Transform:
   m_LocalPosition: {x: -4.280013, y: 0, z: 0.92631006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1585225521}
+  m_Children: []
   m_Father: {fileID: 2252651694320841864}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1238772087
+--- !u!114 &3441648550257695403
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -93,18 +41,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1284403506246166845}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
+  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Curse
-  animationDuration: 1.5
-  targeting: 4
-  effectPrfb: {fileID: 8189500006840025469, guid: 0d1ac179e53c00e4684fbb0cc5e0991d, type: 3}
-  SkillDesc: You curse the enemy producing a reduction of life per turn.
+  skillName: Molotov
+  animationDuration: 1
+  targeting: 2
+  effectPrfb: {fileID: 8189500006840025469, guid: 7f9254042e04b1a4b92f1d86cc0fd977, type: 3}
+  SkillDesc: Damages all enemies
   skillType: 0
-  ItemsNeeded:
-  - id: 6
-    amount: 1
+  ItemsNeeded: []
+  amount: 15
+  modType: 1
+  critChance: 0
 --- !u!1 &1348095314520277603
 GameObject:
   m_ObjectHideFlags: 0
