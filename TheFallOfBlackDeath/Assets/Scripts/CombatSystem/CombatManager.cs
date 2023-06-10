@@ -30,6 +30,7 @@ public class CombatManager : MonoBehaviour
     private Skill currentFighterSkill;
 
     private List<Fighter> returnBuffer;
+    public TurnsDisplay turnsDisplay;
 
     void Start()
     {
@@ -46,6 +47,9 @@ public class CombatManager : MonoBehaviour
 
         this.fighterIndex = -1;
         this.isCombatActive = true;
+
+        
+
         StartCoroutine(this.CombatLoop());
     }
 
@@ -73,6 +77,9 @@ public class CombatManager : MonoBehaviour
                 }
             }
         }
+
+        if (turnsDisplay != null)
+            turnsDisplay.SetText(this.fighters);
     }
 
     private void MakeTeams()
@@ -157,7 +164,7 @@ public class CombatManager : MonoBehaviour
 
                     if (victory)
                     {
-                        
+
                         LogPanel.Write("Victoria!");
                         this.isCombatActive = false;
                         PlayerPrefs.SetString("GrupoEnemigo", groupEnemyName);
@@ -231,7 +238,7 @@ public class CombatManager : MonoBehaviour
                     else
                     {
                         this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
-                     
+
                     }
                     break;
             }

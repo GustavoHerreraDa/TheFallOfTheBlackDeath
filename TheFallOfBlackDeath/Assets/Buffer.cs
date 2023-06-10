@@ -11,19 +11,24 @@ public class Buffer : MonoBehaviour
     public Material buffMaterial;
     private Color color;
     public Material[] materiales;
+    Renderer rendererFighter;
     void Start()
     {
         fighter = gameObject.GetComponent<Fighter>();
         materiales = new Material[2];
+        rendererFighter = playerRenderer.GetComponent<Renderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (rendererFighter == null)
+            return;
+
         if (fighter.statusMods.Count > 0)
         {
             Debug.Log("statusMods entro");
-            Renderer renderer = playerRenderer.GetComponent<Renderer>();
+           
 
             //fighter.statusMods
             switch (fighter.statusMods[0].type)
@@ -39,13 +44,13 @@ public class Buffer : MonoBehaviour
             }
             materiales[0] = baseMaterial;
             materiales[1] = buffMaterial;
-            renderer.materials = materiales;
+            rendererFighter.materials = materiales;
         }
         if (fighter.statusMods.Count == 0)
         {
             materiales[0] = baseMaterial;
             materiales[1] = null;
-            GetComponent<Renderer>().materials = materiales;
+            rendererFighter.materials = materiales;
         }
     }
 }
