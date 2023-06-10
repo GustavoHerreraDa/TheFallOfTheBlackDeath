@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0.004773809, b: 0.06303059, a: 1}
+  m_IndirectSpecularColor: {r: 0.00028264857, g: 0.00842314, b: 0.104659714, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5018,12 +5018,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1141330259687333427, guid: 6718dc24203da53468af9ada8fef7d6d, type: 3}
     - target: {fileID: 7079441431698002110, guid: 9931430fa8044704c8b65d07bc8d0753, type: 3}
+      propertyPath: percentage
+      value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7079441431698002110, guid: 9931430fa8044704c8b65d07bc8d0753, type: 3}
       propertyPath: applyMessage
       value: Thunder damages (receiver)
       objectReference: {fileID: 0}
     - target: {fileID: 7079441431698002110, guid: 9931430fa8044704c8b65d07bc8d0753, type: 3}
       propertyPath: expireMessage
       value: Thunder fades
+      objectReference: {fileID: 0}
+    - target: {fileID: 7079441431698002110, guid: 9931430fa8044704c8b65d07bc8d0753, type: 3}
+      propertyPath: receptionMessage
+      value: (receiver) is marked
       objectReference: {fileID: 0}
     - target: {fileID: 7079441432405552888, guid: 9931430fa8044704c8b65d07bc8d0753, type: 3}
       propertyPath: message
@@ -5033,6 +5041,14 @@ PrefabInstance:
       propertyPath: effectPrfb
       value: 
       objectReference: {fileID: 7177991128484655659, guid: 59a35ab9f68edff40b6e5332bed330f5, type: 3}
+    - target: {fileID: 7079441432546184275, guid: 9931430fa8044704c8b65d07bc8d0753, type: 3}
+      propertyPath: m_Name
+      value: Thunder
+      objectReference: {fileID: 0}
+    - target: {fileID: 7079441432546184277, guid: 9931430fa8044704c8b65d07bc8d0753, type: 3}
+      propertyPath: skillName
+      value: Thunder
+      objectReference: {fileID: 0}
     - target: {fileID: 7079441432546184277, guid: 9931430fa8044704c8b65d07bc8d0753, type: 3}
       propertyPath: effectPrfb
       value: 
@@ -5172,6 +5188,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3441648550257695403, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
+      propertyPath: effectPrfb
+      value: 
+      objectReference: {fileID: 1134129239631916, guid: 7e48ba6b1b968764490bbc70b66e3fe1, type: 3}
     - target: {fileID: 5099093193033445559, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.17
@@ -5195,8 +5215,20 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4713714396842961680, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: SkillDesc
-      value: You curse the enemy producing a reduction of the 20% life per turn.
+      value: You curse the enemy producing a reduction of the 10% life per turn.
       objectReference: {fileID: 0}
+    - target: {fileID: 4713714396842961680, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+      propertyPath: skillName
+      value: Curse
+      objectReference: {fileID: 0}
+    - target: {fileID: 4713714396842961680, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+      propertyPath: effectPrfb
+      value: 
+      objectReference: {fileID: 100004, guid: 7867af58a6ec48846ae807eb4022fbaa, type: 3}
+    - target: {fileID: 5154900016592543569, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+      propertyPath: effectPrfb
+      value: 
+      objectReference: {fileID: 100004, guid: 7867af58a6ec48846ae807eb4022fbaa, type: 3}
     - target: {fileID: 7311256974603474713, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: m_Name
       value: Erika

@@ -165,7 +165,7 @@ public class CombatManager : MonoBehaviour
                     if (victory)
                     {
 
-                        LogPanel.Write("Victoria!");
+                        LogPanel.Write("Victory!");
                         this.isCombatActive = false;
                         PlayerPrefs.SetString("GrupoEnemigo", groupEnemyName);
                         SceneManager.LoadScene(1);
