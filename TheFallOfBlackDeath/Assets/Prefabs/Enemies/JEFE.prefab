@@ -373,6 +373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   amount: -10
+  fighter: {fileID: 0}
 --- !u!114 &8939530135590004127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,6 +406,7 @@ GameObject:
   - component: {fileID: 8939530135699772975}
   - component: {fileID: 8939530135699773392}
   - component: {fileID: 8764625672899622800}
+  - component: {fileID: 8623704912797861784}
   m_Layer: 0
   m_Name: JEFE
   m_TagString: Untagged
@@ -494,6 +496,21 @@ MonoBehaviour:
   Enemy: {fileID: 0}
   MaxPhisicalAttacks: 2
   _skills: []
+--- !u!114 &8623704912797861784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8939530135699772973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77345174282e5da4798c4f0a2ca01574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fighter: {fileID: 8939530135699773392}
+  actualDefense: {fileID: 3048758313707996058}
+  actualAttack: {fileID: 4583568906723492040}
 --- !u!1 &9192354974218694909
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,6 +721,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 842f3c42f93eaf74eb25f2a545c3e32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3048758313707996058 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6215190426968368277, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+  m_PrefabInstance: {fileID: 8939530133938513679}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4583568906723492040 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4869390557770262471, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+  m_PrefabInstance: {fileID: 8939530133938513679}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &6797687931687996133 stripped

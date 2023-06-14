@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7758305694475628394}
   - component: {fileID: 7758305694475628395}
   - component: {fileID: 3005204787514909815}
+  - component: {fileID: 3290043045384917605}
   m_Layer: 0
   m_Name: Healing Goblin
   m_TagString: Untagged
@@ -98,6 +99,21 @@ MonoBehaviour:
   Enemy: {fileID: 7758305694475628395}
   MaxPhisicalAttacks: 1
   _skills: []
+--- !u!114 &3290043045384917605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7758305694475628397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77345174282e5da4798c4f0a2ca01574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fighter: {fileID: 7758305694475628395}
+  actualDefense: {fileID: 4461874464020848858}
+  actualAttack: {fileID: 2898212617036981128}
 --- !u!1 &7758305694778269741
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,6 +192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   amount: 10
+  fighter: {fileID: 0}
 --- !u!114 &7758305694807209982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -504,6 +521,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 842f3c42f93eaf74eb25f2a545c3e32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2898212617036981128 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4869390557770262471, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+  m_PrefabInstance: {fileID: 7758305695891637327}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4461874464020848858 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6215190426968368277, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+  m_PrefabInstance: {fileID: 7758305695891637327}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &5328501146475948453 stripped

@@ -79,6 +79,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   amount: 10
+  fighter: {fileID: 0}
 --- !u!114 &121216533997593787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,6 +263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   amount: -10
+  fighter: {fileID: 0}
 --- !u!114 &121216535127587782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -498,6 +500,7 @@ GameObject:
   - component: {fileID: 4149423033628591000}
   - component: {fileID: 543450653444804878}
   - component: {fileID: 543450653444804877}
+  - component: {fileID: 2186220033999610831}
   m_Layer: 0
   m_Name: Drake
   m_TagString: Untagged
@@ -617,6 +620,21 @@ CapsuleCollider:
   m_Height: 1.6841526
   m_Direction: 1
   m_Center: {x: 0.07312389, y: 0.83429945, z: -0.07424605}
+--- !u!114 &2186220033999610831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968216857696450004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77345174282e5da4798c4f0a2ca01574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fighter: {fileID: 121216534234633975}
+  actualDefense: {fileID: 1990660751549578410}
+  actualAttack: {fileID: 1041309264741580792}
 --- !u!1 &1057120332523722383
 GameObject:
   m_ObjectHideFlags: 0
@@ -2803,6 +2821,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+--- !u!114 &1041309264741580792 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4869390557770262471, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+  m_PrefabInstance: {fileID: 5611755253154650175}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1990660751549578410 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6215190426968368277, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+  m_PrefabInstance: {fileID: 5611755253154650175}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3806520503917932679 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8733481953672816824, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
