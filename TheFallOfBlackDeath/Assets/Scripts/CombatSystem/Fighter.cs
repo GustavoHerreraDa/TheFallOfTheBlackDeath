@@ -11,7 +11,8 @@ public abstract class Fighter : MonoBehaviour
 
     public List<StatusMod> statusMods;
 
-    protected Stats stats;
+    public Stats stats;
+    public Stats modedStats;
     protected Skill[] skills;
     public StatusCondition statusCondition;
 
@@ -30,7 +31,7 @@ public abstract class Fighter : MonoBehaviour
     {
         this.statusPanel.SetStats(this.idName, this.stats);
         this.skills = this.GetComponentsInChildren<Skill>();
-
+        this.modedStats = stats;
         this.statusMods = new List<StatusMod>();
     }
 
@@ -95,6 +96,7 @@ public abstract class Fighter : MonoBehaviour
 
         this.stats.health = Mathf.Round(this.stats.health);
         this.statusPanel.SetHealth(this.stats.health, this.stats.maxHealth);
+        
 
         if (this.isAlive == false)
         {
@@ -110,8 +112,9 @@ public abstract class Fighter : MonoBehaviour
         foreach (var mod in this.statusMods)
         {
             modedStats = mod.Apply(modedStats);
-        }
 
+        }
+       
         return modedStats;
     }
 
@@ -124,6 +127,11 @@ public abstract class Fighter : MonoBehaviour
         }
 
         return this.statusCondition;
+    }
+    public void SetModStats(Stats stats)
+    {
+        modedStats = stats;
+
     }
 
     public abstract void InitTurn();

@@ -7,12 +7,13 @@ public class StatusPanel : MonoBehaviour
     public Text nameLabel;
     public Text levelLabel;
     public Text healthLabel;
-
+    public TextMeshProUGUI actualDefense;
+    public TextMeshProUGUI actualAttack;
     public Slider healthSlider;
     public Image healthSliderBar;
     public TextMeshProUGUI healthLabelPro;
     public TextMeshProUGUI nameTextLabel;
-
+    private StatusMod StatusMod;
 
 
     public void SetStats(string name, Stats stats)
@@ -30,6 +31,7 @@ public class StatusPanel : MonoBehaviour
             this.levelLabel.text = $"N. {stats.level}";
 
         this.SetHealth(stats.health, stats.maxHealth);
+
     }
     public void SetHealth(float health, float maxHealth)
     {
@@ -47,9 +49,6 @@ public class StatusPanel : MonoBehaviour
         if (percentage < 0.33f)
         {
             this.healthSliderBar.color = Color.red;
-        }
-        {
-
         }
     }
 }
