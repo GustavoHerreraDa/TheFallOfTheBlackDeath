@@ -13,7 +13,7 @@ public class StatusPanel : MonoBehaviour
     public Image healthSliderBar;
     public TextMeshProUGUI healthLabelPro;
     public TextMeshProUGUI nameTextLabel;
-    private StatusMod StatusMod;
+
 
 
     public void SetStats(string name, Stats stats)

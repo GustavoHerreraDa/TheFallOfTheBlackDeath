@@ -8,6 +8,7 @@ public class StatsManager : MonoBehaviour
     public Fighter fighter;
     public TextMeshProUGUI actualDefense;
     public TextMeshProUGUI actualAttack;
+    
 
     void Update()
     {
@@ -20,11 +21,35 @@ public class StatsManager : MonoBehaviour
     public void SetDefense(float deffense)
     {
         actualDefense.text = deffense.ToString();
+        if (deffense == 80)
+        {
+
+            actualDefense.color = Color.yellow;
+
+        }
+        if (deffense == 20)
+        {
+            actualDefense.color = Color.red;
+        }
+
+
 
     }
     public void SetAttack(float attack)
     {
         actualAttack.text = attack.ToString();
+        if (attack == 80)
+        {
+            
+          actualAttack.color = Color.yellow;
+
+        }
+        if (attack == 20)
+        {
+
+            actualAttack.color = Color.red;
+
+        }
+
     }
-    
 }
