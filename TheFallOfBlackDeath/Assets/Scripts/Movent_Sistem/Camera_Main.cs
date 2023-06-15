@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Camera_Main : MonoBehaviour
 {
-    private Vector2 angle = new Vector2(90 * Mathf.Deg2Rad,0);
+    private Vector2 angle = new Vector2(0 * Mathf.Deg2Rad,0);
     
     [SerializeField] private Transform Follow;
     [SerializeField] private float Distance;
@@ -41,14 +41,7 @@ public class Camera_Main : MonoBehaviour
     void LateUpdate()
     {
         Vector3 orbit = new Vector3(Mathf.Cos(angle.x) * Mathf.Cos(angle.y), - Mathf.Sin(angle.y), - Mathf.Sin(angle.x) * Mathf.Cos(angle.y));
-
-        
-         
         transform.position = Follow.position + orbit * Distance;
         transform.rotation = Quaternion.LookRotation(Follow.position - transform.position);
-        
-        
-        
-        
     }
 }
