@@ -8,11 +8,13 @@ public class Menu : MonoBehaviour
 {
     public GameObject Pausemenu;
     [SerializeField] GameObject Inventorymenu;
+    [SerializeField] GameObject StatsMenu;
 
 
 
     bool inventory;
     bool Pause;
+    bool IsStats;
     public CombatManager combatManager;
 
     
@@ -23,6 +25,10 @@ public class Menu : MonoBehaviour
         Pausemenu.SetActive(false);
         Inventorymenu.SetActive(false);
         
+        if (StatsMenu == null)
+            return;
+
+        StatsMenu.SetActive(false);
     }
 
     void Update()
@@ -65,7 +71,26 @@ public class Menu : MonoBehaviour
                 Inventoryfalse();
             }
         }
-    
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (StatsMenu == null)
+                return;
+
+            Pausemenu.SetActive(false);
+
+            //Debug.Log("hola");
+            if (IsStats)
+            {
+                //Debug.Log("hola");
+                StatsTrue();
+            }
+            else
+            {
+                Statsfalse();
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(0);
@@ -87,9 +112,23 @@ public class Menu : MonoBehaviour
         Inventorymenu.SetActive(true);
         inventory = true;
     }
-    
-    
-    
+
+    private void StatsTrue()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        StatsMenu.SetActive(false);
+        IsStats = false;
+
+    }
+    private void Statsfalse()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        StatsMenu.SetActive(true);
+        IsStats = true;
+    }
+
+
+
     public void PauseGame()
     {
        Cursor.lockState = CursorLockMode.None;

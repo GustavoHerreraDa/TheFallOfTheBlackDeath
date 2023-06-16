@@ -8,6 +8,10 @@ public class StatsManager : MonoBehaviour
     public Fighter fighter;
     public TextMeshProUGUI actualDefense;
     public TextMeshProUGUI actualAttack;
+    public Skill skillOne;
+    public Skill skillTwo;
+    public Skill skillThree;
+    public Skill skillFour;
     
 
     void Update()
