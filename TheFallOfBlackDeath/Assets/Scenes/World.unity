@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1595046872}
-  m_IndirectSpecularColor: {r: 0.00000008490936, g: 0.0005647515, b: 0.015207048, a: 1}
+  m_IndirectSpecularColor: {r: 0.00030134016, g: 0.008429392, b: 0.10503368, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3360,17 +3360,24 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 7228399444001451866, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
   m_PrefabInstance: {fileID: 7228399445496384510}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1495737510 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7228399444001451870, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
-  m_PrefabInstance: {fileID: 7228399445496384510}
+--- !u!143 &1495737515
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1495737503}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 419e826a7e1257046a0cfc6e8788f2ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1.1, z: 0}
 --- !u!1001 &1505717536
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6288,11 +6295,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7228399444001451868, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
       propertyPath: m_Mass
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7228399444001451868, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
       propertyPath: m_UseGravity
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7228399444001451868, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7228399444001451869, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
       propertyPath: m_RootOrder
@@ -6304,7 +6315,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7228399444001451869, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.33
+      value: -3.986
       objectReference: {fileID: 0}
     - target: {fileID: 7228399444001451869, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6340,12 +6351,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7228399444001451870, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
       propertyPath: Speed
-      value: 250
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7228399444001451870, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
       propertyPath: Camera
       value: 
       objectReference: {fileID: 2063209486}
+    - target: {fileID: 7228399444001451870, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7228399444001451871, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
       propertyPath: m_Material
       value: 
@@ -6369,7 +6384,7 @@ PrefabInstance:
     - target: {fileID: 7228399444604952271, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
       propertyPath: movent
       value: 
-      objectReference: {fileID: 1495737510}
+      objectReference: {fileID: 0}
     - target: {fileID: 7228399444604952271, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
       propertyPath: PickUpMeessage
       value: 
@@ -6389,13 +6404,14 @@ PrefabInstance:
     - target: {fileID: 7557651050551123926, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
       propertyPath: movent
       value: 
-      objectReference: {fileID: 1495737510}
+      objectReference: {fileID: 0}
     - target: {fileID: 7557651050551123926, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
       propertyPath: PickUpMeessage
       value: 
       objectReference: {fileID: 336939614}
     m_RemovedComponents:
     - {fileID: 194278320412603081, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
+    - {fileID: 7228399444001451868, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f0bd52e9a359c7640bd6a09b3e851347, type: 3}
 --- !u!1001 &8929900904076477557
 PrefabInstance:

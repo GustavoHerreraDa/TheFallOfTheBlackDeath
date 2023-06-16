@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1089921451143679388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 368067140380800150}
+  m_Layer: 0
+  m_Name: Pies
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &368067140380800150
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089921451143679388}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.012, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7228399444001451869}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1165214553448058387
 GameObject:
   m_ObjectHideFlags: 0
@@ -1125,10 +1156,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7228399444001451869}
-  - component: {fileID: 7228399444001451868}
   - component: {fileID: 7228399444001451871}
-  - component: {fileID: 7228399444001451870}
   - component: {fileID: 7228399444001451866}
+  - component: {fileID: 4567172318683264132}
+  - component: {fileID: 6583610631474649816}
   m_Layer: 0
   m_Name: Character 1
   m_TagString: Charecter
@@ -1152,25 +1183,10 @@ Transform:
   - {fileID: 7228399444447134560}
   - {fileID: 2316180390851639871}
   - {fileID: 7862905704446186977}
+  - {fileID: 368067140380800150}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -89.721, z: 0}
---- !u!54 &7228399444001451868
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7228399444001451873}
-  serializedVersion: 2
-  m_Mass: 1000
-  m_Drag: 0
-  m_AngularDrag: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
 --- !u!136 &7228399444001451871
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1185,24 +1201,6 @@ CapsuleCollider:
   m_Height: 1.84
   m_Direction: 1
   m_Center: {x: -0, y: 0.89, z: 0}
---- !u!114 &7228399444001451870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7228399444001451873}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 419e826a7e1257046a0cfc6e8788f2ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RGB: {fileID: 7228399444001451868}
-  Speed: 150
-  Camera: {fileID: 0}
-  Transition: 0.5
-  itemIconPrefab: {fileID: 6291435545686710837, guid: 3141e59982eac204c9502aec485bb6ee, type: 3}
-  inventoryContent: {fileID: 0}
 --- !u!95 &7228399444001451866
 Animator:
   serializedVersion: 4
@@ -1223,6 +1221,45 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4567172318683264132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7228399444001451873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca8ee6b66f9c22f48908aa8c33abdcd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocidad: 4
+  velCorriendo: 9
+  alturaDeSalto: 0
+  tiempoAlGirar: 0.2
+  detectaPiso: {fileID: 368067140380800150}
+  distanciaPiso: 0
+  mascaraPiso:
+    serializedVersion: 2
+    m_Bits: 1
+--- !u!143 &6583610631474649816
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7228399444001451873}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1.1, z: 0}
 --- !u!1 &7228399444094074996
 GameObject:
   m_ObjectHideFlags: 0
