@@ -28,17 +28,10 @@ public class StatsManager : MonoBehaviour
 
         }
 
-        else
-        {
-            actualDefense.color = Color.white;
-        }
-
-
         if (deffense <= 20)
         {
             actualDefense.color = Color.red;
         }
-
         else
         {
             actualDefense.color = Color.white;
@@ -55,10 +48,6 @@ public class StatsManager : MonoBehaviour
           actualAttack.color = Color.yellow;
 
         }
-        else
-        {
-            actualDefense.color = Color.white;
-        }
         if (attack <= 20)
         {
 
@@ -68,7 +57,6 @@ public class StatsManager : MonoBehaviour
         {
             actualDefense.color = Color.white;
         }
-
 
     }
 }
