@@ -21,34 +21,41 @@ public class StatsManager : MonoBehaviour
     public void SetDefense(float deffense)
     {
         actualDefense.text = deffense.ToString();
-        if (deffense == 80)
+        if (deffense >= 80)
         {
 
             actualDefense.color = Color.yellow;
 
         }
-        if (deffense == 20)
+
+        if (deffense <= 20)
         {
             actualDefense.color = Color.red;
         }
-
+        else
+        {
+            actualDefense.color = Color.white;
+        }
 
 
     }
     public void SetAttack(float attack)
     {
         actualAttack.text = attack.ToString();
-        if (attack == 80)
+        if (attack >= 80)
         {
             
           actualAttack.color = Color.yellow;
 
         }
-        if (attack == 20)
+        if (attack <= 20)
         {
 
             actualAttack.color = Color.red;
-
+        }
+        else
+        {
+            actualDefense.color = Color.white;
         }
 
     }
