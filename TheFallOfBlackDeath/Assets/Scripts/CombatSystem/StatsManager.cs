@@ -36,10 +36,6 @@ public class StatsManager : MonoBehaviour
         {
             actualDefense.color = Color.red;
         }
-        else
-        {
-            actualDefense.color = Color.white;
-        }
 
 
     }
@@ -57,10 +53,7 @@ public class StatsManager : MonoBehaviour
 
             actualAttack.color = Color.red;
         }
-        else
-        {
-            actualDefense.color = Color.white;
-        }
+
 
     }
 }
