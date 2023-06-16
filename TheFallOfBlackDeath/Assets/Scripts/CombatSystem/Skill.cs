@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public enum SkillType
 {
@@ -24,6 +25,7 @@ public abstract class Skill : MonoBehaviour
     public string SkillDesc;
     protected Queue<string> messages;
     public SkillType skillType;
+    public Sprite iconUI;
 
     public List<InventoryManager.InventoryObjectID> ItemsNeeded;
     public bool needsManualTargeting
