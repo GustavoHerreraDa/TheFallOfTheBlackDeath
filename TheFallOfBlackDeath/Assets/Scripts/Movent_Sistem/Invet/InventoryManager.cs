@@ -112,13 +112,28 @@ public class InventoryManager : MonoBehaviour
 
         var hasItemInIventory = false;
 
-        foreach (var itemNeed in itemsNeeded )
+        foreach (var itemNeed in itemsNeeded)
         {
             var itemInventory = inventory.Where(x => x.id == itemNeed.id).FirstOrDefault();
 
             if (itemInventory.amount >= itemNeed.amount)
                 hasItemInIventory = true;
         }
+
+        return hasItemInIventory;
+    }
+
+    public bool HasItemInIventory(int _id, int _amount)
+    {
+
+        var hasItemInIventory = false;
+
+
+        var itemInventory = inventory.Where(x => x.id == _id).FirstOrDefault();
+
+        if (itemInventory.amount >= _amount)
+            hasItemInIventory = true;
+
 
         return hasItemInIventory;
     }

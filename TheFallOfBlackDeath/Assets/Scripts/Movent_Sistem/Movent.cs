@@ -12,7 +12,6 @@ public class Movent : MonoBehaviour
     [SerializeField] private float Transition;
     public GameObject itemIconPrefab;
     public Transform inventoryContent;
- 
 
     //void Awake()
     //{
@@ -40,6 +39,9 @@ public class Movent : MonoBehaviour
         float Vertical = Input.GetAxis("Vertical");
         Vector3 movement = Vector3.zero;
 
+        
+
+
         if (Horizontal != 0 || Vertical != 0)
         {
 
@@ -59,19 +61,12 @@ public class Movent : MonoBehaviour
             movement = Speed * Time.deltaTime * direction;
 
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Transition);
-
-
         }
 
         movement.y = RGB.velocity.y;
         RGB.velocity = movement;
 
         Anim.SetFloat("Movent", movent);
-
-
-
-        
-        
         
 
 

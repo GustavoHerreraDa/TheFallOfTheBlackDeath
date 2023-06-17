@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,6 +17,8 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private Transform detectaPiso;
     [SerializeField] private float distanciaPiso;
     [SerializeField] private LayerMask mascaraPiso;
+    public bool stop;
+
 
     float velocidadGiro;
     float gravedad = -9.81f;
@@ -45,6 +47,14 @@ public class PlayerControl : MonoBehaviour
         {
             velocity.y = Mathf.Sqrt(alturaDeSalto * -2 * gravedad);
         }
+
+        if (stop)
+        {
+            Debug.Log("Se mueve solo!");
+            controller.Move(Vector3.zero);
+            return;
+        }
+            
 
         velocity.y += gravedad * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
