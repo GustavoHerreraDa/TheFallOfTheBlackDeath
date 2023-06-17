@@ -112,7 +112,6 @@ public abstract class Fighter : MonoBehaviour
         foreach (var mod in this.statusMods)
         {
             modedStats = mod.Apply(modedStats);
-
         }
        
         return modedStats;
