@@ -37,6 +37,7 @@ public class EnemyFighter : Fighter
 
             if (skill.needsManualTargeting)
             {
+                animator.Play("Attack");
                 Fighter[] targets = this.GetSkillTargets(skill);
 
                 Fighter target = targets[Random.Range(0, targets.Length)];

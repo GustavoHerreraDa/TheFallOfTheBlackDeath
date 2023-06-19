@@ -6,7 +6,7 @@ public abstract class Fighter : MonoBehaviour
     public Team team;
     public string idName;
     public StatusPanel statusPanel;
-
+    public Animator animator;
     public CombatManager combatManager;
 
     public List<StatusMod> statusMods;
@@ -86,8 +86,10 @@ public abstract class Fighter : MonoBehaviour
 
     protected void Die()
     {
+        animator.Play("Death");
         this.statusPanel.gameObject.SetActive(false);
         this.gameObject.SetActive(false);
+        
     }
 
     public void ModifyHealth(float amount)
