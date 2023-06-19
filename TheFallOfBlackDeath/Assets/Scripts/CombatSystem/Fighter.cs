@@ -86,7 +86,7 @@ public abstract class Fighter : MonoBehaviour
 
     protected void Die()
     {
-        animator.Play("Death");
+        
         this.statusPanel.gameObject.SetActive(false);
         this.gameObject.SetActive(false);
         
@@ -98,12 +98,13 @@ public abstract class Fighter : MonoBehaviour
 
         this.stats.health = Mathf.Round(this.stats.health);
         this.statusPanel.SetHealth(this.stats.health, this.stats.maxHealth);
+        animator.Play("Damages");
         
 
         if (this.isAlive == false)
         {
+            animator.Play("Death");
             Invoke("Die", 0.75f);
-            
         }
     }
 
