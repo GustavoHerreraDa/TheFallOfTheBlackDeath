@@ -14,7 +14,7 @@ public class StatsManager : MonoBehaviour
     {
         this.SetDefense(fighter.GetCurrentStats().deffense);
         this.SetAttack(fighter.GetCurrentStats().attack);
-        Debug.Log("Figther" + fighter.stats.attack);
+        //Debug.Log("Figther" + fighter.stats.attack);
     }
 
     // Update is called once per frame
@@ -23,17 +23,13 @@ public class StatsManager : MonoBehaviour
         actualDefense.text = deffense.ToString();
         if (deffense >= 80)
         {
-
             actualDefense.color = Color.yellow;
-
         }
 
         if (deffense <= 20)
         {
             actualDefense.color = Color.red;
         }
-
-
     }
     public void SetAttack(float attack)
     {

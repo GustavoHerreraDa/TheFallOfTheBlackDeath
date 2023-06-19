@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,13 +10,15 @@ public class GameManager : MonoBehaviour
     public GameObject character;
     public Vector3 lastPos;
     public Transform startPost;
+    public List<string> groupEnemyDefeat;
+
     /*public GameObject Character
     {
         get { return FindObjectOfType<Movent>().gameObject; }
     }
     */
 
-    public EnemiesGroup[] enemies;
+    public List<EnemiesGroup> enemies;
     public static GameManager Instance
     {
         get { return _instance; }
@@ -41,6 +44,16 @@ public class GameManager : MonoBehaviour
         }
 
     }
+
+    private void Start()
+    {
+        foreach (string element in ListEnemyDefeat.enemiesDefeat)
+        {
+            Debug.Log(element);
+        }
+        groupEnemyDefeat = ListEnemyDefeat.enemiesDefeat;
+    }
+
     public void FindPlayer()
     {
         character = FindObjectOfType<PlayerControl>().gameObject;
@@ -49,12 +62,11 @@ public class GameManager : MonoBehaviour
             character.transform.position = new Vector3(character.transform.position.x - 0.5f, character.transform.position.y, character.transform.position.z - 0.5f);
         }
     }
-    private int enemyIndex;
     public void FindEnemies()
     {
         Debug.Log("Buscando enemigos");
 
-        enemies = FindObjectsOfType<EnemiesGroup>();
+        enemies = new List<EnemiesGroup>(FindObjectsOfType<EnemiesGroup>());
     }
     private void OnLevelWasLoaded(int level)
     {
@@ -64,7 +76,7 @@ public class GameManager : MonoBehaviour
             GameManager.Instance.FindPlayer();
 
             if (GameManager.Instance.lastPos != Vector3.zero)
-                character.transform.position = new Vector3(GameManager.Instance.lastPos.x - 2.5f, GameManager.Instance.lastPos.y, GameManager.Instance.lastPos.z - 2.5f);
+                GameManager.Instance.character.transform.position = new Vector3(GameManager.Instance.lastPos.x - 2.5f, GameManager.Instance.lastPos.y, GameManager.Instance.lastPos.z - 2.5f);
             //GameManager.Instance.character.transform.position = GameManager.Instance.lastPos;
             else
             {
@@ -78,14 +90,17 @@ public class GameManager : MonoBehaviour
             if (nombre == string.Empty)
                 return;
 
-            for (int i = 0; i < enemies.Length; i++)
+            for (int i = 0; i < ListEnemyDefeat.enemiesDefeat.Count; i++)
             {
-                if (enemies[i].GroupName == nombre)
-                    enemyIndex = i;
-            }
-            Debug.Log("GrupoEnemigo " + nombre + " enemyIndex " + enemyIndex);
+                var enemy = enemies.Where(x => x.GroupName == ListEnemyDefeat.enemiesDefeat[i]).FirstOrDefault();
 
-            Destroy(enemies[enemyIndex].gameObject);
+                Destroy(enemy.gameObject);
+
+                Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + enemy.GroupName);
+            }
+
+
+
         }
 
     }
