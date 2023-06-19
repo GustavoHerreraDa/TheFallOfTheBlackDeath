@@ -167,6 +167,7 @@ public class CombatManager : MonoBehaviour
 
                         LogPanel.Write("Victory!");
                         this.isCombatActive = false;
+                        ListEnemyDefeat.enemiesDefeat.Add(groupEnemyName);
                         PlayerPrefs.SetString("GrupoEnemigo", groupEnemyName);
                         SceneManager.LoadScene(1);
                     }

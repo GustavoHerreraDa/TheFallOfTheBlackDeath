@@ -1,4 +1,4 @@
- using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,12 +26,13 @@ public class PlayerControl : MonoBehaviour
     bool tocaPiso;
 
     Animator anim;
-
+    Rigidbody playerRB;
     private void Start()
     {
         controller = GetComponent<CharacterController>();
         camara = GameObject.FindGameObjectWithTag("MainCamera");
         anim = GetComponentInChildren<Animator>();
+        playerRB = GetComponentInChildren<Rigidbody>();
     }
 
     private void Update()
@@ -48,13 +49,19 @@ public class PlayerControl : MonoBehaviour
             velocity.y = Mathf.Sqrt(alturaDeSalto * -2 * gravedad);
         }
 
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            stop = !stop;
+        }
+
         if (stop)
         {
             Debug.Log("Se mueve solo!");
-            controller.Move(Vector3.zero);
+            StopPlayer();
             return;
         }
-            
+
+
 
         velocity.y += gravedad * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
@@ -87,5 +94,24 @@ public class PlayerControl : MonoBehaviour
                 anim.SetFloat("Movent", 0.1f);
             }
         }
+    }
+
+    public void ContinuePlayer()
+    {
+        stop = false;
+        playerRB.isKinematic = false;
+    }
+
+    public void StopPlayer()
+    {
+        anim.SetFloat("Movent", 0f);
+        stop = true;
+        playerRB.isKinematic = true;
+    }
+
+    private void LateUpdate()
+    {
+        if (!stop)
+            playerRB.isKinematic = false;
     }
 }
