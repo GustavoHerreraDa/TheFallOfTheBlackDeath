@@ -44,6 +44,7 @@ public class StatsManager : MonoBehaviour
         {
 
             actualAttack.color = Color.red;
+
         }
 
 
