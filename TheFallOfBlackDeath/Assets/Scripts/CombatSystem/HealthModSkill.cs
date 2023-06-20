@@ -26,15 +26,17 @@ public class HealthModSkill : Skill
         {
             amount *= 2f;
             this.messages.Enqueue("Critical hit!");
-            this.messages.Enqueue("Hit for " + (int)amount +("to " + receiver.idName));
+            this.messages.Enqueue("Hit for " + (int)amount +(" to " + receiver.idName));
         }
 
         else
         {
             if (skillType == SkillType.Heal)
-                this.messages.Enqueue("Heal for " + (int)amount + (" to " + receiver.idName));
+            this.messages.Enqueue("Heal for " + (int)amount + (" to " + receiver.idName));
+            
             else
-                this.messages.Enqueue("Hit for " + (int)amount + (" to " +receiver.idName));
+
+                this.messages.Enqueue("Hit for " + (int)amount + (" to " + receiver.idName));
         }
 
 

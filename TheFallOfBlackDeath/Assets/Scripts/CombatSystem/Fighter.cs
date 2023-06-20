@@ -98,8 +98,9 @@ public abstract class Fighter : MonoBehaviour
 
         this.stats.health = Mathf.Round(this.stats.health);
         this.statusPanel.SetHealth(this.stats.health, this.stats.maxHealth);
-        animator.Play("Damages");
-        
+        this.animator.Play("Damages");
+
+
 
         if (this.isAlive == false)
         {

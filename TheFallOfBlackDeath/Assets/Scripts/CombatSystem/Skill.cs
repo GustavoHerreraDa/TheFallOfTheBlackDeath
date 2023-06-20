@@ -60,6 +60,7 @@ public abstract class Skill : MonoBehaviour
     {
         foreach (var receiver in this.receivers)
         {
+            
             this.Animate(receiver);
             this.OnRun(receiver);
         }
