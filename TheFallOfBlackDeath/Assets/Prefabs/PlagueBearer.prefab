@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1432456573195025477}
   - component: {fileID: 1432456573195025594}
   m_Layer: 0
-  m_Name: Rage
+  m_Name: Focus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,7 +47,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   amount: 10
-  statusPanel: {fileID: 1676374509961121860, guid: 76aca4db2485b2f4f8c1e41a436e85ba, type: 3}
 --- !u!114 &1432456573195025594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,12 +59,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Rage
+  skillName: Focus
   animationDuration: 1.5
   targeting: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
   SkillDesc: 
   skillType: 1
+  iconUI: {fileID: 0}
   ItemsNeeded: []
   message: '{receiver} raises attack!'
 --- !u!1 &1432456572108598840
@@ -118,6 +118,7 @@ MonoBehaviour:
   effectPrfb: {fileID: 8189500006840025469, guid: e359e440bbee8ee49b2e19a6a8f649de, type: 3}
   SkillDesc: 
   skillType: 0
+  iconUI: {fileID: 0}
   ItemsNeeded: []
   amount: -61
   modType: 0
@@ -208,6 +209,7 @@ MonoBehaviour:
   team: 1
   idName: Parasite
   statusPanel: {fileID: 5325848180068869378}
+  animator: {fileID: 0}
   combatManager: {fileID: 0}
   statusMods: []
   statusCondition: {fileID: 0}
@@ -281,6 +283,7 @@ MonoBehaviour:
   effectPrfb: {fileID: 8189500006840025469, guid: 7f9254042e04b1a4b92f1d86cc0fd977, type: 3}
   SkillDesc: 
   skillType: 1
+  iconUI: {fileID: 0}
   ItemsNeeded: []
   amount: -50
   modType: 0

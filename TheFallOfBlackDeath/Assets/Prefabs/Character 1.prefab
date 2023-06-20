@@ -95,7 +95,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Anim: {fileID: 0}
   PickUpMeessage: {fileID: 0}
-  movent: {fileID: 0}
+  playerControl: {fileID: 0}
+  canPickup: 0
 --- !u!114 &1147540105634532459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1236,12 +1237,13 @@ MonoBehaviour:
   velocidad: 4
   velCorriendo: 9
   alturaDeSalto: 0
-  tiempoAlGirar: 0.2
+  tiempoAlGirar: 0.1
   detectaPiso: {fileID: 368067140380800150}
   distanciaPiso: 0
   mascaraPiso:
     serializedVersion: 2
     m_Bits: 1
+  stop: 0
 --- !u!143 &6583610631474649816
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2031,7 +2033,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Anim: {fileID: 0}
   PickUpMeessage: {fileID: 0}
-  movent: {fileID: 0}
+  playerControl: {fileID: 0}
+  canPickup: 0
 --- !u!114 &7228399444604952269
 MonoBehaviour:
   m_ObjectHideFlags: 0
