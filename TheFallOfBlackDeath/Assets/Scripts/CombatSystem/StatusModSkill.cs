@@ -20,5 +20,6 @@ public class StatusModSkill : Skill
         this.messages.Enqueue(this.message.Replace("{receiver}", receiver.idName));
 
         receiver.statusMods.Add(this.mod);
+        receiver.animator.Play("Buff");
     }
 }

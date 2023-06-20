@@ -80,7 +80,7 @@ MonoBehaviour:
   animationDuration: 1.5
   targeting: 4
   effectPrfb: {fileID: 100004, guid: 7867af58a6ec48846ae807eb4022fbaa, type: 3}
-  SkillDesc: Curse the enemy subtracting the 10% of their maximum health per turn
+  SkillDesc: You curse the enemy, reducing their maximum health by 10% per turn.
   skillType: 0
   iconUI: {fileID: 0}
   ItemsNeeded:
@@ -134,7 +134,7 @@ MonoBehaviour:
   animationDuration: 3
   targeting: 3
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
-  SkillDesc: You heal yourself or an ally a small amount of life.
+  SkillDesc: You heal yourself or an ally for 20% of their maximum health.
   skillType: 2
   iconUI: {fileID: 0}
   ItemsNeeded:
@@ -237,7 +237,7 @@ MonoBehaviour:
   animationDuration: 1.5
   targeting: 4
   effectPrfb: {fileID: 3499216465569482894, guid: f2fc97de3837dfe429d9e31b21e766fa, type: 3}
-  SkillDesc: Low  considerably the  defence of  the enemy.
+  SkillDesc: Reduce the opponent's defense by 10.
   skillType: 0
   iconUI: {fileID: 0}
   ItemsNeeded: []
@@ -291,7 +291,7 @@ MonoBehaviour:
   animationDuration: 2
   targeting: 3
   effectPrfb: {fileID: 3874635022589376825, guid: ffdfb7851a968494f8fe76ee88f3791a, type: 3}
-  SkillDesc: Increased physical attack for a short period of time.
+  SkillDesc: Boost your own or an ally's attack power by 10.
   skillType: 0
   iconUI: {fileID: 0}
   ItemsNeeded: []
@@ -420,6 +420,7 @@ MonoBehaviour:
   team: 0
   idName: Erika
   statusPanel: {fileID: 0}
+  animator: {fileID: 4976134174492108620}
   combatManager: {fileID: 0}
   statusMods: []
   statusCondition: {fileID: 0}
@@ -672,3 +673,8 @@ CapsuleCollider:
   m_Height: 1.7561328
   m_Direction: 1
   m_Center: {x: 0, y: 0.8804226, z: 0}
+--- !u!95 &4976134174492108620 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 5139cd7dc2ff6ec47a3107ef976c04e3, type: 3}
+  m_PrefabInstance: {fileID: 1469389552250002141}
+  m_PrefabAsset: {fileID: 0}

@@ -23,7 +23,7 @@ public class ApplySCSkill : Skill
 
         if (receiver.GetCurrentStatusCondition())
         {
-            this.messages.Enqueue("It misses!");
+            this.messages.Enqueue("The fighter cannot have 2 status conditions at the same time!");
             return;
         }
 

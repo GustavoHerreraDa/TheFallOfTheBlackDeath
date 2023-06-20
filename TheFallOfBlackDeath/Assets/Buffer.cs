@@ -27,9 +27,6 @@ public class Buffer : MonoBehaviour
 
         if (fighter.statusMods.Count > 0)
         {
-            Debug.Log("statusMods entro");
-           
-
             //fighter.statusMods
             switch (fighter.statusMods[0].type)
             {
