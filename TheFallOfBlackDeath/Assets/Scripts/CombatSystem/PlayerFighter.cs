@@ -49,13 +49,13 @@ public class PlayerFighter : Fighter
             this.AutoConfigureSkillTargeting(this.skillToBeExecuted);
             this.combatManager.OnFighterSkill(this.skillToBeExecuted);
             this.skillPanel.Hide();
-            animator.Play("Attack");
+            
         }
     }
 
     public void SetTargetAndAttack(Fighter enemyFigther)
     {
-        animator.Play("Attack");
+        
         this.skillToBeExecuted.AddReceiver(enemyFigther);
 
         this.combatManager.OnFighterSkill(this.skillToBeExecuted);

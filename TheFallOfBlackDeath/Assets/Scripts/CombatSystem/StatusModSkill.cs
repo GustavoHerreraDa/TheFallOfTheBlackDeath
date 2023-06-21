@@ -8,6 +8,7 @@ public class StatusModSkill : Skill
     private StatusMod statusMod;
 
     protected StatusMod mod;
+    
 
     protected override void OnRun(Fighter receiver)
     {
@@ -21,5 +22,7 @@ public class StatusModSkill : Skill
 
         receiver.statusMods.Add(this.mod);
         receiver.animator.Play("Buff");
+ 
     }
+
 }

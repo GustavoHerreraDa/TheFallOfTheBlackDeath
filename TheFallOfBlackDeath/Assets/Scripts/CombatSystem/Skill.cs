@@ -26,6 +26,7 @@ public abstract class Skill : MonoBehaviour
     protected Queue<string> messages;
     public SkillType skillType;
     public Sprite iconUI;
+    public string animationName;
 
     public List<InventoryManager.InventoryObjectID> ItemsNeeded;
     public bool needsManualTargeting
@@ -48,6 +49,9 @@ public abstract class Skill : MonoBehaviour
     {
         this.messages = new Queue<string>();
         this.receivers = new List<Fighter>();
+        
+        
+        
     }
 
     private void Animate(Fighter receiver)
@@ -71,11 +75,13 @@ public abstract class Skill : MonoBehaviour
     public void SetEmitter(Fighter _emitter)
     {
         this.emitter = _emitter;
+
     }
 
     public void AddReceiver(Fighter _receiver)
     {
         this.receivers.Add(_receiver);
+        emitter.animator.Play(animationName);
     }
 
     public string GetNextMessage()

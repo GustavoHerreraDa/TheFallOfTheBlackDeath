@@ -10,13 +10,17 @@ public class StatusMod : MonoBehaviour
 {
     public StatusModType type;
     public float amount;
-    private StatsManager statsManager;
+
     
 
 
     public Stats Apply(Stats stats)
     {
         Stats modedStats = stats.Clone();
+        if (modedStats.attack > 0)
+        {
+            
+        }
         
         
 
