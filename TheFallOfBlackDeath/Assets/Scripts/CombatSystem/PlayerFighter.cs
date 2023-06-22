@@ -72,5 +72,6 @@ public class PlayerFighter : Fighter
 
         this.skillPanel.Hide();
         this.enemiesPanel.Hide();
+        this.combatManager.UpdateStatsUI();
     }
 }

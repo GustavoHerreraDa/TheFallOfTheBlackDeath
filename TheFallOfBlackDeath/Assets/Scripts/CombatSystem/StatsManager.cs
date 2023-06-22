@@ -10,11 +10,20 @@ public class StatsManager : MonoBehaviour
     public TextMeshProUGUI actualDefense;
     public TextMeshProUGUI actualAttack;
 
+    private void Start()
+    {
+        UpdateUI();
+    }
     void Update()
+    {
+        //UpdateUI();
+        //Debug.Log("Figther" + fighter.stats.attack);
+    }
+
+    public void UpdateUI()
     {
         this.SetDefense(fighter.GetCurrentStats().deffense);
         this.SetAttack(fighter.GetCurrentStats().attack);
-        //Debug.Log("Figther" + fighter.stats.attack);
     }
 
     // Update is called once per frame

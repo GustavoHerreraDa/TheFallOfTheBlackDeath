@@ -8,16 +8,40 @@ public class PlayerUI : MonoBehaviour
 {
     // Start is called before the first frame update
     public Fighter fighter;
+    public CombatManager gameManager;
     public TextMeshProUGUI nameHero;
     public TextMeshProUGUI currentHealth;
     public TextMeshProUGUI maxHealth;
     public TextMeshProUGUI attack;
     public TextMeshProUGUI defense;
     public TextMeshProUGUI speed;
+    public SkillUI[] skillsUI;
+
+    public void Awake()
+    {
+        GetPlayerFromCombatManager();
+    }
+
+    private void GetPlayerFromCombatManager()
+    {
+        var _fighter = gameManager.fighters[gameManager.fighterIndex];
+
+        if (_fighter.GetType() == typeof(PlayerFighter))
+        {
+            fighter = _fighter;
+        }
+    }
+
     public void Start()
     {
-        if (fighter == null)
-            return;
+        UpdatePlayerStats();
+    }
+
+    public void UpdatePlayerStats()
+    {
+        //if (fighter == null)
+            
+        GetPlayerFromCombatManager();
 
         nameHero.text = fighter.idName;
         currentHealth.text = "HP: " + fighter.GetCurrentStats().health.ToString();
@@ -25,11 +49,16 @@ public class PlayerUI : MonoBehaviour
         attack.text = "Attack: " + fighter.GetCurrentStats().attack.ToString();
         defense.text = "Defense: " + fighter.GetCurrentStats().deffense.ToString();
         speed.text = "Speed: " + fighter.GetCurrentStats().speed.ToString();
+        UpdateSkillUI();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void UpdateSkillUI()
     {
-
+        for (int i = 0; i < skillsUI.Length; i++)
+        {
+            skillsUI[i].player = fighter.gameObject;
+            skillsUI[i].skill = null;
+            skillsUI[i].UpdateUI();
+        }
     }
 }

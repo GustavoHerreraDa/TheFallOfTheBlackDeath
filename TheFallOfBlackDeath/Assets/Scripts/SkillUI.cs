@@ -20,12 +20,13 @@ public class SkillUI : MonoBehaviour
     public void Start()
     {
         skillIcon.color = new Color(1, 1, 1, 0);
+        skillPower.text = "";
         UpdateUI();
     }
 
     public void UpdateUI()
     {
-        Debug.Log("Se actuliza UI" + gameObject.name);
+        //Debug.Log("Se actuliza UI" + gameObject.name);
 
         if (skill == null)
             GetSkill();
@@ -45,11 +46,11 @@ public class SkillUI : MonoBehaviour
         skillname.text = skill.skillName;
         shortDescripcion.text = skill.SkillDesc;
 
-        if (statusMod != null)
-            skillPower.text = statusMod.amount.ToString();
+        //if (statusMod != null)
+        //    skillPower.text = statusMod.amount.ToString();
 
-        if (healthModSkill != null)
-            skillPower.text = healthModSkill.amount.ToString();
+        //if (healthModSkill != null)
+        //    skillPower.text = healthModSkill.amount.ToString();
 
         skillIcon.sprite = skill.iconUI;
         skillIcon.color = Color.white;

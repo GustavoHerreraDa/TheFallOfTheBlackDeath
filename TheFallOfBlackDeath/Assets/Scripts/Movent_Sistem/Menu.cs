@@ -116,16 +116,18 @@ public class Menu : MonoBehaviour
 
     private void StatsTrue()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
         StatsMenu.SetActive(false);
         IsStats = false;
+        
 
     }
     private void Statsfalse()
     {
-        Cursor.lockState = CursorLockMode.None;
+        //Cursor.lockState = CursorLockMode.None;
         StatsMenu.SetActive(true);
         IsStats = true;
+        StatsMenu.GetComponent<PlayerUI>().UpdatePlayerStats();
     }
 
 

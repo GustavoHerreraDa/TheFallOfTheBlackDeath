@@ -31,6 +31,7 @@ public class CombatManager : MonoBehaviour
 
     private List<Fighter> returnBuffer;
     public TurnsDisplay turnsDisplay;
+    public StatsManager[] statsManagers;
 
     void Start()
     {
@@ -125,6 +126,7 @@ public class CombatManager : MonoBehaviour
 
                     // Wait for fighter skill animation
                     yield return new WaitForSeconds(currentFighterSkill.animationDuration);
+
                     this.combatStatus = CombatStatus.CHECK_ACTION_MESSAGES;
 
                     break;
@@ -299,5 +301,12 @@ public class CombatManager : MonoBehaviour
     {
         this.currentFighterSkill = skill;
         this.combatStatus = CombatStatus.FIGHTER_ACTION;
+    }
+    public void UpdateStatsUI()
+    {
+        for (int i = 0; i < statsManagers.Length; i++)
+        {
+            statsManagers[i].UpdateUI();
+        }
     }
 }
