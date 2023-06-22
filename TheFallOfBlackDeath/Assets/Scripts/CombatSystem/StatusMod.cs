@@ -11,6 +11,7 @@ public class StatusMod : MonoBehaviour
     public StatusModType type;
     public float amount;
 
+
     
 
 

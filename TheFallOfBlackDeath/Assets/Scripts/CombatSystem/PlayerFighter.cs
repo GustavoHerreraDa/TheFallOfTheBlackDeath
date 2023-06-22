@@ -74,5 +74,13 @@ public class PlayerFighter : Fighter
         this.enemiesPanel.Hide();
         this.combatManager.UpdateStatsUI();
     }
+    public void VictoryAnimation()
+    {
+        if (combatManager.victoria == true)
+        {
+            animator.Play("Victory");
+        }
+
+    }
 
 }

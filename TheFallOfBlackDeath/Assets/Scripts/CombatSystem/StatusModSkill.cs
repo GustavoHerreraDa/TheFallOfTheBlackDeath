@@ -6,7 +6,6 @@ public class StatusModSkill : Skill
     [Header("Status mod skill")]
     public string message;
     private StatusMod statusMod;
-
     protected StatusMod mod;
     
 

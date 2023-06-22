@@ -166,17 +166,14 @@ public class CombatManager : MonoBehaviour
                     if (victory)
                     {
                         audioSource.Play();
-                        victoria = true;
+                        player.animator.Play("Victory");
                         LogPanel.Write("Victory!");
                         this.isCombatActive = false;
                         ListEnemyDefeat.enemiesDefeat.Add(groupEnemyName);
                         PlayerPrefs.SetString("GrupoEnemigo", groupEnemyName);
-                        player.animator.Play("Victory");
                         yield return new WaitForSeconds(3f);
                         SceneManager.LoadScene(1);
-                        
-
-
+                       
                     }
 
                     if (defeat)

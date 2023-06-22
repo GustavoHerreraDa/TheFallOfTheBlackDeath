@@ -6,6 +6,8 @@ using UnityEngine;
 public class ApplySCSkill : Skill
 {
     private StatusCondition condition;
+    public AudioSource audioSource;
+    
 
     protected override void OnRun(Fighter receiver)
     {
@@ -24,6 +26,7 @@ public class ApplySCSkill : Skill
         if (receiver.GetCurrentStatusCondition())
         {
             this.messages.Enqueue("The fighter cannot have 2 status conditions at the same time!");
+            audioSource.Play();
             return;
         }
 
