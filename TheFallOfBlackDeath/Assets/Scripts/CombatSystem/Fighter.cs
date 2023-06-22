@@ -114,7 +114,7 @@ public abstract class Fighter : MonoBehaviour
         if (this.isAlive == false)
         {
             animator.Play("Death");
-            Invoke("Die", 1.5f);
+            Invoke("Die", 2f);
         }
     }
 
