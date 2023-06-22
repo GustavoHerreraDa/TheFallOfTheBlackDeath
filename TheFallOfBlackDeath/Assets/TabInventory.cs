@@ -6,6 +6,7 @@ public class TabInventory : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject[] tabs;
+    public SkillUI[] skillsUI;
 
     private void Start()
     {
@@ -23,5 +24,13 @@ public class TabInventory : MonoBehaviour
             tabs[i].SetActive(false);
         }
         tabs[tab - 1].SetActive(true);
+    }
+
+    public void UpdateSkillUI()
+    {
+        for (int i = 0; i < skillsUI.Length; i++)
+        {
+            skillsUI[i].UpdateUI();
+        }
     }
 }

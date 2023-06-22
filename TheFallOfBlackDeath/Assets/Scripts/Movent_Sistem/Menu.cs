@@ -104,13 +104,14 @@ public class Menu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Inventorymenu.SetActive(false);
         inventory = false;
-
     }
     private void Inventoryfalse()
     {
         Cursor.lockState = CursorLockMode.None;
         Inventorymenu.SetActive(true);
         inventory = true;
+        Inventorymenu.GetComponent<TabInventory>().UpdateSkillUI();
+
     }
 
     private void StatsTrue()

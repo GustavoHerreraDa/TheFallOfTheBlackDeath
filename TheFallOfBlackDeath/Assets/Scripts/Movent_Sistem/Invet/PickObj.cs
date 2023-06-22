@@ -10,9 +10,10 @@ public class PickObj : Interactable
         statsOBJ i = objCollider.GetComponent<statsOBJ>();
 
         InventoryManager.instance.AddItem(i.id, i.amount, i.uso);
-        playerControl.StopPlayer(2f);
+        playerControl.StopPlayer(1.3f);
         InteractMeessage.SetActive(false);
         canInteract = false;
+        
         Destroy(i.gameObject);
     }
 

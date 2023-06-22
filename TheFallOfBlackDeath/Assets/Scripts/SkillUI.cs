@@ -19,15 +19,31 @@ public class SkillUI : MonoBehaviour
 
     public void Start()
     {
-        skillIcon.color =new Color(1,1,1,0);
+        skillIcon.color = new Color(1, 1, 1, 0);
+        UpdateUI();
+    }
+
+    public void UpdateUI()
+    {
+        Debug.Log("Se actuliza UI" + gameObject.name);
 
         if (skill == null)
             GetSkill();
 
+        if (statusMod == null && healthModSkill == null && applySCSkill == null)
+        {
+            //this.gameObject.SetActive(false);
+            return;
+        }
+        
+        if (skill.ItemsNeeded.Count > 0)
+            skill.HasItemsInInventory();
+
+        if (!skill.HasItemInInventory && skill.ItemsNeeded.Count > 0)
+            return;
+
         skillname.text = skill.skillName;
         shortDescripcion.text = skill.SkillDesc;
-        if (statusMod == null && healthModSkill == null && applySCSkill == null)
-            this.gameObject.SetActive(false);
 
         if (statusMod != null)
             skillPower.text = statusMod.amount.ToString();
@@ -37,7 +53,6 @@ public class SkillUI : MonoBehaviour
 
         skillIcon.sprite = skill.iconUI;
         skillIcon.color = Color.white;
-
     }
 
     private void GetSkill()
@@ -49,7 +64,7 @@ public class SkillUI : MonoBehaviour
         healthModSkill = skills[skillIndex].gameObject.GetComponent<HealthModSkill>();
         statusMod = skills[skillIndex].gameObject.GetComponent<StatusMod>();
         applySCSkill = skills[skillIndex].gameObject.GetComponent<ApplySCSkill>();
-        
+
     }
 
 

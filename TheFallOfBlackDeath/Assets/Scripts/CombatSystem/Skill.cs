@@ -27,7 +27,7 @@ public abstract class Skill : MonoBehaviour
     public SkillType skillType;
     public Sprite iconUI;
     public string animationName;
-
+    public bool HasItemInInventory;
     public List<InventoryManager.InventoryObjectID> ItemsNeeded;
     public bool needsManualTargeting
     {
@@ -91,6 +91,15 @@ public abstract class Skill : MonoBehaviour
         else
             return null;
     }
+
+    public void HasItemsInInventory()
+    {
+        var hasItems = InventoryManager.instance == null ? true : InventoryManager.instance.HasItemInIventory(ItemsNeeded);
+        HasItemInInventory = hasItems;
+
+        //if (hasItems) this.gameObject.SetActive(true);
+    }
+    
 
     protected abstract void OnRun(Fighter receiver);
 }
