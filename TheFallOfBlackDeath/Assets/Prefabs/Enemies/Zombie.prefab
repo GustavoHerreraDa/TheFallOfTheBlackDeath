@@ -51,6 +51,8 @@ MonoBehaviour:
   SkillDesc: 
   skillType: 0
   iconUI: {fileID: 0}
+  animationName: 
+  HasItemInInventory: 0
   ItemsNeeded: []
   amount: -35
   modType: 0
@@ -107,6 +109,8 @@ MonoBehaviour:
   SkillDesc: 
   skillType: 1
   iconUI: {fileID: 0}
+  animationName: 
+  HasItemInInventory: 0
   ItemsNeeded: []
 --- !u!1 &1192376879935200753
 GameObject:
@@ -218,13 +222,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Fortalecer
+  skillName: Defensive posture
   animationDuration: 1
   targeting: 3
-  effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
+  effectPrfb: {fileID: 3280519133390621005, guid: a71be3e7990efb040a07565c43cbb198, type: 3}
   SkillDesc: 
   skillType: 1
   iconUI: {fileID: 0}
+  animationName: 
+  HasItemInInventory: 0
   ItemsNeeded: []
   message: '{receiver} raises deffense!'
 --- !u!1 &6020914221644011460
@@ -238,6 +244,7 @@ GameObject:
   - component: {fileID: 6020914221644499940}
   - component: {fileID: 6020914221276081700}
   - component: {fileID: 6906597961771356030}
+  - component: {fileID: 6887353234102549656}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Untagged
@@ -283,7 +290,7 @@ MonoBehaviour:
   team: 1
   idName: Zombie
   statusPanel: {fileID: 1768862934}
-  animator: {fileID: 0}
+  animator: {fileID: 4739971781351273685}
   combatManager: {fileID: 0}
   statusMods: []
   statusCondition: {fileID: 0}
@@ -307,6 +314,21 @@ MonoBehaviour:
   Enemy: {fileID: 0}
   MaxPhisicalAttacks: 0
   _skills: []
+--- !u!114 &6887353234102549656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6020914221644011460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77345174282e5da4798c4f0a2ca01574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fighter: {fileID: 6020914221276081700}
+  actualDefense: {fileID: 3419152767024298235}
+  actualAttack: {fileID: 4224380269522910121}
 --- !u!1 &7383185301598330323
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,6 +412,8 @@ MonoBehaviour:
   SkillDesc: 
   skillType: 1
   iconUI: {fileID: 0}
+  animationName: 
+  HasItemInInventory: 0
   ItemsNeeded: []
 --- !u!1 &9000122597642885227
 GameObject:
@@ -590,6 +614,11 @@ CapsuleCollider:
   m_Height: 2.0590189
   m_Direction: 1
   m_Center: {x: 0.0076137274, y: 1.0546522, z: -0.000000102896365}
+--- !u!95 &4739971781351273685 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 4bdc418758f2568409cd59de6d5a57b2, type: 3}
+  m_PrefabInstance: {fileID: 1201711857339058500}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8733481955160317038
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -712,6 +741,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 842f3c42f93eaf74eb25f2a545c3e32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3419152767024298235 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6215190426968368277, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+  m_PrefabInstance: {fileID: 8733481955160317038}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4224380269522910121 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4869390557770262471, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+  m_PrefabInstance: {fileID: 8733481955160317038}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &6587119132870340996 stripped

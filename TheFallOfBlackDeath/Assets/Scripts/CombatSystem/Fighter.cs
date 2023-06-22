@@ -31,6 +31,7 @@ public abstract class Fighter : MonoBehaviour
     {
         if (this.statusPanel != null)
             this.statusPanel.SetStats(this.idName, this.stats);
+
         this.skills = this.GetComponentsInChildren<Skill>();
         this.modedStats = stats;
         this.statusMods = new List<StatusMod>();

@@ -24,7 +24,7 @@ public class StatusPanel : MonoBehaviour
         if (nameTextLabel != null)
         {
             this.nameTextLabel.text = name;
-            this.nameTextLabel.fontSize = name.Length > 8 ?  4 : 10;
+            this.nameTextLabel.fontSize = name.Length > 8 ?  4 : 6;
 
         }
         if (levelLabel != null)
