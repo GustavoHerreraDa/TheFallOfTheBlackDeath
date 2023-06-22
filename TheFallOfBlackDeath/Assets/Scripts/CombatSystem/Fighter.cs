@@ -29,7 +29,8 @@ public abstract class Fighter : MonoBehaviour
 
     protected virtual void Start()
     {
-        this.statusPanel.SetStats(this.idName, this.stats);
+        if (this.statusPanel != null)
+            this.statusPanel.SetStats(this.idName, this.stats);
         this.skills = this.GetComponentsInChildren<Skill>();
         this.modedStats = stats;
         this.statusMods = new List<StatusMod>();
@@ -86,10 +87,10 @@ public abstract class Fighter : MonoBehaviour
 
     protected void Die()
     {
-        
+
         this.statusPanel.gameObject.SetActive(false);
         this.gameObject.SetActive(false);
-        
+
     }
 
     public void ModifyHealth(float amount)
@@ -124,7 +125,7 @@ public abstract class Fighter : MonoBehaviour
         {
             modedStats = mod.Apply(modedStats);
         }
-       
+
         return modedStats;
     }
 

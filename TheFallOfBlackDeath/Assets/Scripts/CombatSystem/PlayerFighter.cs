@@ -5,13 +5,23 @@ public class PlayerFighter : Fighter
     [Header("UI")]
     public PlayerSkillPanel skillPanel;
     public EnemiesPanel enemiesPanel;
-    
+
+    public EnemyDataBase fightersDateBase;
+    public int figherIndex;
 
     private Skill skillToBeExecuted;
 
     void Awake()
     {
-        this.stats = new Stats(21, 60, 50, 45, 20, 20);
+        var data = fightersDateBase.EnemyDB[figherIndex];
+        //_IAEnemySimple = gameObject.GetComponent<IAEnemySimple>();
+        //
+
+        if (data.level != 0)
+            this.stats = new Stats(data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed);
+        else
+            this.stats = new Stats(21, 60, 50, 45, 20, 20);
+
     }
 
     public override void InitTurn()

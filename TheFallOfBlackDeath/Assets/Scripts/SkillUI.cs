@@ -6,21 +6,28 @@ using TMPro;
 
 public class SkillUI : MonoBehaviour
 {
+    public GameObject player;
+    public int skillIndex;
     public Skill skill;
     public StatusMod statusMod;
     public HealthModSkill healthModSkill;
+    public ApplySCSkill applySCSkill;
+    public TextMeshProUGUI skillname;
     public TextMeshProUGUI shortDescripcion;
     public TextMeshProUGUI skillPower;
     public Image skillIcon;
 
     public void Start()
     {
-        if (skill == null)
-            return;
+        skillIcon.color =new Color(1,1,1,0);
 
+        if (skill == null)
+            GetSkill();
+
+        skillname.text = skill.skillName;
         shortDescripcion.text = skill.SkillDesc;
-        if (statusMod == null && healthModSkill == null)
-            return;
+        if (statusMod == null && healthModSkill == null && applySCSkill == null)
+            this.gameObject.SetActive(false);
 
         if (statusMod != null)
             skillPower.text = statusMod.amount.ToString();
@@ -29,7 +36,20 @@ public class SkillUI : MonoBehaviour
             skillPower.text = healthModSkill.amount.ToString();
 
         skillIcon.sprite = skill.iconUI;
+        skillIcon.color = Color.white;
 
+    }
+
+    private void GetSkill()
+    {
+        var skills = player.GetComponentsInChildren<Skill>();
+
+        skill = skills[skillIndex];
+
+        healthModSkill = skills[skillIndex].gameObject.GetComponent<HealthModSkill>();
+        statusMod = skills[skillIndex].gameObject.GetComponent<StatusMod>();
+        applySCSkill = skills[skillIndex].gameObject.GetComponent<ApplySCSkill>();
+        
     }
 
 

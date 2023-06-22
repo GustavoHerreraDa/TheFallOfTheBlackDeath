@@ -23,7 +23,7 @@ public class PlayerUI : MonoBehaviour
         currentHealth.text = "HP: " + fighter.GetCurrentStats().health.ToString();
         maxHealth.text = fighter.GetCurrentStats().maxHealth.ToString();
         attack.text = "Attack: " + fighter.GetCurrentStats().attack.ToString();
-        defense.text = "Deffense: " + fighter.GetCurrentStats().deffense.ToString();
+        defense.text = "Defense: " + fighter.GetCurrentStats().deffense.ToString();
         speed.text = "Speed: " + fighter.GetCurrentStats().speed.ToString();
     }
 

@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
- 
+
 public class StatsManager : MonoBehaviour
 {
     public Fighter fighter;
-    
+
     public TextMeshProUGUI actualDefense;
     public TextMeshProUGUI actualAttack;
-    
+
     void Update()
     {
         this.SetDefense(fighter.GetCurrentStats().deffense);
@@ -20,6 +20,9 @@ public class StatsManager : MonoBehaviour
     // Update is called once per frame
     public void SetDefense(float deffense)
     {
+        if (actualDefense == null)
+            return;
+
         actualDefense.text = deffense.ToString();
         if (deffense >= 80)
         {
@@ -33,11 +36,14 @@ public class StatsManager : MonoBehaviour
     }
     public void SetAttack(float attack)
     {
+        if (actualAttack == null)
+            return;
+
         actualAttack.text = attack.ToString();
         if (attack >= 80)
         {
-            
-          actualAttack.color = Color.yellow;
+
+            actualAttack.color = Color.yellow;
 
         }
         if (attack <= 20)

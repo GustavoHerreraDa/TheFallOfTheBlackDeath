@@ -57,7 +57,7 @@ public class PlayerControl : MonoBehaviour
         if (stop)
         {
             Debug.Log("Se mueve solo!");
-            StopPlayer();
+            playerRB.isKinematic = true;
             return;
         }
 
@@ -102,16 +102,24 @@ public class PlayerControl : MonoBehaviour
         playerRB.isKinematic = false;
     }
 
-    public void StopPlayer()
+    public void StopPlayer(float seconds)
     {
         anim.SetFloat("Movent", 0f);
         stop = true;
         playerRB.isKinematic = true;
+        StartCoroutine(WaitSeconds(seconds));
     }
 
     private void LateUpdate()
     {
         if (!stop)
             playerRB.isKinematic = false;
+    }
+
+    IEnumerator WaitSeconds(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        Debug.Log("Han pasado 3 segundo");
+        this.ContinuePlayer();
     }
 }
