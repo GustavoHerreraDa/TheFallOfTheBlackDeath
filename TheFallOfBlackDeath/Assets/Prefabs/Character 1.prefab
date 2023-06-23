@@ -63,7 +63,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7228399444368592701}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &194278320412603081
 MonoBehaviour:
@@ -80,7 +80,8 @@ MonoBehaviour:
   datebase: {fileID: 11400000, guid: 467447c068a205c4da7da0fd9218144b, type: 2}
   inventory: []
   prefab: {fileID: 4463044231049171882, guid: fea44ec7c7d72e442ac64ecfa5824a92, type: 3}
-  inventoryUI: {fileID: 165178083216601912, guid: fea44ec7c7d72e442ac64ecfa5824a92, type: 3}
+  equipmentUI: {fileID: 0}
+  objetsUI: {fileID: 0}
 --- !u!114 &7557651050551123926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,10 +94,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6fff5ad32ce27a4080eb19728d49458, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Anim: {fileID: 0}
-  PickUpMeessage: {fileID: 0}
+  player_Animator: {fileID: 0}
   playerControl: {fileID: 0}
-  canPickup: 0
+  InteractMeessage: {fileID: 0}
+  canInteract: 0
 --- !u!114 &1147540105634532459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,7 +113,8 @@ MonoBehaviour:
   datebase: {fileID: 11400000, guid: 467447c068a205c4da7da0fd9218144b, type: 2}
   inventory: []
   prefab: {fileID: 0}
-  inventoryUI: {fileID: 0}
+  equipmentUI: {fileID: 0}
+  objetsUI: {fileID: 0}
 --- !u!1 &7228399443438160185
 GameObject:
   m_ObjectHideFlags: 0
@@ -1061,7 +1063,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7228399443613527553
 Transform:
   m_ObjectHideFlags: 0
@@ -1080,7 +1082,7 @@ Transform:
   - {fileID: 7228399443825921892}
   - {fileID: 7228399444167010098}
   m_Father: {fileID: 7228399444368592701}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7228399443878710462
 GameObject:
@@ -1544,6 +1546,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 9008349114072694400}
   - {fileID: 7228399443613527553}
   - {fileID: 7228399444604952270}
   - {fileID: 4938729274480229014}
@@ -2001,7 +2004,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7228399444368592701}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7228399444604952268
 MonoBehaviour:
@@ -2018,7 +2021,8 @@ MonoBehaviour:
   datebase: {fileID: 11400000, guid: 467447c068a205c4da7da0fd9218144b, type: 2}
   inventory: []
   prefab: {fileID: 4463044231049171882, guid: fea44ec7c7d72e442ac64ecfa5824a92, type: 3}
-  inventoryUI: {fileID: 0}
+  equipmentUI: {fileID: 0}
+  objetsUI: {fileID: 0}
 --- !u!114 &7228399444604952271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2031,10 +2035,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6fff5ad32ce27a4080eb19728d49458, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Anim: {fileID: 0}
-  PickUpMeessage: {fileID: 0}
+  player_Animator: {fileID: 0}
   playerControl: {fileID: 0}
-  canPickup: 0
+  InteractMeessage: {fileID: 0}
+  canInteract: 0
 --- !u!114 &7228399444604952269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2050,7 +2054,8 @@ MonoBehaviour:
   datebase: {fileID: 11400000, guid: 467447c068a205c4da7da0fd9218144b, type: 2}
   inventory: []
   prefab: {fileID: 0}
-  inventoryUI: {fileID: 0}
+  equipmentUI: {fileID: 0}
+  objetsUI: {fileID: 0}
 --- !u!1 &7228399444630972564
 GameObject:
   m_ObjectHideFlags: 0
@@ -13074,4 +13079,66 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6077168872989578692, guid: f514474ff8e94554d8477de1f2f601b0, type: 3}
   m_PrefabInstance: {fileID: 8390990261373972475}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8831185821361805675
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7228399444368592701}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      propertyPath: m_Name
+      value: Medico peste lowpoly
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+--- !u!4 &9008349114072694400 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+  m_PrefabInstance: {fileID: 8831185821361805675}
   m_PrefabAsset: {fileID: 0}
