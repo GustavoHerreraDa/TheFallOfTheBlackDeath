@@ -12,8 +12,6 @@ public class SceneLoadManager : MonoBehaviour
 
     public void Start()
     {
-
-
         SceneLoad(1);
     }
     public void SceneLoad(int sceneIndex)
@@ -23,15 +21,15 @@ public class SceneLoadManager : MonoBehaviour
     }
     IEnumerator ActivateLoadPanel()
     {
-        PlayerPrefs.SetString("GrupoEnemigo", string.Empty);
-        yield return 0.1f;
-
-        if (introCanvas != null)
+        if (introCanvas != null) { 
             introCanvas.SetActive(false);
+            Debug.Log("SE DESACTIVO EL CANVAS INTRO");
+        }
 
         loadbar.value = 0;
         loadPanel.SetActive(true);
-        yield return 0.1f;
+
+        yield return 0.5f;
     }
 
     IEnumerator LoadAsync(int sceneIndex)

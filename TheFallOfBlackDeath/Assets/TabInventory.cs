@@ -14,8 +14,8 @@ public class TabInventory : MonoBehaviour
         {
             tabs[i].SetActive(false);
         }
-
-        tabs[0].SetActive(true);
+        if (tabs.Length > 0)
+            tabs[0].SetActive(true);
     }
     public void TurnOnTabs(int tab)
     {

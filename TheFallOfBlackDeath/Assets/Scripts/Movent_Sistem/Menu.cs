@@ -24,6 +24,7 @@ public class Menu : MonoBehaviour
 
     private void Start()
     {
+
         Pausemenu.SetActive(false);
         Inventorymenu.SetActive(false);
         
@@ -45,8 +46,9 @@ public class Menu : MonoBehaviour
 
             //GameStateManager.Instance.Setstate(newgamestate);
             Inventorymenu.SetActive(false);
-          
-            
+
+
+
             if (Pause)
             {
                 
@@ -159,6 +161,7 @@ public class Menu : MonoBehaviour
             Pausemenu.SetActive(false);
             Time.timeScale = 1f;
             Pause = false;
+
         }
        else
         {
@@ -166,6 +169,7 @@ public class Menu : MonoBehaviour
             Pausemenu.SetActive(false);
             Time.timeScale = 1f;
             Pause = false;
+
         }
         
 
