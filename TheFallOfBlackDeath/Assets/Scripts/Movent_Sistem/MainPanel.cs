@@ -18,11 +18,14 @@ public class MainPanel : MonoBehaviour
     public GameObject optionsPanel;
     public GameObject controlesPanel;
     public GameObject statsPanel;
+    public GameObject introPanel;
 
     private void Awake()
     {
         VolumenFX.onValueChanged.AddListener(ChangeVolumenMasterFX);
-        VolumenMaster .onValueChanged.AddListener(ChangeVolumenMaster);
+        VolumenMaster.onValueChanged.AddListener(ChangeVolumenMaster);
+        if (introPanel != null)
+            introPanel.SetActive(false);
     }
 
     public void SetMute()
@@ -37,12 +40,11 @@ public class MainPanel : MonoBehaviour
             mixer.SetFloat("VolMaster", lastVolumen);
         }
     }
-    public void OpenPanel1 (GameObject panel1)
+    public void OpenPanel1(GameObject panel1)
     {
         mainPanel.SetActive(false);
         optionsPanel.SetActive(false);
         controlesPanel.SetActive(false);
-        
         panel1.SetActive(true);
         PlaySoundButton();
 
@@ -72,6 +74,14 @@ public class MainPanel : MonoBehaviour
     public void Exit()
     {
         Application.Quit();
+    }
+
+    public void PlayPanel()
+    {
+        mainPanel.SetActive(false);
+        optionsPanel.SetActive(false);
+        controlesPanel.SetActive(false);
+        introPanel.SetActive(true);
     }
 
 }
