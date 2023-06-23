@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class EnemiesPanel : MonoBehaviour
 {
     public GameObject sampleButton;
+    public GameObject botonReturn;
 
     private PlayerFighter targetFighter;
     private List<Fighter> targets;
@@ -38,7 +39,7 @@ public class EnemiesPanel : MonoBehaviour
     public void Show(PlayerFighter playerFighter, Fighter[] targets)
     {
         this.gameObject.SetActive(true);
-
+        botonReturn.SetActive(true);
         this.targetFighter = playerFighter;
 
         int btnIndex = 0;
@@ -62,7 +63,7 @@ public class EnemiesPanel : MonoBehaviour
     public void Hide()
     {
         this.sampleButton.SetActive(false);
-
+        this.botonReturn.SetActive(false);
         foreach (var btn in this.buttons)
         {
             btn.Hide();
@@ -106,5 +107,7 @@ public class EnemiesPanel : MonoBehaviour
     public void Show()
     {
         this.sampleButton.SetActive(true);
+        botonReturn.SetActive(true);
     }
+
 }

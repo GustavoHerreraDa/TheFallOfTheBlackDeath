@@ -5,7 +5,7 @@ using UnityEngine;
 public class SkillManager : MonoBehaviour
 {
     private CombatManager combatManager;
-
+    private PlayerFighter fighter;
     public int currentCharacterIndex;
     public GameObject currentCharacterObj;
 
@@ -18,6 +18,7 @@ public class SkillManager : MonoBehaviour
 
     private void Awake()
     {
+        fighter = FindObjectOfType<PlayerFighter>();
         combatManager = FindObjectOfType<CombatManager>();
         enemySelection = FindObjectOfType<EnemiesPanel>();
         skillPanel = FindObjectOfType<PlayerSkillPanel>();

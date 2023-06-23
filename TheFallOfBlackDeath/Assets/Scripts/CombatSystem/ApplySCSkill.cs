@@ -25,7 +25,8 @@ public class ApplySCSkill : Skill
 
         if (receiver.GetCurrentStatusCondition())
         {
-            this.messages.Enqueue("The fighter cannot have 2 status conditions at the same time!");
+            this.messages.Enqueue("The fighter cannot have 2 status!");
+            Debug.Log("el sonido sono" + audioSource);
             audioSource.Play();
             return;
         }

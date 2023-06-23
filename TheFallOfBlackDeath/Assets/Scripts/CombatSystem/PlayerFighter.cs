@@ -42,30 +42,30 @@ public class PlayerFighter : Fighter
 
     public void ExecuteSkill(int index)
     {
-        
+
         this.skillToBeExecuted = this.skills[index];
         this.skillToBeExecuted.SetEmitter(this);
 
         if (this.skillToBeExecuted.needsManualTargeting)
         {
-            
+
             Fighter[] receivers = this.GetSkillTargets(this.skillToBeExecuted);
             this.enemiesPanel.Show(this, receivers);
             this.skillPanel.Hide();
-            
+
         }
         else
         {
             this.AutoConfigureSkillTargeting(this.skillToBeExecuted);
             this.combatManager.OnFighterSkill(this.skillToBeExecuted);
             this.skillPanel.Hide();
-            
+
         }
     }
 
     public void SetTargetAndAttack(Fighter enemyFigther)
     {
-        
+
         this.skillToBeExecuted.AddReceiver(enemyFigther);
 
         this.combatManager.OnFighterSkill(this.skillToBeExecuted);
@@ -74,5 +74,9 @@ public class PlayerFighter : Fighter
         this.enemiesPanel.Hide();
         this.combatManager.UpdateStatsUI();
     }
-    
+    public void Return()
+    {
+        this.skillPanel.Show();
+        this.enemiesPanel.Hide();
+    }
 }
