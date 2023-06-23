@@ -146,13 +146,7 @@ public abstract class Fighter : MonoBehaviour
 
     }
 
-    public void VictoryAnimation()
-    {
-        if (combatManager.victoria == true)
-        {
-            animator.Play("Victory");
-        }
 
-    }
+    
     public abstract void InitTurn();
 }

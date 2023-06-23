@@ -21,12 +21,11 @@ public class CombatManager : MonoBehaviour
     public Fighter[] enemyTeam;
     public Fighter[] fighters;
     public int fighterIndex;
-    private PlayerFighter player;
+    private GameObject player;
     public bool isCombatActive;
-    public bool victoria;
     public CombatStatus combatStatus;
     private Skill currentFighterSkill;
-
+   
     private List<Fighter> returnBuffer;
     public TurnsDisplay turnsDisplay;
     public StatsManager[] statsManagers;
@@ -37,7 +36,7 @@ public class CombatManager : MonoBehaviour
     {
         this.returnBuffer = new List<Fighter>();
         this.fighters = GameObject.FindObjectsOfType<Fighter>();
-        this.player = GameObject.FindObjectOfType<PlayerFighter>();
+        this.player = GameObject.FindGameObjectWithTag("Charecter");
         this.SortFightersBySpeed();
         this.MakeTeams();
 
@@ -166,12 +165,17 @@ public class CombatManager : MonoBehaviour
                     if (victory)
                     {
                         audioSource.Play();
-                        player.animator.Play("Victory");
+                        Animator[] playerAnimators = player.GetComponentsInChildren<Animator>();
+                        foreach (Animator animator in playerAnimators)
+                        {
+                            Debug.Log("Reproduciendo animación en: " + animator.gameObject.name);
+                            animator.Play("Victory");
+                        }
                         LogPanel.Write("Victory!");
                         this.isCombatActive = false;
                         ListEnemyDefeat.enemiesDefeat.Add(groupEnemyName);
                         PlayerPrefs.SetString("GrupoEnemigo", groupEnemyName);
-                        yield return new WaitForSeconds(3f);
+                        yield return new WaitForSeconds(2f);
                         SceneManager.LoadScene(1);
                        
                     }
@@ -191,7 +195,7 @@ public class CombatManager : MonoBehaviour
                     yield return null;
                     break;
                 case CombatStatus.NEXT_TURN:
-                    yield return new WaitForSeconds(0.2f);
+                    yield return new WaitForSeconds(0.5f);
 
                     Fighter current = null;
 
@@ -224,7 +228,7 @@ public class CombatManager : MonoBehaviour
                             }
 
                             LogPanel.Write(nextSCMessage);
-                            yield return new WaitForSeconds(0.2f);
+                            yield return new WaitForSeconds(0.4f);
                         }
 
                         if (statusCondition.BlocksTurn())
@@ -311,4 +315,5 @@ public class CombatManager : MonoBehaviour
             statsManagers[i].UpdateUI();
         }
     }
+
 }
