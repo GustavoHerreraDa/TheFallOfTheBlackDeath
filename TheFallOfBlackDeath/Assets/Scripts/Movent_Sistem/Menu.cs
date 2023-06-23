@@ -9,6 +9,8 @@ public class Menu : MonoBehaviour
     public GameObject Pausemenu;
     [SerializeField] GameObject Inventorymenu;
     [SerializeField] GameObject StatsMenu;
+    [SerializeField] private Camera_Main cameraMain;
+    [SerializeField] private PlayerControl playerControl;
 
 
 
@@ -104,12 +106,17 @@ public class Menu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Inventorymenu.SetActive(false);
         inventory = false;
+        cameraMain.enabled = true;
+        playerControl.enabled = true;
+
     }
     private void Inventoryfalse()
     {
         Cursor.lockState = CursorLockMode.None;
         Inventorymenu.SetActive(true);
         inventory = true;
+        cameraMain.enabled = false;
+        playerControl.enabled = false;
         Inventorymenu.GetComponent<TabInventory>().UpdateSkillUI();
 
     }
