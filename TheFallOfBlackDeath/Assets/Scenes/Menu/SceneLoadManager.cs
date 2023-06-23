@@ -9,6 +9,10 @@ public class SceneLoadManager : MonoBehaviour
    [SerializeField] private Slider loadbar;
    [SerializeField] private GameObject loadPanel;
 
+    public void Start()
+    {
+        SceneLoad(1);
+    }
     public void SceneLoad(int sceneIndex)
     {
 
