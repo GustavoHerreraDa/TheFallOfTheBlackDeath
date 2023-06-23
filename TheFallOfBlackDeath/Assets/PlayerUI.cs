@@ -24,6 +24,9 @@ public class PlayerUI : MonoBehaviour
 
     private void GetPlayerFromCombatManager()
     {
+        if (gameManager == null)
+            return;
+
         var _fighter = gameManager.fighters[gameManager.fighterIndex];
 
         if (_fighter.GetType() == typeof(PlayerFighter))
@@ -40,7 +43,7 @@ public class PlayerUI : MonoBehaviour
     public void UpdatePlayerStats()
     {
         //if (fighter == null)
-            
+
         GetPlayerFromCombatManager();
 
         nameHero.text = fighter.idName;
