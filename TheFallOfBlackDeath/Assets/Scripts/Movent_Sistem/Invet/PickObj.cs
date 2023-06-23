@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PickObj : Interactable
 {
+    private void Start()
+    {
+        base.Start();
+        message = "Press E to pick up item.";
+    }
     public override void Interact()
     {
         player_Animator.Play("Pick");
@@ -13,7 +18,6 @@ public class PickObj : Interactable
         playerControl.StopPlayer(1.3f);
         InteractMeessage.SetActive(false);
         canInteract = false;
-        
         Destroy(i.gameObject);
     }
 

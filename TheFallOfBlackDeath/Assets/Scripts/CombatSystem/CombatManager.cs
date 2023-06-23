@@ -126,7 +126,8 @@ public class CombatManager : MonoBehaviour
                     yield return new WaitForSeconds(currentFighterSkill.animationDuration);
 
                     this.combatStatus = CombatStatus.CHECK_ACTION_MESSAGES;
-
+                    Debug.Log("Se ejecuta la def atta");
+                    this.UpdateStatsUI();
                     break;
                 case CombatStatus.CHECK_ACTION_MESSAGES:
                     string nextMessage = this.currentFighterSkill.GetNextMessage();

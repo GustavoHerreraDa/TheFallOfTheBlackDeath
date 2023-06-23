@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.00030126586, g: 0.008429392, b: 0.10503368, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0.0005646824, b: 0.015207045, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1298,7 +1298,12 @@ MonoBehaviour:
   isCombatActive: 0
   combatStatus: 0
   turnsDisplay: {fileID: 1691333298}
-  statsManagers: []
+  statsManagers:
+  - {fileID: 7617738348244095936}
+  - {fileID: 1786169536772773934}
+  - {fileID: 121216534934912613}
+  - {fileID: 6322357314150038737}
+  - {fileID: 7758305694506745008}
   audioSource: {fileID: 774589387}
 --- !u!4 &372303680
 Transform:
@@ -5896,6 +5901,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7a022194c66ba24b9cc6ff1d13e0418, type: 3}
+--- !u!114 &121216534934912613 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2186220033999610831, guid: c7a022194c66ba24b9cc6ff1d13e0418, type: 3}
+  m_PrefabInstance: {fileID: 121216534934912612}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77345174282e5da4798c4f0a2ca01574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &543450651596418213 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2252651694320841864, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
@@ -6116,6 +6132,17 @@ PrefabInstance:
       objectReference: {fileID: 1691333301}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
+--- !u!114 &1786169536772773934 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7477618237679002719, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
+  m_PrefabInstance: {fileID: 1786169536772773933}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77345174282e5da4798c4f0a2ca01574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6322357314150038736
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6273,6 +6300,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c79175bc5a34db149a71653b8f3f48c8, type: 3}
+--- !u!114 &6322357314150038737 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3673858758589489620, guid: c79175bc5a34db149a71653b8f3f48c8, type: 3}
+  m_PrefabInstance: {fileID: 6322357314150038736}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77345174282e5da4798c4f0a2ca01574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7617738348244095935
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6373,10 +6411,6 @@ PrefabInstance:
       value: Erika
       objectReference: {fileID: 0}
     - target: {fileID: 7617738347806157381, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
-      propertyPath: idName
-      value: Pest Doctor
-      objectReference: {fileID: 0}
-    - target: {fileID: 7617738347806157381, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: skillPanel
       value: 
       objectReference: {fileID: 1613890651}
@@ -6438,6 +6472,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+--- !u!114 &7617738348244095936 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2834978007729194427, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+  m_PrefabInstance: {fileID: 7617738348244095935}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77345174282e5da4798c4f0a2ca01574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7758305694506745007
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6595,3 +6640,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3065a63f6bed9e48bcc251e1083ab38, type: 3}
+--- !u!114 &7758305694506745008 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3290043045384917605, guid: c3065a63f6bed9e48bcc251e1083ab38, type: 3}
+  m_PrefabInstance: {fileID: 7758305694506745007}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77345174282e5da4798c4f0a2ca01574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

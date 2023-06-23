@@ -12,6 +12,8 @@ public abstract class Interactable : MonoBehaviour
     [SerializeField]
     internal bool canInteract;
     internal Collider objCollider;
+    public TMP_InputField nameMessage;
+    internal string message;
 
     public abstract void Interact();
 
@@ -33,6 +35,7 @@ public abstract class Interactable : MonoBehaviour
                 InteractMeessage.SetActive(true);
                 objCollider = other;
                 canInteract = true;
+                nameMessage.text = message;
             }
         }
         if (other.gameObject.tag == "Gate")
@@ -42,6 +45,7 @@ public abstract class Interactable : MonoBehaviour
                 InteractMeessage.SetActive(true);
                 objCollider = other;
                 canInteract = true;
+                nameMessage.text = message;
             }
         }
     }

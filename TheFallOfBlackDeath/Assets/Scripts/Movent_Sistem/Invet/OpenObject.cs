@@ -6,7 +6,12 @@ namespace Assets.Scripts.Movent_Sistem.Invet
     public class OpenObject : Interactable
     {
         //Animator animator;
-        
+        private void Start()
+        {
+            base.Start();
+            message = "Press E to open.";
+        }
+
 
         public override void Interact()
         {
@@ -17,7 +22,8 @@ namespace Assets.Scripts.Movent_Sistem.Invet
             player_Animator.Play("Open");
             InteractMeessage.SetActive(false);
             canInteract = false;
-            
+            nameMessage.text = "Press E to open.";
+
         }
 
         private void OnTriggerEnter(Collider other)
