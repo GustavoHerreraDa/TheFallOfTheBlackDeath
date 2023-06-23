@@ -26,7 +26,7 @@ public class ApplySCSkill : Skill
 
         if (receiver.GetCurrentStatusCondition())
         {
-            this.messages.Enqueue("The fighter cannot have 2 status!");
+            this.messages.Enqueue("The fighter cannot have 2 status condition!");
             audioSource.Play();
             return;
         }
