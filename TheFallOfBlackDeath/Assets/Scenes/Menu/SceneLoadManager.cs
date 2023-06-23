@@ -6,20 +6,35 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoadManager : MonoBehaviour
 {
-   [SerializeField] private Slider loadbar;
-   [SerializeField] private GameObject loadPanel;
+    [SerializeField] private Slider loadbar;
+    [SerializeField] private GameObject loadPanel;
+    [SerializeField] private GameObject introCanvas;
 
     public void Start()
     {
+
+
         SceneLoad(1);
     }
     public void SceneLoad(int sceneIndex)
     {
-
+        StartCoroutine(ActivateLoadPanel());
         StartCoroutine(LoadAsync(sceneIndex));
     }
+    IEnumerator ActivateLoadPanel()
+    {
+        PlayerPrefs.SetString("GrupoEnemigo", string.Empty);
+        yield return 0.1f;
 
-    IEnumerator LoadAsync (int sceneIndex)
+        if (introCanvas != null)
+            introCanvas.SetActive(false);
+
+        loadbar.value = 0;
+        loadPanel.SetActive(true);
+        yield return 0.1f;
+    }
+
+    IEnumerator LoadAsync(int sceneIndex)
     {
         PlayerPrefs.SetString("GrupoEnemigo", string.Empty);
 
