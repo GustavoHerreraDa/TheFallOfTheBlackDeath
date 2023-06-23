@@ -8,7 +8,6 @@ public class Menu : MonoBehaviour
 {
     public GameObject Pausemenu;
     [SerializeField] GameObject Inventorymenu;
-    [SerializeField] GameObject optionsMenu;
     [SerializeField] GameObject StatsMenu;
     [SerializeField] private Camera_Main cameraMain;
     [SerializeField] private PlayerControl playerControl;
@@ -25,7 +24,7 @@ public class Menu : MonoBehaviour
 
     private void Start()
     {
-        optionsMenu.SetActive(false);
+
         Pausemenu.SetActive(false);
         Inventorymenu.SetActive(false);
         
@@ -47,8 +46,9 @@ public class Menu : MonoBehaviour
 
             //GameStateManager.Instance.Setstate(newgamestate);
             Inventorymenu.SetActive(false);
-          
-            
+
+
+
             if (Pause)
             {
                 
@@ -161,7 +161,7 @@ public class Menu : MonoBehaviour
             Pausemenu.SetActive(false);
             Time.timeScale = 1f;
             Pause = false;
-            optionsMenu.SetActive(false);
+
         }
        else
         {
@@ -169,7 +169,7 @@ public class Menu : MonoBehaviour
             Pausemenu.SetActive(false);
             Time.timeScale = 1f;
             Pause = false;
-            optionsMenu.SetActive(false);
+
         }
         
 
