@@ -20,7 +20,11 @@ public class Gate : MonoBehaviour
 
     public void OpenGate()
     {
-        //var hasKey = InventoryManager.instance.HasItemInIventory()
-        animator.SetBool("IsOpen", true);
+        var hasKey = true;
+
+        if (IsNeedKey)
+            hasKey = InventoryManager.instance.HasItemInIventory(7, 1);
+
+        animator.SetBool("IsOpen", hasKey);
     }
 }
