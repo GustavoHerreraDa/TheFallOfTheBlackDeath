@@ -8,6 +8,7 @@ public abstract class Fighter : MonoBehaviour
     public StatusPanel statusPanel;
     public Animator animator;
     public CombatManager combatManager;
+    public AudioSource audioSource;
 
     public List<StatusMod> statusMods;
 
@@ -113,6 +114,7 @@ public abstract class Fighter : MonoBehaviour
 
         if (this.isAlive == false)
         {
+            audioSource.Play();
             animator.Play("Death");
             Invoke("Die", 2f);
         }
