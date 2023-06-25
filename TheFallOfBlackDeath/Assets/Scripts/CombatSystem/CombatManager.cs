@@ -196,7 +196,7 @@ public class CombatManager : MonoBehaviour
                     yield return null;
                     break;
                 case CombatStatus.NEXT_TURN:
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSeconds(0.2f);
 
                     Fighter current = null;
 
@@ -229,7 +229,7 @@ public class CombatManager : MonoBehaviour
                             }
 
                             LogPanel.Write(nextSCMessage);
-                            yield return new WaitForSeconds(0.4f);
+                            yield return new WaitForSeconds(2f);
                         }
 
                         if (statusCondition.BlocksTurn())
