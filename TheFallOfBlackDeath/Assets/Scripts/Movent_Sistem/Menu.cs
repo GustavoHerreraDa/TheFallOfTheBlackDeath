@@ -38,14 +38,12 @@ public class Menu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (Inventorymenu.activeSelf) // Si el Inventorymenu está activo, no abrir el Pausemenu
+            {
+                // Código adicional si se desea realizar alguna acción cuando se intenta abrir el Pausemenu con el Inventorymenu activo
+                return;
+            }
 
-            //GameState.Gamestate currentgamestate = GameStateManager.Instance.Currentgamestate;
-            //GameState.Gamestate newgamestate = currentgamestate == GameState.Gamestate.gameplay
-            //    ? GameState.Gamestate.pause
-            //    : GameState.Gamestate.gameplay;
-
-            //GameStateManager.Instance.Setstate(newgamestate);
-            Inventorymenu.SetActive(false);
 
 
 
@@ -61,8 +59,11 @@ public class Menu : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
-
-            Pausemenu.SetActive(false);
+            if (Pausemenu.activeSelf) // Si el Pausemenu está activo, no abrir el Inventorymenu
+            {
+                // Código adicional si se desea realizar alguna acción cuando se intenta abrir el Inventorymenu con el Pausemenu activo
+                return;
+            }
 
             //Debug.Log("hola");
             if (inventory)
