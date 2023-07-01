@@ -3356,8 +3356,8 @@ MonoBehaviour:
   m_FillRect: {fileID: 845475933183616673}
   m_HandleRect: {fileID: 845475932863535524}
   m_Direction: 0
-  m_MinValue: -40
-  m_MaxValue: 20
+  m_MinValue: 0
+  m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -3620,7 +3620,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 845475934209902879}
   m_Direction: 0
   m_MinValue: -40
-  m_MaxValue: 20
+  m_MaxValue: 40
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -4713,6 +4713,7 @@ GameObject:
   - component: {fileID: 845475934236064268}
   - component: {fileID: 845475934236064264}
   - component: {fileID: 845475934236064267}
+  - component: {fileID: 1480030708894454057}
   m_Layer: 5
   m_Name: CanvasMenu
   m_TagString: Untagged
@@ -4839,6 +4840,23 @@ MonoBehaviour:
   mainPanel: {fileID: 845475933542238225}
   optionsPanel: {fileID: 845475932652299632}
   controlesPanel: {fileID: 845475932339017037}
+  statsPanel: {fileID: 0}
+  introPanel: {fileID: 0}
+--- !u!114 &1480030708894454057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845475934236064269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d53d174de735d9488d2421a7debae21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundFXSlider: {fileID: 845475933909327521}
+  soundFXAudioSource: {fileID: 5087530592226747016, guid: fd468d44cfbc92349927d5cc6e73c4ab, type: 3}
+  soundFXClip: {fileID: 8300000, guid: 320efd229456afa49af5d86fa38deff4, type: 3}
 --- !u!1 &845475934391231775
 GameObject:
   m_ObjectHideFlags: 0
