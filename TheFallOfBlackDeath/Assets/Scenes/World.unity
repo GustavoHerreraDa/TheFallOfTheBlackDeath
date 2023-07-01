@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1595046872}
-  m_IndirectSpecularColor: {r: 0.00000008490936, g: 0.0005647515, b: 0.015207048, a: 1}
+  m_IndirectSpecularColor: {r: 0.00030134016, g: 0.008429392, b: 0.10503368, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -174,10 +174,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 40552375}
   player: {fileID: 1495737503}
-  destinations:
-  - {fileID: 0}
-  - {fileID: 1971633274}
   distanceToFollowPlayer: 15
+  returnDestination: {fileID: 0}
 --- !u!114 &40552372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,10 +557,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 127708396}
   player: {fileID: 1495737503}
-  destinations:
-  - {fileID: 0}
-  - {fileID: 1971633274}
   distanceToFollowPlayer: 15
+  returnDestination: {fileID: 0}
 --- !u!114 &127708393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -720,11 +716,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f92763dab571e64d8d6e9eea9e847f8, type: 3}
---- !u!1 &173190671 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5058723625543815942, guid: f5a8d0aede8cb2940a6adbd9ae30e1e7, type: 3}
-  m_PrefabInstance: {fileID: 1971633272}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &193028759
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -963,10 +954,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 246860408}
   player: {fileID: 1495737503}
-  destinations:
-  - {fileID: 0}
-  - {fileID: 1971633274}
   distanceToFollowPlayer: 15
+  returnDestination: {fileID: 0}
 --- !u!114 &246860405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1229,11 +1218,6 @@ Transform:
   m_Father: {fileID: 486906682}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &321977743 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2760926980606053855, guid: f5a8d0aede8cb2940a6adbd9ae30e1e7, type: 3}
-  m_PrefabInstance: {fileID: 1971633272}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &336939614
 GameObject:
   m_ObjectHideFlags: 0
@@ -3594,7 +3578,7 @@ MonoBehaviour:
   playerControl: {fileID: 1495737516}
   InteractMeessage: {fileID: 336939614}
   canInteract: 0
-  nameMessage: {fileID: 0}
+  nameMessage: {fileID: 1131429254}
 --- !u!114 &1495737523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3611,7 +3595,7 @@ MonoBehaviour:
   playerControl: {fileID: 1495737516}
   InteractMeessage: {fileID: 336939614}
   canInteract: 0
-  nameMessage: {fileID: 0}
+  nameMessage: {fileID: 1131429254}
 --- !u!1001 &1530329650
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4652,6 +4636,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bf862493955d2584eaed0db7aca90bfb, type: 3}
   m_PrefabInstance: {fileID: 1837607637}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1841689585 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4741647421434594091, guid: f5a8d0aede8cb2940a6adbd9ae30e1e7, type: 3}
+  m_PrefabInstance: {fileID: 1971633272}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1851208418 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8371841720030101198, guid: f5a8d0aede8cb2940a6adbd9ae30e1e7, type: 3}
@@ -5216,11 +5205,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 2efbb611579962d4bbb312a97f1a21cb, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5a8d0aede8cb2940a6adbd9ae30e1e7, type: 3}
---- !u!1 &1971633274 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 689342825, guid: f5a8d0aede8cb2940a6adbd9ae30e1e7, type: 3}
-  m_PrefabInstance: {fileID: 1971633272}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1976731604 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1443639437503016498, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
@@ -5350,10 +5334,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 1978304188}
   player: {fileID: 1495737503}
-  destinations:
-  - {fileID: 173190671}
-  - {fileID: 321977743}
   distanceToFollowPlayer: 20
+  returnDestination: {fileID: 0}
 --- !u!1 &2017102001
 GameObject:
   m_ObjectHideFlags: 0
@@ -5698,10 +5680,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 2081864233}
   player: {fileID: 1495737503}
-  destinations:
-  - {fileID: 0}
-  - {fileID: 1971633274}
   distanceToFollowPlayer: 15
+  returnDestination: {fileID: 0}
 --- !u!1 &2097795009
 GameObject:
   m_ObjectHideFlags: 0
@@ -5853,11 +5833,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1460458386042536553, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00005332884
+      value: 0.0006200428
       objectReference: {fileID: 0}
     - target: {fileID: 1700038091192733860, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00005332884
+      value: 0.0006200428
       objectReference: {fileID: 0}
     - target: {fileID: 2417103633735323943, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -6810,8 +6790,12 @@ PrefabInstance:
       objectReference: {fileID: 1495737503}
     - target: {fileID: 1113889133, guid: efc81bb57a23e0b44b9cb1811ee232c4, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1113889133, guid: efc81bb57a23e0b44b9cb1811ee232c4, type: 3}
+      propertyPath: returnDestination
+      value: 
+      objectReference: {fileID: 1841689585}
     - target: {fileID: 1113889133, guid: efc81bb57a23e0b44b9cb1811ee232c4, type: 3}
       propertyPath: destinations.Array.data[0]
       value: 
