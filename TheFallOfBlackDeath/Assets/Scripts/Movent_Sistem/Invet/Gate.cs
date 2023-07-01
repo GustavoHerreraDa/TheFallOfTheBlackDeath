@@ -7,6 +7,8 @@ public class Gate : MonoBehaviour
     // Start is called before the first frame update
     private Animator animator;
     public bool IsNeedKey;
+    public Collider collider;
+    public bool isOpen;
     void Start()
     {
         animator = GetComponent<Animator>();
