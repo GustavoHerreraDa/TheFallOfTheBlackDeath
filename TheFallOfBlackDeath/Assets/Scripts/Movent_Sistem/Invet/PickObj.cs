@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PickObj : Interactable
 {
+    public AudioSource pickSound;
+
     private void Start()
     {
         base.Start();
@@ -12,7 +14,8 @@ public class PickObj : Interactable
     public override void Interact()
     {
         player_Animator.Play("Pick");
-        statsOBJ i = objCollider.GetComponent<statsOBJ>();
+        pickSound.Play();
+    statsOBJ i = objCollider.GetComponent<statsOBJ>();
 
         InventoryManager.instance.AddItem(i.id, i.amount, i.uso);
         playerControl.StopPlayer(1.3f);

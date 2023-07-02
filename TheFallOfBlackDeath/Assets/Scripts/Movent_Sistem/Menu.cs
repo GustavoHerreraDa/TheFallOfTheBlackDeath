@@ -11,6 +11,10 @@ public class Menu : MonoBehaviour
     [SerializeField] GameObject StatsMenu;
     [SerializeField] private Camera_Main cameraMain;
     [SerializeField] private PlayerControl playerControl;
+    [SerializeField] AudioSource pauseSound;
+    [SerializeField] AudioSource inventorySound;
+    [SerializeField] AudioSource resumeSound;
+
 
 
 
@@ -54,6 +58,7 @@ public class Menu : MonoBehaviour
             }
             else
             {
+            
                 PauseGame();
             }
         }
@@ -106,6 +111,7 @@ public class Menu : MonoBehaviour
 
     private void Inventorytrue()
     {
+
         Cursor.lockState = CursorLockMode.Locked;
         Inventorymenu.SetActive(false);
         inventory = false;
@@ -115,6 +121,7 @@ public class Menu : MonoBehaviour
     }
     private void Inventoryfalse()
     {
+        inventorySound.Play();
         Cursor.lockState = CursorLockMode.None;
         Inventorymenu.SetActive(true);
         inventory = true;
@@ -144,6 +151,7 @@ public class Menu : MonoBehaviour
 
     public void PauseGame()
     {
+       pauseSound.Play();
        Cursor.lockState = CursorLockMode.None;
        Pausemenu.SetActive(true);
        Time.timeScale = 0f;
@@ -158,6 +166,7 @@ public class Menu : MonoBehaviour
 
        if (combatManager.isCombatActive == true)
         {
+            resumeSound.Play();
             Cursor.lockState = CursorLockMode.None;
             Pausemenu.SetActive(false);
             Time.timeScale = 1f;
@@ -166,6 +175,7 @@ public class Menu : MonoBehaviour
         }
        else
         {
+            resumeSound.Play();
             Cursor.lockState = CursorLockMode.Locked;
             Pausemenu.SetActive(false);
             Time.timeScale = 1f;
