@@ -22,7 +22,7 @@ namespace Assets.Scripts.Movent_Sistem.Invet
             player_Animator.Play("Open");
             InteractMeessage.SetActive(false);
             canInteract = false;
-            nameMessage.text = message;
+            nameMessage.text = "Press E to open.";
 
         }
 
@@ -36,7 +36,6 @@ namespace Assets.Scripts.Movent_Sistem.Invet
                     InteractMeessage.SetActive(true);
                     objCollider = other;
                     canInteract = true;
-                    nameMessage.text = message;
                 }
             }
         }
