@@ -15,7 +15,7 @@ public class PickObj : Interactable
     {
         player_Animator.Play("Pick");
         pickSound.Play();
-    statsOBJ i = objCollider.GetComponent<statsOBJ>();
+        statsOBJ i = objCollider.GetComponent<statsOBJ>();
 
         InventoryManager.instance.AddItem(i.id, i.amount, i.uso);
         playerControl.StopPlayer(1.3f);
