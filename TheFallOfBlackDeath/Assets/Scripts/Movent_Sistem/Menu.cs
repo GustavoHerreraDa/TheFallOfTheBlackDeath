@@ -117,6 +117,7 @@ public class Menu : MonoBehaviour
         inventory = false;
         cameraMain.enabled = true;
         playerControl.enabled = true;
+        playerControl.stop = false;
 
     }
     private void Inventoryfalse()
@@ -126,7 +127,8 @@ public class Menu : MonoBehaviour
         Inventorymenu.SetActive(true);
         inventory = true;
         cameraMain.enabled = false;
-        playerControl.enabled = false;
+        playerControl.stop = true;
+        
         Inventorymenu.GetComponent<TabInventory>().UpdateSkillUI();
 
     }

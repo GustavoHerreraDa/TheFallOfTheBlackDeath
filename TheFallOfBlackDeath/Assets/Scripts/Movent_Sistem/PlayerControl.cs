@@ -21,7 +21,7 @@ public class PlayerControl : MonoBehaviour
 
 
     float velocidadGiro;
-    float gravedad = -9.81f;
+    public float gravedad = -9.81f;
     Vector3 velocity;
     bool tocaPiso;
 
