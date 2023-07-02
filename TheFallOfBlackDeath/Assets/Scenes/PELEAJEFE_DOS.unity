@@ -2487,14 +2487,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 457040211}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -4.37, y: 2.17, z: 0.08}
+  m_LocalRotation: {x: 0.039813403, y: 0.70598507, z: -0.03981341, w: 0.70598507}
+  m_LocalPosition: {x: -4.37, y: 3.73, z: -0.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2070273713}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 6.455, y: 90, z: 0}
 --- !u!1001 &523051405
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2601,9 +2601,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 529740834}
-  - component: {fileID: 529740835}
+  - component: {fileID: 529740836}
   m_Layer: 0
-  m_Name: FLAME
+  m_Name: Essence Drain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2624,7 +2624,7 @@ Transform:
   m_Father: {fileID: 2070273713}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &529740835
+--- !u!114 &529740836
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2633,22 +2633,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 529740833}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Script: {fileID: 11500000, guid: f4e34b1577b331649911709fabd11c04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Fire Sword
+  skillName: Essence Drain
   animationDuration: 2
   targeting: 4
-  effectPrfb: {fileID: 2360655870356088562, guid: 57a776ff377f3c44e8403e2067a4d41f, type: 3}
+  effectPrfb: {fileID: 4553287630450876385, guid: 15483e51212e3d74886ea57291f4639a, type: 3}
   SkillDesc: 
-  skillType: 0
+  skillType: 1
   iconUI: {fileID: 0}
-  animationName: Sword
+  animationName: Attack
   HasItemInInventory: 0
   ItemsNeeded: []
-  amount: -30
-  modType: 0
-  critChance: 0.1
+  lifeStealPercentage: 0.2
+  amount: 35
 --- !u!114 &558892401 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2124753367, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
@@ -3592,7 +3591,7 @@ Transform:
   m_Children:
   - {fileID: 1295880805}
   m_Father: {fileID: 2070273713}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &793910098
 MonoBehaviour:
@@ -3755,7 +3754,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2070273713}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &866614591 stripped
 GameObject:
@@ -4388,66 +4387,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!1 &973003633
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 973003634}
-  - component: {fileID: 973003635}
-  m_Layer: 0
-  m_Name: CURSE
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &973003634
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 973003633}
-  m_LocalRotation: {x: -0, y: -0.9993166, z: -0, w: 0.03696695}
-  m_LocalPosition: {x: 11.370104, y: 2.3121386, z: 1.997237}
-  m_LocalScale: {x: 0.6666664, y: 0.6666667, z: 0.6666664}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1739013026}
-  m_Father: {fileID: 2070273713}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &973003635
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 973003633}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Void
-  animationDuration: 2
-  targeting: 0
-  effectPrfb: {fileID: 5824670795371433373, guid: f6fd568b816c64943a44efc3add3a881, type: 3}
-  SkillDesc: Maldice al enemigo (Pierde puntos de salud por turno)
-  skillType: 1
-  iconUI: {fileID: 0}
-  animationName: Attack
-  HasItemInInventory: 0
-  ItemsNeeded:
-  - id: 6
-    amount: 1
-    uso: 0
-  damageAmount: 0
-  audioSource: {fileID: 3861557124769006861, guid: bbb90e4647048964c9eac0c7fd71caa3, type: 3}
 --- !u!1001 &1021820093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4570,10 +4509,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1042038581}
-  - component: {fileID: 1042038583}
   - component: {fileID: 1042038582}
   m_Layer: 0
-  m_Name: WAR SCREAM
+  m_Name: Blade of Might
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4603,34 +4541,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1042038580}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
+  m_Script: {fileID: 11500000, guid: a26f8ba7330ee1244be166d429cb55d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: ' Omnipresence'
+  skillName: Blade of Might
   animationDuration: 2
-  targeting: 2
-  effectPrfb: {fileID: 4772634663576830964, guid: e1385af346f4e624eb313ec1ea4fcd7e, type: 3}
-  SkillDesc: Group attack dropped considerably
-  skillType: 1
+  targeting: 4
+  effectPrfb: {fileID: 4425544509863617631, guid: d552e90926df03a4596ccf40851b2dce, type: 3}
+  SkillDesc: 
+  skillType: 0
   iconUI: {fileID: 0}
   animationName: Attack
   HasItemInInventory: 0
   ItemsNeeded: []
-  message: The group's attack was reduced by 20
---- !u!114 &1042038583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1042038580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  amount: -20
+  damageAmount: 10
+  attackBuffAmount: 5
 --- !u!1 &1052591848 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5352328091520404058, guid: 27fd170434c11ec4bb70625d7c5ba2c8, type: 3}
@@ -5159,6 +5084,35 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
+--- !u!1 &1227608043 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6991292943016786739, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
+  m_PrefabInstance: {fileID: 6895541383577646214}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1227608045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227608043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a26f8ba7330ee1244be166d429cb55d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Blessed
+  animationDuration: 1
+  targeting: 2
+  effectPrfb: {fileID: 8189500006840025469, guid: e62b22954c59c2f49b53a190dd1291ef, type: 3}
+  SkillDesc: ataque
+  skillType: 0
+  iconUI: {fileID: 0}
+  animationName: Attack
+  HasItemInInventory: 0
+  ItemsNeeded: []
+  damageAmount: 40
+  attackBuffAmount: 5
 --- !u!114 &1241703313 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6304786079332974338, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
@@ -5445,7 +5399,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2070273713}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1366034647
 GameObject:
@@ -5638,6 +5592,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2070273713}
     m_Modifications:
+    - target: {fileID: 1482966800443300653, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482966800443300653, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482966800443300653, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482966800443300653, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2475196814315695594, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5648,7 +5618,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2475196814315695594, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2475196814315695594, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5722,9 +5692,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
+    - target: {fileID: 3353193370813214024, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3353193370813214024, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3353193370813214024, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3353193370813214024, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4201492329203201003, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
       propertyPath: m_Name
       value: CanvasWorldEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 4563844864976797298, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4563844864976797298, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4563844864976797298, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4563844864976797298, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7292734627719543572, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5732,6 +5734,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7292734627719543572, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678982310532464164, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678982310532464164, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678982310532464164, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678982310532464164, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -6591,57 +6609,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 865075904647613955, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
   m_PrefabInstance: {fileID: 1691333297}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1739013025
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1739013026}
-  - component: {fileID: 1739013027}
-  m_Layer: 0
-  m_Name: Maldicion hijo
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1739013026
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1739013025}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 973003634}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1739013027
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1739013025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b51e2ef5a84f96f409ceb956945277e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectPrfb: {fileID: 5824670795371433373, guid: f6fd568b816c64943a44efc3add3a881, type: 3}
-  animationDuration: 3
-  receptionMessage: (receiver) use void on himself
-  applyMessage: Void heals (receiver)
-  expireMessage: Void fades
-  turnDuration: 2
-  percentage: 0.05
 --- !u!4 &1742442231 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3952874bfd35e054288f9cb357c45c11, type: 3}
@@ -6867,63 +6834,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ba0ea540324d1914a81f762ae8b1d1da, type: 3}
   m_PrefabInstance: {fileID: 384536803}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1911965480
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1911965481}
-  - component: {fileID: 1911965482}
-  m_Layer: 0
-  m_Name: InfernalFlame
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1911965481
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1911965480}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.670187, y: 2.3388052, z: -2.8094306}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2070273713}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1911965482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1911965480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Infernal Flame
-  animationDuration: 1.5
-  targeting: 2
-  effectPrfb: {fileID: 8194992990867289339, guid: 99bc28c0d45f51c4fbac01080b73edc7, type: 3}
-  SkillDesc: 
-  skillType: 1
-  iconUI: {fileID: 0}
-  animationName: LLamarada
-  HasItemInInventory: 0
-  ItemsNeeded: []
-  amount: -40
-  modType: 0
-  critChance: 0.1
 --- !u!1 &1917653610
 GameObject:
   m_ObjectHideFlags: 0
@@ -7252,12 +7162,10 @@ Transform:
   - {fileID: 649939764}
   - {fileID: 529740834}
   - {fileID: 1042038581}
-  - {fileID: 1911965481}
   - {fileID: 457040212}
   - {fileID: 849183584}
   - {fileID: 1298525456}
   - {fileID: 793910097}
-  - {fileID: 973003634}
   - {fileID: 1637904754}
   m_Father: {fileID: 0}
   m_RootOrder: 13
@@ -7315,7 +7223,7 @@ MonoBehaviour:
   CameraPivot: {fileID: 457040212}
   DamagePivot: {fileID: 849183584}
   EnemyDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
-  EnemyIndex: 5
+  EnemyIndex: 8
   _IAEnemySimple: {fileID: 2070273715}
 --- !u!1 &2142915705 stripped
 GameObject:
@@ -7354,11 +7262,11 @@ PrefabInstance:
     - target: {fileID: 1247949589444371074, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
       propertyPath: actualAttack
       value: 
-      objectReference: {fileID: 598772878}
+      objectReference: {fileID: 728740997}
     - target: {fileID: 1247949589444371074, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
       propertyPath: actualDefense
       value: 
-      objectReference: {fileID: 728740997}
+      objectReference: {fileID: 598772878}
     - target: {fileID: 2359195483857438964, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
       propertyPath: actualAttack
       value: 
@@ -7451,7 +7359,9 @@ PrefabInstance:
       propertyPath: damageAmount
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3892876924532358236, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
+    - {fileID: 3892876924532358237, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
 --- !u!114 &6895541383577646215 stripped
 MonoBehaviour:
