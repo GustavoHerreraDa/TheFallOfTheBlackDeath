@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerFighter : Fighter
 {
@@ -8,8 +9,14 @@ public class PlayerFighter : Fighter
 
     public EnemyDataBase fightersDateBase;
     public int figherIndex;
+    private int activeAllyIndex;
+    public Fighter ally1;
+    public Fighter ally2;
+
 
     private Skill skillToBeExecuted;
+
+    private List<Fighter> allies;
 
     void Awake()
     {
@@ -22,6 +29,11 @@ public class PlayerFighter : Fighter
         else
             this.stats = new Stats(21, 60, 50, 45, 20, 20);
 
+        allies = new List<Fighter>();
+        allies.Add(this); // Agregar al jugador actual como el primer aliado activo
+        activeAllyIndex = 0; // Establecer el jugador actual como el aliado activo inicialmente
+
+
     }
 
     public override void InitTurn()
@@ -32,6 +44,11 @@ public class PlayerFighter : Fighter
         {
             this.skillPanel.ConfigureButton(i, this.skills[i].skillName);
         }
+
+        // Mostrar información del aliado activo en el panel de estado
+        Fighter activeAlly = allies[activeAllyIndex];
+        statusPanel.SetStats(activeAlly.idName, activeAlly.stats);
+
     }
 
     /// ================================================
@@ -39,6 +56,22 @@ public class PlayerFighter : Fighter
     /// Se llama desde EnemiesPanel.
     /// </summary>
     /// <param name="index"></param>
+    public void ChangeAlly(int newIndex)
+    {
+        if (newIndex < 0 || newIndex >= allies.Count)
+        {
+            Debug.LogError("Invalid ally index");
+            return;
+        }
+
+        activeAllyIndex = newIndex;
+
+        // Actualizar la información del nuevo aliado activo en el panel de estado
+        Fighter activeAlly = allies[activeAllyIndex];
+        statusPanel.SetStats(activeAlly.idName, activeAlly.stats);
+
+        // Realizar cualquier otra lógica necesaria al cambiar de aliado
+    }
 
     public void ExecuteSkill(int index)
     {
@@ -78,5 +111,25 @@ public class PlayerFighter : Fighter
     {
         this.skillPanel.Show();
         this.enemiesPanel.Hide();
+    }
+
+    private void AddAlliesToTeam()
+    {
+        allies.Clear();
+        allies.Add(ally1);
+        allies.Add(ally2);
+        // Agrega aquí el resto de los aliados a la lista allies
+    }
+
+    private void SwitchActiveAlly()
+    {
+        activeAllyIndex++;
+        if (activeAllyIndex >= allies.Count)
+        {
+            activeAllyIndex = 0;
+        }
+
+        Fighter activeAlly = allies[activeAllyIndex];
+        // Realizar las acciones necesarias con el aliado activo
     }
 }
