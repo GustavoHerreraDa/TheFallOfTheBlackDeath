@@ -31,6 +31,7 @@ public class CombatManager : MonoBehaviour
     public StatsManager[] statsManagers;
 
     public AudioSource audioSource;
+    public AudioSource sonidoDeDerrota;
 
     void Start()
     {
@@ -185,7 +186,9 @@ public class CombatManager : MonoBehaviour
                     {
                         LogPanel.Write("Derrota!");
                         this.isCombatActive = false;
-                        SceneManager.LoadSceneAsync(0);
+                        yield return new WaitForSeconds(2f);
+                        SceneManager.LoadSceneAsync(7);
+                        sonidoDeDerrota.Play();
                     }
 
                     if (this.isCombatActive)
