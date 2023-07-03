@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.00030126586, g: 0.008429392, b: 0.10503368, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0.0005646824, b: 0.015207045, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2080,7 +2080,7 @@ GameObject:
   - component: {fileID: 170446248}
   - component: {fileID: 170446249}
   m_Layer: 0
-  m_Name: Molotov
+  m_Name: RainArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2113,11 +2113,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Molotov
+  skillName: Arrow Rain
   animationDuration: 1
   targeting: 2
   effectPrfb: {fileID: 1134129239631916, guid: 7e48ba6b1b968764490bbc70b66e3fe1, type: 3}
-  SkillDesc: Damage all enemies for 15 (unalterable damage)
+  SkillDesc: You attack all enemies with a rain of arrows.
   skillType: 0
   iconUI: {fileID: 21300000, guid: c27bdd2f3ad83394aa03794d816a34d5, type: 3}
   animationName: Molotov
@@ -2500,7 +2500,7 @@ MonoBehaviour:
   turnsDisplay: {fileID: 1691333298}
   statsManagers:
   - {fileID: 6895541383577646216}
-  - {fileID: 6895541383577646215}
+  - {fileID: 2043478033}
   - {fileID: 2070273714}
   audioSource: {fileID: 748965476}
   sonidoDeDerrota: {fileID: 995573646}
@@ -4270,7 +4270,7 @@ GameObject:
   - component: {fileID: 870191000}
   - component: {fileID: 870191001}
   m_Layer: 0
-  m_Name: Back Stab
+  m_Name: Concentration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4303,11 +4303,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Sneak Attack
+  skillName: Concentration
   animationDuration: 1.5
   targeting: 4
   effectPrfb: {fileID: 6710139492206580332, guid: 95b8d3d65b5d7f1409c4ed1723887826, type: 3}
-  SkillDesc: Backstab the enemy with a 60% chance to land a critical hit. 45 damage
+  SkillDesc: Increase Attack by 10.
   skillType: 0
   iconUI: {fileID: 21300000, guid: 0fbbd9262d44f584d8310a7d55840604, type: 3}
   animationName: BackStab
@@ -6257,7 +6257,7 @@ GameObject:
   - component: {fileID: 1609352316}
   - component: {fileID: 1609352315}
   m_Layer: 0
-  m_Name: Intimidate
+  m_Name: PenetrationArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6304,11 +6304,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Intimidate
+  skillName: Penetration Arrow
   animationDuration: 1.5
   targeting: 4
   effectPrfb: {fileID: 8189500006840025469, guid: 0a19654f0adc9c6429eff011c5724442, type: 3}
-  SkillDesc: Decrease the enemy's attack by 10.
+  SkillDesc: Using all your you make a penetration Attack.
   skillType: 0
   iconUI: {fileID: 21300000, guid: bf358916f238efa4baf7309957283b02, type: 3}
   animationName: Intimidate
@@ -6662,7 +6662,7 @@ GameObject:
   - component: {fileID: 1666719570}
   - component: {fileID: 1666719571}
   m_Layer: 0
-  m_Name: Scimitar
+  m_Name: BowArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6695,12 +6695,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Scimitar
+  skillName: Bow & Arrow
   animationDuration: 1.5
   targeting: 4
   effectPrfb: {fileID: 6703250321131892297, guid: 2b987d41506d172419fa18578f6ac380, type: 3}
-  SkillDesc: A savage scimitar strike that deals 65 damage to the enemy (no critical
-    chance).
+  SkillDesc: Use the bow to shoot arrow to an enemy
   skillType: 0
   iconUI: {fileID: 21300000, guid: 2a374e70ce8fd4c41adddb5886a760ab, type: 3}
   animationName: Scimitar
@@ -8336,6 +8335,18 @@ PrefabInstance:
       propertyPath: actualDefense
       value: 
       objectReference: {fileID: 598772878}
+    - target: {fileID: 2171699017589001072, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
+      propertyPath: iconUI
+      value: 
+      objectReference: {fileID: 21300000, guid: 5f964c2bd77db17409a0920e85b63140, type: 3}
+    - target: {fileID: 2171699017589001072, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
+      propertyPath: SkillDesc
+      value: Use the bow to shoot arrow to an enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2171699017589001072, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
+      propertyPath: skillName
+      value: Bow & Arrow
+      objectReference: {fileID: 0}
     - target: {fileID: 2359195483857438964, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
       propertyPath: actualAttack
       value: 
@@ -8344,6 +8355,14 @@ PrefabInstance:
       propertyPath: actualDefense
       value: 
       objectReference: {fileID: 804063018}
+    - target: {fileID: 4701593592225417996, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
+      propertyPath: SkillDesc
+      value: Concentration
+      objectReference: {fileID: 0}
+    - target: {fileID: 4701593592225417996, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
+      propertyPath: skillName
+      value: Concentration
+      objectReference: {fileID: 0}
     - target: {fileID: 6012458932558955161, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -8452,17 +8471,6 @@ PrefabInstance:
     - {fileID: 3892876924532358236, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
     - {fileID: 3892876924532358237, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
---- !u!114 &6895541383577646215 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2359195483857438964, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
-  m_PrefabInstance: {fileID: 6895541383577646214}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77345174282e5da4798c4f0a2ca01574, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6895541383577646216 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1247949589444371074, guid: 803990242c87cbe4c8753f91fd8ee1dc, type: 3}
