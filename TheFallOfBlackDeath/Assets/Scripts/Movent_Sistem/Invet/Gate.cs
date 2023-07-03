@@ -39,7 +39,9 @@ public class Gate : MonoBehaviour
             hasKey = InventoryManager.instance.HasItemInIventory(GetKey(), 1);
 
             animator.SetBool("IsOpen", hasKey);
-            collider.enabled = !hasKey;
+
+            if (collider != null)
+                collider.enabled = !hasKey;
             isOpen = hasKey;
         }
 
