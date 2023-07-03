@@ -23,18 +23,22 @@ public class InventoryManager : MonoBehaviour
     public InventoryUI prefab;
     public Transform equipmentUI;
     public Transform objetsUI;
-    List<InventoryUI> pool = new List<InventoryUI>();
+    public List<InventoryUI> pool = new List<InventoryUI>();
 
     void Awake()
     {
+
         if (InventoryManager.instance == null)
         {
             InventoryManager.instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        else
+        {
+            InventoryManager.instance.pool = new List<InventoryUI>();
+            //CreateUI();
+        }
     }
-
-
 
     [System.Serializable]
     public struct InventoryObjectID
@@ -52,6 +56,7 @@ public class InventoryManager : MonoBehaviour
     }
     public void AddItem(int id, int amount, InventoryDateBase.Uso uso)
     {
+        Debug.Log("Add Item");
         for (int i = 0; i < inventory.Count; i++)
         {
             if (inventory[i].id == id)
@@ -92,6 +97,9 @@ public class InventoryManager : MonoBehaviour
     }
     public void Start()
     {
+        Debug.Log("Start Item Manager");
+        pool = new List<InventoryUI>();
+
         updateUI(equipmentUI, InventoryDateBase.Uso.Equipable);
         updateUI(objetsUI, InventoryDateBase.Uso.Usable);
         updateUI(objetsUI, InventoryDateBase.Uso.SkillNeed);
@@ -99,6 +107,7 @@ public class InventoryManager : MonoBehaviour
     }
     public void updateUI(Transform _ui, InventoryDateBase.Uso uso)
     {
+
         //Debug.Log("updateinventory funciono");
         for (int i = 0; i < pool.Count; i++)
         {
@@ -113,7 +122,8 @@ public class InventoryManager : MonoBehaviour
                 pool[i].amount.text = o.amount.ToString();
                 pool[i].itemName.text = datebase.DateBase[o.id].name;
                 pool[i].itemDescripcion.text = datebase.DateBase[o.id].characteristic;
-                pool[i].gameObject.SetActive(true);
+                if (pool[i].gameObject != null)
+                    pool[i].gameObject.SetActive(true);
             }
             else
             {
@@ -127,6 +137,43 @@ public class InventoryManager : MonoBehaviour
             {
                 if (inventory[i].uso != uso)
                     return;
+
+                InventoryUI oi = Instantiate(prefab, _ui);
+                pool.Add(oi);
+
+                oi.transform.position = Vector3.zero;
+                oi.transform.localScale = Vector3.one;
+
+                InventoryObjectID o = inventory[i];
+                pool[i].sprite.sprite = datebase.DateBase[o.id].sprite;
+                pool[i].itemName.text = datebase.DateBase[o.id].name;
+                pool[i].itemDescripcion.text = datebase.DateBase[o.id].characteristic;
+                pool[i].amount.text = o.amount.ToString();
+
+                pool[i].gameObject.SetActive(true);
+            }
+        }
+    }
+
+    public void CreateUI()
+    {
+        var _ui = equipmentUI;
+
+        if (inventory.Count > pool.Count)
+        {
+            for (int i = pool.Count; i < inventory.Count; i++)
+            {
+                switch (inventory[i].uso)
+                {
+                    case InventoryDateBase.Uso.Equipable:
+                        _ui = equipmentUI;
+                        break;
+                    case InventoryDateBase.Uso.Usable:
+                    case InventoryDateBase.Uso.SkillNeed:
+                    case InventoryDateBase.Uso.Consumable:
+                        _ui = objetsUI;
+                        break;
+                }
 
                 InventoryUI oi = Instantiate(prefab, _ui);
                 pool.Add(oi);

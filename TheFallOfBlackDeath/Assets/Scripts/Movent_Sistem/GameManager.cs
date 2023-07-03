@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
         character = FindObjectOfType<PlayerControl>().gameObject;
         if (character != null)
         {
-            character.transform.position = new Vector3(character.transform.position.x - 0.5f, character.transform.position.y, character.transform.position.z - 0.5f);
+            GameManager.Instance.character.transform.position = new Vector3(GameManager.Instance.character.transform.position.x - 0.5f, GameManager.Instance.character.transform.position.y, GameManager.Instance.character.transform.position.z - 0.5f);
         }
     }
     public void FindEnemies()

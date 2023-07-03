@@ -23,7 +23,7 @@ public class Menu : MonoBehaviour
     bool IsStats;
     public CombatManager combatManager;
 
-    
+
 
 
     private void Start()
@@ -31,7 +31,7 @@ public class Menu : MonoBehaviour
 
         Pausemenu.SetActive(false);
         Inventorymenu.SetActive(false);
-        
+
         if (StatsMenu == null)
             return;
 
@@ -53,12 +53,12 @@ public class Menu : MonoBehaviour
 
             if (Pause)
             {
-                
+
                 Resumegame();
             }
             else
             {
-            
+
                 PauseGame();
             }
         }
@@ -105,8 +105,8 @@ public class Menu : MonoBehaviour
         {
             SceneManager.LoadScene(0);
         }
-    
-    
+
+
     }
 
     private void Inventorytrue()
@@ -118,7 +118,6 @@ public class Menu : MonoBehaviour
         cameraMain.enabled = true;
         playerControl.enabled = true;
         playerControl.stop = false;
-
     }
     private void Inventoryfalse()
     {
@@ -128,7 +127,8 @@ public class Menu : MonoBehaviour
         inventory = true;
         cameraMain.enabled = false;
         playerControl.stop = true;
-        
+
+        InventoryManager.instance.CreateUI();
         Inventorymenu.GetComponent<TabInventory>().UpdateSkillUI();
 
     }
@@ -138,7 +138,7 @@ public class Menu : MonoBehaviour
         //Cursor.lockState = CursorLockMode.Locked;
         StatsMenu.SetActive(false);
         IsStats = false;
-        
+
 
     }
     private void Statsfalse()
@@ -153,20 +153,20 @@ public class Menu : MonoBehaviour
 
     public void PauseGame()
     {
-       pauseSound.Play();
-       Cursor.lockState = CursorLockMode.None;
-       Pausemenu.SetActive(true);
-       Time.timeScale = 0f;
-       Pause = true;
-       
+        pauseSound.Play();
+        Cursor.lockState = CursorLockMode.None;
+        Pausemenu.SetActive(true);
+        Time.timeScale = 0f;
+        Pause = true;
 
-        
+
+
     }
 
     public void Resumegame()
     {
 
-       if (combatManager.isCombatActive == true)
+        if (combatManager.isCombatActive == true)
         {
             resumeSound.Play();
             Cursor.lockState = CursorLockMode.None;
@@ -175,7 +175,7 @@ public class Menu : MonoBehaviour
             Pause = false;
 
         }
-       else
+        else
         {
             resumeSound.Play();
             Cursor.lockState = CursorLockMode.Locked;
@@ -184,7 +184,7 @@ public class Menu : MonoBehaviour
             Pause = false;
 
         }
-        
+
 
     }
 

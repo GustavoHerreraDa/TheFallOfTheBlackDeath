@@ -6,8 +6,13 @@ using TMPro;
 
 public class InventoryUI : MonoBehaviour
 {
-     public TMP_Text amount;
-     public TMP_Text itemName;
-     public TMP_Text itemDescripcion;
-     public Image sprite;
+    public TMP_Text amount;
+    public TMP_Text itemName;
+    public TMP_Text itemDescripcion;
+    public Image sprite;
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
 }
