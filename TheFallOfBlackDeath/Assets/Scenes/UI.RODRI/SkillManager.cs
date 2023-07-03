@@ -38,9 +38,6 @@ public class SkillManager : MonoBehaviour
 
         var Skills = currentCharacterObj.GetComponentsInChildren<Skill>();
         SetSkill = index;
-
-
-
     }
     public string GetSkillDescription(int Skillindex)
     {

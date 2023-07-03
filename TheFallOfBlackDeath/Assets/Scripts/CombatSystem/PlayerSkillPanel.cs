@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static InventoryManager;
 
 public class PlayerSkillPanel : MonoBehaviour
 {
@@ -16,6 +18,16 @@ public class PlayerSkillPanel : MonoBehaviour
     public void ConfigureButton(int index, string skillName)
     {
         this.skillButtons[index].SetActive(true);
+        this.skillButtonLabels[index].text = skillName;
+    }
+
+    public void ConfigureButton(int index, string skillName, List<InventoryObjectID> itemsNeeded)
+    {
+        var hasItems = InventoryManager.instance == null ? true : InventoryManager.instance.HasItemInIventory(itemsNeeded);
+
+        Debug.Log("ConfigureButtons - skill name + " + skillName + "  " + itemsNeeded.Count + " hasItems " + hasItems);
+        this.skillButtons[index].SetActive(true);
+        this.skillButtons[index].GetComponent<Button>().interactable = hasItems;
         this.skillButtonLabels[index].text = skillName;
     }
 

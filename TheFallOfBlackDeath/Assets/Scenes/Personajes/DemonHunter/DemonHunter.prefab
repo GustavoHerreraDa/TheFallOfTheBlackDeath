@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5220776977910055386}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &4821933825314823667
 AudioSource:
@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 4258067087509739640}
   - component: {fileID: 2760408431430001781}
   m_Layer: 0
-  m_Name: Heal
+  m_Name: ArrowRain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158,7 +158,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5220776977910055386}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2760408431430001781
 MonoBehaviour:
@@ -172,13 +172,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Heal
+  skillName: ArrowRain
   animationDuration: 3
-  targeting: 3
+  targeting: 2
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
-  SkillDesc: You heal yourself or an ally for 20% of their maximum health.
+  SkillDesc: You attack all enemies with a rain of arrows.
   skillType: 2
-  iconUI: {fileID: 21300000, guid: fe8bd9ad3c45fdd4d88c6b051641093e, type: 3}
+  iconUI: {fileID: 21300000, guid: 335821ade701ab2468c72735712fd1b0, type: 3}
   animationName: Motivate
   HasItemInInventory: 0
   ItemsNeeded:
@@ -217,7 +217,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5220776977910055386}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3065379507908442331
 GameObject:
@@ -248,7 +248,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5220776977910055386}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3776457077822284447
 GameObject:
@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 4505745558531212346}
   - component: {fileID: 7432217648727058281}
   m_Layer: 0
-  m_Name: Curse
+  m_Name: PenetrationArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -281,7 +281,7 @@ Transform:
   m_Children:
   - {fileID: 4384071991964466809}
   m_Father: {fileID: 5220776977910055386}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7432217648727058281
 MonoBehaviour:
@@ -295,13 +295,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Curse
+  skillName: PenetrationArrow
   animationDuration: 2
   targeting: 4
   effectPrfb: {fileID: 100004, guid: 7867af58a6ec48846ae807eb4022fbaa, type: 3}
-  SkillDesc: You curse the enemy producing a reduction of the 10% life per turn.
+  SkillDesc: Using all your you make a penetration Attack
   skillType: 0
-  iconUI: {fileID: 21300000, guid: d965b648e7e6da744a24eee24b4b9c25, type: 3}
+  iconUI: {fileID: 21300000, guid: 8f27ac44494ecf344a313cfbc852012d, type: 3}
   animationName: Curse
   HasItemInInventory: 0
   ItemsNeeded:
@@ -339,12 +339,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4843689211291605856}
-  m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
+  m_LocalRotation: {x: 0, y: -0.68048424, z: 0, w: 0.7327628}
   m_LocalPosition: {x: 7.22, y: 1.39, z: -0.70987624}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7046072247147294739}
+  - {fileID: 7258764030363085104}
   - {fileID: 6845456653523715522}
   - {fileID: 7798203725198919279}
   - {fileID: 2712756524095481599}
@@ -368,9 +369,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
-  idName: Hunter
+  idName: Huntress
   statusPanel: {fileID: 0}
-  animator: {fileID: 3974569281475979881}
+  animator: {fileID: 1758438345660664638}
   combatManager: {fileID: 0}
   audioSource: {fileID: 4821933825314823667}
   statusMods: []
@@ -380,7 +381,7 @@ MonoBehaviour:
   skillPanel: {fileID: 0}
   enemiesPanel: {fileID: 0}
   fightersDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
-  figherIndex: 6
+  figherIndex: 9
   ally1: {fileID: 0}
   ally2: {fileID: 0}
 --- !u!73398921 &2433150697159004775
@@ -491,8 +492,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fighter: {fileID: 5762730095611520572}
-  playerRenderer: {fileID: 7675116505402682025}
-  baseMaterial: {fileID: 2100000, guid: 1acf43aae60dfbd46a8f10cf71b12dd7, type: 2}
+  playerRenderer: {fileID: 8068092912100766602}
+  baseMaterial: {fileID: 2100000, guid: a77f4afc199927c4f99a54255e3f1d48, type: 2}
   buffMaterial: {fileID: 2100000, guid: 039ff2a720e493543b7c268e9c396b26, type: 2}
   materiales: []
 --- !u!114 &79144692209781186
@@ -522,7 +523,7 @@ GameObject:
   - component: {fileID: 2760408430979587733}
   - component: {fileID: 2760408430979587732}
   m_Layer: 0
-  m_Name: Weaken
+  m_Name: Concentration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -541,7 +542,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5220776977910055386}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2760408430979587733
 MonoBehaviour:
@@ -569,17 +570,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Weaken
+  skillName: Concentration
   animationDuration: 1.5
-  targeting: 4
+  targeting: 0
   effectPrfb: {fileID: 3499216465569482894, guid: f2fc97de3837dfe429d9e31b21e766fa, type: 3}
-  SkillDesc: Reduce the opponent's defense by 10.
+  SkillDesc: Increase Attack by 10.
   skillType: 0
-  iconUI: {fileID: 21300000, guid: 539bc8db00263f6489d6d97d949ad58b, type: 3}
+  iconUI: {fileID: 21300000, guid: 5f964c2bd77db17409a0920e85b63140, type: 3}
   animationName: Weaken
   HasItemInInventory: 0
   ItemsNeeded: []
-  message: '{receiver} loses defense!'
+  message: '{receiver} Increase Attack'
 --- !u!1 &8164667427752071283
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,7 +592,7 @@ GameObject:
   - component: {fileID: 6845456653523715522}
   - component: {fileID: 9097352922933962899}
   m_Layer: 0
-  m_Name: Motivate
+  m_Name: BowArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -610,7 +611,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5220776977910055386}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9097352922933962899
 MonoBehaviour:
@@ -624,13 +625,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a26f8ba7330ee1244be166d429cb55d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Blessed
+  skillName: Bow & Arrow
   animationDuration: 1
-  targeting: 2
+  targeting: 4
   effectPrfb: {fileID: 8189500006840025469, guid: e62b22954c59c2f49b53a190dd1291ef, type: 3}
-  SkillDesc: ataque
+  SkillDesc: Use the bow to shoot arrow to an enemy
   skillType: 0
-  iconUI: {fileID: 0}
+  iconUI: {fileID: 21300000, guid: a34d8a158246b6848861d2bf11df2348, type: 3}
   animationName: Attack
   HasItemInInventory: 0
   ItemsNeeded: []
@@ -687,6 +688,121 @@ MonoBehaviour:
   expireMessage: Curse fades
   turnDuration: 3
   percentage: -0.1
+--- !u!1001 &7149172007824903899
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5220776977910055386}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.64
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.64
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.64
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.832
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 165875848304344042, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a77f4afc199927c4f99a54255e3f1d48, type: 2}
+    - target: {fileID: 165875848304344042, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 71120dbf1e0a48146ae054576b6f4137, type: 2}
+    - target: {fileID: 165875848304344042, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: cbe4755e8f647f141b7151b470852858, type: 2}
+    - target: {fileID: 919132149155446097, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+      propertyPath: m_Name
+      value: WomanHunter
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+--- !u!4 &7258764030363085104 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+  m_PrefabInstance: {fileID: 7149172007824903899}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8068092912100766602 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7df6ec73a87d2c24db46d9dddd2bb3d0, type: 3}
+  m_PrefabInstance: {fileID: 7149172007824903899}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1758438345660664638
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8068092912100766602}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 770bfc8b28641a94ba79cbf60ed73599, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &7368474059250505720
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -758,24 +874,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Medico peste lowpoly
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 19b6d12709ae64e4088a160d8b4f3b5c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
---- !u!95 &3974569281475979881 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
-  m_PrefabInstance: {fileID: 7368474059250505720}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7046072247147294739 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
-  m_PrefabInstance: {fileID: 7368474059250505720}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7675116505402682025 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
   m_PrefabInstance: {fileID: 7368474059250505720}
   m_PrefabAsset: {fileID: 0}

@@ -42,7 +42,7 @@ public class PlayerFighter : Fighter
 
         for (int i = 0; i < this.skills.Length; i++)
         {
-            this.skillPanel.ConfigureButton(i, this.skills[i].skillName);
+            this.skillPanel.ConfigureButton(i, this.skills[i].skillName,this.skills[i].ItemsNeeded);
         }
 
         // Mostrar información del aliado activo en el panel de estado
