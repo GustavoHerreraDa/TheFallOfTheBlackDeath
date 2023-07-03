@@ -18,6 +18,7 @@ public class Gate : MonoBehaviour
     public Collider collider;
     public bool isOpen;
     public KeyType gateType;
+    public AudioSource puertasonido;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -43,6 +44,7 @@ public class Gate : MonoBehaviour
         }
 
         animator.SetBool("IsOpen", hasKey);
+        puertasonido.Play();
     }
 
     public int GetKey()
