@@ -24,6 +24,7 @@ public class StatsManager : MonoBehaviour
     {
         this.SetDefense(fighter.GetCurrentStats().deffense);
         this.SetAttack(fighter.GetCurrentStats().attack);
+        Debug.Log("se recibio las estadisticas de estos player" + fighter);
     }
 
     // Update is called once per frame
