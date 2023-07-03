@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public Vector3 lastPos;
     public Transform startPost;
     public List<string> groupEnemyDefeat;
+    public List<string> objectsPickup;
 
     /*public GameObject Character
     {
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
     */
 
     public List<EnemiesGroup> enemies;
+    public List<statsOBJ> pickObjs;
     public static GameManager Instance
     {
         get { return _instance; }
@@ -52,6 +54,7 @@ public class GameManager : MonoBehaviour
             Debug.Log(element);
         }
         groupEnemyDefeat = ListEnemyDefeat.enemiesDefeat;
+        objectsPickup = ListEnemyDefeat.pickUpsInWorld;
     }
 
     public void FindPlayer()
@@ -63,17 +66,18 @@ public class GameManager : MonoBehaviour
             //GameManager.Instance.character.transform.position = new Vector3(GameManager.Instance.character.transform.position.x - 0.5f, GameManager.Instance.character.transform.position.y, GameManager.Instance.character.transform.position.z - 0.5f);
         }
     }
-    public void FindEnemies()
+    public void FindEnemiesAndObjets()
     {
         Debug.Log("Buscando enemigos");
 
         enemies = new List<EnemiesGroup>(FindObjectsOfType<EnemiesGroup>());
+        pickObjs = new List<statsOBJ>(FindObjectsOfType<statsOBJ>());
     }
     private void OnLevelWasLoaded(int level)
     {
         if (level == 1)
         {
-            GameManager.Instance.FindEnemies();
+            GameManager.Instance.FindEnemiesAndObjets();
             GameManager.Instance.FindPlayer();
 
             if (GameManager.Instance.lastPos != Vector3.zero)
@@ -97,9 +101,17 @@ public class GameManager : MonoBehaviour
 
                 Destroy(enemy.gameObject);
 
-                Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + enemy.GroupName);
+                //Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + enemy.GroupName);
             }
 
+            for (int i = 0; i < InventoryManager.instance.inventory.Count; i++)
+            {
+                var pickUp = pickObjs.Where(x => x.id == InventoryManager.instance.inventory[i].id).FirstOrDefault();
+
+                Destroy(pickUp.gameObject);
+
+                //Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + pickUp.GroupName);
+            }
 
 
         }
