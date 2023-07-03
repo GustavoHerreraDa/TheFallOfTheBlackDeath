@@ -108,7 +108,8 @@ public class GameManager : MonoBehaviour
             {
                 var pickUp = pickObjs.Where(x => x.id == InventoryManager.instance.inventory[i].id).FirstOrDefault();
 
-                Destroy(pickUp.gameObject);
+                if (pickUp != null)
+                    Destroy(pickUp.gameObject);
 
                 //Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + pickUp.GroupName);
             }
