@@ -3,9 +3,9 @@ using UnityEngine;
 /// <summary>
 /// Apply Status Condition Skill
 /// </summary>
-public class ApplySCSkill : Skill
+public class ApSC : Skill
 {
-
+    public float damageAmount = 0f; // Cantidad de daño que se generará al aplicar la condición de estado
     private StatusCondition condition;
     public AudioSource audioSource;
 
@@ -39,6 +39,9 @@ public class ApplySCSkill : Skill
         clonedCondition.SetReceiver(receiver);
         receiver.statusCondition = clonedCondition;
 
+        // Generamos el daño al receptor
+        receiver.ModifyHealth(-damageAmount);
+        this.messages.Enqueue("Hit for " + (int)damageAmount + (" to " + receiver.idName));
 
         this.messages.Enqueue(clonedCondition.GetReceptionMessage());
     }

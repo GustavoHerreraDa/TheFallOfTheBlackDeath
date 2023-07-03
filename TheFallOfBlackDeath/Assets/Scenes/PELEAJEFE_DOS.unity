@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0.0005646824, b: 0.015207045, a: 1}
+  m_IndirectSpecularColor: {r: 0.00030126586, g: 0.008429392, b: 0.10503368, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -232,6 +232,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 842f3c42f93eaf74eb25f2a545c3e32a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &51597167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 51597168}
+  - component: {fileID: 51597169}
+  m_Layer: 0
+  m_Name: Sinister Whispers clon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &51597168
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51597167}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 220763319}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &51597169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51597167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51e2ef5a84f96f409ceb956945277e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectPrfb: {fileID: 1280141305896002, guid: e473029e4c70ad543a6879b82a732f4f, type: 3}
+  animationDuration: 1.5
+  receptionMessage: (receiver) is cursed by Sinister Whispers.
+  applyMessage: Sinister Whispers ensnare (receiver) relentlessly
+  expireMessage: Sinister Whispers fades
+  turnDuration: 3
+  percentage: -0.1
 --- !u!1 &71219897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1859,6 +1910,63 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.027542692, y: 0.0062240167, z: 0.0035207716}
   m_Center: {x: -0.0000000023283064, y: 2.3283067e-10, z: -0.0000000037252903}
+--- !u!1 &220763318
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 220763319}
+  - component: {fileID: 220763320}
+  m_Layer: 0
+  m_Name: Sinister Whispers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &220763319
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220763318}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 51597168}
+  m_Father: {fileID: 2070273713}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &220763320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220763318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 381bcf0a6ab70124a991fa5ddd398eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Sinister Whispers
+  animationDuration: 1.5
+  targeting: 2
+  effectPrfb: {fileID: 1280141305896002, guid: e473029e4c70ad543a6879b82a732f4f, type: 3}
+  SkillDesc: 
+  skillType: 1
+  iconUI: {fileID: 0}
+  animationName: Attack
+  HasItemInInventory: 0
+  ItemsNeeded: []
+  damageAmount: 10
+  audioSource: {fileID: 3861557124769006861, guid: bbb90e4647048964c9eac0c7fd71caa3, type: 3}
 --- !u!1001 &253136692
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2793,7 +2901,7 @@ MonoBehaviour:
   targeting: 4
   effectPrfb: {fileID: 4553287630450876385, guid: 15483e51212e3d74886ea57291f4639a, type: 3}
   SkillDesc: 
-  skillType: 1
+  skillType: 0
   iconUI: {fileID: 0}
   animationName: Attack
   HasItemInInventory: 0
@@ -3714,7 +3822,6 @@ MonoBehaviour:
   animationName: Attack
   HasItemInInventory: 0
   ItemsNeeded: []
-  damageAmount: 0
   audioSource: {fileID: 3861557124769006861, guid: bbb90e4647048964c9eac0c7fd71caa3, type: 3}
 --- !u!114 &804063018 stripped
 MonoBehaviour:
@@ -4648,7 +4755,7 @@ MonoBehaviour:
   targeting: 4
   effectPrfb: {fileID: 4425544509863617631, guid: d552e90926df03a4596ccf40851b2dce, type: 3}
   SkillDesc: 
-  skillType: 0
+  skillType: 1
   iconUI: {fileID: 0}
   animationName: Attack
   HasItemInInventory: 0
@@ -7266,6 +7373,7 @@ Transform:
   - {fileID: 793910097}
   - {fileID: 1637904754}
   - {fileID: 595326192}
+  - {fileID: 220763319}
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
