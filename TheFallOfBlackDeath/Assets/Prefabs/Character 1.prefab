@@ -82,6 +82,7 @@ MonoBehaviour:
   prefab: {fileID: 4463044231049171882, guid: fea44ec7c7d72e442ac64ecfa5824a92, type: 3}
   equipmentUI: {fileID: 0}
   objetsUI: {fileID: 0}
+  pool: []
 --- !u!114 &7557651050551123926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +118,7 @@ MonoBehaviour:
   prefab: {fileID: 0}
   equipmentUI: {fileID: 0}
   objetsUI: {fileID: 0}
+  pool: []
 --- !u!1 &2976280615624261699
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,6 +247,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &3861522746188967155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6499518480103575796}
+  m_Layer: 0
+  m_Name: CharacterHead
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6499518480103575796
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3861522746188967155}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.92, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7228399444001451869}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7228399443438160185
 GameObject:
   m_ObjectHideFlags: 0
@@ -1320,6 +1353,7 @@ Transform:
   - {fileID: 7862905704446186977}
   - {fileID: 368067140380800150}
   - {fileID: 4833277467371055997}
+  - {fileID: 6499518480103575796}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -89.721, z: 0}
@@ -1379,6 +1413,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   stop: 0
+  gravedad: -9.81
 --- !u!143 &6583610631474649816
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2191,6 +2226,7 @@ MonoBehaviour:
   prefab: {fileID: 4463044231049171882, guid: fea44ec7c7d72e442ac64ecfa5824a92, type: 3}
   equipmentUI: {fileID: 0}
   objetsUI: {fileID: 0}
+  pool: []
 --- !u!114 &7228399444604952271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2226,6 +2262,7 @@ MonoBehaviour:
   prefab: {fileID: 0}
   equipmentUI: {fileID: 0}
   objetsUI: {fileID: 0}
+  pool: []
 --- !u!1 &7228399444630972564
 GameObject:
   m_ObjectHideFlags: 0
