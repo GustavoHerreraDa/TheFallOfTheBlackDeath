@@ -15,10 +15,13 @@ public class SetEquipmnetUI : MonoBehaviour
     void Awake()
     {
         Debug.Log("Actualizo canvas equipmento o objet");
+        if (InventoryManager.instance == null)
+            return;
         if (canvasType == CanvasType.Equipment)
             InventoryManager.instance.equipmentUI = this.transform;
         if (canvasType == CanvasType.Object)
             InventoryManager.instance.objetsUI = this.transform;
+
 
 
     }

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoadManager : MonoBehaviour
 {
     [SerializeField] private Slider loadbar;
-    [SerializeField] private GameObject loadPanel;
+    public GameObject loadPanel;
     [SerializeField] private GameObject introCanvas;
 
     public void Start()
