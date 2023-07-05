@@ -1,6 +1,6 @@
 
 using UnityEngine;
-//TP2 AUGUSTO NANINI/FACUNDO FERREIRO
+//TP2 FACUNDO FERREIRO
 public class HealthModStatusCondition : StatusCondition
 {
     [Header("Health mod")]
