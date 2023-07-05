@@ -1,8 +1,9 @@
+using Assets.Scripts.Movent_Sistem.Invet;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickObj : Interactable
+public class PickObj : Interactable, IInteratable
 {
     public AudioSource pickSound;
 

@@ -24,6 +24,7 @@ public class InventoryManager : MonoBehaviour
     public Transform equipmentUI;
     public Transform objetsUI;
     public List<InventoryUI> pool = new List<InventoryUI>();
+    public Dictionary<PlayerFighter, List<InventoryObjectID>> playerEquipped;
 
     void Awake()
     {
@@ -39,6 +40,7 @@ public class InventoryManager : MonoBehaviour
             //CreateUI();
         }
     }
+
 
     [System.Serializable]
     public struct InventoryObjectID
@@ -99,12 +101,24 @@ public class InventoryManager : MonoBehaviour
     {
         Debug.Log("Start Item Manager");
         pool = new List<InventoryUI>();
+        playerEquipped = new Dictionary<PlayerFighter, List<InventoryObjectID>>();
 
         updateUI(equipmentUI, InventoryDateBase.Uso.Equipable);
         updateUI(objetsUI, InventoryDateBase.Uso.Usable);
         updateUI(objetsUI, InventoryDateBase.Uso.SkillNeed);
         updateUI(objetsUI, InventoryDateBase.Uso.Consumable);
+
+        var fighters = GameObject.FindObjectsOfType<PlayerFighter>();
+
+        for (int i = 0; i < fighters.Length; i++)
+        {
+            playerEquipped.Add(fighters[i], new List<InventoryObjectID>());
+        }
+
+        AgregarEquipoEquipado(fighters[0], inventory[0]);
+        AgregarEquipoEquipado(fighters[1], inventory[1]);
     }
+
     public void updateUI(Transform _ui, InventoryDateBase.Uso uso)
     {
 
@@ -223,5 +237,31 @@ public class InventoryManager : MonoBehaviour
 
 
         return hasItemInIventory;
+    }
+
+
+    public List<InventoryObjectID> ObtenerEquipoEquipado(PlayerFighter jugador)
+    {
+        if (playerEquipped.TryGetValue(jugador, out List<InventoryObjectID> equipo))
+        {
+            return equipo;
+        }
+        else
+        {
+            // El jugador no tiene equipo equipado
+            return new List<InventoryObjectID>();
+        }
+    }
+
+    public void AgregarEquipoEquipado(PlayerFighter jugador, InventoryObjectID objeto)
+    {
+        if (playerEquipped.ContainsKey(jugador))
+        {
+            playerEquipped[jugador].Add(objeto);
+        }
+        else
+        {
+            playerEquipped[jugador] = new List<InventoryObjectID> { objeto };
+        }
     }
 }
