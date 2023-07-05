@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+
 public abstract class Fighter : MonoBehaviour
 {
     public Team team;
@@ -9,6 +10,8 @@ public abstract class Fighter : MonoBehaviour
     public Animator animator;
     public CombatManager combatManager;
     public AudioSource audioSource;
+    public delegate void HealthModificationDelegate(float amount);
+    public HealthModificationDelegate healthModificationDelegate;
 
     public List<StatusMod> statusMods;
 
@@ -53,7 +56,6 @@ public abstract class Fighter : MonoBehaviour
                 {
                     skill.AddReceiver(receiver);
                 }
-
                 break;
             case SkillTargeting.ALL_OPPONENTS:
                 Fighter[] enemies = this.combatManager.GetOpposingTeam();
@@ -62,7 +64,6 @@ public abstract class Fighter : MonoBehaviour
                     skill.AddReceiver(receiver);
                 }
                 break;
-
             case SkillTargeting.SINGLE_ALLY:
             case SkillTargeting.SINGLE_OPPONENT:
                 throw new System.InvalidOperationException("Unimplemented! This skill needs manual targeting.");
@@ -89,20 +90,27 @@ public abstract class Fighter : MonoBehaviour
 
     protected void Die()
     {
-
         this.statusPanel.gameObject.SetActive(false);
         this.gameObject.SetActive(false);
-
     }
 
     public void ModifyHealth(float amount)
     {
-        this.stats.health = Mathf.Clamp(this.stats.health + amount, 0f, this.stats.maxHealth);
+        float previousHealth = this.stats.health;
 
+        this.stats.health = Mathf.Clamp(this.stats.health + amount, 0f, this.stats.maxHealth);
         this.stats.health = Mathf.Round(this.stats.health);
+
+        // Llamada al delegate antes de actualizar el panel de estado
+        if (healthModificationDelegate != null)
+        {
+            float modifiedAmount = this.stats.health - previousHealth;
+            healthModificationDelegate(modifiedAmount);
+        }
+
         this.statusPanel.SetHealth(this.stats.health, this.stats.maxHealth);
 
-        //Debug.Log(amount);
+        // Resto de la lógica existente
         if (amount > 0f)
         {
             this.animator.Play("Heal");
@@ -142,13 +150,11 @@ public abstract class Fighter : MonoBehaviour
 
         return this.statusCondition;
     }
+
     public void SetModStats(Stats stats)
     {
         modedStats = stats;
-
     }
 
-
-    
     public abstract void InitTurn();
 }
