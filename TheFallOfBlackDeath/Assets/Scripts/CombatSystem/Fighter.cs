@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-
+//TP2 AUGUSTO NANINI/FACUNDO FERREIRO
 
 public abstract class Fighter : MonoBehaviour
 {

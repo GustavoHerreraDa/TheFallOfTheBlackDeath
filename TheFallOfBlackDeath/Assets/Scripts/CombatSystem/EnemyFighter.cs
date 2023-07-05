@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-
+//TP2 FACUNDO FERREIRO
 public class EnemyFighter : Fighter
 {
     public EnemyDataBase EnemyDateBase;

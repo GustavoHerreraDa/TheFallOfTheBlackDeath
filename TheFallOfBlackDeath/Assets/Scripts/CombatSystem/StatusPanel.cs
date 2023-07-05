@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+//TP2 FACUNDO FERREIRO
 
 public class StatusPanel : MonoBehaviour
 {

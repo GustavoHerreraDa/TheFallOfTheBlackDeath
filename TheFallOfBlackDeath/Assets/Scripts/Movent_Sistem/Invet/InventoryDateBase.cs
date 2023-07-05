@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+//TP2 AUGUSTO NANINI
 [CreateAssetMenu(fileName = "Date", menuName = "Inventory/List", order = 1)]
 public class InventoryDateBase : ScriptableObject
 {

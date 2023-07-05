@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using static InventoryManager;
-
+//TP2 GUSTAVO TORRES/FACUNDO FERREIRO
 public class PlayerSkillPanel : MonoBehaviour
 {
     public GameObject[] skillButtons;

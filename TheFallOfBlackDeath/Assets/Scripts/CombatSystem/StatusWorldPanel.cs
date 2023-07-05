@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-
+//TP2 GUSTAVO TORRES
 public class StatusWorldPanel : MonoBehaviour
 {
     private Camera mainCamera;

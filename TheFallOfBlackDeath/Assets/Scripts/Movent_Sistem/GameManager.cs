@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
-
+//TP2 FACUNDO FERREIRO/GUSTAVO TORRES
 public class GameManager : MonoBehaviour
 {
     static public GameManager _instance;

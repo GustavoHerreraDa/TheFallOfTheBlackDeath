@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-
+//TP2 FACUNDO FERREIRO
 public class LogPanel : MonoBehaviour
 {
     //Referencia estatica al panel actual

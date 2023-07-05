@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-
+//TP2 AUGUSTO NANINI/GUSTAVO HERRERA
 public enum ItemInventoryId
 {
     Potion,

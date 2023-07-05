@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+//TP2 FACUNDO FERREIRO
 public class Scene_Change : MonoBehaviour
 {
    

@@ -1,33 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-using static InventoryManager;
-
+//TP2 GUSTAVO HERRERA/FACUNDO FERREIRO
 public enum KeyType
 {
     BronzeKey,
     SilverKey,
     GoldKey
 }
+
 public class Gate : MonoBehaviour
 {
-    // Start is called before the first frame update
     private Animator animator;
     public bool IsNeedKey;
     public Collider collider;
     public bool isOpen;
     public KeyType gateType;
     public AudioSource puertasonido;
+
+    public delegate void GateOpenedEventHandler();
+    public static event GateOpenedEventHandler GateOpened;
+
     void Start()
     {
         animator = GetComponent<Animator>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void OpenGate()
@@ -46,7 +42,19 @@ public class Gate : MonoBehaviour
         }
 
         animator.SetBool("IsOpen", hasKey);
-        puertasonido.Play();
+
+        if (hasKey)
+        {
+            GateOpened?.Invoke();
+        }
+
+        PlayGateSound();
+    }
+
+    private void PlayGateSound()
+    {
+        if (puertasonido != null)
+            puertasonido.Play();
     }
 
     public int GetKey()
@@ -62,5 +70,10 @@ public class Gate : MonoBehaviour
             default:
                 return 7;
         }
+    }
+
+    private void OnDestroy()
+    {
+        GateOpened = null;
     }
 }

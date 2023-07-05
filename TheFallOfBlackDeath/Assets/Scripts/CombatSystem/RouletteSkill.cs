@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//TP2 GUSTAVO TORRES
 public class RouletteSkill : MonoBehaviour
 {
     Dictionary<Skill, int> _dic = new Dictionary<Skill, int>();

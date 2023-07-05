@@ -1,5 +1,5 @@
 using UnityEngine;
-
+//TP2 GUSTAVO TORRES/FACUNDO FERREIRO
 public class TurnBlockStatusCondition : StatusCondition
 {
     [Range(0f, 1f)]

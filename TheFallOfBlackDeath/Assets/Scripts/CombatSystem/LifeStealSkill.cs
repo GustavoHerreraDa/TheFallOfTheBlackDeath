@@ -1,5 +1,5 @@
 using UnityEngine;
-
+//TP2 FACUNDO FERREIRO
 public class LifeStealSkill : Skill
 {
     [Header("Life Steal")]
@@ -18,8 +18,8 @@ public class LifeStealSkill : Skill
         messages.Enqueue("Hit for " + (int)remainingDamage + " to " + receiver.idName);
         messages.Enqueue("Stole " + (int)healedAmount + " life from " + receiver.idName);
 
-        receiver.ModifyHealth(-(int)remainingDamage); // Reduce receiver's health
-        emitter.ModifyHealth((int)healedAmount); // Increase emitter's health
+        receiver.ModifyHealth(-(int)remainingDamage); // REDUCE LA VIDA DEL RECEIVER
+        emitter.ModifyHealth((int)healedAmount); // AUMENTA LA VIDA DEL EMISOR
     }
 
     protected float GetDamage(Fighter receiver)

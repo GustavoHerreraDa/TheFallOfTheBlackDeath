@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.AI;
-
+//TP2 AUGUSTO NANINI
 public class SeguirJugador : MonoBehaviour
 {
+
     public NavMeshAgent navMeshAgent;
     public GameObject player;
-    public float distanceToFollowPlayer = 5f; // Distancia a la que empezará a seguir al jugador (dependerá de la escala de vuestro escenario, modificable desde el Editor de Unity)
+    public float distanceToFollowPlayer = 5f; // Distancia a la que empezará a seguir al jugador (modificable desde el Editor de Unity)
     public Transform returnDestination; // Destino al que la IA volverá si el jugador se aleja demasiado
     Vector3 currentTarget; // Almacena el objetivo actual al que se dirige (incluyendo al jugador o el destino de retorno)
 

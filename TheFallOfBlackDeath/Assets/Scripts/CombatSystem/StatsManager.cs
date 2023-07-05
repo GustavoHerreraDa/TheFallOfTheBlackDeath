@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+//TP2 GUSTAVO TORRES/FACUNDO FERREIRO
 public class StatsManager : MonoBehaviour
 {
     public Fighter fighter;

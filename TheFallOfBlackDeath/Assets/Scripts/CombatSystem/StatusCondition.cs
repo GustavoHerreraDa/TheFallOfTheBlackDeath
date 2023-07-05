@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-
+//TP2 GUSTAVO TORRES/FACUNDO FERREIRO
 public abstract class StatusCondition : MonoBehaviour
 {
     [Header("Base Status Condition")]

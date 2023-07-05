@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
-
+//TP2 GUSTAVO TORRES/FACUNDO FERREIRO
 public enum SkillType
 {
     AttackSimple,

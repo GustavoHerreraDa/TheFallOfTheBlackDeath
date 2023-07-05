@@ -1,5 +1,5 @@
 using UnityEngine;
-
+//TP2 GUSTAVO TORRES/FACUNDO FERREIRO
 public enum StatusModType
 {
     ATTACK_MOD,

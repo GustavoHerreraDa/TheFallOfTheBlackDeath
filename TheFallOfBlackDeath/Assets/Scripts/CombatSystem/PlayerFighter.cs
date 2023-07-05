@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-
+//TP2 FACUNDO FERREIRO/GUSTAVO TORRES
 public class PlayerFighter : Fighter
 {
     [Header("UI")]

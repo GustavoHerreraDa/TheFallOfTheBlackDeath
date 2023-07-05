@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//TP2 AUGUSTO NANINI
 public class Camera_Main : MonoBehaviour
 {
     private Vector2 angle = new Vector2(0 * Mathf.Deg2Rad,0);

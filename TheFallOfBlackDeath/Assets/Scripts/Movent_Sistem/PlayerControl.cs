@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//TP2 FACUNDO FERREIRO
 public class PlayerControl : MonoBehaviour
 {
     private CharacterController controller;
