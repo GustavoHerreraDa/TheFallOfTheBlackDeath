@@ -43,7 +43,6 @@ public class PlayerUI : MonoBehaviour
     public void UpdatePlayerStats()
     {
         //if (fighter == null)
-
         GetPlayerFromCombatManager();
 
         nameHero.text = fighter.idName;
@@ -63,5 +62,11 @@ public class PlayerUI : MonoBehaviour
             skillsUI[i].skill = null;
             skillsUI[i].UpdateUI();
         }
+    }
+
+    //Actualizo la UI en cada recarga para mostrar los cambios cuando equipo un item.
+    void OnEnable()
+    {
+        UpdatePlayerStats();
     }
 }

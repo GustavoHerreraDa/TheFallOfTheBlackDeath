@@ -136,6 +136,10 @@ public class InventoryManager : MonoBehaviour
                 pool[i].amount.text = o.amount.ToString();
                 pool[i].itemName.text = datebase.DateBase[o.id].name;
                 pool[i].itemDescripcion.text = datebase.DateBase[o.id].characteristic;
+
+                //Tambien le paso las referencias de statAffected y amountAffected.
+                pool[i].statAffected = datebase.DateBase[o.id].statsAffected.ToString();
+                pool[i].amountAffected = datebase.DateBase[o.id].amountAffected;
                 if (pool[i].gameObject != null)
                     pool[i].gameObject.SetActive(true);
             }

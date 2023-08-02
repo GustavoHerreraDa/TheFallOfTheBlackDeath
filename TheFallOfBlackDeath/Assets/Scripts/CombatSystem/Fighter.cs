@@ -84,7 +84,7 @@ public abstract class Fighter : MonoBehaviour
                 return this.combatManager.GetOpposingTeam();
         }
 
-        // Esto no deberÌa ejecutarse nunca pero hay que ponerlo para hacer al compilador feliz.
+        // Esto no deberÔøΩa ejecutarse nunca pero hay que ponerlo para hacer al compilador feliz.
         throw new System.InvalidOperationException("Fighter::GetSkillTargets. Unreachable!");
     }
 
@@ -110,7 +110,7 @@ public abstract class Fighter : MonoBehaviour
 
         this.statusPanel.SetHealth(this.stats.health, this.stats.maxHealth);
 
-        // Resto de la lÛgica existente
+        // Resto de la lÔøΩgica existente
         if (amount > 0f)
         {
             this.animator.Play("Heal");
@@ -125,6 +125,22 @@ public abstract class Fighter : MonoBehaviour
             audioSource.Play();
             animator.Play("Death");
             Invoke("Die", 2f);
+        }
+    }
+
+    public void UpdateStats(string statAffected, float amountAffected)
+    {
+        switch (statAffected)
+        {
+            case "Attack":
+                stats.attack += amountAffected;
+                break;
+            case "Defense":
+                stats.deffense += amountAffected;
+                break;
+            default:
+                Debug.Log("Stat no v√°lido");
+                break;
         }
     }
 

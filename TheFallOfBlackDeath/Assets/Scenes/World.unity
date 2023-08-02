@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1595046872}
-  m_IndirectSpecularColor: {r: 0.00030134016, g: 0.008429392, b: 0.10503368, a: 1}
+  m_IndirectSpecularColor: {r: 0.00000008490936, g: 0.00004521558, b: 0.007483036, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1983,11 +1983,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31c778c0c9a01244ab3e21d38d0bcab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Regions: []
   character: {fileID: 1495737503}
+  badDoctor: {fileID: 1600737736}
+  assassin: {fileID: 1976731607}
   lastPos: {x: 0, y: 0, z: 0}
   startPost: {fileID: 1939833580}
   groupEnemyDefeat: []
   objectsPickup: []
+  canGetEncounter: 0
+  gotAttacked: 0
+  stop: 0
+  gameState: 0
   enemies:
   - {fileID: 1358889486}
   - {fileID: 1978304192}
@@ -6580,7 +6587,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1460458386042536553, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 17.181068
+      value: 0.000014622571
       objectReference: {fileID: 0}
     - target: {fileID: 1700038091192733860, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -6588,7 +6595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1700038091192733860, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 17.181068
+      value: 0.000014622571
       objectReference: {fileID: 0}
     - target: {fileID: 2417103633735323943, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchorMax.y

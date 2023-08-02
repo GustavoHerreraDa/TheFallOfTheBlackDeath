@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
     public List<RegionData> Regions = new List <RegionData>();
 
     public GameObject character;
+    //Agrego estas referencias para poder acceder al Fighter desde InventoryUI y equipar objetos.
+    public Fighter badDoctor;
+    public Fighter assassin;
     public Vector3 lastPos;
     public Transform startPost;
     public List<string> groupEnemyDefeat;
@@ -68,6 +71,8 @@ public class GameManager : MonoBehaviour
         get { return FindObjectOfType<Movent>().gameObject; }
     }
     */
+
+
 
     public List<EnemiesGroup> enemies;
     public List<statsOBJ> pickObjs;
