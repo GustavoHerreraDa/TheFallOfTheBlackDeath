@@ -7,12 +7,62 @@ using System.Linq;
 public class GameManager : MonoBehaviour
 {
     static public GameManager _instance;
+
+    //CLASS RANDOM MONSTER
+    [System.Serializable]
+    public class RegionData
+    {
+        public string regionName;
+        public int maxAmountEnemys = 4;
+        public List <GameObject> Enemys = new List <GameObject>();
+    }
+    public List<RegionData> Regions = new List <RegionData>();
+
     public GameObject character;
     public Vector3 lastPos;
     public Transform startPost;
     public List<string> groupEnemyDefeat;
     public List<string> objectsPickup;
+    public bool canGetEncounter = false;
+    public bool gotAttacked = false;
+    public bool stop = false;
 
+    //ENUM
+    public enum GameStates
+    {
+        TOWN_STATE,
+        BATTLE_STATE,
+        IDLE_STATE
+         
+    }
+
+    private void Update()
+    {
+        switch(gameState)
+        {
+            case (GameStates.TOWN_STATE):
+                if(stop)
+                {
+                    RandomEncounter();
+                }
+                if (gotAttacked)
+                {
+                    gameState = GameStates.BATTLE_STATE;
+                }
+                break;
+
+            case (GameStates.BATTLE_STATE):
+                //LOAD BATTLE SCENE
+
+                //GO TO IDLE
+                break;
+
+                case(GameStates.IDLE_STATE):
+                break;  
+        }
+    }
+
+    public GameStates gameState;
     /*public GameObject Character
     {
         get { return FindObjectOfType<Movent>().gameObject; }
@@ -119,4 +169,19 @@ public class GameManager : MonoBehaviour
 
     }
 
+    void RandomEncounter()
+    {
+        if(stop && canGetEncounter)
+        {
+            if(Random.Range(0,1000) <10)
+            {
+                Debug.Log("i got attacked");
+                gotAttacked = true;
+            }
+        }
+    }
+    void StartBattle()
+    {
+
+    }
 }

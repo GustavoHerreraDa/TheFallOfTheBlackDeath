@@ -122,4 +122,19 @@ public class PlayerControl : MonoBehaviour
         Debug.Log("Han pasado 3 segundo");
         this.ContinuePlayer();
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "region1")
+        {
+            GameManager.Instance.canGetEncounter = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "region1")
+        {
+            GameManager.Instance.canGetEncounter = false;
+        }
+    }
 }
