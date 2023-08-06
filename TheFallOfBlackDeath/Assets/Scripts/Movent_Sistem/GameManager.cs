@@ -52,8 +52,9 @@ public class GameManager : MonoBehaviour
         switch(gameState)
         {
             case (GameStates.TOWN_STATE):
-                if(isWalking)
+                if (isWalking) // Usamos la variable isWalking del PlayerControl para activar los encuentros aleatorios
                 {
+                    canGetEncounter = true;
                     RandomEncounter();
                 }
                 if (gotAttacked)
@@ -185,9 +186,9 @@ public class GameManager : MonoBehaviour
 
     void RandomEncounter()
     {
-        if(isWalking && canGetEncounter)
+        if (isWalking && canGetEncounter)
         {
-            if(Random.Range(0,1000) <10)
+            if (Random.Range(0, 10000) < 10)
             {
                 Debug.Log("i got attacked");
                 gotAttacked = true;

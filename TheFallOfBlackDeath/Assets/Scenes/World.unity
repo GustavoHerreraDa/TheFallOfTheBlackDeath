@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1595046872}
-  m_IndirectSpecularColor: {r: 0.00000008490936, g: 0.00004521558, b: 0.007483036, a: 1}
+  m_IndirectSpecularColor: {r: 0.00030134016, g: 0.008429392, b: 0.10503368, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1993,7 +1993,10 @@ MonoBehaviour:
   objectsPickup: []
   canGetEncounter: 0
   gotAttacked: 0
-  stop: 0
+  isWalking: 0
+  enemyAmount: 4
+  enemyToBattle: []
+  cuRegions: 0
   gameState: 0
   enemies:
   - {fileID: 1358889486}
@@ -5826,6 +5829,10 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: -1.0138853
       objectReference: {fileID: 0}
+    - target: {fileID: 5076024516278673157, guid: f5a8d0aede8cb2940a6adbd9ae30e1e7, type: 3}
+      propertyPath: m_TagString
+      value: region1
+      objectReference: {fileID: 0}
     - target: {fileID: 5394282164646853369, guid: f5a8d0aede8cb2940a6adbd9ae30e1e7, type: 3}
       propertyPath: DopplerLevel
       value: 0.24
@@ -6587,7 +6594,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1460458386042536553, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000014622571
+      value: 0.000019108558
       objectReference: {fileID: 0}
     - target: {fileID: 1700038091192733860, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -6595,7 +6602,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1700038091192733860, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000014622571
+      value: 0.000019108558
       objectReference: {fileID: 0}
     - target: {fileID: 2417103633735323943, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchorMax.y
