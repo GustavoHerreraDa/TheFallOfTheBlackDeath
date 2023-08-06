@@ -25,6 +25,7 @@ public class CombatManager : MonoBehaviour
     public bool isCombatActive;
     public CombatStatus combatStatus;
     private Skill currentFighterSkill;
+    public int enemyAmount;
    
     private List<Fighter> returnBuffer;
     public TurnsDisplay turnsDisplay;
@@ -317,6 +318,14 @@ public class CombatManager : MonoBehaviour
         for (int i = 0; i < statsManagers.Length; i++)
         {
             statsManagers[i].UpdateUI();
+        }
+    }
+
+    private void Awake()
+    {
+        //for (int i = 0; i< GameManager.Instance.;i++)
+        {
+            //GameObject NewEnemy = Instantiate(GameManager.Instance.enemyToBattle[i], spawnPoints[i].position, Quaternion.identity) as GameObject;
         }
     }
 

@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [System.Serializable]
     public class RegionData
     {
+        public string BattleScene;
         public string regionName;
         public int maxAmountEnemys = 4;
         public List <GameObject> Enemys = new List <GameObject>();
@@ -28,7 +29,7 @@ public class GameManager : MonoBehaviour
     public List<string> objectsPickup;
     public bool canGetEncounter = false;
     public bool gotAttacked = false;
-    public bool stop = false;
+    public bool isWalking = false;
 
     //ENUM
     public enum GameStates
@@ -39,12 +40,18 @@ public class GameManager : MonoBehaviour
          
     }
 
+    //BATTLE
+    public List <GameObject> enemyToBattle = new List<GameObject> ();
+
+
+    public int cuRegions;
+
     private void Update()
     {
         switch(gameState)
         {
             case (GameStates.TOWN_STATE):
-                if(stop)
+                if(isWalking)
                 {
                     RandomEncounter();
                 }
@@ -56,7 +63,8 @@ public class GameManager : MonoBehaviour
 
             case (GameStates.BATTLE_STATE):
                 //LOAD BATTLE SCENE
-
+                StartBattle();
+                gameState = GameStates.IDLE_STATE;
                 //GO TO IDLE
                 break;
 
@@ -176,7 +184,7 @@ public class GameManager : MonoBehaviour
 
     void RandomEncounter()
     {
-        if(stop && canGetEncounter)
+        if(isWalking && canGetEncounter)
         {
             if(Random.Range(0,1000) <10)
             {
@@ -187,6 +195,21 @@ public class GameManager : MonoBehaviour
     }
     void StartBattle()
     {
-
+        //AMOUNT OF ENEMYS
+        int enemyAnount = Random.Range(1, Regions[cuRegions].maxAmountEnemys + 1);
+        //WHICH ENEMYS
+        for(int i = 0; i< enemyAnount; i++)
+        {
+            enemyToBattle.Add(Regions[cuRegions].Enemys[Random.Range(0, Regions[cuRegions].Enemys.Count)]);
+        }
+        //CHARACTER
+        lastPos = GameObject.Find("Character").gameObject.transform.position;
+        //lastScene = SceneManager.GetActiveScene().name;
+        //LOAD LEVEL
+        SceneManager.LoadScene(Regions[cuRegions].BattleScene);
+        //RESET HERO
+        isWalking = false;
+        gotAttacked = false;
+        canGetEncounter = false;
     }
 }

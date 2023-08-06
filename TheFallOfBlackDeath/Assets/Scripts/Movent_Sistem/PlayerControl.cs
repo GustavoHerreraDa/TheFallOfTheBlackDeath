@@ -52,6 +52,7 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             stop = !stop;
+            
         }
 
         if (stop)
@@ -100,12 +101,14 @@ public class PlayerControl : MonoBehaviour
     {
         stop = false;
         playerRB.isKinematic = false;
+        GameManager.Instance.isWalking = false;
     }
 
     public void StopPlayer(float seconds)
     {
         anim.SetFloat("Movent", 0f);
         stop = true;
+        GameManager.Instance.isWalking = true;
         playerRB.isKinematic = true;
         StartCoroutine(WaitSeconds(seconds));
     }
@@ -135,6 +138,11 @@ public class PlayerControl : MonoBehaviour
         if (other.tag == "region1")
         {
             GameManager.Instance.canGetEncounter = false;
+        }
+
+        if (other.tag == "region1")
+        {
+            GameManager.Instance.cuRegions = 0;
         }
     }
 }
