@@ -26,7 +26,11 @@ public class CombatManager : MonoBehaviour
     public CombatStatus combatStatus;
     private Skill currentFighterSkill;
     public int enemyAmount;
-   
+    //SPAWN POINTS
+
+    public List <Transform> spawnPoints = new List<Transform> ();
+
+
     private List<Fighter> returnBuffer;
     public TurnsDisplay turnsDisplay;
     public StatsManager[] statsManagers;
@@ -320,13 +324,16 @@ public class CombatManager : MonoBehaviour
             statsManagers[i].UpdateUI();
         }
     }
-
     private void Awake()
     {
-        //for (int i = 0; i< GameManager.Instance.;i++)
+        // Instanciar enemigos aleatorios en los puntos de spawn.
+        for (int i = 0; i < GameManager.Instance.enemyAmount; i++)
         {
-            //GameObject NewEnemy = Instantiate(GameManager.Instance.enemyToBattle[i], spawnPoints[i].position, Quaternion.identity) as GameObject;
+            GameObject NewEnemy = Instantiate(GameManager.Instance.Regions[GameManager.Instance.cuRegions].Enemys[Random.Range(0, GameManager.Instance.Regions[GameManager.Instance.cuRegions].Enemys.Count)], spawnPoints[i].position, Quaternion.identity) as GameObject;
+            NewEnemy.name = NewEnemy.GetComponent<EnemiesGroup>().GroupName + "_" + (i + 1);
         }
     }
+
+
 
 }

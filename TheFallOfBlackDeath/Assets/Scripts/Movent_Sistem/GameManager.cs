@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     public bool canGetEncounter = false;
     public bool gotAttacked = false;
     public bool isWalking = false;
+    public int enemyAmount;
 
     //ENUM
     public enum GameStates
