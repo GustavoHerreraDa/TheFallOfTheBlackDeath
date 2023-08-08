@@ -21,8 +21,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject character;
     //Agrego estas referencias para poder acceder al Fighter desde InventoryUI y equipar objetos.
-    public Fighter badDoctor;
-    public Fighter assassin;
+    public PlayerFighter badDoctor;
+    public PlayerFighter assassin;
     public Vector3 lastPos;
     public Transform startPost;
     public List<string> groupEnemyDefeat;

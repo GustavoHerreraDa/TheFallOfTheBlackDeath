@@ -128,22 +128,6 @@ public abstract class Fighter : MonoBehaviour
         }
     }
 
-    public void UpdateStats(string statAffected, float amountAffected)
-    {
-        switch (statAffected)
-        {
-            case "Attack":
-                stats.attack += amountAffected;
-                break;
-            case "Defense":
-                stats.deffense += amountAffected;
-                break;
-            default:
-                Debug.Log("Stat no válido");
-                break;
-        }
-    }
-
     public Stats GetCurrentStats()
     {
         Stats modedStats = this.stats;

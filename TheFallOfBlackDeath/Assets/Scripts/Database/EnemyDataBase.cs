@@ -6,8 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyDB", menuName = "Enemy/List", order = 1)]
 public class EnemyDataBase : ScriptableObject
 {
-    
-
     [System.Serializable]
     public struct EnemyStats
     {
@@ -22,6 +20,46 @@ public class EnemyDataBase : ScriptableObject
         public string LargeDescription;
         public string Name;
           
+    }
+
+    public void UpdateFighterStats(int index, float amountAffected, string statAffected)
+    {
+        switch (statAffected)
+        {
+            case "Attack":
+
+                EnemyStats newAttackStats = new EnemyStats
+                {
+                    maxHealth = EnemyDB[index].maxHealth, 
+                    level = EnemyDB[index].level, 
+                    attack = EnemyDB[index].attack + amountAffected, 
+                    deffense = EnemyDB[index].deffense, 
+                    spirit = EnemyDB[index].spirit, 
+                    speed = EnemyDB[index].speed, 
+                    Description = EnemyDB[index].Description, 
+                    LargeDescription = EnemyDB[index].LargeDescription, 
+                    Name = EnemyDB[index].Name
+                };
+                EnemyDB[index] = newAttackStats;
+                break;
+
+            case "Defense":
+
+                EnemyStats newDefenseStats = new EnemyStats
+                {
+                    maxHealth = EnemyDB[index].maxHealth, 
+                    level = EnemyDB[index].level, 
+                    attack = EnemyDB[index].attack, 
+                    deffense = EnemyDB[index].deffense + amountAffected, 
+                    spirit = EnemyDB[index].spirit, 
+                    speed = EnemyDB[index].speed, 
+                    Description = EnemyDB[index].Description, 
+                    LargeDescription = EnemyDB[index].LargeDescription, 
+                    Name = EnemyDB[index].Name
+                };
+                EnemyDB[index] = newDefenseStats;
+                break;
+        }
     }
     
 

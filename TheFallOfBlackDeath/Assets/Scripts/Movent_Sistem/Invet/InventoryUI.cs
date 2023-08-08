@@ -6,8 +6,8 @@ using TMPro;
 
 public class InventoryUI : MonoBehaviour
 {
-    public Fighter badDoctor;
-    public Fighter assassin;
+    public PlayerFighter badDoctor;
+    public PlayerFighter assassin;
     public TMP_Text amount;
     public TMP_Text itemName;
     public TMP_Text itemDescripcion;

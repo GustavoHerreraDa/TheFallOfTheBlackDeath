@@ -32,8 +32,6 @@ public class PlayerFighter : Fighter
         allies = new List<Fighter>();
         allies.Add(this); // Agregar al jugador actual como el primer aliado activo
         activeAllyIndex = 0; // Establecer el jugador actual como el aliado activo inicialmente
-
-
     }
 
     public override void InitTurn()
@@ -45,7 +43,7 @@ public class PlayerFighter : Fighter
             this.skillPanel.ConfigureButton(i, this.skills[i].skillName,this.skills[i].ItemsNeeded);
         }
 
-        // Mostrar información del aliado activo en el panel de estado
+        // Mostrar informaciï¿½n del aliado activo en el panel de estado
         Fighter activeAlly = allies[activeAllyIndex];
         statusPanel.SetStats(activeAlly.idName, activeAlly.stats);
 
@@ -66,11 +64,11 @@ public class PlayerFighter : Fighter
 
         activeAllyIndex = newIndex;
 
-        // Actualizar la información del nuevo aliado activo en el panel de estado
+        // Actualizar la informaciï¿½n del nuevo aliado activo en el panel de estado
         Fighter activeAlly = allies[activeAllyIndex];
         statusPanel.SetStats(activeAlly.idName, activeAlly.stats);
 
-        // Realizar cualquier otra lógica necesaria al cambiar de aliado
+        // Realizar cualquier otra lï¿½gica necesaria al cambiar de aliado
     }
 
     public void ExecuteSkill(int index)
@@ -96,6 +94,31 @@ public class PlayerFighter : Fighter
         }
     }
 
+    public void UpdateStats(string statAffected, float amountAffected)
+    {
+        var data = fightersDateBase.EnemyDB[figherIndex];
+
+        switch (statAffected)
+        {
+            case "Attack":
+                //Debug.Log("el atack base es " + data.attack);
+                //data.attack = data.attack + amountAffected;
+                fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
+                //Debug.Log("el nuevo atack es " + data.attack);
+                //this.stats = new Stats(data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed);
+                stats.attack += amountAffected;
+                break;
+            case "Defense":
+                //data.deffense = data.deffense + amountAffected;
+                //this.stats = new Stats(data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed);
+                //stats.deffense += amountAffected;
+                break;
+            default:
+                Debug.Log("Stat no vÃ¡lido");
+                break;
+        }
+    }
+
     public void SetTargetAndAttack(Fighter enemyFigther)
     {
 
@@ -118,7 +141,7 @@ public class PlayerFighter : Fighter
         allies.Clear();
         allies.Add(ally1);
         allies.Add(ally2);
-        // Agrega aquí el resto de los aliados a la lista allies
+        // Agrega aquï¿½ el resto de los aliados a la lista allies
     }
 
     private void SwitchActiveAlly()
