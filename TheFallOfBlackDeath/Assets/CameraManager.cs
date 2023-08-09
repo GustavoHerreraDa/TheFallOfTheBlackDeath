@@ -24,7 +24,7 @@ public class CameraManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         FighterIndex = combatManager.fighterIndex;
 
@@ -33,6 +33,21 @@ public class CameraManager : MonoBehaviour
             currentCameraIndex = combatManager.fighterIndex;
             ChangeCameraPositionToCurrentFighter();
 
+        }
+    }*/
+
+    private void Update()
+    {
+        FighterIndex = combatManager.fighterIndex;
+
+        if (currentCameraIndex != combatManager.fighterIndex)
+        {
+            currentCameraIndex = combatManager.fighterIndex;
+
+            if (currentCameraIndex >= 0 && currentCameraIndex < combatManager.fighters.Length)
+            {
+                ChangeCameraPositionToCurrentFighter();
+            }
         }
     }
 
