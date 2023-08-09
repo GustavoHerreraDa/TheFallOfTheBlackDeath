@@ -138,6 +138,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (other.tag == "region2")
         {
+            GameManager.Instance.cuRegions = 1;
             GameManager.Instance.canGetEncounter = false;
         }
 

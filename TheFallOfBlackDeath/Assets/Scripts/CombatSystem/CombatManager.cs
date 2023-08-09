@@ -16,6 +16,7 @@ public enum CombatStatus
 
 public class CombatManager : MonoBehaviour
 {
+    public List<GameObject> enemyFighters = new List<GameObject>();
     public string groupEnemyName;
     public Fighter[] playerTeam;
     public Fighter[] enemyTeam;
@@ -29,6 +30,20 @@ public class CombatManager : MonoBehaviour
     //SPAWN POINTS
 
     public List <Transform> spawnPoints = new List<Transform> ();
+
+    public void EncuentrosAletorios()
+    {
+        if (GameManager.Instance.gotAttacked == true)
+        {
+            for (int i = 0; i< GameManager.Instance.enemyAnount;i++)
+            {
+                GameObject NewEnemy = Instantiate(GameManager.Instance.enemyToBattle[i], spawnPoints[i].position,Quaternion.identity) as GameObject;
+                NewEnemy.name = NewEnemy.GetComponent<EnemyFighter>().idName + "_" + (i + 1);
+                NewEnemy.GetComponent<EnemyFighter>().idName = NewEnemy.name;
+                enemyFighters.Add(NewEnemy);
+            }
+        }
+    }
 
 
     private List<Fighter> returnBuffer;

@@ -42,7 +42,9 @@ public class GameManager : MonoBehaviour
     }
 
     //BATTLE
+    public int enemyAnount;
     public List <GameObject> enemyToBattle = new List<GameObject> ();
+    
 
 
     public int cuRegions;
@@ -198,7 +200,7 @@ public class GameManager : MonoBehaviour
     void StartBattle()
     {
         //AMOUNT OF ENEMYS
-        int enemyAnount = Random.Range(1, Regions[cuRegions].maxAmountEnemys + 1);
+        enemyAnount = Random.Range(1, Regions[cuRegions].maxAmountEnemys + 1);
         //WHICH ENEMYS
         for(int i = 0; i< enemyAnount; i++)
         {
