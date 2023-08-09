@@ -28,22 +28,10 @@ public class CombatManager : MonoBehaviour
     private Skill currentFighterSkill;
     public int enemyAmount;
     //SPAWN POINTS
+    public bool isRadomEncounter = false;
+    public List<Transform> spawnPoints = new List<Transform>();
 
-    public List <Transform> spawnPoints = new List<Transform> ();
 
-    public void EncuentrosAletorios()
-    {
-        if (GameManager.Instance.gotAttacked == true)
-        {
-            for (int i = 0; i< GameManager.Instance.enemyAnount;i++)
-            {
-                GameObject NewEnemy = Instantiate(GameManager.Instance.enemyToBattle[i], spawnPoints[i].position,Quaternion.identity) as GameObject;
-                NewEnemy.name = NewEnemy.GetComponent<EnemyFighter>().idName + "_" + (i + 1);
-                NewEnemy.GetComponent<EnemyFighter>().idName = NewEnemy.name;
-                enemyFighters.Add(NewEnemy);
-            }
-        }
-    }
 
 
     private List<Fighter> returnBuffer;
@@ -68,9 +56,25 @@ public class CombatManager : MonoBehaviour
         this.fighterIndex = -1;
         this.isCombatActive = true;
 
-        
+        if (isRadomEncounter == true)
+        {
+            EncuentrosAleatorios();
+        }
 
         StartCoroutine(this.CombatLoop());
+    }
+
+    public void EncuentrosAleatorios()
+    {
+
+        for (int i = 0; i < GameManager.Instance.enemyAnount; i++)
+        {
+            GameObject NewEnemy = Instantiate(GameManager.Instance.enemyToBattle[i], spawnPoints[i].position, Quaternion.identity) as GameObject;
+            NewEnemy.name = NewEnemy.GetComponent<EnemyFighter>().idName + "_" + (i + 1);
+            NewEnemy.GetComponent<EnemyFighter>().idName = NewEnemy.name;
+            enemyFighters.Add(NewEnemy);
+        }
+
     }
 
     private void SortFightersBySpeed()
@@ -183,7 +187,7 @@ public class CombatManager : MonoBehaviour
 
                     bool victory = areEnemiesAlive == false;
                     bool defeat = arePlayersAlive == false;
-                    
+
                     if (victory)
                     {
                         audioSource.Play();
@@ -199,7 +203,7 @@ public class CombatManager : MonoBehaviour
                         PlayerPrefs.SetString("GrupoEnemigo", groupEnemyName);
                         yield return new WaitForSeconds(2f);
                         SceneManager.LoadScene(1);
-                       
+
                     }
 
                     if (defeat)
