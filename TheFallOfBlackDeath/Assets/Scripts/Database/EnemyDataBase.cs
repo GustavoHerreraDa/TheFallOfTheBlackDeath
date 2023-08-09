@@ -9,7 +9,8 @@ public class EnemyDataBase : ScriptableObject
     [System.Serializable]
     public struct EnemyStats
     {
-
+        public GameObject enemyPrefab;
+        public int prefabIndex;
         public float maxHealth;
         public int level;
         public float attack;
@@ -61,8 +62,9 @@ public class EnemyDataBase : ScriptableObject
                 break;
         }
     }
-    
 
-    public EnemyStats[] EnemyDB;
+
+    //public EnemyStats[] EnemyDB;
+    public List<EnemyStats> EnemyDB = new List<EnemyStats>(); // Cambie el array por una lista
 }
 

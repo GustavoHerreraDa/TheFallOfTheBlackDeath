@@ -324,14 +324,5 @@ public class CombatManager : MonoBehaviour
             statsManagers[i].UpdateUI();
         }
     }
-    private void Awake()
-    {
-        // Instanciar enemigos aleatorios en los puntos de spawn.
-        for (int i = 0; i < GameManager.Instance.enemyAmount; i++)
-        {
-            GameObject NewEnemy = Instantiate(GameManager.Instance.Regions[GameManager.Instance.cuRegions].Enemys[Random.Range(0, GameManager.Instance.Regions[GameManager.Instance.cuRegions].Enemys.Count)], spawnPoints[i].position, Quaternion.identity) as GameObject;
-            NewEnemy.name = NewEnemy.GetComponent<EnemiesGroup>().GroupName + "_" + (i + 1);
-        }
-    }
 
 }
