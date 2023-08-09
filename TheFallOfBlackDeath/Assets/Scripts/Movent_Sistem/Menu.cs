@@ -153,7 +153,7 @@ public class Menu : MonoBehaviour
 
     public void PauseGame()
     {
-        pauseSound.Play();
+        //pauseSound.Play();
         Cursor.lockState = CursorLockMode.None;
         Pausemenu.SetActive(true);
         Time.timeScale = 0f;
@@ -168,7 +168,7 @@ public class Menu : MonoBehaviour
 
         if (combatManager.isCombatActive == true)
         {
-            resumeSound.Play();
+            //resumeSound.Play();
             Cursor.lockState = CursorLockMode.None;
             Pausemenu.SetActive(false);
             Time.timeScale = 1f;

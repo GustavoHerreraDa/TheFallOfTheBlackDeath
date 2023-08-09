@@ -282,13 +282,27 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public Fighter[] FilterJustAlive(Fighter[] team)
+    /*public Fighter[] FilterJustAlive(Fighter[] team)
     {
         this.returnBuffer.Clear();
 
         foreach (var fgtr in team)
         {
             if (fgtr.isAlive)
+            {
+                this.returnBuffer.Add(fgtr);
+            }
+        }
+
+        return this.returnBuffer.ToArray();
+    }*/
+    public Fighter[] FilterJustAlive(Fighter[] team)
+    {
+        this.returnBuffer.Clear();
+
+        foreach (var fgtr in team)
+        {
+            if (fgtr != null && fgtr.isAlive)
             {
                 this.returnBuffer.Add(fgtr);
             }
@@ -340,7 +354,10 @@ public class CombatManager : MonoBehaviour
     {
         for (int i = 0; i < statsManagers.Length; i++)
         {
-            statsManagers[i].UpdateUI();
+            if (statsManagers[i] != null)
+            {
+                statsManagers[i].UpdateUI();
+            }
         }
     }
 
