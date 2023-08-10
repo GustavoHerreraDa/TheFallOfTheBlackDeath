@@ -43,7 +43,11 @@ public class CharacterSwitcher : MonoBehaviour
             fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, false);
             fightersDateBase.SetMainCharacter(GameManager.Instance.BadDoctor.figherIndex, true);
 
-            characters[currentMainCharacterIndex].SetActive(false);
+            //characters[currentMainCharacterIndex].SetActive(false);
+            for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
+            {
+                characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(false);
+            }
             currentMainCharacterIndex = characterIndex;
             characters[characterIndex].SetActive(true);
             GameManager.Instance.character1 = GameManager.Instance.BadDoctor;
@@ -56,24 +60,53 @@ public class CharacterSwitcher : MonoBehaviour
             fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, false);
             fightersDateBase.SetMainCharacter(GameManager.Instance.Assassin.figherIndex, true);
 
-            characters[currentMainCharacterIndex].SetActive(false);
+            //characters[currentMainCharacterIndex].SetActive(false);
+
+            if(currentMainCharacterIndex == 0)
+            {
+                characters[currentMainCharacterIndex].SetActive(false);
+            }
+            else
+            {
+                for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
+                {
+                    characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(false);
+                }
+            }
+
             currentMainCharacterIndex = characterIndex;
-            characters[characterIndex].SetActive(true);
+            //characters[characterIndex].SetActive(true);
+            for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
+            {
+                characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(true);
+            }
             GameManager.Instance.character1 = GameManager.Instance.Assassin;
             return;
         }
 
         fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, false);
 
-        characters[currentMainCharacterIndex].SetActive(false);
-        //currentMainCharacter.SetActive(false);
+        if(currentMainCharacterIndex == 0)
+        {
+            characters[currentMainCharacterIndex].SetActive(false);
+        }
+        else
+        {
+            for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
+            {
+                characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+        
         currentMainCharacterIndex = characterIndex;
-        characters[characterIndex].SetActive(true);
+        //characters[characterIndex].SetActive(true);
+        for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
+        {
+            characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(true);
+        }
         GameManager.Instance.character1 = characters[characterIndex].GetComponent<PlayerFighter>();
 
         fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, true);
-
-        
 
         //Evento para que player UI ponga las pestañas de UI Adecuadas.
         //OnStatsUpdate();
