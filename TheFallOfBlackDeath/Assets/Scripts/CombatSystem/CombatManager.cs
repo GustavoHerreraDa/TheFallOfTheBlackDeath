@@ -16,7 +16,7 @@ public enum CombatStatus
 
 public class CombatManager : MonoBehaviour
 {
-    public List<GameObject> enemyFighters = new List<GameObject>();
+    public EnemyFighter[] enemyFighters;
     public string groupEnemyName;
     public Fighter[] playerTeam;
     public Fighter[] enemyTeam;
@@ -30,7 +30,7 @@ public class CombatManager : MonoBehaviour
     //SPAWN POINTS
     public bool isRadomEncounter = false;
     public List<Transform> spawnPoints = new List<Transform>();
-
+    
 
 
 
@@ -43,8 +43,14 @@ public class CombatManager : MonoBehaviour
 
     void Start()
     {
+        if (isRadomEncounter == true)
+        {
+            EncuentrosAleatorios();
+        }
+
         this.returnBuffer = new List<Fighter>();
         this.fighters = GameObject.FindObjectsOfType<Fighter>();
+        this.enemyFighters = GameObject.FindObjectsOfType<EnemyFighter>();
         this.player = GameObject.FindGameObjectWithTag("Charecter");
         this.SortFightersBySpeed();
         this.MakeTeams();
@@ -55,11 +61,6 @@ public class CombatManager : MonoBehaviour
 
         this.fighterIndex = -1;
         this.isCombatActive = true;
-
-        if (isRadomEncounter == true)
-        {
-            EncuentrosAleatorios();
-        }
 
         StartCoroutine(this.CombatLoop());
     }
@@ -72,7 +73,7 @@ public class CombatManager : MonoBehaviour
             GameObject NewEnemy = Instantiate(GameManager.Instance.enemyToBattle[i], spawnPoints[i].position, Quaternion.identity) as GameObject;
             NewEnemy.name = NewEnemy.GetComponent<EnemyFighter>().idName + "_" + (i + 1);
             NewEnemy.GetComponent<EnemyFighter>().idName = NewEnemy.name;
-            enemyFighters.Add(NewEnemy);
+            
         }
 
     }
