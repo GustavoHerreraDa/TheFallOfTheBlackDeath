@@ -67,6 +67,8 @@ public class CombatManager : MonoBehaviour
 
     public void EncuentrosAleatorios()
     {
+        Cursor.lockState = CursorLockMode.None; // Desbloquear el cursor
+        Cursor.visible = true; // Hacer el cursor visible
 
         for (int i = 0; i < GameManager.Instance.enemyAnount; i++)
         {
