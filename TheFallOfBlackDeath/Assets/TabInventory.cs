@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TabInventory : MonoBehaviour
@@ -7,6 +8,12 @@ public class TabInventory : MonoBehaviour
     // Start is called before the first frame update
     public GameObject[] tabs;
     public SkillUI[] skillsUI;
+
+    public TextMeshProUGUI MainCharacterBTN;
+    public TextMeshProUGUI SecondaryCharacterBTN;
+
+    public PlayerUI mainCharacterUI;
+    public PlayerUI secondaryCharacterUI;
 
     private void Start()
     {
@@ -32,5 +39,16 @@ public class TabInventory : MonoBehaviour
         {
             skillsUI[i].UpdateUI();
         }
+    }
+
+    private void UpdateButtons()
+    {
+        //MainCharacterBTN.text = GameManager.Instance.character1.idName;
+        //SecondaryCharacterBTN.text = GameManager.Instance.character2.idName;
+    }
+
+    void OnEnable()
+    {
+        UpdateButtons();
     }
 }

@@ -17,6 +17,8 @@ public class PlayerUI : MonoBehaviour
     public TextMeshProUGUI speed;
     public SkillUI[] skillsUI;
 
+    public bool isMainCharacterUI;
+
     public void Awake()
     {
         GetPlayerFromCombatManager();
@@ -43,7 +45,15 @@ public class PlayerUI : MonoBehaviour
     public void UpdatePlayerStats()
     {
         //if (fighter == null)
-        GetPlayerFromCombatManager();
+        //GetPlayerFromCombatManager();
+        if(isMainCharacterUI)
+        {
+            fighter = GameManager.Instance.character1;
+        }
+        else
+        {
+            fighter = GameManager.Instance.character2;
+        }
 
         nameHero.text = fighter.idName;
         currentHealth.text = "HP: " + fighter.GetCurrentStats().health.ToString();

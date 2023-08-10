@@ -17,8 +17,6 @@ public class CharacterSwitcher : MonoBehaviour
 
     void Start()
     {
-        //Debug.Log(GameManager.Instance.character1);
-        //Debug.Log(GameManager.Instance.character2);
         SetIndex();
         SwitchMainCharacter(currentMainCharacterIndex);
         SwitchSecondaryCharacter(currentSecondaryCharacterIndex);
@@ -29,7 +27,6 @@ public class CharacterSwitcher : MonoBehaviour
 /*         //Si selecciona como principal el personaje que ya es principal, retornamos.
         if(currentMainCharacterIndex == characterIndex)
         {
-            Debug.Log("Hola1");
             return;
         } */
 
@@ -90,7 +87,6 @@ public class CharacterSwitcher : MonoBehaviour
         //Si selecciona como secundario el personaje que ya es secundario, retornamos.
         /* if(currentSecondaryCharacterIndex == characterIndex)
         {
-            Debug.Log("Hola6");
             return;
         } */
 
@@ -137,7 +133,6 @@ public class CharacterSwitcher : MonoBehaviour
             if(fightersDateBase.EnemyDB[i].isMainCharacter)
             {
                 currentMainCharacterIndex = fightersDateBase.EnemyDB[i].CharacterSwitcherIndex;
-                Debug.Log(fightersDateBase.EnemyDB[i].Description);
             }
         }
 
@@ -146,7 +141,6 @@ public class CharacterSwitcher : MonoBehaviour
             if(fightersDateBase.EnemyDB[i].isSecondaryCharacter)
             {
                 currentSecondaryCharacterIndex = fightersDateBase.EnemyDB[i].CharacterSwitcherIndex;
-                Debug.Log(fightersDateBase.EnemyDB[i].Description);
             }
         }
     }
