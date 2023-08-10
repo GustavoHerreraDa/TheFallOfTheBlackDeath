@@ -20,9 +20,11 @@ public class GameManager : MonoBehaviour
     public List<RegionData> Regions = new List <RegionData>();
 
     public GameObject character;
+    public PlayerFighter BadDoctor;
+    public PlayerFighter Assassin;
     //Agrego estas referencias para poder acceder al Fighter desde InventoryUI y equipar objetos.
-    public PlayerFighter badDoctor;
-    public PlayerFighter assassin;
+    public PlayerFighter character1;
+    public PlayerFighter character2;
     public Vector3 lastPos;
     public Transform startPost;
     public List<string> groupEnemyDefeat;

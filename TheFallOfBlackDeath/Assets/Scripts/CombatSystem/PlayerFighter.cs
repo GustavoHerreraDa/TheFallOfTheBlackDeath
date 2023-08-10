@@ -101,17 +101,12 @@ public class PlayerFighter : Fighter
         switch (statAffected)
         {
             case "Attack":
-                //Debug.Log("el atack base es " + data.attack);
-                //data.attack = data.attack + amountAffected;
                 fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
-                //Debug.Log("el nuevo atack es " + data.attack);
-                //this.stats = new Stats(data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed);
                 stats.attack += amountAffected;
                 break;
             case "Defense":
-                //data.deffense = data.deffense + amountAffected;
-                //this.stats = new Stats(data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed);
-                //stats.deffense += amountAffected;
+                fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
+                stats.deffense += amountAffected;
                 break;
             default:
                 Debug.Log("Stat no válido");

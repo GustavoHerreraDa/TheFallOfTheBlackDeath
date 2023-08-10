@@ -6,56 +6,58 @@ using TMPro;
 
 public class InventoryUI : MonoBehaviour
 {
-    public PlayerFighter badDoctor;
-    public PlayerFighter assassin;
+    public PlayerFighter character1;
+    public PlayerFighter character2;
     public TMP_Text amount;
     public TMP_Text itemName;
     public TMP_Text itemDescripcion;
     public Image sprite;
 
+    public Image buttonSprite;
+
     public string statAffected;
     public float amountAffected;
 
-    private bool _isDoctorEquipped;
-    private bool _isAssassinEquipped;
+    private bool _isCharacter1Equipped;
+    private bool _isCharacter2Equipped;
 
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
-        badDoctor = GameManager.Instance.badDoctor;
-        assassin = GameManager.Instance.assassin;
+        character1 = GameManager.Instance.character1;
+        character2 = GameManager.Instance.character2;
     }
 
-    public void BadDoctorBTN()
+    public void Character1BTN()
     {
-        if(_isAssassinEquipped)
+        if(_isCharacter2Equipped)
         {
-            assassin.UpdateStats(statAffected, -amountAffected);
-            _isAssassinEquipped = false;
+            character2.UpdateStats(statAffected, -amountAffected);
+            _isCharacter2Equipped = false;
         }
 
-        if(!_isDoctorEquipped)
+        if(!_isCharacter1Equipped)
         {
-            badDoctor.UpdateStats(statAffected, amountAffected);
-            _isDoctorEquipped = true;
-            Debug.Log("Equipamos al doctor");
+            character1.UpdateStats(statAffected, amountAffected);
+            _isCharacter1Equipped = true;
+            Debug.Log("Equipamos al character 1");
         } 
         //Mas UI
     }
 
-    public void AssassinBTN()
+    public void Character2BTN()
     {
-        if(_isDoctorEquipped)
+        if(_isCharacter1Equipped)
         {
-            badDoctor.UpdateStats(statAffected, -amountAffected);
-            _isDoctorEquipped = false;
+            character1.UpdateStats(statAffected, -amountAffected);
+            _isCharacter1Equipped = false;
         } 
 
-        if(!_isAssassinEquipped)
+        if(!_isCharacter2Equipped)
         {
-            assassin.UpdateStats(statAffected, amountAffected);
-            _isAssassinEquipped = true;
-            Debug.Log("Equipamos al asesino");
+            character2.UpdateStats(statAffected, amountAffected);
+            _isCharacter2Equipped = true;
+            Debug.Log("Equipamos al character 2");
         }
         //Mas UI
     }
