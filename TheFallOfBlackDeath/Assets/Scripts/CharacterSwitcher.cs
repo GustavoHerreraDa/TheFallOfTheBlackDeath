@@ -18,17 +18,18 @@ public class CharacterSwitcher : MonoBehaviour
     void Start()
     {
         SetIndex();
-        SwitchMainCharacter(currentMainCharacterIndex);
+        SwitchMainCharacter(currentMainCharacterIndex, true);
         SwitchSecondaryCharacter(currentSecondaryCharacterIndex);
     }
 
-    public void SwitchMainCharacter(int characterIndex)
+    public void SwitchMainCharacter(int characterIndex, bool isFirstTime)     //ARREGLAR: PROBLEMA SI EL DOC ES EL PRINCIPAL CUANDO EMPIEZA LA ESCENA
     {
-/*         //Si selecciona como principal el personaje que ya es principal, retornamos.
-        if(currentMainCharacterIndex == characterIndex)
+        //Si selecciona como principal el personaje que ya es principal, retornamos.
+        if (currentMainCharacterIndex == characterIndex && !isFirstTime)
         {
+            Debug.Log("Hola");
             return;
-        } */
+        }
 
         //Si selecciona como principal el personaje que es secundario, return.
         if(characterIndex == currentSecondaryCharacterIndex)
@@ -44,9 +45,12 @@ public class CharacterSwitcher : MonoBehaviour
             fightersDateBase.SetMainCharacter(GameManager.Instance.BadDoctor.figherIndex, true);
 
             //characters[currentMainCharacterIndex].SetActive(false);
-            for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
+            if(!isFirstTime) //Probar esto, osea meter el for aca  adentro
             {
-                characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(false);
+                for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
+                {
+                    characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(false);
+                }
             }
             currentMainCharacterIndex = characterIndex;
             characters[characterIndex].SetActive(true);

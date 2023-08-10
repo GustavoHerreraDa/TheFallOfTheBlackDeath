@@ -8,7 +8,7 @@ public class CharacterTabUI : MonoBehaviour
 
     public void MainCharacterBTN(int characterIndex)
     {
-        _characterSwitcher.SwitchMainCharacter(characterIndex);
+        _characterSwitcher.SwitchMainCharacter(characterIndex, false);
     }
 
     public void SecondaryCharacterBTN(int characterIndex)
