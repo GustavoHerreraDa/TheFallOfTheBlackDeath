@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
             case (GameStates.TOWN_STATE):
                 if (isWalking)
                 {
-                    canGetEncounter = true;
+                    //canGetEncounter = true;
                     RandomEncounter();
                 }
                 if (gotAttacked)
