@@ -53,10 +53,10 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        switch(gameState)
+        switch (gameState)
         {
             case (GameStates.TOWN_STATE):
-                if (isWalking) // Usamos la variable isWalking del PlayerControl para activar los encuentros aleatorios
+                if (isWalking)
                 {
                     canGetEncounter = true;
                     RandomEncounter();
@@ -68,14 +68,15 @@ public class GameManager : MonoBehaviour
                 break;
 
             case (GameStates.BATTLE_STATE):
-                //LOAD BATTLE SCENE
                 StartBattle();
                 gameState = GameStates.IDLE_STATE;
-                //GO TO IDLE
+                gotAttacked = false;
+                canGetEncounter = false;
+                isWalking = false; // Desactivar los encuentros aleatorios después de un evento exitoso
                 break;
 
-                case(GameStates.IDLE_STATE):
-                break;  
+            case (GameStates.IDLE_STATE):
+                break;
         }
     }
 

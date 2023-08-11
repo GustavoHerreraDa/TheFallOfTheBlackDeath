@@ -202,6 +202,8 @@ public class CombatManager : MonoBehaviour
                         }
                         LogPanel.Write("Victory!");
                         this.isCombatActive = false;
+                        GameManager.Instance.gameState = GameManager.GameStates.TOWN_STATE;
+                        GameManager.Instance.enemyToBattle.Clear();
                         ListEnemyDefeat.enemiesDefeat.Add(groupEnemyName);
                         PlayerPrefs.SetString("GrupoEnemigo", groupEnemyName);
                         yield return new WaitForSeconds(2f);
