@@ -16,6 +16,14 @@ public enum CombatStatus
 
 public class CombatManager : MonoBehaviour
 {
+    public EnemiesPanel enemiesPanel;
+    public StatusPanel statusPanel1;
+    public StatusPanel statusPanel2;
+    public PlayerSkillPanel skillPanel;
+    public Transform mainCharacterPos;
+    public Transform secondaryCharacterPos;
+    public GameObject playerParent;
+    public EnemyDataBase enemyDataBase;
     public EnemyFighter[] enemyFighters;
     public string groupEnemyName;
     public Fighter[] playerTeam;
@@ -36,7 +44,9 @@ public class CombatManager : MonoBehaviour
 
     private List<Fighter> returnBuffer;
     public TurnsDisplay turnsDisplay;
-    public StatsManager[] statsManagers;
+
+    //Cambio statsManager a list para poder agregar elementos.
+    public List<StatsManager> statsManagers;
 
     public AudioSource audioSource;
     public AudioSource sonidoDeDerrota;
@@ -48,12 +58,17 @@ public class CombatManager : MonoBehaviour
             EncuentrosAleatorios();
         }
 
+        //Acá instanciaría los player?
+        InstantiatePlayerFighters();
+        
+
         this.returnBuffer = new List<Fighter>();
         this.fighters = GameObject.FindObjectsOfType<Fighter>();
         this.enemyFighters = GameObject.FindObjectsOfType<EnemyFighter>();
         this.player = GameObject.FindGameObjectWithTag("Charecter");
         this.SortFightersBySpeed();
         this.MakeTeams();
+        DefineStatsManager();
 
         LogPanel.Write("Battle initiated.");
 
@@ -197,7 +212,7 @@ public class CombatManager : MonoBehaviour
                         Animator[] playerAnimators = player.GetComponentsInChildren<Animator>();
                         foreach (Animator animator in playerAnimators)
                         {
-                            Debug.Log("Reproduciendo animaci�n en: " + animator.gameObject.name);
+                            Debug.Log("Reproduciendo animaci�n en: " + animator.gameObject.name);
                             animator.Play("Victory");
                         }
                         LogPanel.Write("Victory!");
@@ -355,9 +370,18 @@ public class CombatManager : MonoBehaviour
         this.currentFighterSkill = skill;
         this.combatStatus = CombatStatus.FIGHTER_ACTION;
     }
+
+    private void DefineStatsManager()
+    {
+        foreach(Fighter fighter in fighters)
+        {
+            statsManagers.Add(fighter.GetComponent<StatsManager>());
+        }
+    }
+
     public void UpdateStatsUI()
     {
-        for (int i = 0; i < statsManagers.Length; i++)
+        for (int i = 0; i < statsManagers.Count; i++)
         {
             if (statsManagers[i] != null)
             {
@@ -366,4 +390,20 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    private void InstantiatePlayerFighters()
+    {
+        for (int i = 0; i < enemyDataBase.EnemyDB.Count; i++)
+        {
+            if(enemyDataBase.EnemyDB[i].isMainCharacter)
+            {
+                GameObject mainCharacter = Instantiate(enemyDataBase.EnemyDB[i].enemyPrefab, mainCharacterPos.transform.position, Quaternion.Euler(0, -90, 0), playerParent.transform);
+                mainCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel1, enemiesPanel);
+            }
+            else if(enemyDataBase.EnemyDB[i].isSecondaryCharacter)
+            {
+                GameObject secondaryCharacter = Instantiate(enemyDataBase.EnemyDB[i].enemyPrefab, secondaryCharacterPos.transform.position, Quaternion.Euler(0, -90, 0), playerParent.transform);
+                secondaryCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel2, enemiesPanel);
+            }
+        }
+    }
 }

@@ -9,11 +9,8 @@ public class CharacterSwitcher : MonoBehaviour
     public int currentMainCharacterIndex;
     public int currentSecondaryCharacterIndex;
 
-    /* public delegate void UpdateInventory();
-    public static event UpdateInventory OnInventoryUpdate;
-
-    public delegate void UpdateStatsUI();
-    public static event UpdateStatsUI OnStatsUpdate; */
+    public delegate void UpdateAnimator(GameObject character);
+    public static event UpdateAnimator OnAnimatorUpdate;
 
     void Start()
     {
@@ -45,7 +42,7 @@ public class CharacterSwitcher : MonoBehaviour
             fightersDateBase.SetMainCharacter(GameManager.Instance.BadDoctor.figherIndex, true);
 
             //characters[currentMainCharacterIndex].SetActive(false);
-            if(!isFirstTime) //Probar esto, osea meter el for aca  adentro
+            if(!isFirstTime)
             {
                 for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
                 {
@@ -55,6 +52,8 @@ public class CharacterSwitcher : MonoBehaviour
             currentMainCharacterIndex = characterIndex;
             characters[characterIndex].SetActive(true);
             GameManager.Instance.character1 = GameManager.Instance.BadDoctor;
+
+            OnAnimatorUpdate(characters[currentMainCharacterIndex].transform.parent.gameObject);
             return;
         }
 
@@ -85,6 +84,8 @@ public class CharacterSwitcher : MonoBehaviour
                 characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(true);
             }
             GameManager.Instance.character1 = GameManager.Instance.Assassin;
+
+            OnAnimatorUpdate(characters[currentMainCharacterIndex]);
             return;
         }
 
@@ -112,8 +113,7 @@ public class CharacterSwitcher : MonoBehaviour
 
         fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, true);
 
-        //Evento para que player UI ponga las pestañas de UI Adecuadas.
-        //OnStatsUpdate();
+        OnAnimatorUpdate(characters[currentMainCharacterIndex]);
         //Evento para desequipar los items equipables(armas, armadura)
         //OnInventoryUpdate();
         //Evento.

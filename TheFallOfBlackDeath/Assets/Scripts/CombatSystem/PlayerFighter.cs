@@ -150,4 +150,12 @@ public class PlayerFighter : Fighter
         Fighter activeAlly = allies[activeAllyIndex];
         // Realizar las acciones necesarias con el aliado activo
     }
+
+    public PlayerFighter GetSkillPanel(PlayerSkillPanel newSkillPanel, StatusPanel newStatusPanel, EnemiesPanel newEnemiesPanel)
+    {
+        skillPanel = newSkillPanel;
+        statusPanel = newStatusPanel;
+        enemiesPanel = newEnemiesPanel;
+        return this;
+    }
 }

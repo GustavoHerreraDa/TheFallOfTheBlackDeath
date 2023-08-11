@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.00030126586, g: 0.008429392, b: 0.10503368, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0.0024742496, b: 0.039385013, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -987,6 +987,37 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!1 &982232655
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 982232656}
+  m_Layer: 0
+  m_Name: SecondaryCharacterPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &982232656
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 982232655}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.877, y: -0.314, z: -0.224}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1074256361 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2808314296040147932, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
@@ -1234,6 +1265,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fb378c3cdf89b247a08f832dc38e553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1626512602
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1626512603}
+  m_Layer: 0
+  m_Name: MainCharacterPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1626512603
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1626512602}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.877, y: 0.05, z: 2.6239984}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1691333297
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2173,6 +2235,11 @@ MonoBehaviour:
   FighterIndex: 0
   gameObjectFighter: {fileID: 0}
   cameraSpeed: 5
+--- !u!1 &1825869757 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4025857175979785880, guid: 0555e4cc98b4f5a48a1d7e6a06bff93e, type: 3}
+  m_PrefabInstance: {fileID: 4025857175884345379}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1835126690
 GameObject:
   m_ObjectHideFlags: 0
@@ -2683,9 +2750,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: DoctorPeste
       objectReference: {fileID: 0}
+    - target: {fileID: 4260367950452143237, guid: 0555e4cc98b4f5a48a1d7e6a06bff93e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4260367950514521660, guid: 0555e4cc98b4f5a48a1d7e6a06bff93e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5247500968872561745, guid: 0555e4cc98b4f5a48a1d7e6a06bff93e, type: 3}
       propertyPath: actualAttack
@@ -2788,13 +2859,45 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 571021434}
     - target: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
+      propertyPath: skillPanel
+      value: 
+      objectReference: {fileID: 1613890651}
+    - target: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 1439129848}
     - target: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
+      propertyPath: enemiesPanel
+      value: 
+      objectReference: {fileID: 2124753367}
+    - target: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
+      propertyPath: playerParent
+      value: 
+      objectReference: {fileID: 1825869757}
+    - target: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
+      propertyPath: statusPanel1
+      value: 
+      objectReference: {fileID: 1074256361}
+    - target: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
+      propertyPath: statusPanel2
+      value: 
+      objectReference: {fileID: 34076316}
+    - target: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
       propertyPath: turnsDisplay
       value: 
       objectReference: {fileID: 1216940495}
+    - target: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
+      propertyPath: enemyDataBase
+      value: 
+      objectReference: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
+    - target: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
+      propertyPath: mainCharacterPos
+      value: 
+      objectReference: {fileID: 1626512603}
+    - target: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
+      propertyPath: secondaryCharacterPos
+      value: 
+      objectReference: {fileID: 982232656}
     - target: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
       propertyPath: fighters.Array.data[0]
       value: 

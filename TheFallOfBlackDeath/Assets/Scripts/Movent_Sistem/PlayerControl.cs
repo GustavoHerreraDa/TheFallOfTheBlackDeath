@@ -18,14 +18,14 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float distanciaPiso;
     [SerializeField] private LayerMask mascaraPiso;
     public bool stop;
-    private bool isWalking = false; // Agregamos una variable para rastrear si el jugador está caminando
+    private bool isWalking = false; // Agregamos una variable para rastrear si el jugador estï¿½ caminando
 
     float velocidadGiro;
     public float gravedad = -9.81f;
     Vector3 velocity;
     bool tocaPiso;
 
-    Animator anim;
+    public Animator anim;
     Rigidbody playerRB;
     private void Start()
     {
@@ -33,16 +33,18 @@ public class PlayerControl : MonoBehaviour
         camara = GameObject.FindGameObjectWithTag("MainCamera");
         anim = GetComponentInChildren<Animator>();
         playerRB = GetComponentInChildren<Rigidbody>();
+
+        CharacterSwitcher.OnAnimatorUpdate += UpdateAnimator;
     }
 
     private void Update()
     {
-        // Detectar si el jugador está caminando (puedes ajustar las condiciones según tu juego)
+        // Detectar si el jugador estï¿½ caminando (puedes ajustar las condiciones segï¿½n tu juego)
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direccion = new Vector3(horizontal, 0, vertical).normalized;
         isWalking = direccion.magnitude >= 0.1f;
-        // Actualizar canGetEncounter basado en si el jugador está caminando o no
+        // Actualizar canGetEncounter basado en si el jugador estï¿½ caminando o no
         GameManager.Instance.canGetEncounter = isWalking;
 
 
@@ -97,11 +99,18 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    private void UpdateAnimator(GameObject character)
+    {
+        Debug.Log("Cambiando animator de " + character.name);
+        anim = character.GetComponent<Animator>();
+        Debug.Log(anim);
+    }
+
     public void ContinuePlayer()
     {
         stop = false;
         playerRB.isKinematic = false;
-        GameManager.Instance.isWalking = isWalking; // Aseguramos que GameManager.isWalking esté actualizado
+        GameManager.Instance.isWalking = isWalking; // Aseguramos que GameManager.isWalking estï¿½ actualizado
     }
 
     public void StopPlayer(float seconds)
@@ -127,7 +136,7 @@ public class PlayerControl : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        // Verificar si el jugador está caminando antes de permitir encuentros
+        // Verificar si el jugador estï¿½ caminando antes de permitir encuentros
         if (other.tag == "region1" && isWalking)
         {
             GameManager.Instance.canGetEncounter = true;
