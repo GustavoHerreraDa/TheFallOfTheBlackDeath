@@ -221,6 +221,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &78570208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 78570209}
+  m_Layer: 0
+  m_Name: MainCharacterPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &78570209
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78570208}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.354, y: -0.31, z: 2.738}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &79279844
 GameObject:
   m_ObjectHideFlags: 0
@@ -1425,6 +1456,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Erika
       objectReference: {fileID: 0}
+    - target: {fileID: 7311256974603474713, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7617738347806157381, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
       propertyPath: skillPanel
       value: 
@@ -1492,17 +1527,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7943538130402282915, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
   m_PrefabInstance: {fileID: 436455931}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &436455933 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2834978007729194427, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
-  m_PrefabInstance: {fileID: 436455931}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77345174282e5da4798c4f0a2ca01574, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &436455934 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7617738347806157381, guid: 9617c94c76568694eadcb12ea545bdc7, type: 3}
@@ -3236,6 +3260,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Asassin
       objectReference: {fileID: 0}
+    - target: {fileID: 1443639437503016498, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1786169535298114428, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
       propertyPath: skillPanel
       value: 
@@ -3370,17 +3398,6 @@ PrefabInstance:
       objectReference: {fileID: 512936774}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
---- !u!114 &777171807 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7477618237679002719, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
-  m_PrefabInstance: {fileID: 777171806}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77345174282e5da4798c4f0a2ca01574, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &777171808 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2252651694320841864, guid: c2051dd00c2af544696da4acd85a9e1d, type: 3}
@@ -5346,6 +5363,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 731acd710395647439901d48baab48c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemiesPanel: {fileID: 512936769}
+  statusPanel1: {fileID: 512936772}
+  statusPanel2: {fileID: 512936773}
+  skillPanel: {fileID: 512936768}
+  mainCharacterPos: {fileID: 78570209}
+  secondaryCharacterPos: {fileID: 1312894910}
+  playerParent: {fileID: 737001959}
+  enemyDataBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
   enemyFighters: []
   groupEnemyName: Drake
   playerTeam: []
@@ -5366,12 +5391,7 @@ MonoBehaviour:
   - {fileID: 1896651942}
   - {fileID: 1903728423}
   turnsDisplay: {fileID: 512936775}
-  statsManagers:
-  - {fileID: 436455933}
-  - {fileID: 777171807}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  statsManagers: []
   audioSource: {fileID: 220136205}
   sonidoDeDerrota: {fileID: 374210047}
 --- !u!4 &1147469926
@@ -5574,6 +5594,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1312322302}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1312894909
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1312894910}
+  m_Layer: 0
+  m_Name: SecondaryCharacterPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1312894910
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312894909}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.354, y: -0.31, z: 0.145}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1353189795
 GameObject:
   m_ObjectHideFlags: 0
