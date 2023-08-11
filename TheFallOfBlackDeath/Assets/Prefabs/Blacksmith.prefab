@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7305297877295874578}
+  - component: {fileID: 1830900077}
+  - component: {fileID: 1830900076}
   m_Layer: 0
   m_Name: Blacksmith
   m_TagString: Untagged
@@ -32,6 +34,60 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1830900077
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8267380649681350226}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+  m_Controller: {fileID: 22100000, guid: 5bc46cd249341ff41b2e1947f6069a85, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
+    'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
+    'mixamorig:LeftHandPinky2'\n\tTransform 'mixamorig:RightHandRing2'\n\tTransform
+    'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftHandThumb3'\n\tTransform 'mixamorig:RightArm'\n\tTransform
+    'mixamorig:LeftLeg'\n\tand more ...\n\tFrom animation clip 'Pick'"
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1830900076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8267380649681350226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54cd0b67e51238547a59bd64b5935e71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 0
+  idName: Blacksmith
+  statusPanel: {fileID: 0}
+  animator: {fileID: 0}
+  combatManager: {fileID: 0}
+  audioSource: {fileID: 0}
+  statusMods: []
+  statusCondition: {fileID: 0}
+  CameraPivot: {fileID: 0}
+  DamagePivot: {fileID: 0}
+  skillPanel: {fileID: 0}
+  enemiesPanel: {fileID: 0}
+  fightersDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
+  figherIndex: 10
+  ally1: {fileID: 0}
+  ally2: {fileID: 0}
 --- !u!1001 &7502533640696679195
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -91,6 +147,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BS_Final_Apose_Sketchfab@Idle
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2219142835421054055, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -103,7 +163,8 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8512183effd4307469e90896ef454d07, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
 --- !u!4 &8040301811335802096 stripped
 Transform:
