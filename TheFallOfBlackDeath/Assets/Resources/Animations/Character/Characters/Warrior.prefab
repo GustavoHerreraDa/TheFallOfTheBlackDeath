@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1319790218102814969}
+  - component: {fileID: 450989879}
+  - component: {fileID: 450989877}
   m_Layer: 0
   m_Name: Warrior
   m_TagString: Untagged
@@ -32,6 +34,60 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &450989879
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347213020163082240}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 9718314536b2b0042b15ddb9d1269de4, type: 3}
+  m_Controller: {fileID: 22100000, guid: cb367e8b8b75e5e48afb470090d0207f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
+    'mixamorig:LeftHandIndex1'\n\tTransform 'mixamorig:Spine1'\n\tTransform 'mixamorig:RightArm'\n\tTransform
+    'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tTransform 'mixamorig:RightHandIndex3'\n\tTransform
+    'mixamorig:RightFoot'\n\tTransform 'mixamorig:Head'\n\tand more ...\n\tFrom animation
+    clip 'Pick'"
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &450989877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 347213020163082240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54cd0b67e51238547a59bd64b5935e71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 0
+  idName: Warrior
+  statusPanel: {fileID: 0}
+  animator: {fileID: 0}
+  combatManager: {fileID: 0}
+  audioSource: {fileID: 0}
+  statusMods: []
+  statusCondition: {fileID: 0}
+  CameraPivot: {fileID: 0}
+  DamagePivot: {fileID: 0}
+  skillPanel: {fileID: 0}
+  enemiesPanel: {fileID: 0}
+  fightersDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
+  figherIndex: 13
+  ally1: {fileID: 0}
+  ally2: {fileID: 0}
 --- !u!1001 &8350586295795917773
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57,15 +113,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9718314536b2b0042b15ddb9d1269de4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.992
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9718314536b2b0042b15ddb9d1269de4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.261
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9718314536b2b0042b15ddb9d1269de4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.7197
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9718314536b2b0042b15ddb9d1269de4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -102,6 +158,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9718314536b2b0042b15ddb9d1269de4, type: 3}
       propertyPath: m_Name
       value: Warrior_Idle
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9718314536b2b0042b15ddb9d1269de4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9718314536b2b0042b15ddb9d1269de4, type: 3}

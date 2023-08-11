@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 193511059121162837}
+  - component: {fileID: 752940130}
+  - component: {fileID: 752940128}
   m_Layer: 0
   m_Name: Mage
   m_TagString: Untagged
@@ -32,6 +34,54 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &752940130
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4586735904866427309}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
+  m_Controller: {fileID: 22100000, guid: 1d285ededadeeef489c38fec6869edef, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &752940128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4586735904866427309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54cd0b67e51238547a59bd64b5935e71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 0
+  idName: Mage
+  statusPanel: {fileID: 0}
+  animator: {fileID: 0}
+  combatManager: {fileID: 0}
+  audioSource: {fileID: 0}
+  statusMods: []
+  statusCondition: {fileID: 0}
+  CameraPivot: {fileID: 0}
+  DamagePivot: {fileID: 0}
+  skillPanel: {fileID: 0}
+  enemiesPanel: {fileID: 0}
+  fightersDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
+  figherIndex: 11
+  ally1: {fileID: 0}
+  ally2: {fileID: 0}
 --- !u!1001 &5136546972893005751
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57,15 +107,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.963
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.273
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.2731
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -98,6 +148,18 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
       propertyPath: m_Name
       value: Mage_Idle
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465940246521907071, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465940246521907071, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
