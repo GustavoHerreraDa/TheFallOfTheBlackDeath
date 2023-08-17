@@ -193,7 +193,7 @@ public class GameManager : MonoBehaviour
     {
         if (isWalking && canGetEncounter)
         {
-            if (Random.Range(0, 10000) < 10)
+            if (Random.Range(0, 100000) < 10)
             {
                 Debug.Log("i got attacked");
                 gotAttacked = true;
