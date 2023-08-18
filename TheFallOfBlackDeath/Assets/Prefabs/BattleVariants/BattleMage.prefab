@@ -62,6 +62,61 @@ Transform:
   m_Father: {fileID: 8304145335489040768}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1225310235892150827
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7811777327992925489}
+  - component: {fileID: 5459311681443400171}
+  m_Layer: 0
+  m_Name: Protect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7811777327992925489
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225310235892150827}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.06453976, y: 1.3582523, z: -0.056032836}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8304145335489040768}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5459311681443400171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225310235892150827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aa3919ad1c4ad045b96e1b4d410648c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Protect
+  animationDuration: 1.5
+  targeting: 3
+  effectPrfb: {fileID: 1844191813266838, guid: 968c924d2be019d4b9e67647551eec3e, type: 3}
+  SkillDesc: "Te vuelve invunerable al da\xF1o por un turno"
+  skillType: 0
+  iconUI: {fileID: 0}
+  animationName: Curse
+  HasItemInInventory: 0
+  ItemsNeeded: []
+  successRate: 1
 --- !u!1 &1488757592670571959
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,7 +383,7 @@ GameObject:
   - component: {fileID: 3080193212161059553}
   - component: {fileID: 3062859073622527165}
   m_Layer: 0
-  m_Name: Curse
+  m_Name: Morbid Whispers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -365,11 +420,11 @@ MonoBehaviour:
   skillName: Curse
   animationDuration: 2
   targeting: 2
-  effectPrfb: {fileID: 100004, guid: 7867af58a6ec48846ae807eb4022fbaa, type: 3}
-  SkillDesc: Curse the enemy subtracting the 10% of their maximum health per turn
+  effectPrfb: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c, type: 3}
+  SkillDesc: Curse the enemy subtracting the 20% of their maximum health per turn
   skillType: 0
   iconUI: {fileID: 21300000, guid: d965b648e7e6da744a24eee24b4b9c25, type: 3}
-  animationName: Curse
+  animationName: Morbid Whispers
   HasItemInInventory: 0
   ItemsNeeded:
   - id: 6
@@ -420,10 +475,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51e2ef5a84f96f409ceb956945277e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectPrfb: {fileID: 100004, guid: 7867af58a6ec48846ae807eb4022fbaa, type: 3}
+  effectPrfb: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c, type: 3}
   animationDuration: 3
-  receptionMessage: (receiver) is cursed
-  applyMessage: Curses damages (receiver)
+  receptionMessage: (receiver) is marked
+  applyMessage: Morbid Whispers damages (receiver)
   expireMessage: Curse fades
   turnDuration: 3
   percentage: -0.2
