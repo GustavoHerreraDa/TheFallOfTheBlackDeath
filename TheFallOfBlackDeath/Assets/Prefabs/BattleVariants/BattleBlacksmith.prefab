@@ -9,10 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4259703240449388098}
-  - component: {fileID: 2073551989155390000}
-  - component: {fileID: 2247229226114993226}
+  - component: {fileID: 3100785940206278997}
   m_Layer: 0
-  m_Name: Intimidate
+  m_Name: Fading Fury
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +32,7 @@ Transform:
   m_Father: {fileID: 7540624642153775675}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2073551989155390000
+--- !u!114 &3100785940206278997
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,34 +41,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 969892521961305730}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
+  m_Script: {fileID: 11500000, guid: 3dd74448f472bc145af36ff41cafac42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Intimidate
+  skillName: Fading Fury
   animationDuration: 1.5
   targeting: 2
   effectPrfb: {fileID: 8189500006840025469, guid: 0a19654f0adc9c6429eff011c5724442, type: 3}
-  SkillDesc: Decrease all enemies attack by 10.
+  SkillDesc: Decrease all enemies attack and defense by 10.
   skillType: 0
-  iconUI: {fileID: 21300000, guid: bf358916f238efa4baf7309957283b02, type: 3}
+  iconUI: {fileID: 0}
   animationName: Intimidate
   HasItemInInventory: 0
   ItemsNeeded: []
-  message: '{receiver} decreased his attack!'
---- !u!114 &2247229226114993226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 969892521961305730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  amount: -10
+  healAmount: 0
+  attackBuffAmount: -10
+  defenseBuffAmount: -10
 --- !u!1 &3105780398260842073
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,7 +299,7 @@ MonoBehaviour:
   HasItemInInventory: 0
   ItemsNeeded: []
   amount: -15
-  modType: 0
+  modType: 1
   critChance: 0
 --- !u!1 &6890905301355940229
 GameObject:
