@@ -24,87 +24,16 @@ public class CharacterSwitcher : MonoBehaviour
             return;
         }
 
-        //Si selecciona como principal el personaje que es secundario, return. NO, SWITCHEAMOS LOS DOS
+        //Si selecciona como principal el personaje que es secundario, return.
         if(characterIndex == currentSecondaryCharacterIndex)
         {
-            SwitchBothCharacters();
-            return;
-        }
-
-        //Es complicado conseguir la referencia del Doctor porque está en el doctor que flota en el escenario, no en el que manejas.
-        if(characterIndex == 0)
-        {
-            fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, false);
-            fightersDateBase.SetMainCharacter(GameManager.Instance.BadDoctor.figherIndex, true);
-
-            //characters[currentMainCharacterIndex].SetActive(false);
-            if(!isFirstTime)
-            {
-                for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
-                {
-                    //characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(false);
-                }
-            }
-            currentMainCharacterIndex = characterIndex;
-            //characters[characterIndex].SetActive(true);
-            GameManager.Instance.character1 = GameManager.Instance.BadDoctor;
-
-            //OnAnimatorUpdate(characters[currentMainCharacterIndex].transform.parent.gameObject);
-            return;
-        }
-
-        //Es complicado conseguir la referencia del Assassin porque está en el assassin que flota en el escenario, no en el que manejas.
-        if(characterIndex == 1)
-        {
-            fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, false);
-            fightersDateBase.SetMainCharacter(GameManager.Instance.Assassin.figherIndex, true);
-
-            //characters[currentMainCharacterIndex].SetActive(false);
-
-            if(currentMainCharacterIndex == 0)
-            {
-                //characters[currentMainCharacterIndex].SetActive(false);
-            }
-            else
-            {
-                for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
-                {
-                    //characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(false);
-                }
-            }
-
-            currentMainCharacterIndex = characterIndex;
-            //characters[characterIndex].SetActive(true);
-            for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
-            {
-                //characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(true);
-            }
-            GameManager.Instance.character1 = GameManager.Instance.Assassin;
-
-            //OnAnimatorUpdate(characters[currentMainCharacterIndex]);
             return;
         }
 
         fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, false);
-
-        if(currentMainCharacterIndex == 0)
-        {
-            //characters[currentMainCharacterIndex].SetActive(false);
-        }
-        else
-        {
-            for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
-            {
-                //characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(false);
-            }
-        }
         
         currentMainCharacterIndex = characterIndex;
-        //characters[characterIndex].SetActive(true);
-        for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
-        {
-            //characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(true);
-        }
+
         GameManager.Instance.character1 = characters[characterIndex].GetComponent<PlayerFighter>();
 
         fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, true);
@@ -123,33 +52,11 @@ public class CharacterSwitcher : MonoBehaviour
             return;
         } 
 
-        //Si selecciona como secundario el personaje que es principal, return. NO, SWITCHEAMOS LOS DOS
+        //Si selecciona como secundario el personaje que es principal, return.
         if(characterIndex == currentMainCharacterIndex)
         {
-            SwitchBothCharacters();
             return;
         }
-
-        if(characterIndex == 0)
-        {
-            fightersDateBase.SetSecondaryCharacter(GameManager.Instance.character2.figherIndex, false);
-            fightersDateBase.SetSecondaryCharacter(GameManager.Instance.BadDoctor.figherIndex, true);
-
-            GameManager.Instance.character2 = GameManager.Instance.BadDoctor;
-            currentSecondaryCharacterIndex = characterIndex;
-            return;
-        }
-
-        if(characterIndex == 1)
-        {
-            fightersDateBase.SetSecondaryCharacter(GameManager.Instance.character2.figherIndex, false);
-            fightersDateBase.SetSecondaryCharacter(GameManager.Instance.Assassin.figherIndex, true);
-
-            GameManager.Instance.character2 = GameManager.Instance.Assassin;
-            currentSecondaryCharacterIndex = characterIndex;
-            return;
-        }
-
 
         fightersDateBase.SetSecondaryCharacter(GameManager.Instance.character2.figherIndex, false);
 
@@ -157,11 +64,6 @@ public class CharacterSwitcher : MonoBehaviour
         GameManager.Instance.character2 = characters[characterIndex].GetComponent<PlayerFighter>();
 
         fightersDateBase.SetSecondaryCharacter(GameManager.Instance.character2.figherIndex, true);
-    }
-
-    private void SwitchBothCharacters()
-    {
-        
     }
 
     private void SetIndex()
