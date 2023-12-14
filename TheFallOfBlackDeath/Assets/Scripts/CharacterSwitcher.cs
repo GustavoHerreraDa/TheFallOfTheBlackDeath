@@ -9,9 +9,6 @@ public class CharacterSwitcher : MonoBehaviour
     public int currentMainCharacterIndex;
     public int currentSecondaryCharacterIndex;
 
-    public delegate void UpdateAnimator(GameObject character);
-    public static event UpdateAnimator OnAnimatorUpdate;
-
     void Start()
     {
         SetIndex();
@@ -24,14 +21,13 @@ public class CharacterSwitcher : MonoBehaviour
         //Si selecciona como principal el personaje que ya es principal, retornamos.
         if (currentMainCharacterIndex == characterIndex && !isFirstTime)
         {
-            Debug.Log("Hola");
             return;
         }
 
-        //Si selecciona como principal el personaje que es secundario, return.
+        //Si selecciona como principal el personaje que es secundario, return. NO, SWITCHEAMOS LOS DOS
         if(characterIndex == currentSecondaryCharacterIndex)
         {
-            Debug.Log("El personaje ya está seleccionado.");
+            SwitchBothCharacters();
             return;
         }
 
@@ -46,14 +42,14 @@ public class CharacterSwitcher : MonoBehaviour
             {
                 for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
                 {
-                    characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(false);
+                    //characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(false);
                 }
             }
             currentMainCharacterIndex = characterIndex;
-            characters[characterIndex].SetActive(true);
+            //characters[characterIndex].SetActive(true);
             GameManager.Instance.character1 = GameManager.Instance.BadDoctor;
 
-            OnAnimatorUpdate(characters[currentMainCharacterIndex].transform.parent.gameObject);
+            //OnAnimatorUpdate(characters[currentMainCharacterIndex].transform.parent.gameObject);
             return;
         }
 
@@ -67,13 +63,13 @@ public class CharacterSwitcher : MonoBehaviour
 
             if(currentMainCharacterIndex == 0)
             {
-                characters[currentMainCharacterIndex].SetActive(false);
+                //characters[currentMainCharacterIndex].SetActive(false);
             }
             else
             {
                 for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
                 {
-                    characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(false);
+                    //characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(false);
                 }
             }
 
@@ -81,11 +77,11 @@ public class CharacterSwitcher : MonoBehaviour
             //characters[characterIndex].SetActive(true);
             for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
             {
-                characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(true);
+                //characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(true);
             }
             GameManager.Instance.character1 = GameManager.Instance.Assassin;
 
-            OnAnimatorUpdate(characters[currentMainCharacterIndex]);
+            //OnAnimatorUpdate(characters[currentMainCharacterIndex]);
             return;
         }
 
@@ -93,13 +89,13 @@ public class CharacterSwitcher : MonoBehaviour
 
         if(currentMainCharacterIndex == 0)
         {
-            characters[currentMainCharacterIndex].SetActive(false);
+            //characters[currentMainCharacterIndex].SetActive(false);
         }
         else
         {
             for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
             {
-                characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(false);
+                //characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(false);
             }
         }
         
@@ -107,13 +103,13 @@ public class CharacterSwitcher : MonoBehaviour
         //characters[characterIndex].SetActive(true);
         for (int i = 0; i < characters[currentMainCharacterIndex].transform.childCount; i++)
         {
-            characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(true);
+            //characters[currentMainCharacterIndex].transform.GetChild(i).gameObject.SetActive(true);
         }
         GameManager.Instance.character1 = characters[characterIndex].GetComponent<PlayerFighter>();
 
         fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, true);
 
-        OnAnimatorUpdate(characters[currentMainCharacterIndex]);
+        //OnAnimatorUpdate(characters[currentMainCharacterIndex]);
         //Evento para desequipar los items equipables(armas, armadura)
         //OnInventoryUpdate();
         //Evento.
@@ -122,15 +118,15 @@ public class CharacterSwitcher : MonoBehaviour
     public void SwitchSecondaryCharacter(int characterIndex)
     {
         //Si selecciona como secundario el personaje que ya es secundario, retornamos.
-        /* if(currentSecondaryCharacterIndex == characterIndex)
+        if(currentSecondaryCharacterIndex == characterIndex)
         {
             return;
-        } */
+        } 
 
-        //Si selecciona como secundario el personaje que es principal, return.
+        //Si selecciona como secundario el personaje que es principal, return. NO, SWITCHEAMOS LOS DOS
         if(characterIndex == currentMainCharacterIndex)
         {
-            Debug.Log("El personaje ya está seleccionado.");
+            SwitchBothCharacters();
             return;
         }
 
@@ -161,6 +157,11 @@ public class CharacterSwitcher : MonoBehaviour
         GameManager.Instance.character2 = characters[characterIndex].GetComponent<PlayerFighter>();
 
         fightersDateBase.SetSecondaryCharacter(GameManager.Instance.character2.figherIndex, true);
+    }
+
+    private void SwitchBothCharacters()
+    {
+        
     }
 
     private void SetIndex()

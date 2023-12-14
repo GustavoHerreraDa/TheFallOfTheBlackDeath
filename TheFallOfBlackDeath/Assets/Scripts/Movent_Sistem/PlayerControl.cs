@@ -33,8 +33,6 @@ public class PlayerControl : MonoBehaviour
         camara = GameObject.FindGameObjectWithTag("MainCamera");
         anim = GetComponentInChildren<Animator>();
         playerRB = GetComponentInChildren<Rigidbody>();
-
-        CharacterSwitcher.OnAnimatorUpdate += UpdateAnimator;
     }
 
     private void Update()
@@ -97,13 +95,6 @@ public class PlayerControl : MonoBehaviour
                 GameManager.Instance.isWalking = false;
             }
         }
-    }
-
-    private void UpdateAnimator(GameObject character)
-    {
-        Debug.Log("Cambiando animator de " + character.name);
-        anim = character.GetComponent<Animator>();
-        Debug.Log(anim);
     }
 
     public void ContinuePlayer()
