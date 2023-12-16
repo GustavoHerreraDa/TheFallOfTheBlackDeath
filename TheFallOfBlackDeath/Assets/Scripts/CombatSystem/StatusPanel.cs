@@ -15,8 +15,6 @@ public class StatusPanel : MonoBehaviour
     public TextMeshProUGUI healthLabelPro;
     public TextMeshProUGUI nameTextLabel;
 
-
-
     public void SetStats(string name, Stats stats)
     {
         if (nameLabel != null)
@@ -30,6 +28,15 @@ public class StatusPanel : MonoBehaviour
         }
         if (levelLabel != null)
             this.levelLabel.text = $"N. {stats.level}";
+        if(actualAttack != null)
+        {
+            this.actualAttack.text = $"{stats.attack}";
+        }
+        if(actualDefense != null)
+        {
+            this.actualDefense.text = $"{stats.deffense}";
+        }
+        
 
         this.SetHealth(stats.health, stats.maxHealth);
 

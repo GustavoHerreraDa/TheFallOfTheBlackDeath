@@ -16,7 +16,7 @@ public class CharacterSwitcher : MonoBehaviour
         SwitchSecondaryCharacter(currentSecondaryCharacterIndex);
     }
 
-    public void SwitchMainCharacter(int characterIndex, bool isFirstTime)     //ARREGLAR: PROBLEMA SI EL DOC ES EL PRINCIPAL CUANDO EMPIEZA LA ESCENA
+    public void SwitchMainCharacter(int characterIndex, bool isFirstTime)
     {
         //Si selecciona como principal el personaje que ya es principal, retornamos.
         if (currentMainCharacterIndex == characterIndex && !isFirstTime)
