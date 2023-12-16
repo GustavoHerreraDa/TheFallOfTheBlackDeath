@@ -16,21 +16,22 @@ public class Scene_Change : MonoBehaviour
 
     public void OnTriggerEnter(Collider Box)
     {
+        var player = Box.GetComponent<PlayerControl>();
 
-        GameManager.Instance.lastPos = GameManager.Instance.character.transform.position;
-        /*PlayerPrefs.SetFloat("PosX", player.transform.position.x);
-        PlayerPrefs.SetFloat("PosY", player.transform.position.y);
-        PlayerPrefs.SetFloat("PosZ", player.transform.position.z);
-        */
+        if(player)
+        {
+            GameManager.Instance.lastPos = GameManager.Instance.character.transform.position;
+            /*PlayerPrefs.SetFloat("PosX", player.transform.position.x);
+            PlayerPrefs.SetFloat("PosY", player.transform.position.y);
+            PlayerPrefs.SetFloat("PosZ", player.transform.position.z);
+            */
 
-        Destroy(this.gameObject);
-        SceneManager.LoadScene(figthScene);
-
-
-        Cursor.lockState = CursorLockMode.None;
-      
+            Destroy(this.gameObject);
+            SceneManager.LoadScene(figthScene);
 
 
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 
 }
