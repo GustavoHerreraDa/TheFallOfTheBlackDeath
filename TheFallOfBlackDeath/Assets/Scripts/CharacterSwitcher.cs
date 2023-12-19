@@ -9,6 +9,11 @@ public class CharacterSwitcher : MonoBehaviour
     public int currentMainCharacterIndex;
     public int currentSecondaryCharacterIndex;
 
+    public delegate void UpdateMainCharacterUI();
+    public static event UpdateMainCharacterUI updateMainCharacterUI;
+    public delegate void UpdateSecondaryCharacterUI();
+    public static event UpdateSecondaryCharacterUI updateSecondaryCharacterUI;
+
     void Start()
     {
         SetIndex();
@@ -38,10 +43,7 @@ public class CharacterSwitcher : MonoBehaviour
 
         fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, true);
 
-        //OnAnimatorUpdate(characters[currentMainCharacterIndex]);
-        //Evento para desequipar los items equipables(armas, armadura)
-        //OnInventoryUpdate();
-        //Evento.
+        updateMainCharacterUI();
     }
 
     public void SwitchSecondaryCharacter(int characterIndex)
@@ -64,6 +66,8 @@ public class CharacterSwitcher : MonoBehaviour
         GameManager.Instance.character2 = characters[characterIndex].GetComponent<PlayerFighter>();
 
         fightersDateBase.SetSecondaryCharacter(GameManager.Instance.character2.figherIndex, true);
+
+        updateSecondaryCharacterUI();
     }
 
     private void SetIndex()

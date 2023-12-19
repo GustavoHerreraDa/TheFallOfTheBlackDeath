@@ -23,6 +23,7 @@ public class EnemyDataBase : ScriptableObject
         public string LargeDescription;
         public string Name;   
         public int CharacterSwitcherIndex;
+        public Sprite characterImage;
     }
 
     public void UpdateFighterStats(int index, float amountAffected, string statAffected)
@@ -46,7 +47,8 @@ public class EnemyDataBase : ScriptableObject
                     Description = EnemyDB[index].Description, 
                     LargeDescription = EnemyDB[index].LargeDescription, 
                     Name = EnemyDB[index].Name,
-                    CharacterSwitcherIndex = EnemyDB[index].CharacterSwitcherIndex
+                    CharacterSwitcherIndex = EnemyDB[index].CharacterSwitcherIndex,
+                    characterImage = EnemyDB[index].characterImage
                 };
                 EnemyDB[index] = newAttackStats;
                 break;
@@ -68,7 +70,8 @@ public class EnemyDataBase : ScriptableObject
                     Description = EnemyDB[index].Description, 
                     LargeDescription = EnemyDB[index].LargeDescription, 
                     Name = EnemyDB[index].Name,
-                    CharacterSwitcherIndex = EnemyDB[index].CharacterSwitcherIndex
+                    CharacterSwitcherIndex = EnemyDB[index].CharacterSwitcherIndex,
+                    characterImage = EnemyDB[index].characterImage
                 };
                 EnemyDB[index] = newDefenseStats;
                 break;
@@ -92,7 +95,8 @@ public class EnemyDataBase : ScriptableObject
             Description = EnemyDB[index].Description, 
             LargeDescription = EnemyDB[index].LargeDescription, 
             Name = EnemyDB[index].Name,
-            CharacterSwitcherIndex = EnemyDB[index].CharacterSwitcherIndex
+            CharacterSwitcherIndex = EnemyDB[index].CharacterSwitcherIndex,
+            characterImage = EnemyDB[index].characterImage
         };
         EnemyDB[index] = newCharacterStats;
     }
@@ -114,7 +118,8 @@ public class EnemyDataBase : ScriptableObject
             Description = EnemyDB[index].Description, 
             LargeDescription = EnemyDB[index].LargeDescription, 
             Name = EnemyDB[index].Name,
-            CharacterSwitcherIndex = EnemyDB[index].CharacterSwitcherIndex
+            CharacterSwitcherIndex = EnemyDB[index].CharacterSwitcherIndex,
+            characterImage = EnemyDB[index].characterImage
         };
         EnemyDB[index] = newCharacterStats;
     }
