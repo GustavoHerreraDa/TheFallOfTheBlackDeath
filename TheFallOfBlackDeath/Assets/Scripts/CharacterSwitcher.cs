@@ -18,7 +18,7 @@ public class CharacterSwitcher : MonoBehaviour
     {
         SetIndex();
         SwitchMainCharacter(currentMainCharacterIndex, true);
-        SwitchSecondaryCharacter(currentSecondaryCharacterIndex);
+        SwitchSecondaryCharacter(currentSecondaryCharacterIndex, true);
     }
 
     public void SwitchMainCharacter(int characterIndex, bool isFirstTime)
@@ -46,10 +46,10 @@ public class CharacterSwitcher : MonoBehaviour
         updateMainCharacterUI();
     }
 
-    public void SwitchSecondaryCharacter(int characterIndex)
+    public void SwitchSecondaryCharacter(int characterIndex, bool isFirstTime)
     {
         //Si selecciona como secundario el personaje que ya es secundario, retornamos.
-        if(currentSecondaryCharacterIndex == characterIndex)
+        if(currentSecondaryCharacterIndex == characterIndex && !isFirstTime)
         {
             return;
         } 
@@ -63,6 +63,7 @@ public class CharacterSwitcher : MonoBehaviour
         fightersDateBase.SetSecondaryCharacter(GameManager.Instance.character2.figherIndex, false);
 
         currentSecondaryCharacterIndex = characterIndex;
+
         GameManager.Instance.character2 = characters[characterIndex].GetComponent<PlayerFighter>();
 
         fightersDateBase.SetSecondaryCharacter(GameManager.Instance.character2.figherIndex, true);
@@ -77,6 +78,7 @@ public class CharacterSwitcher : MonoBehaviour
             if(fightersDateBase.EnemyDB[i].isMainCharacter)
             {
                 currentMainCharacterIndex = fightersDateBase.EnemyDB[i].CharacterSwitcherIndex;
+                Debug.Log("Main Character es " + fightersDateBase.EnemyDB[i].Name);
             }
         }
 
@@ -85,6 +87,7 @@ public class CharacterSwitcher : MonoBehaviour
             if(fightersDateBase.EnemyDB[i].isSecondaryCharacter)
             {
                 currentSecondaryCharacterIndex = fightersDateBase.EnemyDB[i].CharacterSwitcherIndex;
+                Debug.Log("Secondary Character es " + fightersDateBase.EnemyDB[i].Name);
             }
         }
     }
