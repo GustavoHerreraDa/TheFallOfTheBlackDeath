@@ -53,6 +53,8 @@ public class CombatManager : MonoBehaviour
 
     void Start()
     {
+        
+
         if (isRadomEncounter == true)
         {
             EncuentrosAleatorios();
@@ -220,6 +222,24 @@ public class CombatManager : MonoBehaviour
                         GameManager.Instance.gameState = GameManager.GameStates.TOWN_STATE;
                         GameManager.Instance.enemyToBattle.Clear();
                         ListEnemyDefeat.enemiesDefeat.Add(groupEnemyName);
+
+                        if(SceneManager.GetActiveScene().buildIndex == 10)
+                        {
+                            GameManager.Instance.killedOgre = true;
+                        }
+                        if(SceneManager.GetActiveScene().buildIndex == 11)
+                        {
+                            GameManager.Instance.killedMedusa = true;
+                        }
+                        if(SceneManager.GetActiveScene().buildIndex == 12)
+                        {
+                            GameManager.Instance.killedVampire = true;
+                        }
+                        if(SceneManager.GetActiveScene().buildIndex == 13)
+                        {
+                            GameManager.Instance.killedMinotaur = true;
+                        }
+
                         PlayerPrefs.SetString("GrupoEnemigo", groupEnemyName);
                         yield return new WaitForSeconds(2f);
                         SceneManager.LoadScene(1);

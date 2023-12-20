@@ -34,6 +34,15 @@ public class GameManager : MonoBehaviour
     public bool isWalking = false;
     public int enemyAmount;
 
+    public bool killedOgre;
+    public GameObject ogre;
+    public bool killedMedusa;
+    public GameObject medusa;
+    public bool killedVampire;
+    public GameObject vampire;
+    public bool killedMinotaur;
+    public GameObject minotaur;
+
     //ENUM
     public enum GameStates
     {
@@ -72,7 +81,7 @@ public class GameManager : MonoBehaviour
                 gameState = GameStates.IDLE_STATE;
                 gotAttacked = false;
                 canGetEncounter = false;
-                isWalking = false; // Desactivar los encuentros aleatorios después de un evento exitoso
+                isWalking = false; // Desactivar los encuentros aleatorios despuï¿½s de un evento exitoso
                 break;
 
             case (GameStates.IDLE_STATE):
@@ -125,6 +134,8 @@ public class GameManager : MonoBehaviour
         }
         groupEnemyDefeat = ListEnemyDefeat.enemiesDefeat;
         objectsPickup = ListEnemyDefeat.pickUpsInWorld;
+
+        
     }
 
     public void FindPlayer()
@@ -147,6 +158,18 @@ public class GameManager : MonoBehaviour
     {
         if (level == 1)
         {
+            if(SceneManager.GetActiveScene().buildIndex == 1)
+            {
+                ogre = GameObject.Find("Ogre");
+                minotaur = GameObject.Find("WorldMinotaur");
+                medusa = GameObject.Find("WorldMedusa");
+                vampire = GameObject.Find("WorldVampire");
+            }
+            ogre = GameObject.Find("Ogre");
+                minotaur = GameObject.Find("WorldMinotaur");
+                medusa = GameObject.Find("WorldMedusa");
+                vampire = GameObject.Find("WorldVampire");
+
             GameManager.Instance.FindEnemiesAndObjets();
             GameManager.Instance.FindPlayer();
 
@@ -173,6 +196,36 @@ public class GameManager : MonoBehaviour
 
                 //Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + enemy.GroupName);
             }
+
+            if(killedOgre)
+            {
+                if(ogre != null)
+                {
+                    Destroy(ogre);
+                }
+            }
+            if(killedMedusa)
+            {
+                if(medusa != null)
+                {
+                    Destroy(medusa);
+                }
+            }
+            if(killedMinotaur)
+            {
+                if(minotaur != null)
+                {
+                    Destroy(minotaur);
+                }
+            }
+            if(killedVampire)
+            {
+                if(vampire != null)
+                {
+                    Destroy(vampire);
+                } 
+            }
+
 
             for (int i = 0; i < InventoryManager.instance.inventory.Count; i++)
             {
