@@ -23,18 +23,6 @@ public class CharacterSwitcher : MonoBehaviour
 
     public void SwitchMainCharacter(int characterIndex, bool isFirstTime)
     {
-        //Si selecciona como principal el personaje que ya es principal, retornamos.
-        if (currentMainCharacterIndex == characterIndex && !isFirstTime)
-        {
-            return;
-        }
-
-        //Si selecciona como principal el personaje que es secundario, return.
-        if(characterIndex == currentSecondaryCharacterIndex)
-        {
-            return;
-        }
-
         fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, false);
         
         currentMainCharacterIndex = characterIndex;
@@ -48,18 +36,6 @@ public class CharacterSwitcher : MonoBehaviour
 
     public void SwitchSecondaryCharacter(int characterIndex, bool isFirstTime)
     {
-        //Si selecciona como secundario el personaje que ya es secundario, retornamos.
-        if(currentSecondaryCharacterIndex == characterIndex && !isFirstTime)
-        {
-            return;
-        } 
-
-        //Si selecciona como secundario el personaje que es principal, return.
-        if(characterIndex == currentMainCharacterIndex)
-        {
-            return;
-        }
-
         fightersDateBase.SetSecondaryCharacter(GameManager.Instance.character2.figherIndex, false);
 
         currentSecondaryCharacterIndex = characterIndex;
