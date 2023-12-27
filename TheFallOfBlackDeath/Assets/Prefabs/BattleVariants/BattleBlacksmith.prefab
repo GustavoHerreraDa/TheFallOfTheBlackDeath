@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4259703240449388098}
-  - component: {fileID: 3100785940206278997}
+  - component: {fileID: 7238241876186337653}
+  - component: {fileID: 5780514891954108497}
   m_Layer: 0
   m_Name: Fading Fury
   m_TagString: Untagged
@@ -32,7 +33,7 @@ Transform:
   m_Father: {fileID: 7540624642153775675}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3100785940206278997
+--- !u!114 &7238241876186337653
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,22 +42,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 969892521961305730}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dd74448f472bc145af36ff41cafac42, type: 3}
+  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Fading Fury
   animationDuration: 1.5
-  targeting: 2
-  effectPrfb: {fileID: 8189500006840025469, guid: 0a19654f0adc9c6429eff011c5724442, type: 3}
-  SkillDesc: Decrease all enemies attack and defense by 10.
+  targeting: 4
+  effectPrfb: {fileID: 3499216465569482894, guid: f2fc97de3837dfe429d9e31b21e766fa, type: 3}
+  SkillDesc: Decrease an enemy's attack by 10.
   skillType: 0
-  iconUI: {fileID: 0}
-  animationName: Intimidate
+  iconUI: {fileID: 21300000, guid: 539bc8db00263f6489d6d97d949ad58b, type: 3}
+  animationName: Weaken
   HasItemInInventory: 0
   ItemsNeeded: []
-  healAmount: 0
-  attackBuffAmount: -10
-  defenseBuffAmount: -10
+  message: '{receiver} loses defense!'
+--- !u!114 &5780514891954108497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969892521961305730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  amount: -10
 --- !u!1 &3105780398260842073
 GameObject:
   m_ObjectHideFlags: 0
