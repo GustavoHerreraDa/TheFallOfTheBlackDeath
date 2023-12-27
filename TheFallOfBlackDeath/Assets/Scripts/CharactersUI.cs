@@ -17,13 +17,16 @@ public class CharactersUI : MonoBehaviour
     [SerializeField] private Image _secondaryCharacterImage;
     [SerializeField] private TextMeshProUGUI _secondaryCharacterName;
 
+    void Awake()
+    {
+        CharacterSwitcher.updateMainCharacterUI += UpdateMainCharacterUI;
+        CharacterSwitcher.updateSecondaryCharacterUI += UpdateSecondaryCharacterUI;
+    }
+
     void Start()
     {
         UpdateMainCharacterUI();
         UpdateSecondaryCharacterUI();
-
-        CharacterSwitcher.updateMainCharacterUI += UpdateMainCharacterUI;
-        CharacterSwitcher.updateSecondaryCharacterUI += UpdateSecondaryCharacterUI;
     }
 
     private void UpdateMainCharacterUI()
