@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1595046872}
-  m_IndirectSpecularColor: {r: 0.00000008490936, g: 0.0005647515, b: 0.015207048, a: 1}
+  m_IndirectSpecularColor: {r: 0.00000008490936, g: 0.00004521558, b: 0.007483036, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -906,6 +906,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 809309682919646822, guid: 02731634dd25d1c42ac8314a579b6b5c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1239908419270071760, guid: 02731634dd25d1c42ac8314a579b6b5c, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 8
@@ -913,6 +917,10 @@ PrefabInstance:
     - target: {fileID: 1645363144165253392, guid: 02731634dd25d1c42ac8314a579b6b5c, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3371757242945819180, guid: 02731634dd25d1c42ac8314a579b6b5c, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3563081480834960980, guid: 02731634dd25d1c42ac8314a579b6b5c, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1699,7 +1707,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 337604261}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 10.000002, y: 0.0000023841858, z: 10.000005}
@@ -1881,7 +1889,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 368963250}
-  m_LocalRotation: {x: 0.16399463, y: -0.72565526, z: 0.18536223, w: 0.6420055}
+  m_LocalRotation: {x: 0.16399464, y: -0.7256552, z: 0.1853622, w: 0.64200556}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8527,7 +8535,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1639353453}
-  m_LocalRotation: {x: 0.17561458, y: -0.72217304, z: 0.19849612, w: 0.63892484}
+  m_LocalRotation: {x: 0.17561458, y: -0.7221731, z: 0.19849615, w: 0.6389248}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10663,7 +10671,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2063209483}
-  m_LocalRotation: {x: 0.17561461, y: -0.72217304, z: 0.19849615, w: 0.63892484}
+  m_LocalRotation: {x: 0.1756146, y: -0.7221731, z: 0.19849621, w: 0.6389247}
   m_LocalPosition: {x: 7.470185, y: 0.51399994, z: 6.687477}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11165,7 +11173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1460458386042536553, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0000036973236
+      value: 4.733714
       objectReference: {fileID: 0}
     - target: {fileID: 1700038091192733860, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -11173,7 +11181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1700038091192733860, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0000036973236
+      value: 4.733714
       objectReference: {fileID: 0}
     - target: {fileID: 2008167114247222513, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchorMax.y
@@ -12763,9 +12771,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1143640354, guid: 8f2f0ecbbaae9d441be600769458a3e8, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1495737503}
+    - target: {fileID: 1143640354, guid: 8f2f0ecbbaae9d441be600769458a3e8, type: 3}
       propertyPath: destino
       value: 
       objectReference: {fileID: 953666369}
+    - target: {fileID: 8027651814311558984, guid: 8f2f0ecbbaae9d441be600769458a3e8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8034844237414086246, guid: 8f2f0ecbbaae9d441be600769458a3e8, type: 3}
       propertyPath: m_Name
       value: EntranceCastle
@@ -12821,6 +12837,10 @@ PrefabInstance:
     - target: {fileID: 8587174299705380443, guid: 8f2f0ecbbaae9d441be600769458a3e8, type: 3}
       propertyPath: m_Size.y
       value: 13.479806
+      objectReference: {fileID: 0}
+    - target: {fileID: 8587174299705380443, guid: 8f2f0ecbbaae9d441be600769458a3e8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8587174299705380443, guid: 8f2f0ecbbaae9d441be600769458a3e8, type: 3}
       propertyPath: m_Center.x
