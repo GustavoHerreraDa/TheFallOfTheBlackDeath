@@ -12,6 +12,28 @@ public class StatsManager : MonoBehaviour
 
     private void Start()
     {
+        if(fighter.team == Team.PLAYERS)
+        {
+            GameObject[] statPanels = GameObject.FindGameObjectsWithTag("StatPanel");
+
+            foreach(GameObject statPanel in statPanels)
+            {
+                StatusPanel statusPanel = statPanel.GetComponent<StatusPanel>();
+
+                if(statusPanel.nameLabel.text == fighter.idName)
+                {
+                    actualDefense = statusPanel.actualDefense;
+                    actualAttack = statusPanel.actualAttack;
+                    return;
+                }
+                else
+                {
+                    continue;
+                }      
+            }
+        }
+    
+
         UpdateUI();
     }
     void Update()
