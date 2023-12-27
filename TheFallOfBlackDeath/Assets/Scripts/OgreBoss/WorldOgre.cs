@@ -24,7 +24,7 @@ public class WorldOgre : MonoBehaviour
         {
             _animator.SetBool("HasLanded", true);
             _navMeshAgent.enabled = true;
-            _sj.enabled = true;
+            //_sj.enabled = true;
         }
     }
 }
