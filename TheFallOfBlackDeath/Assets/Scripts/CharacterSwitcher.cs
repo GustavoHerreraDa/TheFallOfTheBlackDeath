@@ -23,6 +23,11 @@ public class CharacterSwitcher : MonoBehaviour
 
     public void SwitchMainCharacter(int characterIndex, bool isFirstTime)
     {
+        if(characterIndex == currentSecondaryCharacterIndex)
+        {
+            return;
+        }
+
         fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, false);
         
         currentMainCharacterIndex = characterIndex;
@@ -36,6 +41,11 @@ public class CharacterSwitcher : MonoBehaviour
 
     public void SwitchSecondaryCharacter(int characterIndex, bool isFirstTime)
     {
+        if(characterIndex == currentMainCharacterIndex)
+        {
+            return;
+        }
+
         fightersDateBase.SetSecondaryCharacter(GameManager.Instance.character2.figherIndex, false);
 
         currentSecondaryCharacterIndex = characterIndex;
