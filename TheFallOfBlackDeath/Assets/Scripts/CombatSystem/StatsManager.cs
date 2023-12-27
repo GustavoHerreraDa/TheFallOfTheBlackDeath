@@ -33,36 +33,67 @@ public class StatsManager : MonoBehaviour
         if (actualDefense == null)
             return;
 
+        int comparison = int.Parse(actualDefense.text);
+
         actualDefense.text = deffense.ToString();
-        if (deffense >= 80)
+
+        if(deffense > comparison)
         {
-            actualDefense.color = Color.yellow;
+            if (deffense >= 80)
+            {
+                actualDefense.color = Color.yellow;
+            }
+            else
+            {
+                actualDefense.color = Color.green;
+            }
         }
 
-        if (deffense <= 20)
+        if(deffense < comparison)
         {
-            actualDefense.color = Color.red;
-        }
+            if (deffense <= 20)
+            {
+                Color bordeaux = new Color(0.6f, 0, 0.1f, 1);
+                actualDefense.color = bordeaux;
+            }
+            else
+            {
+                actualDefense.color = Color.red;
+            }
+        } 
     }
     public void SetAttack(float attack)
     {
         if (actualAttack == null)
             return;
 
+        int comparison = int.Parse(actualAttack.text);
+
         actualAttack.text = attack.ToString();
-        if (attack >= 80)
+
+        if(attack > comparison)
         {
-
-            actualAttack.color = Color.yellow;
-
+            if(attack >= 80)
+            {
+                actualAttack.color = Color.yellow;
+            }
+            else
+            {
+                actualAttack.color = Color.green;
+            }
         }
-        if (attack <= 20)
+
+        if(attack < comparison)
         {
-
-            actualAttack.color = Color.red;
-
+            if (attack <= 20)
+            {
+                Color bordeaux = new Color(0.6f, 0, 0.1f, 1);
+                actualAttack.color = bordeaux;
+            }
+            else
+            {
+                actualAttack.color = Color.red;
+            }
         }
-
-
     }
 }
