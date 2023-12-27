@@ -120,6 +120,7 @@ public class GameManager : MonoBehaviour
 
         if (!GameObject.Find("Character"))
         {
+            Debug.Log("Esto pasa alguna vez?");
             GameObject Hero = Instantiate(character, Vector3.zero, Quaternion.identity) as GameObject;
             Hero.name = "Character";
         }
@@ -143,8 +144,19 @@ public class GameManager : MonoBehaviour
         character = FindObjectOfType<PlayerControl>().gameObject;
         if (character != null)
         {
-            character.transform.position = new Vector3(character.transform.position.x - 0.5f, character.transform.position.y, character.transform.position.z - 0.5f);
+
+            //character.transform.position = new Vector3(lastPos.x - 0.5f, lastPos.y, lastPos.z - 0.5f);
+            character.GetComponent<CapsuleCollider>().enabled = false;
+            character.GetComponent<CharacterController>().enabled = false;
+            character.transform.position = lastPos;
+            character.GetComponent<CharacterController>().enabled = true;
+            character.GetComponent<CapsuleCollider>().enabled = true;
+            Debug.Log("Posiciono al player.");
             //GameManager.Instance.character.transform.position = new Vector3(GameManager.Instance.character.transform.position.x - 0.5f, GameManager.Instance.character.transform.position.y, GameManager.Instance.character.transform.position.z - 0.5f);
+        }
+        else
+        {
+            Debug.Log("A ver, a ver. Que paso?");
         }
     }
     public void FindEnemiesAndObjets()
@@ -171,16 +183,17 @@ public class GameManager : MonoBehaviour
                 vampire = GameObject.Find("WorldVampire");
 
             GameManager.Instance.FindEnemiesAndObjets();
-            GameManager.Instance.FindPlayer();
+            //GameManager.Instance.FindPlayer();
 
-            if (GameManager.Instance.lastPos != Vector3.zero)
-                GameManager.Instance.character.transform.position = new Vector3(GameManager.Instance.lastPos.x - 2.5f, GameManager.Instance.lastPos.y, GameManager.Instance.lastPos.z - 2.5f);
+            //if (GameManager.Instance.lastPos != Vector3.zero)
+                //GameManager.Instance.character.transform.position = new Vector3(GameManager.Instance.lastPos.x - 2.5f, GameManager.Instance.lastPos.y, GameManager.Instance.lastPos.z - 2.5f);
+                
             //GameManager.Instance.character.transform.position = GameManager.Instance.lastPos;
-            else
-            {
-                GameManager.Instance.character.transform.position = startPost.position;
-                Debug.Log("Start Post es " + startPost.position.x + " " + startPost.position.y + " " + startPost.position.z);
-            }
+            //else
+            //{
+                //GameManager.Instance.character.transform.position = startPost.position;
+                //Debug.Log("Start Post es " + startPost.position.x + " " + startPost.position.y + " " + startPost.position.z);
+            //}
 
             string nombre = PlayerPrefs.GetString("GrupoEnemigo");
 
@@ -226,6 +239,8 @@ public class GameManager : MonoBehaviour
                 } 
             }
 
+            
+
 
             for (int i = 0; i < InventoryManager.instance.inventory.Count; i++)
             {
@@ -237,7 +252,9 @@ public class GameManager : MonoBehaviour
                 //Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + pickUp.GroupName);
             }
 
-
+            //character.transform.position = lastPos;
+                //Debug.Log("Posiciono al player.");  
+                GameManager.Instance.FindPlayer();
         }
 
     }
