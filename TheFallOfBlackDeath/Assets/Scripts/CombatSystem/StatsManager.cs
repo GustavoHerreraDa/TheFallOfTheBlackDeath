@@ -34,7 +34,8 @@ public class StatsManager : MonoBehaviour
         }
     
 
-        UpdateUI();
+        this.SetDefense(fighter.GetCurrentStats().deffense, true);
+        this.SetAttack(fighter.GetCurrentStats().attack, true);
     }
     void Update()
     {
@@ -44,13 +45,12 @@ public class StatsManager : MonoBehaviour
 
     public void UpdateUI()
     {
-        this.SetDefense(fighter.GetCurrentStats().deffense);
-        this.SetAttack(fighter.GetCurrentStats().attack);
+        this.SetDefense(fighter.GetCurrentStats().deffense, false);
+        this.SetAttack(fighter.GetCurrentStats().attack, false);
         Debug.Log("se recibio las estadisticas de estos player" + fighter);
     }
 
-    // Update is called once per frame
-    public void SetDefense(float deffense)
+    public void SetDefense(float deffense, bool firstCheck)
     {
         if (actualDefense == null)
             return;
@@ -59,32 +59,35 @@ public class StatsManager : MonoBehaviour
 
         actualDefense.text = deffense.ToString();
 
-        if(deffense > comparison)
-        {
-            if (deffense >= 80)
+        if(!firstCheck)
+        {        
+            if(deffense > comparison)
             {
-                actualDefense.color = Color.yellow;
+                if (deffense >= 80)
+                {
+                    actualDefense.color = Color.yellow;
+                }
+                else
+                {
+                    actualDefense.color = Color.green;
+                }
             }
-            else
-            {
-                actualDefense.color = Color.green;
-            }
-        }
 
-        if(deffense < comparison)
-        {
-            if (deffense <= 20)
+            if(deffense < comparison)
             {
-                Color bordeaux = new Color(0.6f, 0, 0.1f, 1);
-                actualDefense.color = bordeaux;
-            }
-            else
-            {
-                actualDefense.color = Color.red;
-            }
-        } 
+                if (deffense <= 20)
+                {
+                    Color bordeaux = new Color(0.6f, 0, 0.1f, 1);
+                    actualDefense.color = bordeaux;
+                }
+                else
+                {
+                    actualDefense.color = Color.red;
+                }
+            } 
+        }
     }
-    public void SetAttack(float attack)
+    public void SetAttack(float attack, bool firstCheck)
     {
         if (actualAttack == null)
             return;
@@ -93,28 +96,31 @@ public class StatsManager : MonoBehaviour
 
         actualAttack.text = attack.ToString();
 
-        if(attack > comparison)
-        {
-            if(attack >= 80)
+        if(!firstCheck)
+        {  
+            if(attack > comparison)
             {
-                actualAttack.color = Color.yellow;
+                if(attack >= 80)
+                {
+                    actualAttack.color = Color.yellow;
+                }
+                else
+                {
+                    actualAttack.color = Color.green;
+                }
             }
-            else
-            {
-                actualAttack.color = Color.green;
-            }
-        }
 
-        if(attack < comparison)
-        {
-            if (attack <= 20)
+            if(attack < comparison)
             {
-                Color bordeaux = new Color(0.6f, 0, 0.1f, 1);
-                actualAttack.color = bordeaux;
-            }
-            else
-            {
-                actualAttack.color = Color.red;
+                if (attack <= 20)
+                {
+                    Color bordeaux = new Color(0.6f, 0, 0.1f, 1);
+                    actualAttack.color = bordeaux;
+                }
+                else
+                {
+                    actualAttack.color = Color.red;
+                }
             }
         }
     }

@@ -116,7 +116,6 @@ public class PlayerFighter : Fighter
 
     public void SetTargetAndAttack(Fighter enemyFigther)
     {
-
         this.skillToBeExecuted.AddReceiver(enemyFigther);
 
         this.combatManager.OnFighterSkill(this.skillToBeExecuted);
