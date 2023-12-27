@@ -68,12 +68,12 @@ public class GameManager : MonoBehaviour
                 if (isWalking)
                 {
                     //canGetEncounter = true;
-                    RandomEncounter();
+                    //RandomEncounter();
                 }
-                if (gotAttacked)
+                /* if (gotAttacked)
                 {
                     gameState = GameStates.BATTLE_STATE;
-                }
+                } */
                 break;
 
             case (GameStates.BATTLE_STATE):
@@ -244,14 +244,14 @@ public class GameManager : MonoBehaviour
 
     void RandomEncounter()
     {
-        if (isWalking && canGetEncounter)
+        /* if (isWalking && canGetEncounter)
         {
             if (Random.Range(0, 100000) < 10)
             {
                 Debug.Log("i got attacked");
                 gotAttacked = true;
             }
-        }
+        } */
     }
     void StartBattle()
     {
