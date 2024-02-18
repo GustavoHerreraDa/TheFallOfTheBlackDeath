@@ -268,4 +268,9 @@ public class InventoryManager : MonoBehaviour
             playerEquipped[jugador] = new List<InventoryObjectID> { objeto };
         }
     }
+
+    public InventoryDateBase.Object GetItemInformation(int _id)
+    {
+        return datebase.DateBase[_id];
+    }
 }

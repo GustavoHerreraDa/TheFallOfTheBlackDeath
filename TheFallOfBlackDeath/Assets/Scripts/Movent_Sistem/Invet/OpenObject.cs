@@ -10,6 +10,7 @@ namespace Assets.Scripts.Movent_Sistem.Invet
         {
             base.Start();
             message = "Press E to open.";
+            responseMessage = "You need a Key to open the Gate.";
         }
 
 
@@ -19,16 +20,24 @@ namespace Assets.Scripts.Movent_Sistem.Invet
             Gate i = objCollider.GetComponent<Gate>();
             playerControl.StopPlayer(2f);
             i.OpenGate();
-            player_Animator.Play("Open");
-            InteractMeessage.SetActive(false);
-            canInteract = false;
-            nameMessage.text = message;
+
+            var gateHasKey = i.HasKey;
+
+            if (!gateHasKey)
+                ShowResponseMessage();
+            else
+            {
+                player_Animator.Play("Open");
+                InteractMeessage.SetActive(false);
+                canInteract = false;
+                nameMessage.text = message;
+            }
 
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            //Debug.Log("Object Enter");
+            //Debug.Log("Open Object Enter");
             if (other.gameObject.tag == "Gate")
             {
                 if (other.gameObject.GetComponent<Gate>() != null)
@@ -40,5 +49,6 @@ namespace Assets.Scripts.Movent_Sistem.Invet
                 }
             }
         }
+
     }
 }

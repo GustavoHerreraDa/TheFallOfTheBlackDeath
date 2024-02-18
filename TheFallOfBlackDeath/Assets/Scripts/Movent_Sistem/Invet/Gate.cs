@@ -13,11 +13,12 @@ public class Gate : MonoBehaviour
 {
     private Animator animator;
     public bool IsNeedKey;
+    public bool HasKey;
     public Collider collider;
     public bool isOpen;
     public KeyType gateType;
     public AudioSource puertasonido;
-
+    public AudioSource puertaCerradaSonido;
     public delegate void GateOpenedEventHandler();
     public static event GateOpenedEventHandler GateOpened;
 
@@ -28,33 +29,41 @@ public class Gate : MonoBehaviour
 
     public void OpenGate()
     {
-        var hasKey = true;
+        var HasKey = true;
 
         if (IsNeedKey)
         {
-            hasKey = InventoryManager.instance.HasItemInIventory(GetKey(), 1);
+            HasKey = InventoryManager.instance.HasItemInIventory(GetKey(), 1);
 
-            animator.SetBool("IsOpen", hasKey);
+            animator.SetBool("IsOpen", HasKey);
 
             if (collider != null)
-                collider.enabled = !hasKey;
-            isOpen = hasKey;
+                collider.enabled = !HasKey;
+            isOpen = HasKey;
         }
 
-        animator.SetBool("IsOpen", hasKey);
+        animator.SetBool("IsOpen", HasKey);
 
-        if (hasKey)
+        if (HasKey)
         {
             GateOpened?.Invoke();
+            PlayGateSound();
         }
+        else PlayGateCloseSound();
 
-        PlayGateSound();
+
     }
 
     private void PlayGateSound()
     {
         if (puertasonido != null)
             puertasonido.Play();
+    }
+
+    private void PlayGateCloseSound()
+    {
+        if (puertaCerradaSonido != null)
+            puertaCerradaSonido.Play();
     }
 
     public int GetKey()

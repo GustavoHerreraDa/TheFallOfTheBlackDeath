@@ -6,11 +6,12 @@ using UnityEngine;
 public class PickObj : Interactable, IInteratable
 {
     public AudioSource pickSound;
-
+    public const string PickObjMessage = "You pick up a #objectName. Press key I to checkout.";
     private void Start()
     {
         base.Start();
         message = "Press E to pick up item.";
+        responseMessage = PickObjMessage;
     }
     public override void Interact()
     {
@@ -19,9 +20,13 @@ public class PickObj : Interactable, IInteratable
         statsOBJ i = objCollider.GetComponent<statsOBJ>();
 
         InventoryManager.instance.AddItem(i.id, i.amount, i.uso);
+        var objectName = InventoryManager.instance.GetItemInformation(i.id);
+
+        responseMessage = PickObjMessage.Replace("#objectName", objectName.name);
+
         playerControl.StopPlayer(1.3f);
-        InteractMeessage.SetActive(false);
         canInteract = false;
+        ShowResponseMessage();
         Destroy(i.gameObject);
     }
 
