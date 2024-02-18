@@ -1,5 +1,371 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &969892521961305730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4259703240449388098}
+  - component: {fileID: 3100785940206278997}
+  m_Layer: 0
+  m_Name: Fading Fury
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4259703240449388098
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969892521961305730}
+  m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
+  m_LocalPosition: {x: 7, y: 1.41, z: 2.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7305297877295874578}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3100785940206278997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969892521961305730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dd74448f472bc145af36ff41cafac42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Fading Fury
+  animationDuration: 1.5
+  targeting: 2
+  effectPrfb: {fileID: 8189500006840025469, guid: 0a19654f0adc9c6429eff011c5724442, type: 3}
+  SkillDesc: Decrease all enemies attack and defense by 10.
+  skillType: 0
+  iconUI: {fileID: 0}
+  animationName: Intimidate
+  HasItemInInventory: 0
+  ItemsNeeded: []
+  healAmount: 0
+  attackBuffAmount: -10
+  defenseBuffAmount: -10
+--- !u!1 &3105780398260842073
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7922925822324754533}
+  - component: {fileID: 3568020111858356396}
+  m_Layer: 0
+  m_Name: Colossal Hammerstrike
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7922925822324754533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3105780398260842073}
+  m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
+  m_LocalPosition: {x: 5.7599998, y: 1.41, z: -1.6998763}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7305297877295874578}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3568020111858356396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3105780398260842073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Colossal Hammerstrike
+  animationDuration: 2
+  targeting: 4
+  effectPrfb: {fileID: 6703250321131892297, guid: 2b987d41506d172419fa18578f6ac380, type: 3}
+  SkillDesc: A powerful blow with the hammer that deals 50 damage to the enemy (10%
+    critical chance).
+  skillType: 0
+  iconUI: {fileID: 21300000, guid: 2a374e70ce8fd4c41adddb5886a760ab, type: 3}
+  animationName: Blow
+  HasItemInInventory: 0
+  ItemsNeeded: []
+  amount: -50
+  modType: 0
+  critChance: 0.1
+--- !u!1 &3546500895190041043
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6120028661146193529}
+  - component: {fileID: 6264840674767571634}
+  m_Layer: 0
+  m_Name: SONIDO DE MUERTE
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6120028661146193529
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3546500895190041043}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7305297877295874578}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &6264840674767571634
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3546500895190041043}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 91d9d1e0690c05f4bbe6f4022cc65ae0, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!1 &4926145149699549927
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9220406930678221090}
+  - component: {fileID: 5055089207862759208}
+  m_Layer: 0
+  m_Name: Thundering Forge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9220406930678221090
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4926145149699549927}
+  m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
+  m_LocalPosition: {x: 5.7599998, y: 1.41, z: -1.6998763}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7305297877295874578}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5055089207862759208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4926145149699549927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Thundering Forge
+  animationDuration: 2
+  targeting: 2
+  effectPrfb: {fileID: 6710139492206580332, guid: 95b8d3d65b5d7f1409c4ed1723887826, type: 3}
+  SkillDesc: The blacksmith summons the energy of his forge to unleash a devastating
+    hammer strike. -15 to all enemies.
+  skillType: 0
+  iconUI: {fileID: 21300000, guid: 0fbbd9262d44f584d8310a7d55840604, type: 3}
+  animationName: Forge
+  HasItemInInventory: 0
+  ItemsNeeded:
+  - id: 13
+    amount: 1
+    uso: 0
+  amount: -15
+  modType: 1
+  critChance: 0
+--- !u!1 &6890905301355940229
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2510422028417999802}
+  m_Layer: 0
+  m_Name: PositionCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2510422028417999802
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6890905301355940229}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7305297877295874578}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7786955661051944844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4506396638307855813}
+  m_Layer: 0
+  m_Name: DamagePivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4506396638307855813
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7786955661051944844}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.851, z: 0.201}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7305297877295874578}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8267380649681350226
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,8 +375,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7305297877295874578}
-  - component: {fileID: 1830900077}
   - component: {fileID: 1830900076}
+  - component: {fileID: 1599669065509283500}
+  - component: {fileID: 5569997717537428410}
   m_Layer: 0
   m_Name: Blacksmith
   m_TagString: Untagged
@@ -31,35 +398,15 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8040301811335802096}
+  - {fileID: 2510422028417999802}
+  - {fileID: 4506396638307855813}
+  - {fileID: 6120028661146193529}
+  - {fileID: 7922925822324754533}
+  - {fileID: 9220406930678221090}
+  - {fileID: 4259703240449388098}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1830900077
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8267380649681350226}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
-  m_Controller: {fileID: 22100000, guid: 5bc46cd249341ff41b2e1947f6069a85, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
-    'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
-    'mixamorig:LeftHandPinky2'\n\tTransform 'mixamorig:RightHandRing2'\n\tTransform
-    'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftHandThumb3'\n\tTransform 'mixamorig:RightArm'\n\tTransform
-    'mixamorig:LeftLeg'\n\tand more ...\n\tFrom animation clip 'Pick'"
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &1830900076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,19 +422,51 @@ MonoBehaviour:
   team: 0
   idName: Blacksmith
   statusPanel: {fileID: 0}
-  animator: {fileID: 0}
+  animator: {fileID: 128332551976068683}
   combatManager: {fileID: 0}
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 6264840674767571634}
   statusMods: []
   statusCondition: {fileID: 0}
-  CameraPivot: {fileID: 0}
-  DamagePivot: {fileID: 0}
+  CameraPivot: {fileID: 2510422028417999802}
+  DamagePivot: {fileID: 4506396638307855813}
   skillPanel: {fileID: 0}
   enemiesPanel: {fileID: 0}
   fightersDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
   figherIndex: 10
   ally1: {fileID: 0}
   ally2: {fileID: 0}
+--- !u!114 &1599669065509283500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8267380649681350226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 736621f09d8511d48ba6af7f73ae5721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fighter: {fileID: 1830900076}
+  playerRenderer: {fileID: 7268584714324801098}
+  baseMaterial: {fileID: 0}
+  buffMaterial: {fileID: 0}
+  materiales: []
+--- !u!114 &5569997717537428410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8267380649681350226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77345174282e5da4798c4f0a2ca01574, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fighter: {fileID: 1830900076}
+  actualDefense: {fileID: 0}
+  actualAttack: {fileID: 0}
 --- !u!1001 &7502533640696679195
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -102,6 +481,18 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -149,7 +540,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2219142835421054055, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -166,6 +557,61 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+--- !u!1 &7268584714324801098 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+  m_PrefabInstance: {fileID: 7502533640696679195}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &1086782756952669250
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7268584714324801098}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 122
+  m_CollisionDetection: 0
+--- !u!136 &7312617042814614688
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7268584714324801098}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2
+  m_Height: 1.69
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.84, z: 0}
+--- !u!95 &128332551976068683
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7268584714324801098}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+  m_Controller: {fileID: 9100000, guid: 8f1f4e1c3d91b6f4587be8af25eb08a1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!4 &8040301811335802096 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
