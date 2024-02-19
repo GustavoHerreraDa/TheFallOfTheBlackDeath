@@ -52,6 +52,16 @@ public abstract class Interactable : MonoBehaviour
                 nameMessage.text = message;
             }
         }
+        if (other.gameObject.tag == "Portal")
+        {
+            if (other.gameObject.GetComponent<Portal>() != null)
+            {
+                InteractMeessage.SetActive(true);
+                objCollider = other;
+                canInteract = true;
+                nameMessage.text = message;
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)

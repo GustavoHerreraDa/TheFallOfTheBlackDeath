@@ -6,7 +6,8 @@ public enum KeyType
 {
     BronzeKey,
     SilverKey,
-    GoldKey
+    GoldKey,
+    Portal
 }
 
 public class Gate : MonoBehaviour
@@ -76,6 +77,8 @@ public class Gate : MonoBehaviour
                 return 9;
             case KeyType.GoldKey:
                 return 10;
+            case KeyType.Portal:
+                return 11;
             default:
                 return 7;
         }
