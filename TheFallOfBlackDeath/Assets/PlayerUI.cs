@@ -8,7 +8,7 @@ public class PlayerUI : MonoBehaviour
 {
     // Start is called before the first frame update
     public Fighter fighter;
-    public CombatManager gameManager;
+    public CombatManager combatManager;
     public TextMeshProUGUI nameHero;
     public TextMeshProUGUI currentHealth;
     public TextMeshProUGUI maxHealth;
@@ -26,10 +26,10 @@ public class PlayerUI : MonoBehaviour
 
     private void GetPlayerFromCombatManager()
     {
-        if (gameManager == null)
+        if (combatManager == null)
             return;
 
-        var _fighter = gameManager.fighters[gameManager.fighterIndex];
+        var _fighter = combatManager.fighters[combatManager.fighterIndex];
 
         if (_fighter.GetType() == typeof(PlayerFighter))
         {

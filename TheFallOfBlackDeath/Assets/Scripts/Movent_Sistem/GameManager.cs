@@ -15,9 +15,9 @@ public class GameManager : MonoBehaviour
         public string BattleScene;
         public string regionName;
         public int maxAmountEnemys = 4;
-        public List <GameObject> Enemys = new List <GameObject>();
+        public List<GameObject> Enemys = new List<GameObject>();
     }
-    public List<RegionData> Regions = new List <RegionData>();
+    public List<RegionData> Regions = new List<RegionData>();
 
     public GameObject character;
     public PlayerFighter BadDoctor;
@@ -49,13 +49,13 @@ public class GameManager : MonoBehaviour
         TOWN_STATE,
         BATTLE_STATE,
         IDLE_STATE
-         
+
     }
 
     //BATTLE
     public int enemyAnount;
-    public List <GameObject> enemyToBattle = new List<GameObject> ();
-    
+    public List<GameObject> enemyToBattle = new List<GameObject>();
+
 
 
     public int cuRegions;
@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour
         groupEnemyDefeat = ListEnemyDefeat.enemiesDefeat;
         objectsPickup = ListEnemyDefeat.pickUpsInWorld;
 
-        
+
     }
 
     public void FindPlayer()
@@ -158,7 +158,7 @@ public class GameManager : MonoBehaviour
     {
         if (level == 1)
         {
-            if(SceneManager.GetActiveScene().buildIndex == 1)
+            if (SceneManager.GetActiveScene().buildIndex == 1)
             {
                 ogre = GameObject.Find("Ogre");
                 minotaur = GameObject.Find("WorldMinotaur");
@@ -166,9 +166,9 @@ public class GameManager : MonoBehaviour
                 vampire = GameObject.Find("WorldVampire");
             }
             ogre = GameObject.Find("Ogre");
-                minotaur = GameObject.Find("WorldMinotaur");
-                medusa = GameObject.Find("WorldMedusa");
-                vampire = GameObject.Find("WorldVampire");
+            minotaur = GameObject.Find("WorldMinotaur");
+            medusa = GameObject.Find("WorldMedusa");
+            vampire = GameObject.Find("WorldVampire");
 
             GameManager.Instance.FindEnemiesAndObjets();
             GameManager.Instance.FindPlayer();
@@ -197,33 +197,33 @@ public class GameManager : MonoBehaviour
                 //Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + enemy.GroupName);
             }
 
-            if(killedOgre)
+            if (killedOgre)
             {
-                if(ogre != null)
+                if (ogre != null)
                 {
                     Destroy(ogre);
                 }
             }
-            if(killedMedusa)
+            if (killedMedusa)
             {
-                if(medusa != null)
+                if (medusa != null)
                 {
                     Destroy(medusa);
                 }
             }
-            if(killedMinotaur)
+            if (killedMinotaur)
             {
-                if(minotaur != null)
+                if (minotaur != null)
                 {
                     Destroy(minotaur);
                 }
             }
-            if(killedVampire)
+            if (killedVampire)
             {
-                if(vampire != null)
+                if (vampire != null)
                 {
                     Destroy(vampire);
-                } 
+                }
             }
 
 
@@ -258,15 +258,20 @@ public class GameManager : MonoBehaviour
         //AMOUNT OF ENEMYS
         enemyAnount = Random.Range(1, Regions[cuRegions].maxAmountEnemys + 1);
         //WHICH ENEMYS
-        for(int i = 0; i< enemyAnount; i++)
+        for (int i = 0; i < enemyAnount; i++)
         {
             enemyToBattle.Add(Regions[cuRegions].Enemys[Random.Range(0, Regions[cuRegions].Enemys.Count)]);
         }
         //CHARACTER
-        lastPos = GameObject.Find("Character").gameObject.transform.position;
-        //lastScene = SceneManager.GetActiveScene().name;
-        //LOAD LEVEL
-        SceneManager.LoadScene(Regions[cuRegions].BattleScene);
+        var chracterObj = GameObject.Find("Character");
+
+        if (chracterObj != null)
+        {
+            lastPos = chracterObj.transform.position;
+            //lastScene = SceneManager.GetActiveScene().name;
+            //LOAD LEVEL
+            SceneManager.LoadScene(Regions[cuRegions].BattleScene);
+        }
         //RESET HERO
         isWalking = false;
         gotAttacked = false;
