@@ -48,7 +48,8 @@ public class GameManager : MonoBehaviour
     {
         TOWN_STATE,
         BATTLE_STATE,
-        IDLE_STATE
+        IDLE_STATE,
+        SAFE_ZONE
 
     }
 
@@ -85,6 +86,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case (GameStates.IDLE_STATE):
+            case (GameStates.SAFE_ZONE):
                 break;
         }
     }
