@@ -248,7 +248,7 @@ public class CombatManager : MonoBehaviour
 
                     if (defeat)
                     {
-                        LogPanel.Write("Derrota!");
+                        LogPanel.Write("Defeat!");
                         this.isCombatActive = false;
                         yield return new WaitForSeconds(2f);
                         SceneManager.LoadSceneAsync(7);
