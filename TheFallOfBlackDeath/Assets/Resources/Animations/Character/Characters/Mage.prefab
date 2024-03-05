@@ -31,6 +31,57 @@ Transform:
   m_Father: {fileID: 193511059121162837}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &683621395803670117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6751583541241326179}
+  - component: {fileID: 8912635166674302027}
+  m_Layer: 0
+  m_Name: Paralisis hijo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6751583541241326179
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 683621395803670117}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7705051739415241010}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8912635166674302027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 683621395803670117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e0fb08401cd127498845e9e30306566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectPrfb: {fileID: 8189500006840025469, guid: 5ab3d01e5aa444641bba8bf8160d827b, type: 3}
+  animationDuration: 3
+  receptionMessage: (receiver) is paralyzed
+  applyMessage: (receiver) is paralyzed
+  expireMessage: (receiver) is no more paralyzed!
+  turnDuration: 1
+  blockChance: 1
 --- !u!1 &713824622133589527
 GameObject:
   m_ObjectHideFlags: 0
@@ -62,61 +113,6 @@ Transform:
   m_Father: {fileID: 193511059121162837}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1225310235892150827
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7811777327992925489}
-  - component: {fileID: 5459311681443400171}
-  m_Layer: 0
-  m_Name: Protect
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &7811777327992925489
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1225310235892150827}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.06453976, y: 1.3582523, z: -0.056032836}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 193511059121162837}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5459311681443400171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1225310235892150827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3aa3919ad1c4ad045b96e1b4d410648c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Protect
-  animationDuration: 1.5
-  targeting: 3
-  effectPrfb: {fileID: 1844191813266838, guid: 968c924d2be019d4b9e67647551eec3e, type: 3}
-  SkillDesc: "Te vuelve invunerable al da\xF1o por un turno"
-  skillType: 0
-  iconUI: {fileID: 0}
-  animationName: Curse
-  HasItemInInventory: 0
-  ItemsNeeded: []
-  successRate: 1
 --- !u!1 &1488757592670571959
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,7 +426,6 @@ MonoBehaviour:
   - id: 6
     amount: 1
     uso: 0
-  audioSource: {fileID: 0}
 --- !u!1 &4586735904866427309
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,7 +464,7 @@ Transform:
   - {fileID: 5461619689497016760}
   - {fileID: 3065749750607899827}
   - {fileID: 3080193212161059553}
-  - {fileID: 7811777327992925489}
+  - {fileID: 7705051739415241010}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -584,6 +579,61 @@ MonoBehaviour:
   expireMessage: Curse fades
   turnDuration: 3
   percentage: -0.2
+--- !u!1 &9121706483701580858
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7705051739415241010}
+  - component: {fileID: 1691776799100954632}
+  m_Layer: 0
+  m_Name: Paralisis
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7705051739415241010
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9121706483701580858}
+  m_LocalRotation: {x: -0.5076331, y: 0.49224862, z: 0.49224862, w: 0.5076331}
+  m_LocalPosition: {x: 0.25145912, y: -0.13, z: 4.3460484}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6751583541241326179}
+  m_Father: {fileID: 193511059121162837}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1691776799100954632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9121706483701580858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Paralysis
+  animationDuration: 1.5
+  targeting: 4
+  effectPrfb: {fileID: 1717075959720994568, guid: 2f48691469e7d394bac81990c3ec94be, type: 3}
+  SkillDesc: 
+  skillType: 1
+  iconUI: {fileID: 0}
+  animationName: Attack
+  HasItemInInventory: 0
+  ItemsNeeded: []
 --- !u!1001 &5136546972893005751
 PrefabInstance:
   m_ObjectHideFlags: 0

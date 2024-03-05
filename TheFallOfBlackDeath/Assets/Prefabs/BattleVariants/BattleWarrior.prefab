@@ -54,9 +54,9 @@ MonoBehaviour:
   animationName: Whirlwind
   HasItemInInventory: 0
   ItemsNeeded: []
-  amount: -35
-  modType: 0
-  critChance: 0.3
+  amount: -20
+  modType: 1
+  critChance: 0.5
 --- !u!1 &1856910305259842664
 GameObject:
   m_ObjectHideFlags: 0
@@ -81,7 +81,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1856910305259842664}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -4}
+  m_LocalPosition: {x: 0, y: 2.5, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -137,7 +137,7 @@ MonoBehaviour:
   targeting: 4
   effectPrfb: {fileID: 6703250321131892297, guid: 2b987d41506d172419fa18578f6ac380, type: 3}
   SkillDesc: Channel immense strength into a devastating blow, dealing 75 damage
-    to the enemy (no critical chance).
+    to the enemy (always critical).
   skillType: 0
   iconUI: {fileID: 21300000, guid: 2a374e70ce8fd4c41adddb5886a760ab, type: 3}
   animationName: Impact
@@ -145,7 +145,7 @@ MonoBehaviour:
   ItemsNeeded: []
   amount: -75
   modType: 0
-  critChance: 0.2
+  critChance: 1
 --- !u!1 &5085693282725150800
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,7 +187,7 @@ AudioSource:
   m_GameObject: {fileID: 5085693282725150800}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -1780621753267509775, guid: 248a8af626575fb4a845d8218a0af7f6, type: 2}
   m_audioClip: {fileID: 8300000, guid: 91d9d1e0690c05f4bbe6f4022cc65ae0, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.3
@@ -359,10 +359,7 @@ MonoBehaviour:
   iconUI: {fileID: 21300000, guid: 0830d0fd1e66cc84285bc0b6215ab743, type: 3}
   animationName: Inspiration
   HasItemInInventory: 0
-  ItemsNeeded:
-  - id: 16
-    amount: 1
-    uso: 0
+  ItemsNeeded: []
   message: '{receiver} attack raises!'
 --- !u!114 &821244293868357548
 MonoBehaviour:
@@ -482,6 +479,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 347213020163082240, guid: e3be3b195764333428080e393481162c, type: 3}
   m_PrefabInstance: {fileID: 2703193069426616174}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &7057351550220585581
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2401025122682974062}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &3525027302169570547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -514,6 +527,20 @@ MonoBehaviour:
   fighter: {fileID: 2703193069797845083}
   actualDefense: {fileID: 0}
   actualAttack: {fileID: 0}
+--- !u!136 &4900534721875297892
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2401025122682974062}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.8202958
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.94768476, z: 0}
 --- !u!114 &2703193069797845083 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 450989877, guid: e3be3b195764333428080e393481162c, type: 3}
@@ -535,33 +562,3 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 9160977156206239388, guid: e3be3b195764333428080e393481162c, type: 3}
   m_PrefabInstance: {fileID: 2703193069426616174}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &8964491807385262597
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6530782313026730482}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
---- !u!136 &1299783530417682194
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6530782313026730482}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.86
-  m_Height: 6.44
-  m_Direction: 1
-  m_Center: {x: 0, y: 3.24, z: 0}

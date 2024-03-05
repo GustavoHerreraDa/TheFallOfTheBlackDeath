@@ -248,7 +248,7 @@ public class CombatManager : MonoBehaviour
 
                     if (defeat)
                     {
-                        LogPanel.Write("Derrota!");
+                        LogPanel.Write("Defeat!");
                         this.isCombatActive = false;
                         yield return new WaitForSeconds(2f);
                         SceneManager.LoadSceneAsync(7);
@@ -416,12 +416,12 @@ public class CombatManager : MonoBehaviour
         {
             if(enemyDataBase.EnemyDB[i].isMainCharacter)
             {
-                GameObject mainCharacter = Instantiate(enemyDataBase.EnemyDB[i].enemyPrefab, mainCharacterPos.transform.position, Quaternion.Euler(0, -90, 0), playerParent.transform);
+                GameObject mainCharacter = Instantiate(enemyDataBase.EnemyDB[i].enemyPrefab, mainCharacterPos.transform.position, Quaternion.Euler(-0.4f, -90, 0), playerParent.transform);
                 mainCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel1, enemiesPanel);
             }
             else if(enemyDataBase.EnemyDB[i].isSecondaryCharacter)
             {
-                GameObject secondaryCharacter = Instantiate(enemyDataBase.EnemyDB[i].enemyPrefab, secondaryCharacterPos.transform.position, Quaternion.Euler(0, -90, 0), playerParent.transform);
+                GameObject secondaryCharacter = Instantiate(enemyDataBase.EnemyDB[i].enemyPrefab, secondaryCharacterPos.transform.position, Quaternion.Euler(-0.4f, -90, 0), playerParent.transform);
                 secondaryCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel2, enemiesPanel);
             }
         }
