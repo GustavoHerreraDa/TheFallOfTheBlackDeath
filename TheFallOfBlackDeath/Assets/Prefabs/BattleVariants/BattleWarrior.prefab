@@ -143,7 +143,7 @@ MonoBehaviour:
   animationName: Impact
   HasItemInInventory: 0
   ItemsNeeded: []
-  amount: -75
+  amount: -60
   modType: 0
   critChance: 1
 --- !u!1 &5085693282725150800
@@ -354,7 +354,7 @@ MonoBehaviour:
   animationDuration: 2
   targeting: 0
   effectPrfb: {fileID: 3874635022589376825, guid: ffdfb7851a968494f8fe76ee88f3791a, type: 3}
-  SkillDesc: Boost your own attack power by 30.
+  SkillDesc: Boost your own defense power by 30.
   skillType: 0
   iconUI: {fileID: 21300000, guid: 0830d0fd1e66cc84285bc0b6215ab743, type: 3}
   animationName: Inspiration
@@ -373,7 +373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   amount: 30
 --- !u!1001 &2703193069426616174
 PrefabInstance:
@@ -495,6 +495,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &4900534721875297892
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2401025122682974062}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.8202958
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.94768476, z: 0}
 --- !u!114 &3525027302169570547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,20 +541,6 @@ MonoBehaviour:
   fighter: {fileID: 2703193069797845083}
   actualDefense: {fileID: 0}
   actualAttack: {fileID: 0}
---- !u!136 &4900534721875297892
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2401025122682974062}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.8202958
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.94768476, z: 0}
 --- !u!114 &2703193069797845083 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 450989877, guid: e3be3b195764333428080e393481162c, type: 3}
