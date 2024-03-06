@@ -56,10 +56,11 @@ public abstract class Interactable : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Portal>() != null)
             {
+                nameMessage.text = message;
                 InteractMeessage.SetActive(true);
                 objCollider = other;
                 canInteract = true;
-                nameMessage.text = message;
+                
             }
         }
     }

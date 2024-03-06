@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -146,6 +147,14 @@ public class PlayerControl : MonoBehaviour
         {
             GameManager.Instance.cuRegions = 0;
         }
+    }
+
+    public void TeleportPlayer(Vector3 destinoPosition)
+    {
+
+        controller.enabled = false;
+        transform.position = destinoPosition;
+        controller.enabled = true;
     }
 
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TeleportPlayer : Interactable
 {
-    public Transform destino; // El destino al que quieres mover al jugador
+    public GameObject destino; // El destino al que quieres mover al jugador
 
     public AudioSource teleportSound;
 
@@ -16,9 +16,10 @@ public class TeleportPlayer : Interactable
     }
     public override void Interact()
     {
-        MoverJugadorADestino(this.gameObject);
-        player_Animator.Play("Teleport");
-        teleportSound.Play();
+        MoverJugadorADestino();
+        //player_Animator.Play("Teleport");
+        if (teleportSound != null)
+            teleportSound.Play();
     }
 
     // Update is called once per frame
@@ -32,13 +33,14 @@ public class TeleportPlayer : Interactable
 
             if (other.gameObject.GetComponent<Portal>() != null)
             {
+                nameMessage.text = message;
                 InteractMeessage.SetActive(true);
                 objCollider = other;
                 canInteract = true;
             }
         }
     }
-    void MoverJugadorADestino(GameObject player)
+    void MoverJugadorADestino()
     {
         // Mover el jugador al destino
         if (destino != null)
@@ -47,9 +49,15 @@ public class TeleportPlayer : Interactable
             //Transform jugadorTransform = transform;
 
             // Establecer la posición del jugador en la posición del destino
-            player.transform.position = destino.position;
+            //Debug.Log("Jugador movido a la posición del destino. " + this.gameObject.name);
+            //Debug.Log("Jugador movido a la posición del origen. " + this.gameObject.transform.position);
+            //Debug.Log("Jugador movido a la posición del destino. " + destino.transform.position);
+            //Debug.Log("Jugador movido a la posición del destino. " + destino.gameObject.name);
 
-            Debug.Log("Jugador movido a la posición del destino.");
+            //this.gameObject.transform.position = destino.transform.position;
+
+            gameObject.GetComponent<PlayerControl>().TeleportPlayer(destino.transform.position);
+           
         }
         else
         {
