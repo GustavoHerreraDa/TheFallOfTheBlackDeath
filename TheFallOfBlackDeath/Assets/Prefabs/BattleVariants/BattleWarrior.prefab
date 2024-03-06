@@ -314,8 +314,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7319068044631253766}
-  - component: {fileID: 6335672851427365334}
   - component: {fileID: 821244293868357548}
+  - component: {fileID: 6335672851427365334}
   m_Layer: 0
   m_Name: Inspiration
   m_TagString: Untagged
@@ -338,29 +338,6 @@ Transform:
   m_Father: {fileID: 4022697377997856663}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6335672851427365334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9173237862744359980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Inspiration
-  animationDuration: 2
-  targeting: 0
-  effectPrfb: {fileID: 3874635022589376825, guid: ffdfb7851a968494f8fe76ee88f3791a, type: 3}
-  SkillDesc: Boost your own defense power by 30.
-  skillType: 0
-  iconUI: {fileID: 21300000, guid: 0830d0fd1e66cc84285bc0b6215ab743, type: 3}
-  animationName: Inspiration
-  HasItemInInventory: 0
-  ItemsNeeded: []
-  message: '{receiver} attack raises!'
 --- !u!114 &821244293868357548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,7 +351,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  amount: 30
+  amount: -30
+--- !u!114 &6335672851427365334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9173237862744359980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Fear
+  animationDuration: 2
+  targeting: 2
+  effectPrfb: {fileID: 3874635022589376825, guid: ffdfb7851a968494f8fe76ee88f3791a, type: 3}
+  SkillDesc: Reduce enemy defense power by 30.
+  skillType: 0
+  iconUI: {fileID: 21300000, guid: 0830d0fd1e66cc84285bc0b6215ab743, type: 3}
+  animationName: Inspiration
+  HasItemInInventory: 0
+  ItemsNeeded:
+  - id: 0
+    amount: 0
+    uso: 0
+  message: '{receiver} attack raises!'
 --- !u!1001 &2703193069426616174
 PrefabInstance:
   m_ObjectHideFlags: 0

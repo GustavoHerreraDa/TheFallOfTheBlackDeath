@@ -77,7 +77,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  amount: -20
+  amount: -15
 --- !u!114 &8717310209655002556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
   animationDuration: 1.5
   targeting: 4
   effectPrfb: {fileID: 3499216465569482894, guid: f2fc97de3837dfe429d9e31b21e766fa, type: 3}
-  SkillDesc: Reduce the opponent's defense by 20.
+  SkillDesc: Reduce the opponent's defense by 15.
   skillType: 0
   iconUI: {fileID: 21300000, guid: 539bc8db00263f6489d6d97d949ad58b, type: 3}
   animationName: Weaken
@@ -152,7 +152,7 @@ MonoBehaviour:
   animationDuration: 1.5
   targeting: 4
   effectPrfb: {fileID: 6703250321131892297, guid: 2b987d41506d172419fa18578f6ac380, type: 3}
-  SkillDesc: A powerful strike that deals 50 damage to the enemy (no critical chance).
+  SkillDesc: Powerful attack that deals 40% of the enemy's maximum health
   skillType: 0
   iconUI: {fileID: 21300000, guid: 2a374e70ce8fd4c41adddb5886a760ab, type: 3}
   animationName: Strike
@@ -375,8 +375,8 @@ MonoBehaviour:
   animationName: Blow
   HasItemInInventory: 0
   ItemsNeeded: []
-  lifeStealPercentage: 0.3
-  amount: 40
+  lifeStealPercentage: 0.4
+  amount: 50
 --- !u!1001 &4638351036565289852
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -502,6 +502,36 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3648228946082216046, guid: 3b141058a828bcd43b392e11ba03686b, type: 3}
   m_PrefabInstance: {fileID: 4638351036565289852}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &2187479216410484262
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8286525822371545874}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &794678092456027561
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8286525822371545874}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.2008111
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.59669447, z: 0}
 --- !u!114 &1210294397107650159
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -534,33 +564,3 @@ MonoBehaviour:
   fighter: {fileID: 4638351035134681641}
   actualDefense: {fileID: 0}
   actualAttack: {fileID: 0}
---- !u!54 &2187479216410484262
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8286525822371545874}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!136 &794678092456027561
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8286525822371545874}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.2008111
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.59669447, z: 0}
