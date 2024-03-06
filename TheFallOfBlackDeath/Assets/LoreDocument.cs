@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Portal : MonoBehaviour
+public class LoreDocument : MonoBehaviour
 {
     // Start is called before the first frame update
-    public bool gotoWorld;
+    public string TextLore;
+    public string TextTitleLore;
     void Start()
     {
         

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TeleportPlayer : Interactable
 {
@@ -9,13 +10,22 @@ public class TeleportPlayer : Interactable
 
     public AudioSource teleportSound;
 
+    public bool gotoSceneWorld;
+
+    private string messageToWorld;
+
     private void Start()
     {
         base.Start();
         message = "Press E to Teleport.";
+        messageToWorld = "Press E to go to the Mission.";
     }
     public override void Interact()
     {
+        if (gotoSceneWorld)
+        {
+            GotoScene();
+        }
         MoverJugadorADestino();
         //player_Animator.Play("Teleport");
         if (teleportSound != null)
@@ -33,7 +43,15 @@ public class TeleportPlayer : Interactable
 
             if (other.gameObject.GetComponent<Portal>() != null)
             {
-                nameMessage.text = message;
+                var portal = other.gameObject.GetComponent<Portal>();
+                if (portal.gotoWorld)
+                {
+                    nameMessage.text = messageToWorld;
+                    gotoSceneWorld = true;
+                }
+                else
+                    nameMessage.text = message;
+
                 InteractMeessage.SetActive(true);
                 objCollider = other;
                 canInteract = true;
@@ -45,23 +63,17 @@ public class TeleportPlayer : Interactable
         // Mover el jugador al destino
         if (destino != null)
         {
-            // Obtener el componente de transformación del jugador
-            //Transform jugadorTransform = transform;
-
-            // Establecer la posición del jugador en la posición del destino
-            //Debug.Log("Jugador movido a la posición del destino. " + this.gameObject.name);
-            //Debug.Log("Jugador movido a la posición del origen. " + this.gameObject.transform.position);
-            //Debug.Log("Jugador movido a la posición del destino. " + destino.transform.position);
-            //Debug.Log("Jugador movido a la posición del destino. " + destino.gameObject.name);
-
-            //this.gameObject.transform.position = destino.transform.position;
-
             gameObject.GetComponent<PlayerControl>().TeleportPlayer(destino.transform.position);
-           
+
         }
         else
         {
             Debug.LogError("El destino no está asignado. Asigna un objeto de destino en el Inspector.");
         }
+    }
+
+    void GotoScene()
+    {
+        SceneManager.LoadScene(1);
     }
 }
