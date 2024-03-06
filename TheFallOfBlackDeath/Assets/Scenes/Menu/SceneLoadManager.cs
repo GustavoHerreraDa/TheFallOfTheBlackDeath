@@ -12,7 +12,7 @@ public class SceneLoadManager : MonoBehaviour
 
     public void Start()
     {
-        SceneLoad(1);
+        SceneLoad(14);
     }
     public void SceneLoad(int sceneIndex)
     {
