@@ -54,10 +54,7 @@ MonoBehaviour:
   iconUI: {fileID: 21300000, guid: d965b648e7e6da744a24eee24b4b9c25, type: 3}
   animationName: Curse
   HasItemInInventory: 0
-  ItemsNeeded:
-  - id: 6
-    amount: 1
-    uso: 0
+  ItemsNeeded: []
 --- !u!1 &2015357082775407413
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +134,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3959512157717316947
 Transform:
   m_ObjectHideFlags: 0
@@ -499,6 +496,64 @@ MonoBehaviour:
   HasItemInInventory: 0
   ItemsNeeded: []
   message: '{receiver} loses defense!'
+--- !u!1 &4953996111009695467
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3786198298521058067}
+  - component: {fileID: 2091201488172428537}
+  m_Layer: 0
+  m_Name: Scimitar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3786198298521058067
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4953996111009695467}
+  m_LocalRotation: {x: -0, y: -0.6868525, z: -0, w: 0.72679687}
+  m_LocalPosition: {x: -0.9950648, y: 0, z: -1.4374616}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8723045855811891764}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2091201488172428537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4953996111009695467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Surgery
+  animationDuration: 2
+  targeting: 4
+  effectPrfb: {fileID: 6703250321131892297, guid: 2b987d41506d172419fa18578f6ac380, type: 3}
+  SkillDesc: A savage Surgery that deals 65 damage to the enemy (30% of critical
+    chance).
+  skillType: 0
+  iconUI: {fileID: 21300000, guid: 2a374e70ce8fd4c41adddb5886a760ab, type: 3}
+  animationName: Motivate
+  HasItemInInventory: 0
+  ItemsNeeded: []
+  amount: -65
+  modType: 0
+  critChance: 0.3
 --- !u!1 &8234175860809934990
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,6 +596,7 @@ Transform:
   - {fileID: 750455760161172374}
   - {fileID: 1151242874894792660}
   - {fileID: 87415367620226894}
+  - {fileID: 3786198298521058067}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -85.763, z: 0}
