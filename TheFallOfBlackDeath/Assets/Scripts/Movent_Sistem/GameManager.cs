@@ -160,7 +160,8 @@ public class GameManager : MonoBehaviour
     {
         if (level == 1)
         {
-            gameState = GameStates.TOWN_STATE;
+            Debug.Log("Level " + level);
+            //gameState = GameStates.TOWN_STATE;
 
             if (SceneManager.GetActiveScene().buildIndex == 1)
             {

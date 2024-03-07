@@ -225,18 +225,25 @@ public class CombatManager : MonoBehaviour
 
                         if(SceneManager.GetActiveScene().buildIndex == 10)
                         {
+                            Debug.Log("Killed Ogre");
                             GameManager.Instance.killedOgre = true;
                         }
                         if(SceneManager.GetActiveScene().buildIndex == 11)
                         {
+                            Debug.Log("Killed Medusa");
+
                             GameManager.Instance.killedMedusa = true;
                         }
                         if(SceneManager.GetActiveScene().buildIndex == 12)
                         {
+                            Debug.Log("killed Vampire");
+
                             GameManager.Instance.killedVampire = true;
                         }
                         if(SceneManager.GetActiveScene().buildIndex == 13)
                         {
+                            Debug.Log("killedMinotaur");
+
                             GameManager.Instance.killedMinotaur = true;
                         }
 

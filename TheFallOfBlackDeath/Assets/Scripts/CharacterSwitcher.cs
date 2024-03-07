@@ -23,15 +23,18 @@ public class CharacterSwitcher : MonoBehaviour
 
     public void SwitchMainCharacter(int characterIndex, bool isFirstTime)
     {
-        fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, false);
-        
-        currentMainCharacterIndex = characterIndex;
+        if (GameManager.Instance != null)
+        {
+            fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, false);
 
-        GameManager.Instance.character1 = characters[characterIndex].GetComponent<PlayerFighter>();
+            currentMainCharacterIndex = characterIndex;
 
-        fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, true);
+            GameManager.Instance.character1 = characters[characterIndex].GetComponent<PlayerFighter>();
 
-        updateMainCharacterUI();
+            fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, true);
+
+            updateMainCharacterUI();
+        }
     }
 
     public void SwitchSecondaryCharacter(int characterIndex, bool isFirstTime)
@@ -51,7 +54,7 @@ public class CharacterSwitcher : MonoBehaviour
     {
         for (int i = 0; i < fightersDateBase.EnemyDB.Count; i++)
         {
-            if(fightersDateBase.EnemyDB[i].isMainCharacter)
+            if (fightersDateBase.EnemyDB[i].isMainCharacter)
             {
                 currentMainCharacterIndex = fightersDateBase.EnemyDB[i].CharacterSwitcherIndex;
                 Debug.Log("Main Character es " + fightersDateBase.EnemyDB[i].Name);
@@ -60,7 +63,7 @@ public class CharacterSwitcher : MonoBehaviour
 
         for (int i = 0; i < fightersDateBase.EnemyDB.Count; i++)
         {
-            if(fightersDateBase.EnemyDB[i].isSecondaryCharacter)
+            if (fightersDateBase.EnemyDB[i].isSecondaryCharacter)
             {
                 currentSecondaryCharacterIndex = fightersDateBase.EnemyDB[i].CharacterSwitcherIndex;
                 Debug.Log("Secondary Character es " + fightersDateBase.EnemyDB[i].Name);

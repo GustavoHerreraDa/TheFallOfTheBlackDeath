@@ -5,9 +5,10 @@ using UnityEngine;
 public class OgreTrigger : MonoBehaviour
 {
     public GameObject Ogre;
-    
+
     void OnTriggerEnter(Collider other)
     {
-        Ogre.SetActive(true);
+        if (Ogre != null)
+            Ogre.SetActive(true);
     }
 }

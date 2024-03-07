@@ -44,7 +44,8 @@ public class PlayerControl : MonoBehaviour
         Vector3 direccion = new Vector3(horizontal, 0, vertical).normalized;
         isWalking = direccion.magnitude >= 0.1f;
         // Actualizar canGetEncounter basado en si el jugador est� caminando o no
-        GameManager.Instance.canGetEncounter = isWalking;
+        if (GameManager.Instance != null)
+            GameManager.Instance.canGetEncounter = isWalking;
 
 
         tocaPiso = Physics.CheckSphere(detectaPiso.position, distanciaPiso, mascaraPiso);
@@ -80,20 +81,26 @@ public class PlayerControl : MonoBehaviour
                     Vector3 mover = Quaternion.Euler(0, objetivoAngulo, 0) * Vector3.forward;
                     controller.Move(mover.normalized * velCorriendo * Time.deltaTime);
                     anim.SetFloat("Movent", 0.2f);
-                    GameManager.Instance.isWalking = true;
+                    if (GameManager.Instance != null)
+
+                        GameManager.Instance.isWalking = true;
                 }
                 else
                 {
                     Vector3 mover = Quaternion.Euler(0, objetivoAngulo, 0) * Vector3.forward;
                     controller.Move(mover.normalized * velocidad * Time.deltaTime);
                     anim.SetFloat("Movent", 0.1f);
-                    GameManager.Instance.isWalking = true;
+                    if (GameManager.Instance != null)
+
+                        GameManager.Instance.isWalking = true;
                 }
             }
             else
             {
                 anim.SetFloat("Movent", 0f);
-                GameManager.Instance.isWalking = false;
+                if (GameManager.Instance != null)
+
+                    GameManager.Instance.isWalking = false;
             }
         }
     }
@@ -102,7 +109,9 @@ public class PlayerControl : MonoBehaviour
     {
         stop = false;
         playerRB.isKinematic = false;
-        GameManager.Instance.isWalking = isWalking; // Aseguramos que GameManager.isWalking est� actualizado
+        if (GameManager.Instance != null)
+
+            GameManager.Instance.isWalking = isWalking; // Aseguramos que GameManager.isWalking est� actualizado
     }
 
     public void StopPlayer(float seconds)
@@ -131,7 +140,9 @@ public class PlayerControl : MonoBehaviour
         // Verificar si el jugador est� caminando antes de permitir encuentros
         if (other.tag == "region1" && isWalking)
         {
-            GameManager.Instance.canGetEncounter = true;
+            if (GameManager.Instance != null)
+
+                GameManager.Instance.canGetEncounter = true;
             Debug.Log("Se produjo un encuentro");
         }
     }
@@ -139,13 +150,18 @@ public class PlayerControl : MonoBehaviour
     {
         if (other.tag == "region2")
         {
-            GameManager.Instance.cuRegions = 1;
-            GameManager.Instance.canGetEncounter = false;
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.cuRegions = 1;
+                GameManager.Instance.canGetEncounter = false;
+            }
         }
 
         if (other.tag == "region1")
         {
-            GameManager.Instance.cuRegions = 0;
+            if (GameManager.Instance != null)
+
+                GameManager.Instance.cuRegions = 0;
         }
     }
 

@@ -20,6 +20,8 @@ public class LoreInteract : Interactable
     }
     public override void Interact()
     {
+        InteractMeessage.SetActive(false);
+
         LoreMessage.SetActive(true);
     }
 
