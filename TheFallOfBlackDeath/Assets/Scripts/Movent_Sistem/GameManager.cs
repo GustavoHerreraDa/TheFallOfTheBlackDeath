@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using TMPro;
+
 //TP2 FACUNDO FERREIRO/GUSTAVO TORRES
 public class GameManager : MonoBehaviour
 {
@@ -33,6 +35,12 @@ public class GameManager : MonoBehaviour
     public bool gotAttacked = false;
     public bool isWalking = false;
     public int enemyAmount;
+
+    public float corduraMax = 100f;
+    public float corduraActual;
+    public float perdidaDeCordura = 2f;
+    public TextMeshProUGUI textCordura;
+
 
     public bool killedOgre;
     public GameObject ogre;
@@ -66,9 +74,8 @@ public class GameManager : MonoBehaviour
         switch (gameState)
         {
             case (GameStates.TOWN_STATE):
-                if (isWalking)
+                if (corduraActual <= 20)
                 {
-                    //canGetEncounter = true;
                     RandomEncounter();
                 }
                 if (gotAttacked)
@@ -89,6 +96,12 @@ public class GameManager : MonoBehaviour
             case (GameStates.SAFE_ZONE):
                 break;
         }
+
+
+        canGetEncounter = (corduraActual <= 20);
+
+        textCordura.text = "Cordura: " + Mathf.RoundToInt(corduraActual);
+
     }
 
     public GameStates gameState;
@@ -136,8 +149,23 @@ public class GameManager : MonoBehaviour
         }
         groupEnemyDefeat = ListEnemyDefeat.enemiesDefeat;
         objectsPickup = ListEnemyDefeat.pickUpsInWorld;
+        corduraActual = corduraMax;
+
+        StartCoroutine(BajarCordura());
+    }
 
 
+    IEnumerator BajarCordura()
+    {
+        while (corduraActual > 0)
+        {
+            float perdida = (corduraMax * (perdidaDeCordura / 100f)) * Time.deltaTime;
+            corduraActual -= perdida;
+
+            corduraActual = Mathf.Clamp(corduraActual, 0, corduraMax);
+
+            yield return null;
+        }
     }
 
     public void FindPlayer()
@@ -249,9 +277,9 @@ public class GameManager : MonoBehaviour
 
     void RandomEncounter()
     {
-        if (isWalking && canGetEncounter)
+        if (canGetEncounter)
         {
-            if (Random.Range(0, 100000) < 10)
+            if (Random.Range(0, 10000) < 10)
             {
                 Debug.Log("i got attacked");
                 gotAttacked = true;
@@ -280,6 +308,6 @@ public class GameManager : MonoBehaviour
         //RESET HERO
         isWalking = false;
         gotAttacked = false;
-        canGetEncounter = false;
+        //canGetEncounter = false;
     }
 }
