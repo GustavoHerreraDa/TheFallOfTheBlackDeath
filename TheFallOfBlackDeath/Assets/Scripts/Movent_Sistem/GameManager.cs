@@ -51,6 +51,9 @@ public class GameManager : MonoBehaviour
     public bool killedMinotaur;
     public GameObject minotaur;
 
+    private Coroutine corduraRoutine;
+
+
     //ENUM
     public enum GameStates
     {
@@ -110,6 +113,25 @@ public class GameManager : MonoBehaviour
         get { return FindObjectOfType<Movent>().gameObject; }
     }
     */
+    public void SetGameState(GameStates newState)
+    {
+        gameState = newState;
+
+        if (corduraRoutine != null)
+            StopCoroutine(corduraRoutine);
+
+        switch (gameState)
+        {
+            case GameStates.SAFE_ZONE:
+                corduraRoutine = StartCoroutine(AumentarCordura());
+                break;
+
+            default:
+                corduraRoutine = StartCoroutine(BajarCordura());
+                break;
+        }
+    }
+
 
 
 
@@ -156,17 +178,35 @@ public class GameManager : MonoBehaviour
 
 
     IEnumerator BajarCordura()
+
     {
-        while (corduraActual > 0)
+        while (true)
         {
-            float perdida = (corduraMax * (perdidaDeCordura / 100f)) * Time.deltaTime;
-            corduraActual -= perdida;
-
-            corduraActual = Mathf.Clamp(corduraActual, 0, corduraMax);
-
+            if (corduraActual > 0)
+            {
+                float perdida = (corduraMax * (perdidaDeCordura / 100f)) * Time.deltaTime;
+                corduraActual -= perdida;
+                corduraActual = Mathf.Clamp(corduraActual, 0, corduraMax);
+            }
             yield return null;
         }
     }
+
+    IEnumerator AumentarCordura()
+
+    {
+        while (true)
+        {
+            if (corduraActual < corduraMax)
+            {
+                float ganancia = (corduraMax * (perdidaDeCordura / 100f)) * Time.deltaTime;
+                corduraActual += ganancia;
+                corduraActual = Mathf.Clamp(corduraActual, 0, corduraMax);
+            }
+            yield return null;
+        }
+    }
+
 
     public void FindPlayer()
     {
