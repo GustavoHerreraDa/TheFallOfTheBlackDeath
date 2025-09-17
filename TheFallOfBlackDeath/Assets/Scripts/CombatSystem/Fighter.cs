@@ -4,6 +4,16 @@ using System.Collections.Generic;
 
 public abstract class Fighter : MonoBehaviour
 {
+    [System.Serializable]
+    public class BodyPartData
+    {
+        public BodyPart part;
+        public Transform hitPoint;
+        public float damageMultiplier = 1f; // Ej: Head 1.5x daño
+    }
+
+    public List<BodyPartData> bodyParts;
+
     public Team team;
     public string idName;
     public StatusPanel statusPanel;
@@ -25,6 +35,11 @@ public abstract class Fighter : MonoBehaviour
 
     [SerializeField]
     public Transform DamagePivot;
+
+    public BodyPartData GetBodyPart(BodyPart part)
+    {
+        return bodyParts.Find(p => p.part == part);
+    }
 
     public bool isAlive
     {

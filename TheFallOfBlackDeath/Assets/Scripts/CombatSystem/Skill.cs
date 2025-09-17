@@ -9,7 +9,13 @@ public enum SkillType
     Heal,
     BossHability
 }
-
+public enum BodyPart
+{
+    Head,
+    Torso,
+    Legs,
+    Arms
+}
 public abstract class Skill : MonoBehaviour
 {
     [Header("Base Skill")]
@@ -17,6 +23,7 @@ public abstract class Skill : MonoBehaviour
     public float animationDuration;
 
     public SkillTargeting targeting;
+    public BodyPart BodyPartTarget; // NUEVO CAMPO
 
     public GameObject effectPrfb;
 
@@ -29,6 +36,7 @@ public abstract class Skill : MonoBehaviour
     public string animationName;
     public bool HasItemInInventory;
     public List<InventoryManager.InventoryObjectID> ItemsNeeded;
+
     public bool needsManualTargeting
     {
         get
@@ -38,7 +46,6 @@ public abstract class Skill : MonoBehaviour
                 case SkillTargeting.SINGLE_ALLY:
                 case SkillTargeting.SINGLE_OPPONENT:
                     return true;
-
                 default:
                     return false;
             }
@@ -49,9 +56,6 @@ public abstract class Skill : MonoBehaviour
     {
         this.messages = new Queue<string>();
         this.receivers = new List<Fighter>();
-        
-        
-        
     }
 
     private void Animate(Fighter receiver)
@@ -64,18 +68,15 @@ public abstract class Skill : MonoBehaviour
     {
         foreach (var receiver in this.receivers)
         {
-            
             this.Animate(receiver);
-            this.OnRun(receiver);
+            this.OnRun(receiver); // Aquí puedes usar BodyPartTarget dentro de la lógica de daño
         }
-
         this.receivers.Clear();
     }
 
     public void SetEmitter(Fighter _emitter)
     {
         this.emitter = _emitter;
-
     }
 
     public void AddReceiver(Fighter _receiver)
@@ -96,10 +97,7 @@ public abstract class Skill : MonoBehaviour
     {
         var hasItems = InventoryManager.instance == null ? true : InventoryManager.instance.HasItemInIventory(ItemsNeeded);
         HasItemInInventory = hasItems;
-
-        //if (hasItems) this.gameObject.SetActive(true);
     }
-    
 
     protected abstract void OnRun(Fighter receiver);
 }

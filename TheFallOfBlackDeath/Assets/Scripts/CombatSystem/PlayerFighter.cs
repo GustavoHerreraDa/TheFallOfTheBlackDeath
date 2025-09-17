@@ -114,9 +114,9 @@ public class PlayerFighter : Fighter
         }
     }
 
-    public void SetTargetAndAttack(Fighter enemyFigther)
+    public void SetTargetAndAttack(Fighter enemyFigther, BodyPart bodyPart = BodyPart.Torso)
     {
-
+        this.skillToBeExecuted.BodyPartTarget = bodyPart;
         this.skillToBeExecuted.AddReceiver(enemyFigther);
 
         this.combatManager.OnFighterSkill(this.skillToBeExecuted);
@@ -125,6 +125,7 @@ public class PlayerFighter : Fighter
         this.enemiesPanel.Hide();
         this.combatManager.UpdateStatsUI();
     }
+
     public void Return()
     {
         this.skillPanel.Show();
