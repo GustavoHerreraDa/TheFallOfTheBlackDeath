@@ -184,7 +184,7 @@ public class GameManager : MonoBehaviour
         {
             if (corduraActual > 0)
             {
-                float perdida = (corduraMax * (perdidaDeCordura / 100f)) * Time.deltaTime;
+                float perdida = (corduraMax * (perdidaDeCordura / 500f)) * Time.deltaTime;
                 corduraActual -= perdida;
                 corduraActual = Mathf.Clamp(corduraActual, 0, corduraMax);
             }
