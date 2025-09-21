@@ -28,6 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9221528785822217595}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.6084774, z: 0, w: 0.7935712}
   m_LocalPosition: {x: 0, y: -3.778, z: 14.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -35,7 +36,6 @@ Transform:
   m_Children:
   - {fileID: 4043876752732824990}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -74.959, z: 0}
 --- !u!195 &9221528785822217597
 NavMeshAgent:
@@ -67,8 +67,17 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9221528785822217595}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.9635383
   m_Height: 1.9270768
   m_Direction: 1
@@ -120,6 +129,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 9221528785822217593}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 4bdc418758f2568409cd59de6d5a57b2, type: 3}
@@ -171,9 +181,17 @@ PrefabInstance:
       value: Warzombie F Pedroso
       objectReference: {fileID: 0}
     - target: {fileID: 1974243983493711947, guid: 4bdc418758f2568409cd59de6d5a57b2, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1974243983493711947, guid: 4bdc418758f2568409cd59de6d5a57b2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: e30ee5d56ea1dac459ee30465873f3d3, type: 2}
+    - target: {fileID: 1974243983493711947, guid: 4bdc418758f2568409cd59de6d5a57b2, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: a1b89ae59c6a25c40a2346a0f518b8c0, type: 2}
     - target: {fileID: 5866666021909216657, guid: 4bdc418758f2568409cd59de6d5a57b2, type: 3}
       propertyPath: m_Controller
       value: 
@@ -183,6 +201,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4bdc418758f2568409cd59de6d5a57b2, type: 3}
 --- !u!4 &4043876752732824990 stripped
 Transform:
