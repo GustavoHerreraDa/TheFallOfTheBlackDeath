@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 949948427771283411}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.68048424, z: -0, w: 0.7327628}
   m_LocalPosition: {x: 7.220004, y: 1.41, z: -0.7098782}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4022697377997856663}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7921790884137585063
 MonoBehaviour:
@@ -47,6 +47,7 @@ MonoBehaviour:
   skillName: Whirlwind
   animationDuration: 1
   targeting: 2
+  BodyPartTarget: 0
   effectPrfb: {fileID: 1134129239631916, guid: 7e48ba6b1b968764490bbc70b66e3fe1, type: 3}
   SkillDesc: Deal true damage to all enemies for 35, with a 20% chance of landing
     a critical hit for additional impact
@@ -81,13 +82,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1856910305259842664}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2.5, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4022697377997856663}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3962659066659454932
 GameObject:
@@ -113,13 +114,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3962659066659454932}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.68048424, z: -0, w: 0.7327628}
   m_LocalPosition: {x: 7.220004, y: 1.41, z: -0.7098782}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4022697377997856663}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2920774458030321471
 MonoBehaviour:
@@ -136,6 +137,7 @@ MonoBehaviour:
   skillName: Colossal Impact
   animationDuration: 1.5
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 6703250321131892297, guid: 2b987d41506d172419fa18578f6ac380, type: 3}
   SkillDesc: Channel immense strength into a devastating blow, dealing 75 damage
     to the enemy (always critical).
@@ -143,10 +145,7 @@ MonoBehaviour:
   iconUI: {fileID: 21300000, guid: 2a374e70ce8fd4c41adddb5886a760ab, type: 3}
   animationName: Impact
   HasItemInInventory: 0
-  ItemsNeeded:
-  - id: 15
-    amount: 1
-    uso: 0
+  ItemsNeeded: []
   amount: -60
   modType: 0
   critChance: 1
@@ -174,13 +173,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5085693282725150800}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.68048424, z: -0, w: 0.7327628}
   m_LocalPosition: {x: 8.46, y: 1.41, z: 3.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4022697377997856663}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &6700753559870275283
 AudioSource:
@@ -301,13 +300,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5895370649770267424}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.68048424, z: -0, w: 0.7327628}
   m_LocalPosition: {x: 0.017, y: 0.93, z: 0.229}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4022697377997856663}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9173237862744359980
 GameObject:
@@ -334,13 +333,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9173237862744359980}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
   m_LocalPosition: {x: 6.78, y: 1.54, z: -0.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4022697377997856663}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &821244293868357548
 MonoBehaviour:
@@ -371,22 +370,21 @@ MonoBehaviour:
   skillName: Fear
   animationDuration: 2
   targeting: 2
+  BodyPartTarget: 0
   effectPrfb: {fileID: 299570413518567310, guid: e83d7fa16ae549944888e3639c44101b, type: 3}
   SkillDesc: Reduce enemy defense power by 30.
   skillType: 0
   iconUI: {fileID: 21300000, guid: 0830d0fd1e66cc84285bc0b6215ab743, type: 3}
   animationName: Inspiration
   HasItemInInventory: 0
-  ItemsNeeded:
-  - id: 2
-    amount: 1
-    uso: 0
+  ItemsNeeded: []
   message: '{receiver} enemy lose 30 deffense!'
 --- !u!1001 &2703193069426616174
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 450989877, guid: e3be3b195764333428080e393481162c, type: 3}
@@ -475,6 +473,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 450989879, guid: e3be3b195764333428080e393481162c, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1319790218102814969, guid: e3be3b195764333428080e393481162c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 570881058832413671}
+    - targetCorrespondingSourceObject: {fileID: 1319790218102814969, guid: e3be3b195764333428080e393481162c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1203242835346367553}
+    - targetCorrespondingSourceObject: {fileID: 1319790218102814969, guid: e3be3b195764333428080e393481162c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 481014429498446661}
+    - targetCorrespondingSourceObject: {fileID: 1319790218102814969, guid: e3be3b195764333428080e393481162c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 516316868990639398}
+    - targetCorrespondingSourceObject: {fileID: 1319790218102814969, guid: e3be3b195764333428080e393481162c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1553664931794207670}
+    - targetCorrespondingSourceObject: {fileID: 1319790218102814969, guid: e3be3b195764333428080e393481162c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7319068044631253766}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 347213020163082240, guid: e3be3b195764333428080e393481162c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7057351550220585581}
+    - targetCorrespondingSourceObject: {fileID: 347213020163082240, guid: e3be3b195764333428080e393481162c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4900534721875297892}
+    - targetCorrespondingSourceObject: {fileID: 347213020163082240, guid: e3be3b195764333428080e393481162c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3525027302169570547}
+    - targetCorrespondingSourceObject: {fileID: 347213020163082240, guid: e3be3b195764333428080e393481162c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8383335246812853290}
   m_SourcePrefab: {fileID: 100100000, guid: e3be3b195764333428080e393481162c, type: 3}
 --- !u!95 &507221831998060850 stripped
 Animator:
@@ -493,10 +524,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2401025122682974062}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
@@ -510,8 +552,17 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2401025122682974062}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.5
   m_Height: 1.8202958
   m_Direction: 1

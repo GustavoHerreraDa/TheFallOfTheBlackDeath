@@ -23,13 +23,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4665017735849018191}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.37, y: 1.192, z: -3.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4665017737359174046}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4665017736715766339
 GameObject:
@@ -55,13 +55,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4665017736715766339}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4665017736979894093}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4665017736715766397
 MonoBehaviour:
@@ -106,6 +106,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4665017736979894098}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.7070231, y: -0.010878471, z: -0.010878471, w: 0.7070231}
   m_LocalPosition: {x: -0.6757468, y: -0.33387935, z: 0.03675674}
   m_LocalScale: {x: 0.7142857, y: 0.7142858, z: 0.7142858}
@@ -113,7 +114,6 @@ Transform:
   m_Children:
   - {fileID: 4665017736715766338}
   m_Father: {fileID: 4665017737359174046}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4665017736979894092
 MonoBehaviour:
@@ -130,6 +130,7 @@ MonoBehaviour:
   skillName: Blessed
   animationDuration: 3
   targeting: 3
+  BodyPartTarget: 0
   effectPrfb: {fileID: 8189500006840025469, guid: e62b22954c59c2f49b53a190dd1291ef, type: 3}
   SkillDesc: 
   skillType: 1
@@ -160,13 +161,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4665017737121801951}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.5076331, y: 0.49224862, z: 0.49224862, w: 0.5076331}
   m_LocalPosition: {x: -0.274, y: 0.043, z: -0.841}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4665017737359174046}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4665017737153818898
 GameObject:
@@ -193,13 +194,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4665017737153818898}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4665017737359174046}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4665017737153818895
 MonoBehaviour:
@@ -230,6 +231,7 @@ MonoBehaviour:
   skillName: PROTECTE
   animationDuration: 3
   targeting: 3
+  BodyPartTarget: 0
   effectPrfb: {fileID: 1399491476850481373, guid: 7e691a0229efacd4cba2922df3888456, type: 3}
   SkillDesc: 
   skillType: 0
@@ -265,6 +267,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4665017737359174047}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 6.21, y: -2.3, z: 1.38}
   m_LocalScale: {x: 1.3999999, y: 1.4, z: 1.3999999}
@@ -278,11 +281,10 @@ Transform:
   - {fileID: 7126051997682855767}
   - {fileID: 2966966852789684283}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4665017737359174040
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -299,7 +301,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4665017737359174041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,6 +315,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cafa976afee2e8a41aedf9756702ba62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyParts:
+  - part: 1
+    hitPoint: {fileID: 4665017737121801950}
+    damageMultiplier: 0
+  - part: 2
+    hitPoint: {fileID: 4665017737121801950}
+    damageMultiplier: 0
+  - part: 3
+    hitPoint: {fileID: 4665017737121801950}
+    damageMultiplier: 0
+  - part: 4
+    hitPoint: {fileID: 4665017737121801950}
+    damageMultiplier: 0
   team: 1
   idName: Healing Goblin
   statusPanel: {fileID: 4147524413339576837}
@@ -379,13 +395,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6707594455205345104}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4665017737359174046}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &4741216988058706589
 AudioSource:
@@ -488,6 +504,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 4665017737359174046}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: fd440dd638c245e40b33205744efffd1, type: 3}
@@ -551,6 +568,18 @@ PrefabInstance:
       value: goblin_d_shareyko
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fd440dd638c245e40b33205744efffd1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4665017736817129028}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fd440dd638c245e40b33205744efffd1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4665017736817129031}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fd440dd638c245e40b33205744efffd1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4665017736817129029}
   m_SourcePrefab: {fileID: 100100000, guid: fd440dd638c245e40b33205744efffd1, type: 3}
 --- !u!4 &5131783156776634405 stripped
 Transform:
@@ -569,10 +598,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5511298992965767839}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -586,15 +626,24 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5511298992965767839}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.30532843
   m_Height: 2.013287
   m_Direction: 1
   m_Center: {x: 0.22598803, y: 0.962647, z: -0.059078768}
 --- !u!95 &4665017736817129029
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -611,12 +660,14 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &4665017736092336829
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 4665017737359174046}
     m_Modifications:
     - target: {fileID: 1482966800443300653, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
@@ -840,6 +891,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
 --- !u!114 &229388928558818682 stripped
 MonoBehaviour:

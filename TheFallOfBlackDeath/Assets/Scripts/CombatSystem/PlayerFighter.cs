@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 //TP2 FACUNDO FERREIRO/GUSTAVO TORRES
 public class PlayerFighter : Fighter
 {
@@ -73,26 +73,28 @@ public class PlayerFighter : Fighter
 
     public void ExecuteSkill(int index)
     {
-
         this.skillToBeExecuted = this.skills[index];
+        Debug.Log("Skill ejecutada: " + (this.skillToBeExecuted != null ? this.skillToBeExecuted.skillName : "NULL"));
+
         this.skillToBeExecuted.SetEmitter(this);
 
         if (this.skillToBeExecuted.needsManualTargeting)
         {
-
             Fighter[] receivers = this.GetSkillTargets(this.skillToBeExecuted);
-            this.enemiesPanel.Show(this, receivers);
-            this.skillPanel.Hide();
+            Debug.Log("Receivers: " + (receivers != null ? receivers.Length.ToString() : "NULL"));
+            Debug.Log("EnemiesPanel: " + (this.enemiesPanel != null ? "Asignado" : "NULL"));
 
+            this.enemiesPanel.Show(this, this.skillToBeExecuted, receivers);
+            this.skillPanel.Hide();
         }
         else
         {
             this.AutoConfigureSkillTargeting(this.skillToBeExecuted);
             this.combatManager.OnFighterSkill(this.skillToBeExecuted);
             this.skillPanel.Hide();
-
         }
     }
+
 
     public void UpdateStats(string statAffected, float amountAffected)
     {
@@ -158,5 +160,10 @@ public class PlayerFighter : Fighter
         statusPanel = newStatusPanel;
         enemiesPanel = newEnemiesPanel;
         return this;
+    }
+
+    public Skill GetPendingSkill()
+    {
+        return this.skillToBeExecuted;
     }
 }

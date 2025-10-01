@@ -11,6 +11,7 @@ public enum SkillType
 }
 public enum BodyPart
 {
+    None,
     Head,
     Torso,
     Legs,
@@ -23,7 +24,7 @@ public abstract class Skill : MonoBehaviour
     public float animationDuration;
 
     public SkillTargeting targeting;
-    public BodyPart BodyPartTarget; // NUEVO CAMPO
+    public BodyPart BodyPartTarget;
 
     public GameObject effectPrfb;
 
