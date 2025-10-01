@@ -1,35 +1,55 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.AI;
-//TP2 AUGUSTO NANINI
+
 public class SeguirJugador : MonoBehaviour
 {
-
     public NavMeshAgent navMeshAgent;
     public GameObject player;
-    public float distanceToFollowPlayer = 5f; // Distancia a la que empezará a seguir al jugador (modificable desde el Editor de Unity)
-    public Transform returnDestination; // Destino al que la IA volverá si el jugador se aleja demasiado
-    Vector3 currentTarget; // Almacena el objetivo actual al que se dirige (incluyendo al jugador o el destino de retorno)
+    public float distanceToFollowPlayer = 5f; 
+
+    [Header("Patrulla")]
+    public Transform puntoA;
+    public Transform puntoB;
+    private Transform destinoActual;
+
+    private bool siguiendoJugador = false;
 
     void Start()
     {
-        currentTarget = returnDestination.position; // Establece el destino de retorno como objetivo inicial
-        navMeshAgent.SetDestination(currentTarget); // Asigna el objetivo al que debe ir (destino de retorno)
+        destinoActual = puntoA; 
+        navMeshAgent.SetDestination(destinoActual.position);
     }
 
     void Update()
     {
-        if (Vector3.Distance(player.transform.position, transform.position) < distanceToFollowPlayer) // Si el jugador está dentro de la distancia especificada para empezar a seguirlo ...
-        {
-            currentTarget = player.transform.position; // ... asigna como objetivo actual al jugador
-        }
-        else // Si el jugador se aleja demasiado ...
-        {
-            currentTarget = returnDestination.position; // ... asigna como objetivo actual el destino de retorno
-        }
+        float distanciaJugador = Vector3.Distance(player.transform.position, transform.position);
 
-        if (navMeshAgent.destination != currentTarget) // Si el objetivo actual es diferente al destino actual del NavMeshAgent ...
+        if (distanciaJugador < distanceToFollowPlayer) 
         {
-            navMeshAgent.SetDestination(currentTarget); // ... asigna el nuevo objetivo como destino del NavMeshAgent
+            siguiendoJugador = true;
+            navMeshAgent.SetDestination(player.transform.position);
+        }
+        else
+        {
+            if (siguiendoJugador) 
+            {
+                siguiendoJugador = false;
+                navMeshAgent.SetDestination(destinoActual.position);
+            }
+
+            Patrullar();
+        }
+    }
+
+    void Patrullar()
+    {
+        if (siguiendoJugador) return;
+
+        
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
+        {
+            destinoActual = destinoActual == puntoA ? puntoB : puntoA;
+            navMeshAgent.SetDestination(destinoActual.position);
         }
     }
 }
