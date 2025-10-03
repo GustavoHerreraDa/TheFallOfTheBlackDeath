@@ -23,13 +23,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 201645912187768040}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.13, y: 1.38, z: 0.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6902323948754581471}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5642921608247646803
 GameObject:
@@ -55,13 +55,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5642921608247646803}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6902323948754581471}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9082851446737023062
 MonoBehaviour:
@@ -78,6 +78,7 @@ MonoBehaviour:
   skillName: Infected Bite
   animationDuration: 1.5
   targeting: 2
+  BodyPartTarget: 0
   effectPrfb: {fileID: 3432958286849152088, guid: 87ee7299dd44ed747af24dbb91bcd33b, type: 3}
   SkillDesc: 
   skillType: 1
@@ -114,6 +115,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6902323948755069951}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.86602545, z: 0, w: 0.49999994}
   m_LocalPosition: {x: -7.54, y: -0.43, z: -4.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -128,7 +130,6 @@ Transform:
   - {fileID: 7822706394307296523}
   - {fileID: 7136321600913781583}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 120, z: 0}
 --- !u!114 &6902323948700045780
 MonoBehaviour:
@@ -142,6 +143,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cafa976afee2e8a41aedf9756702ba62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyParts:
+  - part: 1
+    hitPoint: {fileID: 5654859653644030477}
+    damageMultiplier: 0
+  - part: 2
+    hitPoint: {fileID: 5654859653644030477}
+    damageMultiplier: 0
+  - part: 4
+    hitPoint: {fileID: 5654859653644030477}
+    damageMultiplier: 0
+  - part: 3
+    hitPoint: {fileID: 5654859653644030477}
+    damageMultiplier: 0
   team: 1
   idName: Parasite
   statusPanel: {fileID: 4027893684075247705}
@@ -208,13 +222,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7765990274118264438}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.25881907, z: -0, w: 0.9659259}
   m_LocalPosition: {x: 1.17, y: 1.83, z: -3.67}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6902323948754581471}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: -30, z: 0}
 --- !u!1 &7921232430835872223
 GameObject:
@@ -241,13 +255,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7921232430835872223}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6902323948754581471}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7921232430135255326
 MonoBehaviour:
@@ -278,6 +292,7 @@ MonoBehaviour:
   skillName: Focus
   animationDuration: 1.5
   targeting: 0
+  BodyPartTarget: 0
   effectPrfb: {fileID: 1844191813266838, guid: 968c924d2be019d4b9e67647551eec3e, type: 3}
   SkillDesc: 
   skillType: 1
@@ -310,13 +325,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7921232431188194147}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6902323948754581471}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7921232431188194157
 MonoBehaviour:
@@ -333,6 +348,7 @@ MonoBehaviour:
   skillName: Toxic Touch
   animationDuration: 1.5
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 4425129568585013132, guid: bbeeb0ddc21369746aaaae5c5c1c09cf, type: 3}
   SkillDesc: 
   skillType: 0
@@ -367,13 +383,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8268000737463624203}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6902323948754581471}
-  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &3701083134984464023
 AudioSource:
@@ -476,6 +492,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6902323948754581471}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9c055094a6b029a4e834f61123b24e6d, type: 3}
@@ -547,6 +564,18 @@ PrefabInstance:
       value: -0.24
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9c055094a6b029a4e834f61123b24e6d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9082851448338609165}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9c055094a6b029a4e834f61123b24e6d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9082851448338609164}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9c055094a6b029a4e834f61123b24e6d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1554953539121927885}
   m_SourcePrefab: {fileID: 100100000, guid: 9c055094a6b029a4e834f61123b24e6d, type: 3}
 --- !u!1 &4774187514182210732 stripped
 GameObject:
@@ -560,10 +589,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4774187514182210732}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -577,15 +617,24 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4774187514182210732}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2.0965757
   m_Direction: 1
   m_Center: {x: 0, y: 1.0190403, z: 0}
 --- !u!95 &1554953539121927885
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -602,7 +651,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &5263162683538001430 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9c055094a6b029a4e834f61123b24e6d, type: 3}
@@ -613,6 +663,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6902323948754581471}
     m_Modifications:
     - target: {fileID: 1482966800443300653, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
@@ -788,6 +839,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
 --- !u!114 &956434989906556710 stripped
 MonoBehaviour:

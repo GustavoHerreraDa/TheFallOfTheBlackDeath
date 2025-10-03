@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1628480931614849583}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0.06650081, y: -1.2286497, z: -0.00017499924}
   m_LocalScale: {x: 1.5000002, y: 1.5, z: 1.5000002}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6115986738999253078}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9080720259952435452
 MonoBehaviour:
@@ -47,6 +47,7 @@ MonoBehaviour:
   skillName: Ignite
   animationDuration: 1.5
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 1590415177872986601, guid: acdb90624a404aa438447006f1026065, type: 3}
   SkillDesc: 
   skillType: 0
@@ -83,6 +84,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6115986738999253079}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.19, y: 0.71, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -98,7 +100,6 @@ Transform:
   - {fileID: 1165858796707298357}
   - {fileID: 4881592112772017160}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6115986738999253077
 MonoBehaviour:
@@ -112,6 +113,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cafa976afee2e8a41aedf9756702ba62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyParts:
+  - part: 1
+    hitPoint: {fileID: 6115986740626850642}
+    damageMultiplier: 0
+  - part: 2
+    hitPoint: {fileID: 6115986740626850642}
+    damageMultiplier: 0
+  - part: 4
+    hitPoint: {fileID: 6115986740626850642}
+    damageMultiplier: 0
+  - part: 3
+    hitPoint: {fileID: 6115986740626850642}
+    damageMultiplier: 0
   team: 1
   idName: Demon Wizard
   statusPanel: {fileID: 5424536916894972263}
@@ -179,13 +193,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6115986739162385512}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0.06650081, y: -1.2286497, z: -0.00017499924}
   m_LocalScale: {x: 1.5000002, y: 1.5, z: 1.5000002}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6115986738999253078}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6115986739162385518
 MonoBehaviour:
@@ -202,6 +216,7 @@ MonoBehaviour:
   skillName: Ignitus
   animationDuration: 3
   targeting: 2
+  BodyPartTarget: 0
   effectPrfb: {fileID: 8172849020266659018, guid: 2af5562ce69fc2d448481a1587a352a5, type: 3}
   SkillDesc: 
   skillType: 1
@@ -236,13 +251,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6115986740411157702}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6115986740703858728}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6115986740411157700
 MonoBehaviour:
@@ -286,13 +301,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6115986740426623384}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071069, z: -0, w: 0.70710677}
   m_LocalPosition: {x: -3.007, y: 0.91, z: -0.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6115986738999253078}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: -30, z: 0}
 --- !u!1 &6115986740626850643
 GameObject:
@@ -317,13 +332,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6115986740626850643}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.5076331, y: 0.4922486, z: 0.4922486, w: 0.5076331}
   m_LocalPosition: {x: 2.56, y: -0.4, z: -0.36}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6115986738999253078}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6115986740703858729
 GameObject:
@@ -349,6 +364,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6115986740703858729}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
   m_LocalPosition: {x: 7.143499, y: -1.2686497, z: -2.5500512}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -356,7 +372,6 @@ Transform:
   m_Children:
   - {fileID: 6115986740411157701}
   m_Father: {fileID: 6115986738999253078}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6115986740703858735
 MonoBehaviour:
@@ -373,6 +388,7 @@ MonoBehaviour:
   skillName: Thunder
   animationDuration: 3
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 1141330259687333427, guid: 6718dc24203da53468af9ada8fef7d6d, type: 3}
   SkillDesc: Maldice al enemigo (Pierde puntos de salud por turno)
   skillType: 1
@@ -383,7 +399,6 @@ MonoBehaviour:
   - id: 6
     amount: 1
     uso: 0
-  audioSource: {fileID: 3861557124769006861, guid: bbb90e4647048964c9eac0c7fd71caa3, type: 3}
 --- !u!1 &6115986740844507788
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,13 +424,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6115986740844507788}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0.06650081, y: -1.2286497, z: -0.00017499924}
   m_LocalScale: {x: 1.5000002, y: 1.5, z: 1.5000002}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6115986738999253078}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6115986740844507777
 MonoBehaviour:
@@ -446,6 +461,7 @@ MonoBehaviour:
   skillName: War Scream
   animationDuration: 3
   targeting: 2
+  BodyPartTarget: 0
   effectPrfb: {fileID: 7177991128484655659, guid: 59a35ab9f68edff40b6e5332bed330f5, type: 3}
   SkillDesc: 
   skillType: 1
@@ -478,13 +494,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7414658690826527535}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6115986738999253078}
-  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1482854636316573668
 AudioSource:
@@ -587,6 +603,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6115986738999253078}
     m_Modifications:
     - target: {fileID: 1482966800443300653, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
@@ -818,6 +835,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
 --- !u!224 &1165858796707298357 stripped
 RectTransform:
@@ -862,6 +882,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6115986738999253078}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e40c141fc7e506540ba8b48aa5c168ef, type: 3}
@@ -957,6 +978,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 5cfbb78b0d3a83c46851a0592c89cb57, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e40c141fc7e506540ba8b48aa5c168ef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3953988882270661734}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e40c141fc7e506540ba8b48aa5c168ef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3953988882270661729}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e40c141fc7e506540ba8b48aa5c168ef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6115986740393715901}
   m_SourcePrefab: {fileID: 100100000, guid: e40c141fc7e506540ba8b48aa5c168ef, type: 3}
 --- !u!4 &6010863993379748288 stripped
 Transform:
@@ -975,10 +1008,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6350410107912037242}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -992,15 +1036,24 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6350410107912037242}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2.1027267
   m_Direction: 1
   m_Center: {x: 0, y: 0.9868212, z: 0}
 --- !u!95 &6115986740393715901
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1017,4 +1070,5 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
