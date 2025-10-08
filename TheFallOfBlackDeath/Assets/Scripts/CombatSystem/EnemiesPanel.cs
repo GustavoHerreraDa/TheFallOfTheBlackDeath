@@ -1,67 +1,114 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+//TP2 AUGUSTO NANINI/FACUNDO FERREIRO
 public class EnemiesPanel : MonoBehaviour
 {
-    public GameObject enemyButtonPrefab;
-    public Transform buttonContainer;
-    public BodyPartPanel bodyPartPanel;
+    public GameObject sampleButton;
+    public GameObject botonReturn;
 
-    private PlayerFighter currentPlayer;
-    private Skill currentSkill;
+    private PlayerFighter targetFighter;
+    private List<Fighter> targets;
 
+    private List<EnemyButtonUI> buttons;
 
-    public void Show(PlayerFighter player, Skill skill, Fighter[] enemies)
+    private float baseHeight;
+    private RectTransform rectTransform;
+
+    void Awake()
     {
-        gameObject.SetActive(true);
-        enemyButtonPrefab.SetActive(true);
-        currentPlayer = player;
-        currentSkill = skill;
+        this.targets = new List<Fighter>();
+        this.buttons = new List<EnemyButtonUI>();
 
-        // Limpiar botones previos
-        foreach (Transform child in buttonContainer)
-            Destroy(child.gameObject);
+        this.rectTransform = this.GetComponent<RectTransform>();
+        this.baseHeight = this.rectTransform.rect.height;
 
-        // Crear botones por cada enemigo
-        foreach (Fighter enemy in enemies)
-        {
-            if (!enemy.isAlive) continue;
+        // Añadimos el botón de ejemplo como el primer botón disponible
+        EnemyButtonUI btn = this.InsertNewButton(this.sampleButton, 0);
+        btn.Hide();
 
-            GameObject btnObj = Instantiate(enemyButtonPrefab, buttonContainer);
-            Button btn = btnObj.GetComponent<Button>();
-            Text btnText = btnObj.GetComponentInChildren<Text>();
-            btnText.text = enemy.idName;
-
-            btn.onClick.AddListener(() => OnEnemySelected(enemy));
-            {
-                enemyButtonPrefab.SetActive(false);
-                Debug.Log("Enemy selected: " + enemy.idName);
-                bodyPartPanel.Show(currentPlayer, enemy, currentSkill); // <- acá se abre el panel de partes del cuerpo
-            }
-        }
+        this.Hide();
     }
 
-    private void OnEnemySelected(Fighter target)
+    public void OnTargetButtonClick(int index)
     {
-        // Caso: skill requiere elegir parte del cuerpo
-        if (currentSkill.targeting == SkillTargeting.SINGLE_OPPONENT)
+        Fighter target = this.targets[index];
+
+        this.targetFighter.SetTargetAndAttack(target);
+    }
+
+    public void Show(PlayerFighter playerFighter, Fighter[] targets)
+    {
+        this.gameObject.SetActive(true);
+        botonReturn.SetActive(true);
+        this.targetFighter = playerFighter;
+
+        int btnIndex = 0;
+
+        foreach (var target in targets)
         {
-            Hide();
-            bodyPartPanel.Show(currentPlayer, target, currentSkill);
+            EnemyButtonUI btn = this.ActivateNextButton(btnIndex);
+            btn.SetText(target.idName);
+
+            this.targets.Add(target);
+
+            btnIndex++;
         }
 
-        else
-        {
-            // Skill normal: se ejecuta directo
-            currentSkill.AddReceiver(target);
-            currentPlayer.combatManager.OnFighterSkill(currentSkill);
-            Hide();
-        }
+        this.rectTransform.sizeDelta = new Vector2(
+            this.rectTransform.rect.width,
+            this.baseHeight * targets.Length
+        );
     }
 
     public void Hide()
     {
-        gameObject.SetActive(false);
+        this.sampleButton.SetActive(false);
+        this.botonReturn.SetActive(false);
+        foreach (var btn in this.buttons)
+        {
+            btn.Hide();
+        }
+
+        this.targets.Clear();
     }
+
+    private EnemyButtonUI ActivateNextButton(int index)
+    {
+        foreach (var btn in this.buttons)
+        {
+            if (btn.index == index)
+            {
+                btn.Show();
+                return btn;
+            }
+        }
+
+        // Clonamos el botón de ejemplo
+        GameObject btnGO = Instantiate(this.sampleButton);
+        btnGO.transform.SetParent(this.transform);
+        btnGO.transform.localScale = Vector3.one;
+
+        // Lo añadimos como nuevo botón disponible
+        EnemyButtonUI but = this.InsertNewButton(btnGO, index);
+        but.Show();
+
+        return but;
+    }
+
+    private EnemyButtonUI InsertNewButton(GameObject btnGO, int index)
+    {
+        EnemyButtonUI btn = new EnemyButtonUI(btnGO, index);
+        btn.button.onClick.AddListener(() => { this.OnTargetButtonClick(btn.index); });
+
+        this.buttons.Add(btn);
+
+        return btn;
+    }
+    public void Show()
+    {
+        this.sampleButton.SetActive(true);
+        botonReturn.SetActive(true);
+    }
+
 }

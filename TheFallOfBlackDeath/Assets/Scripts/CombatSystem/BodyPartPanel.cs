@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using UnityEngine.UI;
 
 public class BodyPartPanel : MonoBehaviour
@@ -41,6 +42,14 @@ public class BodyPartPanel : MonoBehaviour
         currentSkill.BodyPartTarget = part;
         currentSkill.AddReceiver(currentTarget);
 
+        // Aplicar daño directo a esa parte
+        if (currentSkill is HealthModSkill healthSkill)
+        {
+            float amount = -healthSkill.GetModification(currentTarget);
+            currentTarget.ModifyBodyPartHealth(part, amount);
+        }
+
+        // Ejecutar efectos visuales/animaciones de skill
         player.combatManager.OnFighterSkill(currentSkill);
 
         Hide();

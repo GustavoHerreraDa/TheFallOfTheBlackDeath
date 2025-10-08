@@ -38,7 +38,8 @@ public class CombatManager : MonoBehaviour
     //SPAWN POINTS
     public bool isRadomEncounter = false;
     public List<Transform> spawnPoints = new List<Transform>();
-    
+    public BodyPartPanel bodyPartPanel;
+
 
 
 
@@ -424,12 +425,12 @@ public class CombatManager : MonoBehaviour
             if(enemyDataBase.EnemyDB[i].isMainCharacter)
             {
                 GameObject mainCharacter = Instantiate(enemyDataBase.EnemyDB[i].enemyPrefab, mainCharacterPos.transform.position, Quaternion.Euler(-0.4f, -90, 0), playerParent.transform);
-                mainCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel1, enemiesPanel);
+                mainCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel1, enemiesPanel, bodyPartPanel);
             }
             else if(enemyDataBase.EnemyDB[i].isSecondaryCharacter)
             {
                 GameObject secondaryCharacter = Instantiate(enemyDataBase.EnemyDB[i].enemyPrefab, secondaryCharacterPos.transform.position, Quaternion.Euler(-0.4f, -90, 0), playerParent.transform);
-                secondaryCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel2, enemiesPanel);
+                secondaryCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel2, enemiesPanel, bodyPartPanel);
             }
         }
     }

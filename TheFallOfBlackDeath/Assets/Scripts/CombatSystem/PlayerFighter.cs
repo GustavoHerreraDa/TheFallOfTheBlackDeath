@@ -1,11 +1,12 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 //TP2 FACUNDO FERREIRO/GUSTAVO TORRES
 public class PlayerFighter : Fighter
 {
     [Header("UI")]
     public PlayerSkillPanel skillPanel;
     public EnemiesPanel enemiesPanel;
+    public BodyPartPanel bodyPartPanel;
 
     public EnemyDataBase fightersDateBase;
     public int figherIndex;
@@ -40,10 +41,10 @@ public class PlayerFighter : Fighter
 
         for (int i = 0; i < this.skills.Length; i++)
         {
-            this.skillPanel.ConfigureButton(i, this.skills[i].skillName,this.skills[i].ItemsNeeded);
+            this.skillPanel.ConfigureButton(i, this.skills[i].skillName, this.skills[i].ItemsNeeded);
         }
 
-        // Mostrar informaci�n del aliado activo en el panel de estado
+        // Mostrar informaci n del aliado activo en el panel de estado
         Fighter activeAlly = allies[activeAllyIndex];
         statusPanel.SetStats(activeAlly.idName, activeAlly.stats);
 
@@ -64,37 +65,35 @@ public class PlayerFighter : Fighter
 
         activeAllyIndex = newIndex;
 
-        // Actualizar la informaci�n del nuevo aliado activo en el panel de estado
+        // Actualizar la informaci n del nuevo aliado activo en el panel de estado
         Fighter activeAlly = allies[activeAllyIndex];
         statusPanel.SetStats(activeAlly.idName, activeAlly.stats);
 
-        // Realizar cualquier otra l�gica necesaria al cambiar de aliado
+        // Realizar cualquier otra l gica necesaria al cambiar de aliado
     }
 
     public void ExecuteSkill(int index)
     {
-        this.skillToBeExecuted = this.skills[index];
-        Debug.Log("Skill ejecutada: " + (this.skillToBeExecuted != null ? this.skillToBeExecuted.skillName : "NULL"));
 
+        this.skillToBeExecuted = this.skills[index];
         this.skillToBeExecuted.SetEmitter(this);
 
         if (this.skillToBeExecuted.needsManualTargeting)
         {
-            Fighter[] receivers = this.GetSkillTargets(this.skillToBeExecuted);
-            Debug.Log("Receivers: " + (receivers != null ? receivers.Length.ToString() : "NULL"));
-            Debug.Log("EnemiesPanel: " + (this.enemiesPanel != null ? "Asignado" : "NULL"));
 
-            this.enemiesPanel.Show(this, this.skillToBeExecuted, receivers);
+            Fighter[] receivers = this.GetSkillTargets(this.skillToBeExecuted);
+            this.enemiesPanel.Show(this, receivers);
             this.skillPanel.Hide();
+
         }
         else
         {
             this.AutoConfigureSkillTargeting(this.skillToBeExecuted);
             this.combatManager.OnFighterSkill(this.skillToBeExecuted);
             this.skillPanel.Hide();
+
         }
     }
-
 
     public void UpdateStats(string statAffected, float amountAffected)
     {
@@ -116,18 +115,24 @@ public class PlayerFighter : Fighter
         }
     }
 
-    public void SetTargetAndAttack(Fighter enemyFigther, BodyPart bodyPart = BodyPart.Torso)
+    public void SetTargetAndAttack(Fighter enemyFighter)
     {
-        this.skillToBeExecuted.BodyPartTarget = bodyPart;
-        this.skillToBeExecuted.AddReceiver(enemyFigther);
-
-        this.combatManager.OnFighterSkill(this.skillToBeExecuted);
-
-        this.skillPanel.Hide();
-        this.enemiesPanel.Hide();
-        this.combatManager.UpdateStatsUI();
+        // Si el skill permite seleccionar parte del cuerpo
+        if (this.skillToBeExecuted is HealthModSkill)
+        {
+            this.enemiesPanel.Hide();
+            this.bodyPartPanel.Show(this, enemyFighter, this.skillToBeExecuted);
+        }
+        else
+        {
+            // Ejecución normal
+            this.skillToBeExecuted.AddReceiver(enemyFighter);
+            this.combatManager.OnFighterSkill(this.skillToBeExecuted);
+            this.skillPanel.Hide();
+            this.enemiesPanel.Hide();
+            this.combatManager.UpdateStatsUI();
+        }
     }
-
     public void Return()
     {
         this.skillPanel.Show();
@@ -139,7 +144,7 @@ public class PlayerFighter : Fighter
         allies.Clear();
         allies.Add(ally1);
         allies.Add(ally2);
-        // Agrega aqu� el resto de los aliados a la lista allies
+        // Agrega aqu  el resto de los aliados a la lista allies
     }
 
     private void SwitchActiveAlly()
@@ -154,16 +159,12 @@ public class PlayerFighter : Fighter
         // Realizar las acciones necesarias con el aliado activo
     }
 
-    public PlayerFighter GetSkillPanel(PlayerSkillPanel newSkillPanel, StatusPanel newStatusPanel, EnemiesPanel newEnemiesPanel)
+    public PlayerFighter GetSkillPanel(PlayerSkillPanel newSkillPanel, StatusPanel newStatusPanel, EnemiesPanel newEnemiesPanel, BodyPartPanel newBodyPartPanel)
     {
         skillPanel = newSkillPanel;
         statusPanel = newStatusPanel;
         enemiesPanel = newEnemiesPanel;
+        bodyPartPanel = newBodyPartPanel;
         return this;
-    }
-
-    public Skill GetPendingSkill()
-    {
-        return this.skillToBeExecuted;
     }
 }

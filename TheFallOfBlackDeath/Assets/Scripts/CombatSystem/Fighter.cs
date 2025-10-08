@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections.Generic;
+
+using UnityEngine;
 //TP2 AUGUSTO NANINI/FACUNDO FERREIRO
 
 public abstract class Fighter : MonoBehaviour
@@ -9,9 +10,18 @@ public abstract class Fighter : MonoBehaviour
     {
         public BodyPart part;
         public Transform hitPoint;
-        public float damageMultiplier = 1f; // Ej: Head 1.5x daño
-    }
+        public float maxHealth = 50f;
+        public float currentHealth;
 
+        public BodyPartData(BodyPart part, float health)
+        {
+            this.part = part;
+            this.maxHealth = health;
+            this.currentHealth = health;
+        }
+
+        public bool IsDestroyed => currentHealth <= 0;
+    }
     public List<BodyPartData> bodyParts;
 
     public Team team;
@@ -54,6 +64,11 @@ public abstract class Fighter : MonoBehaviour
         this.skills = this.GetComponentsInChildren<Skill>();
         this.modedStats = stats;
         this.statusMods = new List<StatusMod>();
+
+        foreach (var part in bodyParts)
+        {
+            part.currentHealth = part.maxHealth;
+        }
     }
 
     protected void AutoConfigureSkillTargeting(Skill skill)
@@ -143,6 +158,24 @@ public abstract class Fighter : MonoBehaviour
         }
     }
 
+    public void ModifyBodyPartHealth(BodyPart part, float amount)
+    {
+        BodyPartData target = bodyParts.Find(p => p.part == part);
+        if (target == null) return;
+
+        float prev = target.currentHealth;
+        target.currentHealth = Mathf.Clamp(target.currentHealth + amount, 0, target.maxHealth);
+
+        Debug.Log($"{part} recibió {amount}. Salud actual: {target.currentHealth}");
+
+        // Si la parte se destruyó, aplicá consecuencias
+        if (prev > 0 && target.IsDestroyed)
+        {
+            OnBodyPartDestroyed(target);
+        }
+    }
+
+
     public Stats GetCurrentStats()
     {
         Stats modedStats = this.stats;
@@ -171,5 +204,27 @@ public abstract class Fighter : MonoBehaviour
         modedStats = stats;
     }
 
+    private void OnBodyPartDestroyed(BodyPartData part)
+    {
+        switch (part.part)
+        {
+            case BodyPart.Head:
+                Debug.Log("Cabeza destruida → muerte instantánea");
+                ModifyHealth(-stats.health); // bajar toda la vida
+                break;
+            case BodyPart.Torso:
+                Debug.Log("Torso destruido → muerte instantánea");
+                ModifyHealth(-stats.health);
+                break;
+            case BodyPart.Legs:
+                Debug.Log("Piernas destruidas → no puede moverse");
+                // desactivar movimiento acá
+                break;
+            case BodyPart.Arms:
+                Debug.Log("Brazos destruidos → no puede atacar");
+                // desactivar ataque acá
+                break;
+        }
+    }
     public abstract void InitTurn();
 }
