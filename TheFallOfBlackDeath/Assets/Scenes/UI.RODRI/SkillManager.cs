@@ -14,6 +14,7 @@ public class SkillManager : MonoBehaviour
     [Header("UI")]
     public PlayerSkillPanel skillPanel;
     public EnemiesPanel enemySelection;
+    public BodyPartPanel bodyPartPanel;
 
 
     private void Awake()
@@ -22,6 +23,7 @@ public class SkillManager : MonoBehaviour
         combatManager = FindObjectOfType<CombatManager>();
         enemySelection = FindObjectOfType<EnemiesPanel>();
         skillPanel = FindObjectOfType<PlayerSkillPanel>();
+        bodyPartPanel = FindObjectOfType<BodyPartPanel>();
     }
     void Start()
     {

@@ -218,10 +218,12 @@ public abstract class Fighter : MonoBehaviour
                 break;
             case BodyPart.Legs:
                 Debug.Log("Piernas destruidas → no puede moverse");
+                modedStats.speed = 0; // sin velocidad
                 // desactivar movimiento acá
                 break;
             case BodyPart.Arms:
                 Debug.Log("Brazos destruidos → no puede atacar");
+                modedStats.attack = 0; // sin ataque
                 // desactivar ataque acá
                 break;
         }

@@ -2328,7 +2328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 731acd710395647439901d48baab48c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemiesPanel: {fileID: 0}
+  enemiesPanel: {fileID: 532778846}
   statusPanel1: {fileID: 1074256361}
   statusPanel2: {fileID: 34076316}
   skillPanel: {fileID: 8537065185992494290}
@@ -2347,6 +2347,7 @@ MonoBehaviour:
   enemyAmount: 0
   isRadomEncounter: 0
   spawnPoints: []
+  bodyPartPanel: {fileID: 4422931406359253196}
   turnsDisplay: {fileID: 4179370115521971718}
   statsManagers: []
   audioSource: {fileID: 748965476}
@@ -2998,6 +2999,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3952874bfd35e054288f9cb357c45c11, type: 3}
+--- !u!114 &532778846 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2124753367, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
+  m_PrefabInstance: {fileID: 1691333297}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2586116159b28e34b83bcbc0a4b3860f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &591247339
 GameObject:
   m_ObjectHideFlags: 0
@@ -7882,15 +7894,19 @@ PrefabInstance:
       objectReference: {fileID: 372303679}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.data[1].part
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.data[2].part
-      value: 2
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[3].part
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.data[0].hitPoint
@@ -7899,11 +7915,47 @@ PrefabInstance:
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.data[1].hitPoint
       value: 
-      objectReference: {fileID: 3953988881971361942}
+      objectReference: {fileID: 3953988881971361943}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.data[2].hitPoint
       value: 
       objectReference: {fileID: 3953988881971361943}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[3].hitPoint
+      value: 
+      objectReference: {fileID: 3953988881971361942}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[0].maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[1].maxHealth
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[2].maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[3].maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[0].currentHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[1].currentHealth
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[2].currentHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[3].currentHealth
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.data[0].damageMultiplier
       value: 2

@@ -1431,6 +1431,7 @@ MonoBehaviour:
   enemyAmount: 0
   isRadomEncounter: 0
   spawnPoints: []
+  bodyPartPanel: {fileID: 1334749876}
   turnsDisplay: {fileID: 1691333298}
   statsManagers: []
   audioSource: {fileID: 774589387}
@@ -4953,6 +4954,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5100190822114371584, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
   m_PrefabInstance: {fileID: 1691333297}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1334749876 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4422931406816666237, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
+  m_PrefabInstance: {fileID: 1691333297}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334749870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28a5a8ba5edfac7429e7f788dffeb571, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1366034647
 GameObject:
   m_ObjectHideFlags: 0
@@ -7318,6 +7330,14 @@ PrefabInstance:
       propertyPath: combatManager
       value: 
       objectReference: {fileID: 372303679}
+    - target: {fileID: 2379973575512987778, guid: f72d3250e45825c45a2b2266139540bf, type: 3}
+      propertyPath: bodyParts.Array.data[2].part
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2379973575512987778, guid: f72d3250e45825c45a2b2266139540bf, type: 3}
+      propertyPath: bodyParts.Array.data[3].part
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2379973575512987783, guid: f72d3250e45825c45a2b2266139540bf, type: 3}
       propertyPath: m_Name
       value: Goblin
@@ -7407,6 +7427,14 @@ PrefabInstance:
       propertyPath: combatManager
       value: 
       objectReference: {fileID: 372303679}
+    - target: {fileID: 4665017737359174041, guid: 46be4fbe9a0d1cb4b854b917c519b65a, type: 3}
+      propertyPath: bodyParts.Array.data[2].part
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4665017737359174041, guid: 46be4fbe9a0d1cb4b854b917c519b65a, type: 3}
+      propertyPath: bodyParts.Array.data[3].part
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4665017737359174046, guid: 46be4fbe9a0d1cb4b854b917c519b65a, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -7582,11 +7610,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5818844353396027118, guid: 26ba571e50196ab4b84ff97564d77e74, type: 3}
       propertyPath: bodyParts.Array.data[2].part
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5818844353396027118, guid: 26ba571e50196ab4b84ff97564d77e74, type: 3}
       propertyPath: bodyParts.Array.data[3].part
-      value: 4
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5818844353396027118, guid: 26ba571e50196ab4b84ff97564d77e74, type: 3}
+      propertyPath: bodyParts.Array.data[0].maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5818844353396027118, guid: 26ba571e50196ab4b84ff97564d77e74, type: 3}
+      propertyPath: bodyParts.Array.data[1].maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5818844353396027118, guid: 26ba571e50196ab4b84ff97564d77e74, type: 3}
+      propertyPath: bodyParts.Array.data[2].maxHealth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5818844353396027118, guid: 26ba571e50196ab4b84ff97564d77e74, type: 3}
+      propertyPath: bodyParts.Array.data[3].maxHealth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5818844353396027118, guid: 26ba571e50196ab4b84ff97564d77e74, type: 3}
+      propertyPath: bodyParts.Array.data[0].currentHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5818844353396027118, guid: 26ba571e50196ab4b84ff97564d77e74, type: 3}
+      propertyPath: bodyParts.Array.data[1].currentHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5818844353396027118, guid: 26ba571e50196ab4b84ff97564d77e74, type: 3}
+      propertyPath: bodyParts.Array.data[2].currentHealth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5818844353396027118, guid: 26ba571e50196ab4b84ff97564d77e74, type: 3}
+      propertyPath: bodyParts.Array.data[3].currentHealth
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5818844353396027118, guid: 26ba571e50196ab4b84ff97564d77e74, type: 3}
       propertyPath: bodyParts.Array.data[0].damageMultiplier

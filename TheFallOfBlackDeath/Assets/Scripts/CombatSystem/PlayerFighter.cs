@@ -33,6 +33,7 @@ public class PlayerFighter : Fighter
         allies = new List<Fighter>();
         allies.Add(this); // Agregar al jugador actual como el primer aliado activo
         activeAllyIndex = 0; // Establecer el jugador actual como el aliado activo inicialmente
+        
     }
 
     public override void InitTurn()
