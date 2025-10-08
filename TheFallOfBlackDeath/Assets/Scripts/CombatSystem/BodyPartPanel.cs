@@ -45,7 +45,7 @@ public class BodyPartPanel : MonoBehaviour
         // Aplicar daño directo a esa parte
         if (currentSkill is HealthModSkill healthSkill)
         {
-            float amount = -healthSkill.GetModification(currentTarget);
+            float amount = healthSkill.GetModification(currentTarget);
             currentTarget.ModifyBodyPartHealth(part, amount);
         }
 
