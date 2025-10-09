@@ -12,6 +12,8 @@ public abstract class Fighter : MonoBehaviour
         public Transform hitPoint;
         public float maxHealth = 50f;
         public float currentHealth;
+        
+
 
         public BodyPartData(BodyPart part, float health)
         {
@@ -23,6 +25,10 @@ public abstract class Fighter : MonoBehaviour
         public bool IsDestroyed => currentHealth <= 0;
     }
     public List<BodyPartData> bodyParts;
+
+
+
+    public event System.Action<BodyPart> OnBodyPartDestroyedEvent;
 
     public Team team;
     public string idName;
@@ -140,7 +146,7 @@ public abstract class Fighter : MonoBehaviour
 
         this.statusPanel.SetHealth(this.stats.health, this.stats.maxHealth);
 
-        // Resto de la l�gica existente
+     
         if (amount > 0f)
         {
             this.animator.Play("Heal");
@@ -168,7 +174,7 @@ public abstract class Fighter : MonoBehaviour
 
         Debug.Log($"{part} recibió {amount}. Salud actual: {target.currentHealth}");
 
-        // Si la parte se destruyó, aplicá consecuencias
+        
         if (prev > 0 && target.IsDestroyed)
         {
             OnBodyPartDestroyed(target);
@@ -206,11 +212,14 @@ public abstract class Fighter : MonoBehaviour
 
     private void OnBodyPartDestroyed(BodyPartData part)
     {
+        
+        OnBodyPartDestroyedEvent?.Invoke(part.part);
+
         switch (part.part)
         {
             case BodyPart.Head:
                 Debug.Log("Cabeza destruida → muerte instantánea");
-                ModifyHealth(-stats.health); // bajar toda la vida
+                ModifyHealth(-stats.health);
                 break;
             case BodyPart.Torso:
                 Debug.Log("Torso destruido → muerte instantánea");
@@ -218,15 +227,14 @@ public abstract class Fighter : MonoBehaviour
                 break;
             case BodyPart.Legs:
                 Debug.Log("Piernas destruidas → no puede moverse");
-                modedStats.speed = 0; // sin velocidad
-                // desactivar movimiento acá
+                modedStats.speed = 0;
                 break;
             case BodyPart.Arms:
                 Debug.Log("Brazos destruidos → no puede atacar");
-                modedStats.attack = 0; // sin ataque
-                // desactivar ataque acá
+                modedStats.attack = 0;
                 break;
         }
     }
+
     public abstract void InitTurn();
 }

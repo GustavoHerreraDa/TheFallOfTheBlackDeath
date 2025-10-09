@@ -9,50 +9,74 @@ public class HealthModSkill : Skill
 {
     [Header("Health Mod")]
     public float amount;
-
     public HealthModType modType;
 
     [Range(0f, 1f)]
     public float critChance = 0;
     [Range(0f, 1f)] public float missChance = 0f;
+
     bool missedAttack = false;
 
     protected override void OnRun(Fighter receiver)
     {
         float amount = this.GetModification(receiver);
         float dice = Random.Range(0f, 1f);
-        bool missedAttack = false;
+        float adjustedMissChance = GetAdjustedMissChance(receiver);
 
         // ❌ Fallo
-        if (dice <= missChance)
+        if (dice <= adjustedMissChance)
         {
-            missedAttack = true;
             this.messages.Enqueue($"{emitter.idName} missed the attack on {receiver.idName}!");
-            Debug.Log($"{emitter.idName} miss the attack {receiver.idName}");
+            Debug.Log($"{emitter.idName} missed the attack on {receiver.idName}");
+            return; // 🔥 no hacemos nada más
         }
 
-        if (!missedAttack)
+        // 🎯 Crítico
+        if (dice <= adjustedMissChance + this.critChance)
         {
-            // 🎯 Crítico
-            if (dice <= this.critChance + this.missChance && dice > this.missChance)
-            {
-                amount *= 2f;
-                this.messages.Enqueue("Critical hit!");
-                this.messages.Enqueue($"Hit for {(int)amount} to {receiver.idName}");
-            }
-            else
-            {
-                if (skillType == SkillType.Heal)
-                    this.messages.Enqueue($"Heal for {(int)amount} to {receiver.idName}");
-                else
-                    this.messages.Enqueue($"Hit for {(int)amount} to {receiver.idName}");
-            }
+            amount *= 2f;
+            this.messages.Enqueue("Critical hit!");
+            this.messages.Enqueue($"Hit for {(int)amount} to {receiver.idName}");
+        }
+        else
+        {
+            this.messages.Enqueue($"Hit for {(int)amount} to {receiver.idName}");
+        }
 
-            // 💥 Aplicar el daño solo si no falló
-            receiver.ModifyHealth((int)amount);
+        // 💥 Si el ataque tiene una parte del cuerpo objetivo, aplicamos ahí
+        if (this.BodyPartTarget != BodyPart.None)
+        {
+            receiver.ModifyBodyPartHealth(this.BodyPartTarget, amount);
+        }
+        else
+        {
+            receiver.ModifyHealth(amount);
         }
     }
 
+    /// <summary>
+    /// Ajusta la probabilidad de fallo según el contexto:
+    /// - Si se apunta a la cabeza → aumenta chance de fallo.
+    /// - Si el objetivo tiene las piernas destruidas → reduce chance de fallo.
+    /// </summary>
+    private float GetAdjustedMissChance(Fighter receiver)
+    {
+        float adjusted = missChance;
+
+        // Si atacamos a la cabeza → +30% de chance de fallo (difícil de acertar)
+        if (this.BodyPartTarget == BodyPart.Head)
+            adjusted += 0.9f;
+
+        // Si el receptor tiene las piernas destruidas → -25% de chance de fallo (más fácil de acertar)
+        Fighter.BodyPartData legs = receiver.GetBodyPart(BodyPart.Legs);
+        if (legs != null && legs.IsDestroyed)
+            adjusted -= 0.25f;
+
+        // Clamp para que no se pase de 0–1
+        adjusted = Mathf.Clamp01(adjusted);
+
+        return adjusted;
+    }
 
     public float GetModification(Fighter receiver)
     {

@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 //TP2 GUSTAVO TORRES/FACUNDO FERREIRO
@@ -38,6 +38,9 @@ public abstract class Skill : MonoBehaviour
     public bool HasItemInInventory;
     public List<InventoryManager.InventoryObjectID> ItemsNeeded;
 
+
+    [Header("Body Requirements")]
+    public List<BodyPart> requiredParts = new List<BodyPart>();
     public bool needsManualTargeting
     {
         get
@@ -67,11 +70,19 @@ public abstract class Skill : MonoBehaviour
 
     public void Run()
     {
+        if (!CanUseSkill(emitter))
+        {
+            this.messages.Enqueue($"{emitter.idName} intentÃ³ usar {skillName}, pero no puede por daÃ±o corporal.");
+            Debug.LogWarning($"{emitter.idName} no puede usar {skillName} por partes destruidas.");
+            return;
+        }
+
         foreach (var receiver in this.receivers)
         {
             this.Animate(receiver);
-            this.OnRun(receiver); // Aquí puedes usar BodyPartTarget dentro de la lógica de daño
+            this.OnRun(receiver);
         }
+
         this.receivers.Clear();
     }
 
@@ -99,6 +110,25 @@ public abstract class Skill : MonoBehaviour
         var hasItems = InventoryManager.instance == null ? true : InventoryManager.instance.HasItemInIventory(ItemsNeeded);
         HasItemInInventory = hasItems;
     }
+
+    protected bool CanUseSkill(Fighter fighter)
+    {
+        if (requiredParts == null || requiredParts.Count == 0)
+            return true; // no necesita partes especÃ­ficas
+
+        foreach (var part in requiredParts)
+        {
+            var bodyPart = fighter.GetBodyPart(part);
+            if (bodyPart == null || bodyPart.IsDestroyed)
+            {
+                Debug.Log($"{fighter.idName} no puede usar {skillName}: {part} destruido");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
     protected abstract void OnRun(Fighter receiver);
 }

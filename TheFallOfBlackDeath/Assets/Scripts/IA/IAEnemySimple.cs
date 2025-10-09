@@ -28,6 +28,29 @@ public class IAEnemySimple : MonoBehaviour
         Enemy = gameObject.GetComponent<EnemyFighter>();
     }
 
+    private bool CanUseSkill(Skill skill)
+    {
+        if (skill == null || Enemy == null)
+            return false;
+
+        // Si no requiere partes específicas, puede usarla
+        if (skill.requiredParts == null || skill.requiredParts.Count == 0)
+            return true;
+
+        // Si alguna de las partes requeridas está destruida, no puede usarla
+        foreach (var part in skill.requiredParts)
+        {
+            var bodyPart = Enemy.GetBodyPart(part);
+            if (bodyPart == null || bodyPart.IsDestroyed)
+            {
+                Debug.Log($"{Enemy.idName} no puede usar {skill.skillName} porque tiene {part} destruido.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     // Update is called once per frame
     public Skill ExecuteState()
     {
@@ -78,27 +101,40 @@ public class IAEnemySimple : MonoBehaviour
     private Skill AttackState()
     {
         phisicalAttacks += 1;
-        var attackSkill = _skills.Where(x => x.skillType == SkillType.AttackSimple).FirstOrDefault();
+        var attackSkills = _skills.Where(x => x.skillType == SkillType.AttackSimple && CanUseSkill(x)).ToList();
 
-        return attackSkill = attackSkill ? attackSkill : _skills[0];
+        if (attackSkills.Count == 0)
+        {
+            Debug.LogWarning($"{Enemy.idName} no tiene ataques físicos utilizables por daño corporal.");
+            return _skills.FirstOrDefault(s => CanUseSkill(s)); // busca otra habilidad posible
+        }
+
+        return attackSkills[Random.Range(0, attackSkills.Count)];
     }
-
     private Skill UseAbilityState()
     {
-        var specialHabilities = _skills.Where(x => x.skillType == SkillType.SpecialHability).ToList();
+        var specialSkills = _skills.Where(x => x.skillType == SkillType.SpecialHability && CanUseSkill(x)).ToList();
 
-        Skill specialSkill = specialHabilities[Random.Range(0, specialHabilities.Count)];
+        if (specialSkills.Count == 0)
+        {
+            Debug.LogWarning($"{Enemy.idName} no puede usar habilidades especiales ahora.");
+            return AttackState(); // vuelve a atacar si no puede usar habilidades
+        }
 
-        return specialSkill = specialSkill ? specialSkill : _skills[0];
+        return specialSkills[Random.Range(0, specialSkills.Count)];
     }
-
     private Skill HealState()
     {
-        var healSkill = _skills.Where(x => x.skillType == SkillType.Heal).FirstOrDefault();
+        var healSkills = _skills.Where(x => x.skillType == SkillType.Heal && CanUseSkill(x)).ToList();
 
-        return healSkill = healSkill ? healSkill : _skills[0];
+        if (healSkills.Count == 0)
+        {
+            Debug.LogWarning($"{Enemy.idName} no puede usar curaciones por daño corporal.");
+            return AttackState();
+        }
+
+        return healSkills[Random.Range(0, healSkills.Count)];
     }
-
     public void SetSkills(Skill[] skills)
     {
         List<Skill> lista = new List<Skill>(skills);
