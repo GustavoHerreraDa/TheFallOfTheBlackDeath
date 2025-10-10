@@ -70,7 +70,7 @@ public class HealthModSkill : Skill
         // Si el receptor tiene las piernas destruidas → -25% de chance de fallo (más fácil de acertar)
         Fighter.BodyPartData legs = receiver.GetBodyPart(BodyPart.Legs);
         if (legs != null && legs.IsDestroyed)
-            adjusted -= 0.25f;
+            adjusted -= 0.75f;
 
         // Clamp para que no se pase de 0–1
         adjusted = Mathf.Clamp01(adjusted);

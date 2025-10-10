@@ -422,16 +422,28 @@ public class CombatManager : MonoBehaviour
     {
         for (int i = 0; i < enemyDataBase.EnemyDB.Count; i++)
         {
-            if(enemyDataBase.EnemyDB[i].isMainCharacter)
+            if (enemyDataBase.EnemyDB[i].isMainCharacter)
             {
-                GameObject mainCharacter = Instantiate(enemyDataBase.EnemyDB[i].enemyPrefab, mainCharacterPos.transform.position, Quaternion.Euler(-0.4f, -90, 0), playerParent.transform);
+                GameObject mainCharacter = Instantiate(
+                    enemyDataBase.EnemyDB[i].enemyPrefab,
+                    mainCharacterPos.transform.position,
+                    Quaternion.Euler(-0.4f, -90, 0),
+                    playerParent.transform
+                );
                 mainCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel1, enemiesPanel, bodyPartPanel);
             }
-            else if(enemyDataBase.EnemyDB[i].isSecondaryCharacter)
+            else if (enemyDataBase.EnemyDB[i].isSecondaryCharacter && GameManager.Instance.hasRecruitedSecondary)
             {
-                GameObject secondaryCharacter = Instantiate(enemyDataBase.EnemyDB[i].enemyPrefab, secondaryCharacterPos.transform.position, Quaternion.Euler(-0.4f, -90, 0), playerParent.transform);
+                // 👆 Solo instanciamos si está reclutado
+                GameObject secondaryCharacter = Instantiate(
+                    enemyDataBase.EnemyDB[i].enemyPrefab,
+                    secondaryCharacterPos.transform.position,
+                    Quaternion.Euler(-0.4f, -90, 0),
+                    playerParent.transform
+                );
                 secondaryCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel2, enemiesPanel, bodyPartPanel);
             }
         }
     }
+
 }

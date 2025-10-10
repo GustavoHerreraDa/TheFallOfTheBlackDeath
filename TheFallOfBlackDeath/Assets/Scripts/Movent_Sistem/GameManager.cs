@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     //Agrego estas referencias para poder acceder al Fighter desde InventoryUI y equipar objetos.
     public PlayerFighter character1;
     public PlayerFighter character2;
+    public bool hasRecruitedSecondary = false;
     public Vector3 lastPos;
     public Transform startPost;
     public List<string> groupEnemyDefeat;

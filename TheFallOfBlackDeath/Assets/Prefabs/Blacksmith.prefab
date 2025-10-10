@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 969892521961305730}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
   m_LocalPosition: {x: 7, y: 1.41, z: 2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7305297877295874578}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3100785940206278997
 MonoBehaviour:
@@ -47,6 +47,7 @@ MonoBehaviour:
   skillName: Fading Fury
   animationDuration: 1.5
   targeting: 2
+  BodyPartTarget: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 0a19654f0adc9c6429eff011c5724442, type: 3}
   SkillDesc: Decrease all enemies attack and defense by 10.
   skillType: 0
@@ -54,6 +55,7 @@ MonoBehaviour:
   animationName: Intimidate
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   healAmount: 0
   attackBuffAmount: -10
   defenseBuffAmount: -10
@@ -81,13 +83,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3105780398260842073}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
   m_LocalPosition: {x: 5.7599998, y: 1.41, z: -1.6998763}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7305297877295874578}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3568020111858356396
 MonoBehaviour:
@@ -104,6 +106,7 @@ MonoBehaviour:
   skillName: Colossal Hammerstrike
   animationDuration: 2
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 6703250321131892297, guid: 2b987d41506d172419fa18578f6ac380, type: 3}
   SkillDesc: A powerful blow with the hammer that deals 50 damage to the enemy (10%
     critical chance).
@@ -112,9 +115,11 @@ MonoBehaviour:
   animationName: Blow
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   amount: -50
   modType: 0
   critChance: 0.1
+  missChance: 0
 --- !u!1 &3546500895190041043
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,13 +144,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3546500895190041043}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7305297877295874578}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &6264840674767571634
 AudioSource:
@@ -267,13 +272,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4926145149699549927}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
   m_LocalPosition: {x: 5.7599998, y: 1.41, z: -1.6998763}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7305297877295874578}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5055089207862759208
 MonoBehaviour:
@@ -290,6 +295,7 @@ MonoBehaviour:
   skillName: Thundering Forge
   animationDuration: 2
   targeting: 2
+  BodyPartTarget: 0
   effectPrfb: {fileID: 6710139492206580332, guid: 95b8d3d65b5d7f1409c4ed1723887826, type: 3}
   SkillDesc: The blacksmith summons the energy of his forge to unleash a devastating
     hammer strike. -15 to all enemies.
@@ -301,9 +307,11 @@ MonoBehaviour:
   - id: 13
     amount: 1
     uso: 0
+  requiredParts: 
   amount: -15
   modType: 1
   critChance: 0
+  missChance: 0
 --- !u!1 &6890905301355940229
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,13 +335,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6890905301355940229}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7305297877295874578}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7260654520947209717
 GameObject:
@@ -360,13 +368,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7260654520947209717}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.008726558, z: -0, w: 0.999962}
   m_LocalPosition: {x: 6.78, y: 2, z: -0.27999973}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7305297877295874578}
-  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5251786555806156600
 MonoBehaviour:
@@ -397,6 +405,7 @@ MonoBehaviour:
   skillName: Fading Fury
   animationDuration: 1.5
   targeting: 2
+  BodyPartTarget: 0
   effectPrfb: {fileID: 3499216465569482894, guid: f2fc97de3837dfe429d9e31b21e766fa, type: 3}
   SkillDesc: Decrease all enemies attack by 20.
   skillType: 0
@@ -404,6 +413,7 @@ MonoBehaviour:
   animationName: Intimidate
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   message: '{receiver} loses 20 attack!'
 --- !u!1 &7786955661051944844
 GameObject:
@@ -428,13 +438,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7786955661051944844}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.851, z: 0.201}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7305297877295874578}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8267380649681350226
 GameObject:
@@ -462,6 +472,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8267380649681350226}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -476,7 +487,6 @@ Transform:
   - {fileID: 4259703240449388098}
   - {fileID: 8006848119082542558}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1830900076
 MonoBehaviour:
@@ -490,6 +500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54cd0b67e51238547a59bd64b5935e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyParts: []
   team: 0
   idName: Blacksmith
   statusPanel: {fileID: 0}
@@ -502,6 +513,7 @@ MonoBehaviour:
   DamagePivot: {fileID: 4506396638307855813}
   skillPanel: {fileID: 0}
   enemiesPanel: {fileID: 0}
+  bodyPartPanel: {fileID: 0}
   fightersDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
   figherIndex: 10
   ally1: {fileID: 0}
@@ -543,12 +555,21 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 7305297877295874578}
     m_Modifications:
     - target: {fileID: -9174961118123440000, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -9174961118123440000, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8512183effd4307469e90896ef454d07, type: 2}
+      objectReference: {fileID: 2100000, guid: 15c83dfd9e939d44395d833f48648a98, type: 2}
+    - target: {fileID: -9174961118123440000, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: a1b89ae59c6a25c40a2346a0f518b8c0, type: 2}
     - target: {fileID: -8679921383154817045, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -614,19 +635,55 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2219142835421054055, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2219142835421054055, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8512183effd4307469e90896ef454d07, type: 2}
+      objectReference: {fileID: 2100000, guid: 15c83dfd9e939d44395d833f48648a98, type: 2}
+    - target: {fileID: 2219142835421054055, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: a1b89ae59c6a25c40a2346a0f518b8c0, type: 2}
+    - target: {fileID: 5199093330987637050, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5199093330987637050, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 42ce19552d652f94f95c0b0a74797c8c, type: 2}
+      objectReference: {fileID: 2100000, guid: 15c83dfd9e939d44395d833f48648a98, type: 2}
+    - target: {fileID: 5199093330987637050, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: a1b89ae59c6a25c40a2346a0f518b8c0, type: 2}
+    - target: {fileID: 8486804757744757258, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8486804757744757258, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8512183effd4307469e90896ef454d07, type: 2}
+      objectReference: {fileID: 2100000, guid: 15c83dfd9e939d44395d833f48648a98, type: 2}
+    - target: {fileID: 8486804757744757258, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: a1b89ae59c6a25c40a2346a0f518b8c0, type: 2}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1086782756952669250}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7312617042814614688}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 128332551976068683}
   m_SourcePrefab: {fileID: 100100000, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}
 --- !u!1 &7268584714324801098 stripped
 GameObject:
@@ -640,10 +697,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7268584714324801098}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -657,15 +725,24 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7268584714324801098}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.2
   m_Height: 1.69
   m_Direction: 1
   m_Center: {x: 0, y: 0.84, z: 0}
 --- !u!95 &128332551976068683
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -682,7 +759,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &8040301811335802096 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 78e20599c5abc07419c1b220e4e43f8a, type: 3}

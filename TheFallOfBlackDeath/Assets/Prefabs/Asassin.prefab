@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1284403506246166845}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -4.280013, y: 0, z: 0.92631006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2252651694320841864}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3441648550257695403
 MonoBehaviour:
@@ -47,6 +47,7 @@ MonoBehaviour:
   skillName: Molotov
   animationDuration: 1
   targeting: 2
+  BodyPartTarget: 0
   effectPrfb: {fileID: 1134129239631916, guid: 7e48ba6b1b968764490bbc70b66e3fe1, type: 3}
   SkillDesc: Damage all enemies for 15 (unalterable damage)
   skillType: 0
@@ -54,9 +55,11 @@ MonoBehaviour:
   animationName: Molotov
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   amount: -15
   modType: 1
   critChance: 0
+  missChance: 0
 --- !u!1 &1348095314520277603
 GameObject:
   m_ObjectHideFlags: 0
@@ -81,13 +84,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1348095314520277603}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -4.280013, y: 0, z: 0.92631006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2252651694320841864}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &452391405009561511
 MonoBehaviour:
@@ -104,6 +107,7 @@ MonoBehaviour:
   skillName: Sneak Attack
   animationDuration: 1.5
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 6710139492206580332, guid: 95b8d3d65b5d7f1409c4ed1723887826, type: 3}
   SkillDesc: Backstab the enemy with a 60% chance to land a critical hit. 45 damage
   skillType: 0
@@ -111,9 +115,11 @@ MonoBehaviour:
   animationName: BackStab
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   amount: -45
   modType: 0
   critChance: 0.6
+  missChance: 0
 --- !u!1 &1443639437503016498
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,6 +146,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1443639437503016498}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.68048424, z: 0, w: 0.7327628}
   m_LocalPosition: {x: 8.46, y: 1.41, z: 3.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -154,7 +161,6 @@ Transform:
   - {fileID: 1643196187747143319}
   - {fileID: 87270318799579717}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -85.763, z: 0}
 --- !u!114 &1786169535298114428
 MonoBehaviour:
@@ -168,6 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54cd0b67e51238547a59bd64b5935e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyParts: []
   team: 0
   idName: Assasin
   statusPanel: {fileID: 0}
@@ -180,6 +187,7 @@ MonoBehaviour:
   DamagePivot: {fileID: 2016478929276450250}
   skillPanel: {fileID: 0}
   enemiesPanel: {fileID: 0}
+  bodyPartPanel: {fileID: 0}
   fightersDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
   figherIndex: 7
   ally1: {fileID: 0}
@@ -239,13 +247,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2490764866123647546}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.17, y: 1.18, z: -3.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2252651694320841864}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3305102685872786721
 GameObject:
@@ -271,13 +279,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3305102685872786721}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2252651694320841864}
-  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1035092171536508355
 AudioSource:
@@ -400,13 +408,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4864400700348379872}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2252651694320841864}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1173216432
 MonoBehaviour:
@@ -423,6 +431,7 @@ MonoBehaviour:
   skillName: Intimidate
   animationDuration: 1.5
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 0a19654f0adc9c6429eff011c5724442, type: 3}
   SkillDesc: Decrease the enemy's attack by 10.
   skillType: 0
@@ -430,6 +439,7 @@ MonoBehaviour:
   animationName: Intimidate
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   message: '{receiver} decreased his attack!'
 --- !u!114 &1173216433
 MonoBehaviour:
@@ -469,13 +479,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5980398620794730536}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -4.280013, y: 0, z: 0.92631006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2252651694320841864}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6438794107168270299
 MonoBehaviour:
@@ -492,6 +502,7 @@ MonoBehaviour:
   skillName: Scimitar
   animationDuration: 1.5
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 6703250321131892297, guid: 2b987d41506d172419fa18578f6ac380, type: 3}
   SkillDesc: A savage scimitar strike that deals 65 damage to the enemy (no critical
     chance).
@@ -500,9 +511,11 @@ MonoBehaviour:
   animationName: Scimitar
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   amount: -65
   modType: 0
   critChance: 0
+  missChance: 0
 --- !u!1 &7731341569124741256
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,21 +539,34 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7731341569124741256}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: -0.29, z: 0.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2252651694320841864}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6419555643508485612
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2252651694320841864}
     m_Modifications:
+    - target: {fileID: 4698734461010444944, guid: eb2ea0b7d48ed3f43b974c894d76c45e, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4698734461010444944, guid: eb2ea0b7d48ed3f43b974c894d76c45e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 15c83dfd9e939d44395d833f48648a98, type: 2}
+    - target: {fileID: 4698734461010444944, guid: eb2ea0b7d48ed3f43b974c894d76c45e, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: a1b89ae59c6a25c40a2346a0f518b8c0, type: 2}
     - target: {fileID: 4862934624090150156, guid: eb2ea0b7d48ed3f43b974c894d76c45e, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -589,7 +615,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Paladin J Nordstrom
       objectReference: {fileID: 0}
+    - target: {fileID: 8066702875316415306, guid: eb2ea0b7d48ed3f43b974c894d76c45e, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8066702875316415306, guid: eb2ea0b7d48ed3f43b974c894d76c45e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 15c83dfd9e939d44395d833f48648a98, type: 2}
+    - target: {fileID: 8066702875316415306, guid: eb2ea0b7d48ed3f43b974c894d76c45e, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: a1b89ae59c6a25c40a2346a0f518b8c0, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb2ea0b7d48ed3f43b974c894d76c45e, type: 3}
 --- !u!1 &711019526431113324 stripped
 GameObject:
