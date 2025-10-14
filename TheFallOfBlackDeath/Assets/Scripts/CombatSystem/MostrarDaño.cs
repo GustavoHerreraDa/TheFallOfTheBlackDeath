@@ -8,7 +8,7 @@ public class MostrarDaño : MonoBehaviour
     void InstanciarDañoVisual()
     {
         GameObject go = Instantiate(dañoVisual, transform.position + Random.onUnitSphere, Quaternion.identity) as GameObject;
-        go.GetComponent<Dañocanvas>().Inicializar(Random.Range(1, 10));
+        go.GetComponent<Damage>().Inicializar(Random.Range(1, 10));
     }
 
     // Update is called once per frame

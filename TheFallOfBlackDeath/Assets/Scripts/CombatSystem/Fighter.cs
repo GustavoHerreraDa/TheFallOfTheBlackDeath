@@ -137,7 +137,7 @@ public abstract class Fighter : MonoBehaviour
         this.stats.health = Mathf.Clamp(this.stats.health + amount, 0f, this.stats.maxHealth);
         this.stats.health = Mathf.Round(this.stats.health);
 
-        // Llamada al delegate antes de actualizar el panel de estado
+  
         if (healthModificationDelegate != null)
         {
             float modifiedAmount = this.stats.health - previousHealth;

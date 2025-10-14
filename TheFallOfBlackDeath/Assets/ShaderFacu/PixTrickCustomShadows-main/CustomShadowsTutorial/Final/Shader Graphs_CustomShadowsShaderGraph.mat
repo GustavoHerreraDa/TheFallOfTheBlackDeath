@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-6209243295421765606
+--- !u!114 &-5773881651554416890
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_CelShadingAdditional
-  m_Shader: {fileID: -6465566751694194690, guid: 3944e41eebc30a44b8873739e1e60c11, type: 3}
+  m_Name: Shader Graphs_CustomShadowsShaderGraph
+  m_Shader: {fileID: -6465566751694194690, guid: b1dd4ed0df402d5498b9bdfea5803861, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -36,6 +36,14 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _MainTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShadowTexture2D:
+        m_Texture: {fileID: 2800000, guid: 5f8494529e5379a4382cfb9e69f4d342, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -50,15 +58,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AmbientStrength: 0.25
-    - _FalloffAmount: 0.05
-    - _FresnelSize: 0.1
-    - _LightingCutoff: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 1000
+    - _ShadowStep: 0.17
     m_Colors:
-    - _DiffuseColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FresnelColor: {r: 0, g: 0, b: 0, a: 1}
-    - _SpecularColor: {r: 0, g: 0, b: 0, a: 1}
+    - _MainColor: {r: 0.16981131, g: 0.09531861, b: 0.09531861, a: 0}
+    - _ShadowColor: {r: 0, g: 0, b: 0, a: 0}
+    - _ShadowPatternColor: {r: 0.05660379, g: 0.008810968, b: 0.008810968, a: 0}
+    - _ShadowTextureTiling: {r: 7.72, g: 3000, b: 0, a: 0}
   m_BuildTextureStacks: []
