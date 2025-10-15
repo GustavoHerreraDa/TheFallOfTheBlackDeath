@@ -170,11 +170,18 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log(element);
         }
+
         groupEnemyDefeat = ListEnemyDefeat.enemiesDefeat;
         objectsPickup = ListEnemyDefeat.pickUpsInWorld;
         corduraActual = corduraMax;
 
         StartCoroutine(BajarCordura());
+
+        // 🔧 Inicializar personajes antes de que otros scripts intenten acceder
+        if (character1 == null)
+            character1 = BadDoctor;
+        if (character2 == null)
+            character2 = Assassin;
     }
 
 
@@ -185,7 +192,7 @@ public class GameManager : MonoBehaviour
         {
             if (corduraActual > 0)
             {
-                float perdida = (corduraMax * (perdidaDeCordura / 1000f)) * Time.deltaTime;
+                float perdida = (corduraMax * (perdidaDeCordura / 10f)) * Time.deltaTime;
                 corduraActual -= perdida;
                 corduraActual = Mathf.Clamp(corduraActual, 0, corduraMax);
             }
@@ -320,7 +327,7 @@ public class GameManager : MonoBehaviour
     {
         if (canGetEncounter)
         {
-            if (Random.Range(0, 10000) < 10)
+            if (Random.Range(0, 1000) < 10)
             {
                 Debug.Log("i got attacked");
                 gotAttacked = true;
