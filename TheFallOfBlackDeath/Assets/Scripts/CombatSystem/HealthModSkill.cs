@@ -47,6 +47,7 @@ public class HealthModSkill : Skill
         if (this.BodyPartTarget != BodyPart.None)
         {
             receiver.ModifyBodyPartHealth(this.BodyPartTarget, amount);
+            this.messages.Enqueue($"{emitter.idName} hit on {this.BodyPartTarget}!");
         }
         else
         {

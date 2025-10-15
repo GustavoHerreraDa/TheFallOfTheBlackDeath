@@ -1,4 +1,4 @@
-using UnityEngine;
+锘縰sing UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 //TP2 AUGUSTO NANINI/FACUNDO FERREIRO
@@ -23,7 +23,7 @@ public class EnemiesPanel : MonoBehaviour
         this.rectTransform = this.GetComponent<RectTransform>();
         this.baseHeight = this.rectTransform.rect.height;
 
-        // A馻dimos el bot髇 de ejemplo como el primer bot髇 disponible
+        // A帽adimos el bot贸n de ejemplo como el primer bot贸n disponible
         EnemyButtonUI btn = this.InsertNewButton(this.sampleButton, 0);
         btn.Hide();
 
@@ -49,11 +49,13 @@ public class EnemiesPanel : MonoBehaviour
         {
             EnemyButtonUI btn = this.ActivateNextButton(btnIndex);
             btn.SetText(target.idName);
+            btn.SetTarget(target); // 馃憟 nuevo
 
             this.targets.Add(target);
 
             btnIndex++;
         }
+
 
         this.rectTransform.sizeDelta = new Vector2(
             this.rectTransform.rect.width,
@@ -80,21 +82,27 @@ public class EnemiesPanel : MonoBehaviour
             if (btn.index == index)
             {
                 btn.Show();
+                btn.target = this.targets.Count > index ? this.targets[index] : null; // 馃憟 asignaci贸n autom谩tica
                 return btn;
             }
         }
 
-        // Clonamos el bot髇 de ejemplo
+        // Clonamos el bot贸n de ejemplo
         GameObject btnGO = Instantiate(this.sampleButton);
         btnGO.transform.SetParent(this.transform);
         btnGO.transform.localScale = Vector3.one;
 
-        // Lo a馻dimos como nuevo bot髇 disponible
+        // Lo a帽adimos como nuevo bot贸n disponible
         EnemyButtonUI but = this.InsertNewButton(btnGO, index);
-        but.Show();
 
+        // 馃憞 Asignamos autom谩ticamente su target (si ya existe en la lista)
+        if (this.targets.Count > index)
+            but.target = this.targets[index];
+
+        but.Show();
         return but;
     }
+
 
     private EnemyButtonUI InsertNewButton(GameObject btnGO, int index)
     {

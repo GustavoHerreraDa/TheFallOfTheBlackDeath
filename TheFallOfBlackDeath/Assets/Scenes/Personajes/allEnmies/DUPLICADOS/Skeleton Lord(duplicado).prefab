@@ -23,13 +23,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7714722026569482630}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.5076331, y: 0.4922486, z: 0.4922486, w: 0.5076331}
   m_LocalPosition: {x: 0.49, y: 1.13, z: 0.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7714722028405783822}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7714722026661899301
 GameObject:
@@ -55,6 +55,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7714722026661899301}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
   m_LocalPosition: {x: 5.953499, y: -0.5586497, z: -2.5500512}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -62,7 +63,6 @@ Transform:
   m_Children:
   - {fileID: 7714722027659165427}
   m_Father: {fileID: 7714722028405783822}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7714722026661899303
 MonoBehaviour:
@@ -79,6 +79,7 @@ MonoBehaviour:
   skillName: Thunder
   animationDuration: 3
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 1141330259687333427, guid: 6718dc24203da53468af9ada8fef7d6d, type: 3}
   SkillDesc: Maldice al enemigo (Pierde puntos de salud por turno)
   skillType: 1
@@ -89,6 +90,7 @@ MonoBehaviour:
   - id: 6
     amount: 1
     uso: 0
+  requiredParts: 
 --- !u!1 &7714722027659165424
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,13 +115,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7714722027659165424}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7714722026661899300}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7714722027659165426
 MonoBehaviour:
@@ -164,13 +166,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7714722027688792857}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -1.2565008, y: -0.5186497, z: -0.00017499924}
   m_LocalScale: {x: 1.5000002, y: 1.5, z: 1.5000002}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7714722028405783822}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7714722027688792859
 MonoBehaviour:
@@ -187,6 +189,7 @@ MonoBehaviour:
   skillName: Ignite
   animationDuration: 1.5
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 1590415177872986601, guid: acdb90624a404aa438447006f1026065, type: 3}
   SkillDesc: 
   skillType: 0
@@ -194,9 +197,11 @@ MonoBehaviour:
   animationName: Attack
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   amount: -40
   modType: 0
   critChance: 0.15
+  missChance: 0
 --- !u!1 &7714722027855893485
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,13 +226,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7714722027855893485}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.19, y: 0.7099999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7714722028405783822}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &7714722027855893487
 AudioSource:
@@ -351,6 +356,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7714722028405783823}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -364,7 +370,6 @@ Transform:
   - {fileID: 7714722026661899300}
   - {fileID: 5219258017200951364}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7714722028405783819
 MonoBehaviour:
@@ -378,6 +383,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cafa976afee2e8a41aedf9756702ba62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyParts:
+  - part: 1
+    hitPoint: {fileID: 7714722026569482625}
+    maxHealth: 1
+    currentHealth: 1
+  - part: 2
+    hitPoint: {fileID: 7714722026569482625}
+    maxHealth: 1
+    currentHealth: 1
+  - part: 3
+    hitPoint: {fileID: 7714722026569482625}
+    maxHealth: 1
+    currentHealth: 1
+  - part: 4
+    hitPoint: {fileID: 7714722026569482625}
+    maxHealth: 1
+    currentHealth: 1
   team: 1
   idName: Skeleton Lord
   statusPanel: {fileID: 1370398790239622422}
@@ -445,19 +467,20 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7714722028443353475}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -3.571, y: 2.226, z: 0.032}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7714722028405783822}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1001 &7653636535998774702
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 7714722028405783822}
     m_Modifications:
     - target: {fileID: 1482966800443300653, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
@@ -621,6 +644,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
 --- !u!114 &1370398790239622422 stripped
 MonoBehaviour:
@@ -665,6 +691,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 7714722028405783822}
     m_Modifications:
     - target: {fileID: -8954665136400713670, guid: 11ffbb0801fc6f24b95e4c3210c57ac2, type: 3}
@@ -860,6 +887,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: f93ef928084d20942b79c093a91cb251, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 11ffbb0801fc6f24b95e4c3210c57ac2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1821957705405586615}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 11ffbb0801fc6f24b95e4c3210c57ac2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6500091666035291404}
   m_SourcePrefab: {fileID: 100100000, guid: 11ffbb0801fc6f24b95e4c3210c57ac2, type: 3}
 --- !u!95 &4213864460904915362 stripped
 Animator:
@@ -878,10 +914,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7480860643334873442}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -895,8 +942,17 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7480860643334873442}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.262472
   m_Height: 1.4549568
   m_Direction: 2

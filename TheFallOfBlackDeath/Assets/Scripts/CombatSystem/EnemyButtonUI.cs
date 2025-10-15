@@ -1,36 +1,57 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-//TP2 AUGUSTO NANINI/FACUNDO FERREIRO
-class EnemyButtonUI
+using UnityEngine.EventSystems;
+
+public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public int index { protected set; get; }
-    public Button button { protected set; get; }
+    public Button button;
+    public Text label;
+    public int index;
+    public Fighter target;
 
-    private Text label;
-    private GameObject btn;
+    private Material originalMaterial;
+    public Material highlightMaterial;
 
-    public EnemyButtonUI(GameObject btn, int index)
+    public EnemyButtonUI(GameObject buttonObject, int idx)
     {
-        this.index = index;
-        this.btn = btn;
-
-        this.label = this.btn.GetComponentInChildren<Text>();
-        this.button = this.btn.GetComponentInChildren<Button>();
-    }
-
-    public void Show()
-    {
-        this.btn.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        this.btn.SetActive(false);
+        button = buttonObject.GetComponent<Button>();
+        label = buttonObject.GetComponentInChildren<Text>();
+        index = idx;
     }
 
     public void SetText(string text)
     {
-        this.label.text = text;
+        label.text = text;
+    }
+
+    public void SetTarget(Fighter fighter)
+    {
+        target = fighter;
+    }
+
+    public void Show() => button.gameObject.SetActive(true);
+    public void Hide() => button.gameObject.SetActive(false);
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (target == null) return;
+
+        Renderer rend = target.GetComponentInChildren<Renderer>();
+        if (rend != null)
+        {
+            originalMaterial = rend.material;
+            rend.material = highlightMaterial;
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (target == null || originalMaterial == null) return;
+
+        Renderer rend = target.GetComponentInChildren<Renderer>();
+        if (rend != null)
+        {
+            rend.material = originalMaterial;
+        }
     }
 }
