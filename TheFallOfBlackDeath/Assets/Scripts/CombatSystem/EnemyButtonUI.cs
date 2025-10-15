@@ -1,8 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public Button button;
     public Text label;
@@ -11,40 +11,76 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     private Material originalMaterial;
     public Material highlightMaterial;
+    public Material selectedMaterial;
 
-    public EnemyButtonUI(GameObject buttonObject, int idx)
-    {
-        button = buttonObject.GetComponent<Button>();
-        label = buttonObject.GetComponentInChildren<Text>();
-        index = idx;
-    }
+    private static EnemyButtonUI currentlySelected; // 🔹 mantiene referencia al botón actualmente seleccionado
 
-    public void SetText(string text)
-    {
-        label.text = text;
-    }
+    private bool isSelected = false;
 
-    public void SetTarget(Fighter fighter)
-    {
-        target = fighter;
-    }
-
+    public void SetText(string text) => label.text = text;
+    public void SetTarget(Fighter fighter) => target = fighter;
     public void Show() => button.gameObject.SetActive(true);
     public void Hide() => button.gameObject.SetActive(false);
 
     public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (target == null || isSelected) return;
+
+        Renderer rend = target.GetComponentInChildren<Renderer>();
+        if (rend != null)
+        {
+            if (originalMaterial == null)
+                originalMaterial = rend.material;
+
+            rend.material = highlightMaterial;
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (target == null || isSelected) return;
+
+        Renderer rend = target.GetComponentInChildren<Renderer>();
+        if (rend != null)
+        {
+            rend.material = originalMaterial;
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (target == null) return;
+
+        // 🔹 Deselecciona al anterior si existe
+        if (currentlySelected != null && currentlySelected != this)
+            currentlySelected.Deselect();
+
+        // 🔹 Marca este como seleccionado
+        Select();
+        currentlySelected = this;
+
+        // 🔹 Acá podés notificar a tu sistema de combate
+        // por ejemplo:
+        // CombatManager.Instance.SelectEnemy(target);
+    }
+
+    private void Select()
     {
         if (target == null) return;
 
         Renderer rend = target.GetComponentInChildren<Renderer>();
         if (rend != null)
         {
-            originalMaterial = rend.material;
-            rend.material = highlightMaterial;
+            if (originalMaterial == null)
+                originalMaterial = rend.material;
+
+            rend.material = selectedMaterial;
         }
+
+        isSelected = true;
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public void Deselect()
     {
         if (target == null || originalMaterial == null) return;
 
@@ -53,5 +89,7 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             rend.material = originalMaterial;
         }
+
+        isSelected = false;
     }
 }
