@@ -173,8 +173,8 @@ public abstract class Fighter : MonoBehaviour
         target.currentHealth = Mathf.Clamp(target.currentHealth + amount, 0, target.maxHealth);
 
         Debug.Log($"{part} recibió {amount}. Salud actual: {target.currentHealth}");
+        this.animator.Play("Damages");
 
-        
         if (prev > 0 && target.IsDestroyed)
         {
             OnBodyPartDestroyed(target);

@@ -177,7 +177,7 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(BajarCordura());
 
-        // 🔧 Inicializar personajes antes de que otros scripts intenten acceder
+        // Inicializar personajes antes de que otros scripts intenten acceder
         if (character1 == null)
             character1 = BadDoctor;
         if (character2 == null)

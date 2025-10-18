@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5688080274013555069
+--- !u!114 &-5302281986422628682
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,19 +20,19 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OutLine
-  m_Shader: {fileID: -6465566751694194690, guid: d3cac325df07ba1418f9bca15bb9c7cc, type: 3}
+  m_Name: Dissolve
+  m_Shader: {fileID: -6465566751694194690, guid: 1ac476ccd3378bd44a505cfebeae397c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: _AlphaClip
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -50,10 +50,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _CutoffHeight: 0
+    - _EdgeWidth: 0.05
+    - _NoiseScale: 50
+    - _NoiseStrength: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _fadeDistance: 1000
-    - _thickness: 0.003
     m_Colors:
-    - _outlinecolor: {r: 1, g: 1, b: 1, a: 0}
+    - _Albedo: {r: 0, g: 0, b: 0, a: 1}
+    - _EdgeColor: {r: 0, g: 3.262745, b: 23.96863, a: 1}
   m_BuildTextureStacks: []

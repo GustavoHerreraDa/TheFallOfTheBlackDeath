@@ -9,7 +9,7 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public int index;
     public Fighter target;
 
-    private Material originalMaterial;
+    public Material originalMaterial;
     public Material highlightMaterial;
 
     public EnemyButtonUI(GameObject buttonObject, int idx)

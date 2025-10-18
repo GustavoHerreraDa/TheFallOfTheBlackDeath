@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 //TP2 AUGUSTO NANINI/FACUNDO FERREIRO
 public class EnemiesPanel : MonoBehaviour
@@ -23,7 +24,7 @@ public class EnemiesPanel : MonoBehaviour
         this.rectTransform = this.GetComponent<RectTransform>();
         this.baseHeight = this.rectTransform.rect.height;
 
-        // Añadimos el botón de ejemplo como el primer botón disponible
+        
         EnemyButtonUI btn = this.InsertNewButton(this.sampleButton, 0);
         btn.Hide();
 
@@ -35,7 +36,19 @@ public class EnemiesPanel : MonoBehaviour
         Fighter target = this.targets[index];
 
         this.targetFighter.SetTargetAndAttack(target);
+
+       
+        foreach (var btn in this.buttons)
+        {
+            if (btn != null && btn.target != null)
+            {
+                Renderer rend = btn.target.GetComponentInChildren<Renderer>();
+                if (rend != null && btn.originalMaterial != null)
+                    rend.material = btn.originalMaterial;
+            }
+        }
     }
+
 
     public void Show(PlayerFighter playerFighter, Fighter[] targets)
     {
@@ -49,7 +62,7 @@ public class EnemiesPanel : MonoBehaviour
         {
             EnemyButtonUI btn = this.ActivateNextButton(btnIndex);
             btn.SetText(target.idName);
-            btn.SetTarget(target); // 👈 nuevo
+            btn.SetTarget(target);
 
             this.targets.Add(target);
 
@@ -82,20 +95,20 @@ public class EnemiesPanel : MonoBehaviour
             if (btn.index == index)
             {
                 btn.Show();
-                btn.target = this.targets.Count > index ? this.targets[index] : null; // 👈 asignación automática
+                btn.target = this.targets.Count > index ? this.targets[index] : null;
                 return btn;
             }
         }
 
-        // Clonamos el botón de ejemplo
+        
         GameObject btnGO = Instantiate(this.sampleButton);
         btnGO.transform.SetParent(this.transform);
         btnGO.transform.localScale = Vector3.one;
 
-        // Lo añadimos como nuevo botón disponible
+        
         EnemyButtonUI but = this.InsertNewButton(btnGO, index);
 
-        // 👇 Asignamos automáticamente su target (si ya existe en la lista)
+        
         if (this.targets.Count > index)
             but.target = this.targets[index];
 
@@ -106,13 +119,23 @@ public class EnemiesPanel : MonoBehaviour
 
     private EnemyButtonUI InsertNewButton(GameObject btnGO, int index)
     {
-        EnemyButtonUI btn = new EnemyButtonUI(btnGO, index);
+       
+        EnemyButtonUI btn = btnGO.GetComponent<EnemyButtonUI>();
+
+        if (btn == null)
+            btn = btnGO.AddComponent<EnemyButtonUI>();
+
+        btn.index = index;
+        btn.button = btnGO.GetComponent<Button>();
+        btn.label = btnGO.GetComponentInChildren<Text>();
+
+        
         btn.button.onClick.AddListener(() => { this.OnTargetButtonClick(btn.index); });
 
         this.buttons.Add(btn);
-
         return btn;
     }
+
     public void Show()
     {
         this.sampleButton.SetActive(true);
