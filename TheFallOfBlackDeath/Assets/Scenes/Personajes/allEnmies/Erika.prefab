@@ -24,6 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366266329278894449}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.0947181, y: 0.01999998, z: 1.1602895}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,7 +32,6 @@ Transform:
   m_Children:
   - {fileID: 984824605049245079}
   m_Father: {fileID: 8723045855811891764}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6222035627366569095
 MonoBehaviour:
@@ -48,6 +48,7 @@ MonoBehaviour:
   skillName: Curse
   animationDuration: 2
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 100004, guid: 7867af58a6ec48846ae807eb4022fbaa, type: 3}
   SkillDesc: Curse the enemy subtracting the 10% of their maximum health per turn
   skillType: 0
@@ -55,6 +56,7 @@ MonoBehaviour:
   animationName: Curse
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
 --- !u!1 &2015357082775407413
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,13 +80,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2015357082775407413}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.030852878, y: 0.000000006519258, z: 0.0005385404, w: 0.9995238}
   m_LocalPosition: {x: 1.93, y: 3.5, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8723045855811891764}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 3.536, y: 0.002, z: 0.062}
 --- !u!1 &2530596118822227682
 GameObject:
@@ -109,13 +111,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2530596118822227682}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.22, z: 0.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8723045855811891764}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2852051892394464625
 GameObject:
@@ -142,13 +144,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2852051892394464625}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8723045855811891764}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6157682332946541117
 MonoBehaviour:
@@ -165,6 +167,7 @@ MonoBehaviour:
   skillName: Motivate
   animationDuration: 2
   targeting: 3
+  BodyPartTarget: 0
   effectPrfb: {fileID: 3874635022589376825, guid: ffdfb7851a968494f8fe76ee88f3791a, type: 3}
   SkillDesc: Boost your own or an ally's attack power by 10.
   skillType: 0
@@ -172,6 +175,7 @@ MonoBehaviour:
   animationName: Motivate
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   message: '{receiver} attack raises!'
 --- !u!114 &4249793430809731777
 MonoBehaviour:
@@ -211,13 +215,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3547959236246225358}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8723045855811891764}
-  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &8329237881836351005
 AudioSource:
@@ -339,13 +343,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4064608817759331905}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8723045855811891764}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1671792220725925787
 MonoBehaviour:
@@ -362,6 +366,7 @@ MonoBehaviour:
   skillName: Heal
   animationDuration: 3
   targeting: 3
+  BodyPartTarget: 0
   effectPrfb: {fileID: 8189500006840025469, guid: 48fe46143cd87ab4c91bde9322702779, type: 3}
   SkillDesc: You heal yourself or an ally for 20% of their maximum health.
   skillType: 2
@@ -372,9 +377,11 @@ MonoBehaviour:
   - id: 0
     amount: 1
     uso: 0
+  requiredParts: 
   amount: 0.2
   modType: 2
   critChance: 0
+  missChance: 0
 --- !u!1 &4623675866206518910
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,13 +406,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4623675866206518910}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1151242874894792660}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5817107460122288326
 MonoBehaviour:
@@ -425,7 +432,7 @@ MonoBehaviour:
   applyMessage: Curses damages (receiver)
   expireMessage: Curse fades
   turnDuration: 3
-  percentage: -0.1
+  percentage: -0.4
 --- !u!1 &4734708240943962573
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,13 +458,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4734708240943962573}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8723045855811891764}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1671792219998760315
 MonoBehaviour:
@@ -488,6 +495,7 @@ MonoBehaviour:
   skillName: Weaken
   animationDuration: 1.5
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 3499216465569482894, guid: f2fc97de3837dfe429d9e31b21e766fa, type: 3}
   SkillDesc: Reduce the opponent's defense by 10.
   skillType: 0
@@ -495,6 +503,7 @@ MonoBehaviour:
   animationName: Weaken
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   message: '{receiver} loses defense!'
 --- !u!1 &4953996111009695467
 GameObject:
@@ -520,13 +529,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4953996111009695467}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.6868525, z: -0, w: 0.72679687}
   m_LocalPosition: {x: -0.9950648, y: 0, z: -1.4374616}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8723045855811891764}
-  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2091201488172428537
 MonoBehaviour:
@@ -543,6 +552,7 @@ MonoBehaviour:
   skillName: Surgery
   animationDuration: 2
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 6703250321131892297, guid: 2b987d41506d172419fa18578f6ac380, type: 3}
   SkillDesc: A savage Surgery that deals 65 damage to the enemy (30% of critical
     chance).
@@ -551,9 +561,11 @@ MonoBehaviour:
   animationName: Motivate
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   amount: -65
   modType: 0
   critChance: 0.3
+  missChance: 0
 --- !u!1 &8234175860809934990
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,6 +595,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8234175860809934990}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
   m_LocalPosition: {x: 6.78, y: 1.54, z: -0.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -598,7 +611,6 @@ Transform:
   - {fileID: 87415367620226894}
   - {fileID: 3786198298521058067}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -85.763, z: 0}
 --- !u!114 &9116625401884513746
 MonoBehaviour:
@@ -612,6 +624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54cd0b67e51238547a59bd64b5935e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyParts: []
   team: 0
   idName: Pest Doctor
   statusPanel: {fileID: 0}
@@ -624,6 +637,7 @@ MonoBehaviour:
   DamagePivot: {fileID: 5111031901188597804}
   skillPanel: {fileID: 0}
   enemiesPanel: {fileID: 0}
+  bodyPartPanel: {fileID: 0}
   fightersDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
   figherIndex: 6
   ally1: {fileID: 9116625401884513746}
@@ -681,6 +695,7 @@ VisualEffect:
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
+  m_AllowInstancing: 1
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
@@ -760,6 +775,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 8723045855811891764}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
@@ -831,6 +847,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: 19b6d12709ae64e4088a160d8b4f3b5c, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4719797636715086292}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3751149506839160460}
   m_SourcePrefab: {fileID: 100100000, guid: 05fedba9c47bf31469ec6f5e15858234, type: 3}
 --- !u!95 &456296539905563015 stripped
 Animator:
@@ -854,10 +879,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6628994297398171975}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -871,8 +907,17 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6628994297398171975}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.22
   m_Height: 1.98
   m_Direction: 1

@@ -94,12 +94,45 @@ public abstract class Fighter : MonoBehaviour
                 }
                 break;
             case SkillTargeting.ALL_OPPONENTS:
-                Fighter[] enemies = this.combatManager.GetOpposingTeam();
-                foreach (var receiver in enemies)
                 {
-                    skill.AddReceiver(receiver);
+                    Fighter[] enemies = this.combatManager.GetOpposingTeam();
+
+                    foreach (var receiver in enemies)
+                    {
+                        
+                        skill.AddReceiver(receiver);
+
+                       
+                        // aplicamos el efecto a cada parte individual
+                        foreach (var partData in receiver.bodyParts)
+                        {
+                            if (!partData.IsDestroyed) // solo partes vivas
+                            {
+                                // Creamos una copia virtual del skill con esa parte
+                                // o directamente aplicamos el daño si ya está en ejecución
+
+                                if (skill is HealthModSkill healthSkill)
+                                {
+                                    float amount = healthSkill.GetModification(receiver);
+                                    receiver.ModifyBodyPartHealth(partData.part, amount);
+
+                                    // Mostramos daño flotante sobre cada parte
+                                    //if (receiver.damageCanvasPrefab != null)
+                                    {
+                                        //Vector3 pos = partData.hitPoint != null
+                                            //? partData.hitPoint.position
+                                            //: receiver.transform.position + Vector3.up * 1.5f;
+
+                                        //GameObject dmgObj = GameObject.Instantiate(receiver.damageCanvasPrefab, pos, Quaternion.identity);
+                                        //dmgObj.GetComponent<Dañocanvas>().Inicializar((int)amount);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
                 }
-                break;
+
             case SkillTargeting.SINGLE_ALLY:
             case SkillTargeting.SINGLE_OPPONENT:
                 throw new System.InvalidOperationException("Unimplemented! This skill needs manual targeting.");
@@ -225,14 +258,23 @@ public abstract class Fighter : MonoBehaviour
                 Debug.Log("Torso destruido → muerte instantánea");
                 ModifyHealth(-stats.health);
                 break;
-            case BodyPart.Legs:
+            case BodyPart.LeftLeg:
                 Debug.Log("Piernas destruidas → no puede moverse");
                 modedStats.speed = 0;
                 break;
-            case BodyPart.Arms:
-                Debug.Log("Brazos destruidos → no puede atacar");
-                modedStats.attack = 0;
+            case BodyPart.RightLeg:
+                Debug.Log("Piernas destruidas → no puede moverse");
+                modedStats.speed = 0;
                 break;
+            case BodyPart.RightArm:
+                Debug.Log("Brazos destruidos → no puede atacar");
+                modedStats.attack =- 10;
+                break;
+            case BodyPart.LeftArm:
+                Debug.Log("Brazos destruidos → no puede atacar");
+                modedStats.attack = -10;
+                break;
+
         }
     }
 

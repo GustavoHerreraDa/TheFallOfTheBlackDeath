@@ -10,6 +10,17 @@ public enum EnemyStateSimple
     UseAbility,
     Heal,
 }
+public enum AIAttackPreference
+{
+    HeadFocused,
+    TorsoFocused,
+    ArmsFocused,
+    LegsFocused,
+    Aggressive,
+    Opportunist,
+    Random
+}
+
 public class IAEnemySimple : MonoBehaviour
 {
     private EnemyStateSimple currentState;

@@ -20,6 +20,26 @@ MonoBehaviour:
   passIndex: 0
   bindDepthStencilAttachment: 1
   m_Version: 1
+--- !u!114 &-5376384812523807780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
+  m_Name: FullScreenPassRendererFeature
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  injectionPoint: 450
+  fetchColorBuffer: 1
+  requirements: 0
+  passMaterial: {fileID: -876546973899608171, guid: 0c6665b3aba33a6428bb2192f34a8c57, type: 3}
+  passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40,7 +60,9 @@ MonoBehaviour:
   - {fileID: 4488807751817803052}
   - {fileID: 6301142166183199141}
   - {fileID: -7445971268247903746}
-  m_RendererFeatureMap: 64d95b7112e22f232cb51e18de724b3ea5c1954e6a277257fea151fc9498aa98
+  - {fileID: 489342030544111390}
+  - {fileID: -5376384812523807780}
+  m_RendererFeatureMap: 64d95b7112e22f232cb51e18de724b3ea5c1954e6a277257fea151fc9498aa981e0740f0fb7dca06dc9bb6917f3e63b5
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -82,6 +104,25 @@ MonoBehaviour:
   m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
+--- !u!114 &489342030544111390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0acd45155cb2db941a8decdba38dcdae, type: 3}
+  m_Name: DitherRenderFeature
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  settings:
+    shader: {fileID: 4800000, guid: 2cd0a8b2dbf6aad4cadbb36e8a82d0ff, type: 3}
+    ditherTex: {fileID: 2800000, guid: b3548485f30fada4a9ae4fa83d7e5191, type: 3}
+    rampTex: {fileID: 2800000, guid: 36e5688595a3e234cbaf682ab451db85, type: 3}
+    useScrolling: 0
+    filterMode: 0
 --- !u!114 &2535493684072012132
 MonoBehaviour:
   m_ObjectHideFlags: 0

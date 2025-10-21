@@ -14,8 +14,10 @@ public enum BodyPart
     None,
     Head,
     Torso,
-    Legs,
-    Arms
+    LeftLeg,
+    LeftArm,
+    RightArm,
+    RightLeg
 }
 public abstract class Skill : MonoBehaviour
 {

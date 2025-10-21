@@ -1,11 +1,11 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 
 /// <summary>
 /// Apply Status Condition Skill
 /// </summary>
 public class ApSC : Skill
 {
-    public float damageAmount = 0f; // Cantidad de daÒo que se generar· al aplicar la condiciÛn de estado
+    public float damageAmount = 0f; // Cantidad de da√±o que se generar√° al aplicar la condici√≥n de estado
     private StatusCondition condition;
     public AudioSource audioSource;
 
@@ -39,7 +39,7 @@ public class ApSC : Skill
         clonedCondition.SetReceiver(receiver);
         receiver.statusCondition = clonedCondition;
 
-        // Generamos el daÒo al receptor
+        // Generamos el da√±o al receptor
         receiver.ModifyHealth(-damageAmount);
         this.messages.Enqueue("Hit for " + (int)damageAmount + (" to " + receiver.idName));
 

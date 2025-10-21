@@ -55,9 +55,11 @@ MonoBehaviour:
   animationName: Attack
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   amount: -70
   modType: 0
   critChance: 0.15
+  missChance: 0
 --- !u!1 &6115986738999253079
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,16 +118,28 @@ MonoBehaviour:
   bodyParts:
   - part: 1
     hitPoint: {fileID: 6115986740626850642}
-    damageMultiplier: 0
+    maxHealth: 0
+    currentHealth: 0
   - part: 2
     hitPoint: {fileID: 6115986740626850642}
-    damageMultiplier: 0
+    maxHealth: 0
+    currentHealth: 0
+  - part: 5
+    hitPoint: {fileID: 6115986740626850642}
+    maxHealth: 0
+    currentHealth: 0
   - part: 4
     hitPoint: {fileID: 6115986740626850642}
-    damageMultiplier: 0
+    maxHealth: 0
+    currentHealth: 0
   - part: 3
     hitPoint: {fileID: 6115986740626850642}
-    damageMultiplier: 0
+    maxHealth: 0
+    currentHealth: 0
+  - part: 6
+    hitPoint: {fileID: 6115986740626850642}
+    maxHealth: 0
+    currentHealth: 0
   team: 1
   idName: Demon Wizard
   statusPanel: {fileID: 5424536916894972263}
@@ -136,6 +150,7 @@ MonoBehaviour:
   statusCondition: {fileID: 0}
   CameraPivot: {fileID: 6115986740426623391}
   DamagePivot: {fileID: 6115986740626850642}
+  attackPreference: 6
   EnemyDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
   EnemyIndex: 2
   _IAEnemySimple: {fileID: 5245368271930821836}
@@ -224,9 +239,11 @@ MonoBehaviour:
   animationName: Attack
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   amount: -75
   modType: 0
   critChance: 0.005
+  missChance: 0
 --- !u!1 &6115986740411157702
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,6 +416,7 @@ MonoBehaviour:
   - id: 6
     amount: 1
     uso: 0
+  requiredParts: 
 --- !u!1 &6115986740844507788
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,6 +487,7 @@ MonoBehaviour:
   animationName: Ignite
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   message: The group's attack was reduced by 10
 --- !u!1 &7414658690826527535
 GameObject:

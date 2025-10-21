@@ -55,9 +55,11 @@ MonoBehaviour:
   animationName: Attack
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   amount: -35
   modType: 0
   critChance: 0
+  missChance: 0
 --- !u!1 &2473935841907953189
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,6 +116,7 @@ MonoBehaviour:
   animationName: Attack
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
 --- !u!1 &3663964162458456325
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,6 +383,7 @@ MonoBehaviour:
   animationName: Attack
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
 --- !u!1 &6721876283865533393
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,6 +536,7 @@ MonoBehaviour:
   animationName: Attack
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   message: '{receiver} raises deffense!'
 --- !u!1 &8204355791575341872
 GameObject:
@@ -591,16 +596,28 @@ MonoBehaviour:
   bodyParts:
   - part: 1
     hitPoint: {fileID: 0}
-    damageMultiplier: 0
+    maxHealth: 0
+    currentHealth: 0
   - part: 2
     hitPoint: {fileID: 0}
-    damageMultiplier: 0
+    maxHealth: 0
+    currentHealth: 0
+  - part: 5
+    hitPoint: {fileID: 0}
+    maxHealth: 0
+    currentHealth: 0
   - part: 4
     hitPoint: {fileID: 0}
-    damageMultiplier: 0
+    maxHealth: 0
+    currentHealth: 0
   - part: 3
     hitPoint: {fileID: 0}
-    damageMultiplier: 0
+    maxHealth: 1
+    currentHealth: 1
+  - part: 6
+    hitPoint: {fileID: 0}
+    maxHealth: 1
+    currentHealth: 1
   team: 1
   idName: Zombie
   statusPanel: {fileID: 2473935841179383842}
@@ -611,6 +628,7 @@ MonoBehaviour:
   statusCondition: {fileID: 0}
   CameraPivot: {fileID: 3466180727041470565}
   DamagePivot: {fileID: 4473444854589287572}
+  attackPreference: 2
   EnemyDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
   EnemyIndex: 1
   _IAEnemySimple: {fileID: 9046612120080581514}

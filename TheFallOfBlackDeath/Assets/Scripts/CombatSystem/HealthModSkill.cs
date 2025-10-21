@@ -64,20 +64,33 @@ public class HealthModSkill : Skill
     {
         float adjusted = missChance;
 
-        // Si atacamos a la cabeza → +30% de chance de fallo (difícil de acertar)
+        // Si atacamos a la cabeza → +90% de chance de fallo (difícil de acertar)
         if (this.BodyPartTarget == BodyPart.Head)
             adjusted += 0.9f;
 
-        // Si el receptor tiene las piernas destruidas → -25% de chance de fallo (más fácil de acertar)
-        Fighter.BodyPartData legs = receiver.GetBodyPart(BodyPart.Legs);
-        if (legs != null && legs.IsDestroyed)
-            adjusted -= 0.75f;
+        // Si el receptor tiene una pierna destruida → -75% de chance de fallo (más fácil de acertar)
+        Fighter.BodyPartData rightLeg = receiver.GetBodyPart(BodyPart.RightLeg);
+        Fighter.BodyPartData leftLeg = receiver.GetBodyPart(BodyPart.LeftLeg);
 
-        // Clamp para que no se pase de 0–1
+        bool rightLegDestroyed = rightLeg != null && rightLeg.IsDestroyed;
+        bool leftLegDestroyed = leftLeg != null && leftLeg.IsDestroyed;
+
+        // Si ambas piernas están destruidas → penalización extra a los fallos de cabeza
+        if (leftLegDestroyed && rightLegDestroyed && this.BodyPartTarget == BodyPart.Head)
+        {
+            adjusted -= 0.6f; // reduce bastante la probabilidad de fallar a la cabeza
+        }
+        else if (leftLegDestroyed || rightLegDestroyed)
+        {
+            adjusted -= 0.75f; // si al menos una pierna está destruida
+        }
+
+        // Clamp para mantener entre 0 y 1
         adjusted = Mathf.Clamp01(adjusted);
 
         return adjusted;
     }
+
 
     public float GetModification(Fighter receiver)
     {

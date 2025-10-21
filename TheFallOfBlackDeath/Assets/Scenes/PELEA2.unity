@@ -4580,7 +4580,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -7609,8 +7609,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 372303679}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
-      propertyPath: bodyParts.Array.size
+      propertyPath: attackPreference
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.size
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.data[1].part
@@ -7618,11 +7622,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.data[2].part
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.data[3].part
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[4].part
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[5].part
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.data[0].hitPoint
@@ -7635,9 +7647,17 @@ PrefabInstance:
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.data[2].hitPoint
       value: 
-      objectReference: {fileID: 3953988881971361943}
+      objectReference: {fileID: 3953988881971361942}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.data[3].hitPoint
+      value: 
+      objectReference: {fileID: 3953988881971361943}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[4].hitPoint
+      value: 
+      objectReference: {fileID: 3953988881971361942}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[5].hitPoint
       value: 
       objectReference: {fileID: 3953988881971361942}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
@@ -7657,6 +7677,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[4].maxHealth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[5].maxHealth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.data[0].currentHealth
       value: 1
       objectReference: {fileID: 0}
@@ -7670,6 +7698,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
       propertyPath: bodyParts.Array.data[3].currentHealth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[4].currentHealth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}
+      propertyPath: bodyParts.Array.data[5].currentHealth
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6115986738999253077, guid: 4850856d7d04360459665f550462d45b, type: 3}

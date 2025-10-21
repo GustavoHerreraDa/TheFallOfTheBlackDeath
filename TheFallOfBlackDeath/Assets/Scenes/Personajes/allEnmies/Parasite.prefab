@@ -86,9 +86,11 @@ MonoBehaviour:
   animationName: Bite
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   amount: -50
   modType: 0
   critChance: 0.2
+  missChance: 0
 --- !u!1 &6902323948755069951
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,16 +148,28 @@ MonoBehaviour:
   bodyParts:
   - part: 1
     hitPoint: {fileID: 5654859653644030477}
-    damageMultiplier: 0
+    maxHealth: 0
+    currentHealth: 0
   - part: 2
     hitPoint: {fileID: 5654859653644030477}
-    damageMultiplier: 0
+    maxHealth: 0
+    currentHealth: 0
+  - part: 5
+    hitPoint: {fileID: 5654859653644030477}
+    maxHealth: 1
+    currentHealth: 1
   - part: 4
     hitPoint: {fileID: 5654859653644030477}
-    damageMultiplier: 0
+    maxHealth: 0
+    currentHealth: 0
   - part: 3
     hitPoint: {fileID: 5654859653644030477}
-    damageMultiplier: 0
+    maxHealth: 0
+    currentHealth: 0
+  - part: 6
+    hitPoint: {fileID: 5654859653644030477}
+    maxHealth: 1
+    currentHealth: 1
   team: 1
   idName: Parasite
   statusPanel: {fileID: 4027893684075247705}
@@ -166,6 +180,7 @@ MonoBehaviour:
   statusCondition: {fileID: 0}
   CameraPivot: {fileID: 5968671174144486246}
   DamagePivot: {fileID: 5654859653644030477}
+  attackPreference: 6
   EnemyDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
   EnemyIndex: 0
   _IAEnemySimple: {fileID: 301534078939954283}
@@ -300,6 +315,7 @@ MonoBehaviour:
   animationName: Buff
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   message: '{receiver} raises attack!'
 --- !u!1 &7921232431188194147
 GameObject:
@@ -356,9 +372,11 @@ MonoBehaviour:
   animationName: Attack
   HasItemInInventory: 0
   ItemsNeeded: []
+  requiredParts: 
   amount: -61
   modType: 0
   critChance: 0.1
+  missChance: 0
 --- !u!1 &8268000737463624203
 GameObject:
   m_ObjectHideFlags: 0
