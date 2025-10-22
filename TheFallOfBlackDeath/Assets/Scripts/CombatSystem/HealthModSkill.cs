@@ -78,11 +78,11 @@ public class HealthModSkill : Skill
         // Si ambas piernas están destruidas → penalización extra a los fallos de cabeza
         if (leftLegDestroyed && rightLegDestroyed && this.BodyPartTarget == BodyPart.Head)
         {
-            adjusted -= 0.6f; // reduce bastante la probabilidad de fallar a la cabeza
+            adjusted -= 0.9f; // reduce bastante la probabilidad de fallar a la cabeza
         }
         else if (leftLegDestroyed || rightLegDestroyed)
         {
-            adjusted -= 0.75f; // si al menos una pierna está destruida
+            adjusted -= 0.5f; // si al menos una pierna está destruida
         }
 
         // Clamp para mantener entre 0 y 1

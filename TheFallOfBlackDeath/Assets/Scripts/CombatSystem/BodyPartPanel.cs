@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class BodyPartPanel : MonoBehaviour
 {
     [Header("UI")]
-    public GameObject sampleButton;   // botón base (prefab oculto en el editor)
+    public GameObject sampleButton; 
     public Transform buttonContainer; 
 
     private PlayerFighter player;
