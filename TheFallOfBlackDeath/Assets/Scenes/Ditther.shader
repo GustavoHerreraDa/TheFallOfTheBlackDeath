@@ -18,6 +18,15 @@
             Pass
             {
                 Name "DitherPass"
+
+                // 🟡 Aquí va el stencil correcto
+                Stencil
+                {
+                    Ref 1
+                    Comp NotEqual  // solo aplica el dithering donde el stencil NO sea 1
+                    Pass Keep
+                }
+
                 HLSLPROGRAM
                 #pragma vertex Vert
                 #pragma fragment Frag
@@ -61,7 +70,7 @@
                     float3 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv).rgb;
                     float lum = dot(col, float3(0.299, 0.587, 0.114));
 
-                    // 🔧 Escalado limpio del ruido (tileable)
+                    // Escalado limpio del ruido (tileable)
                     float2 noiseUV = frac(i.uv * _NoiseScale + float2(_XOffset, _YOffset));
                     float3 threshold = SAMPLE_TEXTURE2D(_NoiseTex, sampler_NoiseTex, noiseUV).rgb;
                     float thresholdLum = dot(threshold, float3(0.299, 0.587, 0.114));
