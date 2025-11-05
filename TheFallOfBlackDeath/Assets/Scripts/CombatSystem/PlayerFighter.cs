@@ -168,4 +168,35 @@ public class PlayerFighter : Fighter
         bodyPartPanel = newBodyPartPanel;
         return this;
     }
+
+    public void ApplyStatUpgrade(InventoryDateBase.StatsUpgrade stat, float amount)
+    {
+        Debug.Log($"[{idName}] +{amount} en {stat}");
+        switch (stat)
+        {
+            case InventoryDateBase.StatsUpgrade.Health:
+                stats.health = Mathf.Clamp(stats.health + amount, 0, stats.maxHealth);
+                break;
+            case InventoryDateBase.StatsUpgrade.Attack:
+                stats.attack += amount;
+                break;
+            case InventoryDateBase.StatsUpgrade.Defense:
+                stats.deffense += amount;
+                break;
+            case InventoryDateBase.StatsUpgrade.Speed:
+                stats.speed += amount;
+                break;
+            case InventoryDateBase.StatsUpgrade.Spirit:
+                stats.spirit += amount;
+                break;
+        }
+    }
+
+
+    public void RemoveStatUpgrade(InventoryDateBase.StatsUpgrade stat, float amount)
+    {
+        // para revertir un equipamiento
+        ApplyStatUpgrade(stat, -amount);
+    }
 }
+

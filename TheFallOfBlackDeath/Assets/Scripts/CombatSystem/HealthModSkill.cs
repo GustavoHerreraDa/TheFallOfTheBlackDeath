@@ -23,12 +23,15 @@ public class HealthModSkill : Skill
         float dice = Random.Range(0f, 1f);
         float adjustedMissChance = GetAdjustedMissChance(receiver);
 
+        Vector3 textPos = receiver.transform.position + Vector3.up * 2f; // posición sobre el personaje
+
         // ❌ Fallo
         if (dice <= adjustedMissChance)
         {
             this.messages.Enqueue($"{emitter.idName} missed the attack on {receiver.idName}!");
             Debug.Log($"{emitter.idName} missed the attack on {receiver.idName}");
-            return; // 🔥 no hacemos nada más
+            FloatingTextManager.Instance.ShowText("Miss!", textPos, Color.gray);
+            return;
         }
 
         // 🎯 Crítico
@@ -37,13 +40,14 @@ public class HealthModSkill : Skill
             amount *= 2f;
             this.messages.Enqueue("Critical hit!");
             this.messages.Enqueue($"Hit for {(int)amount} to {receiver.idName}");
+            FloatingTextManager.Instance.ShowText($"-{(int)amount}!", textPos, Color.yellow);
         }
         else
         {
             this.messages.Enqueue($"Hit for {(int)amount} to {receiver.idName}");
+            FloatingTextManager.Instance.ShowText($"-{(int)amount}", textPos, Color.red);
         }
 
-        // 💥 Si el ataque tiene una parte del cuerpo objetivo, aplicamos ahí
         if (this.BodyPartTarget != BodyPart.None)
         {
             receiver.ModifyBodyPartHealth(this.BodyPartTarget, amount);
@@ -54,6 +58,7 @@ public class HealthModSkill : Skill
             receiver.ModifyHealth(amount);
         }
     }
+
 
     /// <summary>
     /// Ajusta la probabilidad de fallo según el contexto:

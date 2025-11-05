@@ -54,6 +54,18 @@ public class GameManager : MonoBehaviour
 
     private Coroutine corduraRoutine;
 
+    [Header("Vignette Settings")]
+    public Material vignetteMaterial;
+    public float minVigp = 0f;   // Viñeta mínima (cordura alta)
+    public float maxVigp = 1f;   // Viñeta máxima (cordura baja)
+    public float minVigi = 0f;
+    public float maxVigi = 1f;
+
+
+    [Header("Cordura Sound Settings")]
+    public AudioSource lowSanityAudio;
+    public float sanityThreshold = 20f; 
+    private bool isLowSanityPlaying = false;
 
     //ENUM
     public enum GameStates
@@ -104,7 +116,39 @@ public class GameManager : MonoBehaviour
 
         canGetEncounter = (corduraActual <= 20);
 
-        textCordura.text = "Cordura: " + Mathf.RoundToInt(corduraActual);
+        textCordura.text = "Sanity: " + Mathf.RoundToInt(corduraActual);
+
+        
+        if (corduraActual <= sanityThreshold && !isLowSanityPlaying)
+        {
+            if (lowSanityAudio != null)
+            {
+                lowSanityAudio.Play();
+                isLowSanityPlaying = true;
+            }
+        }
+        else if (corduraActual > sanityThreshold && isLowSanityPlaying)
+        {
+            if (lowSanityAudio != null)
+            {
+                lowSanityAudio.Stop();
+                isLowSanityPlaying = false;
+            }
+        }
+
+        if (vignetteMaterial != null)
+        {
+           
+            float normalized = Mathf.InverseLerp(corduraMax, sanityThreshold, corduraActual);
+            normalized = Mathf.Clamp01(1f * normalized);
+
+            float vigpValue = Mathf.Lerp(minVigp, maxVigp, normalized);
+            float vigiValue = Mathf.Lerp(minVigi, maxVigi, normalized);
+
+            vignetteMaterial.SetFloat("_vigp", vigpValue);
+            vignetteMaterial.SetFloat("_vigi", vigiValue);
+        }
+
 
     }
 
@@ -327,7 +371,7 @@ public class GameManager : MonoBehaviour
     {
         if (canGetEncounter)
         {
-            if (Random.Range(0, 100000) < 10)
+            if (Random.Range(0, 1000000) < 10)
             {
                 Debug.Log("i got attacked");
                 gotAttacked = true;
