@@ -44,6 +44,7 @@ public class DitherRenderFeature : ScriptableRendererFeature
     [System.Serializable]
     public class DitherSettings
     {
+        public bool enabled = true;
         public Texture2D noiseTex;
         public Texture2D colorRamp;
         [Range(16, 4096)] public float noiseScale = 512f;
@@ -69,7 +70,7 @@ public class DitherRenderFeature : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        if (material == null) return;
+        if (material == null || !settings.enabled) return;
 
         Camera cam = renderingData.cameraData.camera;
 
@@ -93,4 +94,5 @@ public class DitherRenderFeature : ScriptableRendererFeature
         pass.Setup(desc);
         renderer.EnqueuePass(pass);
     }
+
 }

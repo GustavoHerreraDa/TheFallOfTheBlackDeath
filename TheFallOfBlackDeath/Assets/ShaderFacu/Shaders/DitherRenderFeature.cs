@@ -7,6 +7,7 @@ public class DitherFeature : ScriptableRendererFeature
     [System.Serializable]
     public class DitherSettings
     {
+        public bool enabled = true;
         public Shader shader;
         public Texture2D ditherTex;
         public Texture2D rampTex;
@@ -18,6 +19,7 @@ public class DitherFeature : ScriptableRendererFeature
 
     class DitherPass : ScriptableRenderPass
     {
+
         private Material material;
         private DitherSettings settings;
         [System.Obsolete]
@@ -34,12 +36,13 @@ public class DitherFeature : ScriptableRendererFeature
         [System.Obsolete]
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
+            if (!settings.enabled) return;
             if (material == null) return;
 
             var cmd = CommandBufferPool.Get("DitherPass");
             ref var cameraData = ref renderingData.cameraData;
 
-            // ✅ Ahora sí podemos usarlo
+            
             var source = cameraData.renderer.cameraColorTargetHandle;
 
             material.SetTexture("_NoiseTex", settings.ditherTex);
@@ -80,10 +83,10 @@ public class DitherFeature : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        if (pass == null)
+        if (pass == null || !settings.enabled)
             return;
 
-        // No llames a renderer.cameraColorTargetHandle aquí
         renderer.EnqueuePass(pass);
     }
+
 }
