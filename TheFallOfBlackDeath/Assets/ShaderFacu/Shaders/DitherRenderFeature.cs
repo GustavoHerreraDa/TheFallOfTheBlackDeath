@@ -86,6 +86,20 @@ public class DitherFeature : ScriptableRendererFeature
         if (pass == null || !settings.enabled)
             return;
 
+        // ✅ Evitar aplicar el efecto en cámaras Overlay, SceneView o UI
+        var cameraData = renderingData.cameraData;
+        var camera = cameraData.camera;
+
+        // Si no es la cámara principal o es de tipo Overlay, salimos
+        if (cameraData.renderType == CameraRenderType.Overlay)
+            return;
+
+        // También podés filtrar por nombre o tag:
+        // if (camera.tag != "MainCamera") return;
+
+        // (Opcional) Si usás una cámara específica para UI:
+        // if (camera.CompareTag("UICamera")) return;
+
         renderer.EnqueuePass(pass);
     }
 

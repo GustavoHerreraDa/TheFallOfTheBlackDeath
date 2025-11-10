@@ -1,8 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public Button button;
     public Text label;
@@ -12,11 +12,14 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public Material originalMaterial;
     public Material highlightMaterial;
 
-    public EnemyButtonUI(GameObject buttonObject, int idx)
+    private GameObject enemyCanvas;
+
+    private void Awake()
     {
-        button = buttonObject.GetComponent<Button>();
-        label = buttonObject.GetComponentInChildren<Text>();
-        index = idx;
+        if (button == null)
+            button = GetComponent<Button>();
+        if (label == null)
+            label = GetComponentInChildren<Text>();
     }
 
     public void SetText(string text)
@@ -32,9 +35,16 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void Show() => button.gameObject.SetActive(true);
     public void Hide() => button.gameObject.SetActive(false);
 
+    // 👉 Cuando el mouse entra al botón
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (target == null) return;
+
+        // Buscamos el canvas dentro del enemigo
+        enemyCanvas = target.GetComponentInChildren<Canvas>(true)?.gameObject;
+
+        if (enemyCanvas != null)
+            enemyCanvas.SetActive(true);
 
         Renderer rend = target.GetComponentInChildren<Renderer>();
         if (rend != null)
@@ -44,14 +54,27 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
+    // 👉 Cuando el mouse sale del botón
     public void OnPointerExit(PointerEventData eventData)
     {
+        HideCanvasAndReset();
+    }
+
+    // 👉 Cuando el jugador hace click
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        HideCanvasAndReset();
+    }
+
+    private void HideCanvasAndReset()
+    {
+        if (enemyCanvas != null)
+            enemyCanvas.SetActive(false);
+
         if (target == null || originalMaterial == null) return;
 
         Renderer rend = target.GetComponentInChildren<Renderer>();
         if (rend != null)
-        {
             rend.material = originalMaterial;
-        }
     }
 }
