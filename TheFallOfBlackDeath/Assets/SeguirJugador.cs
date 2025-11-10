@@ -6,35 +6,48 @@ public class SeguirJugador : MonoBehaviour
     [Header("Componentes")]
     public NavMeshAgent navMeshAgent;
     public GameObject player;
-    public AudioSource audioSource; 
+    public AudioSource audioSource;
 
     [Header("Configuración de persecución")]
     public float distanceToFollowPlayer = 5f;
     public float velocidadNormal = 3.5f;
-    public float velocidadPersecucion = 6f; 
+    public float velocidadPersecucion = 6f;
 
-    [Header("Patrulla")]
+    [Header("Modo de comportamiento")]
+    public bool patrullar = true; // ✅ Si está en false, se quedará quieto (modo centinela)
+
+    [Header("Puntos de patrulla")]
     public Transform puntoA;
     public Transform puntoB;
-    private Transform destinoActual;
 
+    private Transform destinoActual;
+    private Vector3 posicionInicial;
     private bool siguiendoJugador = false;
     private bool sonidoReproducido = false;
 
     void Start()
     {
-        destinoActual = puntoA;
+        posicionInicial = transform.position;
         navMeshAgent.speed = velocidadNormal;
-        navMeshAgent.SetDestination(destinoActual.position);
+
+        if (patrullar && puntoA != null)
+        {
+            destinoActual = puntoA;
+            navMeshAgent.SetDestination(destinoActual.position);
+        }
+        else
+        {
+            navMeshAgent.SetDestination(posicionInicial);
+        }
     }
 
     void Update()
     {
         float distanciaJugador = Vector3.Distance(player.transform.position, transform.position);
 
+        // --- PERSEGUIR JUGADOR ---
         if (distanciaJugador < distanceToFollowPlayer)
         {
-        
             if (!siguiendoJugador)
             {
                 siguiendoJugador = true;
@@ -51,21 +64,35 @@ public class SeguirJugador : MonoBehaviour
         }
         else
         {
+            // --- DEJAR DE SEGUIR ---
             if (siguiendoJugador)
             {
                 siguiendoJugador = false;
                 sonidoReproducido = false;
                 navMeshAgent.speed = velocidadNormal;
-                navMeshAgent.SetDestination(destinoActual.position);
+
+                // Si patrulla, vuelve a patrullar; si no, regresa a su posición inicial
+                if (patrullar)
+                {
+                    if (destinoActual == null && puntoA != null)
+                        destinoActual = puntoA;
+
+                    navMeshAgent.SetDestination(destinoActual.position);
+                }
+                else
+                {
+                    navMeshAgent.SetDestination(posicionInicial);
+                }
             }
 
-            Patrullar();
+            if (patrullar)
+                Patrullar();
         }
     }
 
     void Patrullar()
     {
-        if (siguiendoJugador) return;
+        if (siguiendoJugador || puntoA == null || puntoB == null) return;
 
         if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
         {
