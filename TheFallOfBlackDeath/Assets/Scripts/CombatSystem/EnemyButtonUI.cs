@@ -35,12 +35,12 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void Show() => button.gameObject.SetActive(true);
     public void Hide() => button.gameObject.SetActive(false);
 
-    // 👉 Cuando el mouse entra al botón
+    
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (target == null) return;
 
-        // Buscamos el canvas dentro del enemigo
+       
         enemyCanvas = target.GetComponentInChildren<Canvas>(true)?.gameObject;
 
         if (enemyCanvas != null)
@@ -54,13 +54,13 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
-    // 👉 Cuando el mouse sale del botón
+
     public void OnPointerExit(PointerEventData eventData)
     {
         HideCanvasAndReset();
     }
 
-    // 👉 Cuando el jugador hace click
+    
     public void OnPointerClick(PointerEventData eventData)
     {
         HideCanvasAndReset();
