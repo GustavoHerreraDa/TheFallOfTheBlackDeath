@@ -63,6 +63,16 @@ public abstract class Interactable : MonoBehaviour
                 
             }
         }
+        if (other.gameObject.CompareTag("NPC"))
+        {
+            if (other.gameObject.GetComponent<DialogueInteractable>() != null)
+            {
+                InteractMeessage.SetActive(true);
+                objCollider = other;
+                canInteract = true;
+                nameMessage.text = message;
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)

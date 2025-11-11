@@ -6,7 +6,7 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Character"))
+        if (other.CompareTag("Charecter"))
         {
             DialogueManager.Instance.StartDialogue(dialogue);
         }

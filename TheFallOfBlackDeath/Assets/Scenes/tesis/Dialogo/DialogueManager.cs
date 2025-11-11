@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -7,17 +7,40 @@ public class DialogueManager : MonoBehaviour
     private int currentLineIndex;
     private DialogueUI ui;
 
+    [Header("Player")]
+    public PlayerControl playerControl;
+
+    private GameObject currentNPC;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
         ui = FindObjectOfType<DialogueUI>();
     }
 
-    public void StartDialogue(Dialogue dialogue)
+    public void StartDialogue(Dialogue dialogue, GameObject npc = null)
     {
         currentDialogue = dialogue;
+        currentNPC = npc;
         currentLineIndex = 0;
+
         ui.ShowUI(true);
+
+        if (playerControl != null)
+        {
+            playerControl.enabled = false;
+            Rigidbody rb = playerControl.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                rb.useGravity = false;
+                rb.constraints = RigidbodyConstraints.FreezeAll; 
+            }
+
+
+        }
+
         ShowLine();
     }
 
@@ -41,5 +64,18 @@ public class DialogueManager : MonoBehaviour
     {
         ui.ShowUI(false);
         currentDialogue = null;
+
+        if (playerControl != null)
+            playerControl.enabled = true; 
+
+       
+        if (currentNPC != null)
+        {
+            DialogueEvent evt = currentNPC.GetComponent<DialogueEvent>();
+            if (evt != null)
+                evt.TriggerEvent();
+        }
+
+        currentNPC = null;
     }
 }

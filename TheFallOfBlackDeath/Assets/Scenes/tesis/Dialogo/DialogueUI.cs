@@ -11,7 +11,7 @@ public class DialogueUI : MonoBehaviour
 
     [Header("Efecto de voz")]
     public AudioSource audioSource;
-    public AudioClip voiceBip; // Sonido corto tipo "bip"
+    public AudioClip voiceBip;
     [Range(0f, 1f)] public float bipPitchVariation = 0.2f;
     public float typingSpeed = 0.03f;
 
@@ -49,7 +49,6 @@ public class DialogueUI : MonoBehaviour
         {
             dialogueText.text += text[i];
 
-            // bip por letra
             if (char.IsLetterOrDigit(text[i]) && voiceBip != null)
             {
                 audioSource.pitch = 1f + Random.Range(-bipPitchVariation, bipPitchVariation);
@@ -64,8 +63,9 @@ public class DialogueUI : MonoBehaviour
 
     private void Update()
     {
-        if (dialoguePanel.activeSelf && Input.GetKeyDown(KeyCode.Space))
+        if (dialoguePanel.activeSelf && Input.GetKeyDown(KeyCode.E))
         {
+            // Si está escribiendo, mostrar todo de golpe
             if (isTyping)
             {
                 StopCoroutine(typingCoroutine);
@@ -74,6 +74,7 @@ public class DialogueUI : MonoBehaviour
             }
             else
             {
+                // Si ya terminó de escribir, avanzar o cerrar
                 DialogueManager.Instance.NextLine();
             }
         }
