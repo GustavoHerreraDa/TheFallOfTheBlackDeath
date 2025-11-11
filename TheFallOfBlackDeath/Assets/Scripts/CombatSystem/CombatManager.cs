@@ -211,6 +211,7 @@ public class CombatManager : MonoBehaviour
 
                     if (victory)
                     {
+                        GameManager.Instance.SavePlayerState();
                         audioSource.Play();
                         Animator[] playerAnimators = player.GetComponentsInChildren<Animator>();
                         foreach (Animator animator in playerAnimators)

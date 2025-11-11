@@ -73,7 +73,7 @@ public class HealthModSkill : Skill
         if (this.BodyPartTarget == BodyPart.Head)
             adjusted += 0.9f;
 
-        // Si el receptor tiene una pierna destruida → -75% de chance de fallo (más fácil de acertar)
+        // Si el receptor tiene una pierna destruida -75% de chance de fallo (más fácil de acertar)
         Fighter.BodyPartData rightLeg = receiver.GetBodyPart(BodyPart.RightLeg);
         Fighter.BodyPartData leftLeg = receiver.GetBodyPart(BodyPart.LeftLeg);
 
@@ -83,7 +83,7 @@ public class HealthModSkill : Skill
         // Si ambas piernas están destruidas → penalización extra a los fallos de cabeza
         if (leftLegDestroyed && rightLegDestroyed && this.BodyPartTarget == BodyPart.Head)
         {
-            adjusted -= 0.9f; // reduce bastante la probabilidad de fallar a la cabeza
+            adjusted -= 1; // reduce bastante la probabilidad de fallar a la cabeza
         }
         else if (leftLegDestroyed || rightLegDestroyed)
         {

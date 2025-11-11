@@ -19,6 +19,15 @@ public class GameManager : MonoBehaviour
         public int maxAmountEnemys = 4;
         public List<GameObject> Enemys = new List<GameObject>();
     }
+
+    [System.Serializable]
+    public class PlayerStatusData
+    {
+        public float currentHealth;
+        public List<float> bodyPartsHealth = new List<float>();
+    }
+    public PlayerStatusData savedPlayerStatus;
+
     public List<RegionData> Regions = new List<RegionData>();
 
     public GameObject character;
@@ -402,4 +411,38 @@ public class GameManager : MonoBehaviour
         gotAttacked = false;
         //canGetEncounter = false;
     }
+
+
+    public void SavePlayerState()
+    {
+        if (character1 == null) return;
+
+        savedPlayerStatus = new PlayerStatusData();
+        savedPlayerStatus.currentHealth = character1.stats.health;
+        savedPlayerStatus.bodyPartsHealth = new List<float>();
+
+        foreach (var part in character1.bodyParts)
+        {
+            savedPlayerStatus.bodyPartsHealth.Add(part.currentHealth);
+        }
+
+        Debug.Log("Estado del jugador guardado. Vida: " + savedPlayerStatus.currentHealth);
+    }
+
+    public void RestorePlayerState()
+    {
+        if (savedPlayerStatus == null || character1 == null) return;
+
+        // Restaurar vida
+        character1.stats.health = savedPlayerStatus.currentHealth;
+
+        // Restaurar partes del cuerpo
+        for (int i = 0; i < character1.bodyParts.Count && i < savedPlayerStatus.bodyPartsHealth.Count; i++)
+        {
+            character1.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
+        }
+
+        Debug.Log("Estado del jugador restaurado. Vida: " + character1.stats.health);
+    }
+
 }
