@@ -70,11 +70,6 @@ public abstract class Fighter : MonoBehaviour
         this.skills = this.GetComponentsInChildren<Skill>();
         this.modedStats = stats;
         this.statusMods = new List<StatusMod>();
-
-        foreach (var part in bodyParts)
-        {
-            part.currentHealth = part.maxHealth;
-        }
     }
 
     protected void AutoConfigureSkillTargeting(Skill skill)
