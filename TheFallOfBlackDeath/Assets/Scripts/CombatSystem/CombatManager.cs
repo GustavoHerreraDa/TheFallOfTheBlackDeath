@@ -410,6 +410,11 @@ public class CombatManager : MonoBehaviour
                     playerParent.transform
                 );
                 mainCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel1, enemiesPanel, bodyPartPanel);
+                var newFighter = mainCharacter.GetComponent<PlayerFighter>();
+                GameManager.Instance.character1 = newFighter;
+                GameManager.Instance.ApplySavedStatusToFighter(newFighter);
+
+
             }
             else if (enemyDataBase.EnemyDB[i].isSecondaryCharacter && GameManager.Instance.hasRecruitedSecondary)
             {
@@ -419,8 +424,14 @@ public class CombatManager : MonoBehaviour
                     secondaryCharacterPos.transform.position,
                     Quaternion.Euler(-0.4f, -90, 0),
                     playerParent.transform
+
                 );
                 secondaryCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel2, enemiesPanel, bodyPartPanel);
+                var newFighter = secondaryCharacter.GetComponent<PlayerFighter>();
+                GameManager.Instance.character2 = newFighter;
+                GameManager.Instance.ApplySavedStatusToFighter(newFighter);
+
+
             }
         }
     }

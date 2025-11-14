@@ -232,7 +232,16 @@ public class GameManager : MonoBehaviour
                 Debug.Log("PlayerFighter detectado automáticamente: " + player.name);
             }
         }
-        // Inicializar personajes antes de que otros scripts intenten acceder
+
+        if (character1 == null)
+        {
+            PlayerFighter player = FindObjectOfType<PlayerFighter>();
+            if (player != null)
+            {
+                character1 = player;
+                Debug.Log("PlayerFighter detectado automáticamente: " + player.name);
+            }
+        }
 
     }
 
@@ -293,6 +302,7 @@ public class GameManager : MonoBehaviour
 
             GameManager.Instance.FindEnemiesAndObjets();
             GameManager.Instance.FindPlayer();
+            GameManager.Instance.RestorePlayerState();
 
             if (GameManager.Instance.lastPos != Vector3.zero)
                 GameManager.Instance.character.transform.position = new Vector3(GameManager.Instance.lastPos.x - 2.5f, GameManager.Instance.lastPos.y, GameManager.Instance.lastPos.z - 2.5f);
@@ -403,6 +413,21 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Estado del jugador restaurado. Vida: " + character1.stats.health);
     }
+    public void ApplySavedStatusToFighter(PlayerFighter fighter)
+    {
+        if (savedPlayerStatus == null) return;
+
+        // Restaurar vida
+        fighter.stats.health = savedPlayerStatus.currentHealth;
+
+        // Restaurar partes del cuerpo
+        for (int i = 0; i < fighter.bodyParts.Count && i < savedPlayerStatus.bodyPartsHealth.Count; i++)
+        {
+            fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
+        }
+
+        Debug.Log("Estado aplicado al jugador dentro del combate. Vida: " + fighter.stats.health);
+    }
 
 
     IEnumerator WaitForPlayer()
@@ -412,5 +437,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("GameManager detectó a " + character1.name);
     }
+
+
 
 }
