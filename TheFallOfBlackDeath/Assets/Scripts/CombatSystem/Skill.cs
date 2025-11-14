@@ -130,6 +130,20 @@ public abstract class Skill : MonoBehaviour
 
         return true;
     }
+    public bool IsUsable(Fighter fighter)
+    {
+        if (requiredParts == null || requiredParts.Count == 0)
+            return true;
+
+        foreach (var part in requiredParts)
+        {
+            var bodyPart = fighter.GetBodyPart(part);
+            if (bodyPart == null || bodyPart.IsDestroyed)
+                return false;
+        }
+
+        return true;
+    }
 
 
     protected abstract void OnRun(Fighter receiver);

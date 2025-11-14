@@ -17,19 +17,30 @@ public class PlayerSkillPanel : MonoBehaviour
 
     public void ConfigureButton(int index, string skillName)
     {
+        var skill = targetFigther.skills[index];
+
+        bool isUsable = skill.IsUsable(targetFigther);
+
         this.skillButtons[index].SetActive(true);
+        this.skillButtons[index].GetComponent<Button>().interactable = isUsable;
         this.skillButtonLabels[index].text = skillName;
     }
 
     public void ConfigureButton(int index, string skillName, List<InventoryObjectID> itemsNeeded)
-    {
-        var hasItems = InventoryManager.instance == null ? true : InventoryManager.instance.HasItemInIventory(itemsNeeded);
+{
+    var skill = targetFigther.skills[index];
 
-        Debug.Log("ConfigureButtons - skill name + " + skillName + "  " + itemsNeeded.Count + " hasItems " + hasItems);
-        this.skillButtons[index].SetActive(true);
-        this.skillButtons[index].GetComponent<Button>().interactable = hasItems;
-        this.skillButtonLabels[index].text = skillName;
-    }
+    bool hasItems = InventoryManager.instance == null ? true : InventoryManager.instance.HasItemInIventory(itemsNeeded);
+    bool hasBodyParts = skill.IsUsable(targetFigther);
+
+    bool interactable = hasItems && hasBodyParts;
+
+    this.skillButtons[index].SetActive(true);
+    this.skillButtons[index].GetComponent<Button>().interactable = interactable;
+    this.skillButtonLabels[index].text = skillName;
+}
+
+
 
     public void OnSkillButtonClick(int index)
     {
@@ -62,6 +73,7 @@ public class PlayerSkillPanel : MonoBehaviour
             btn.SetActive(true);
         }
     }
+
 
 
 }

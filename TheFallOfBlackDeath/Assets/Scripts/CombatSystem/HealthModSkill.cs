@@ -31,6 +31,7 @@ public class HealthModSkill : Skill
             this.messages.Enqueue($"{emitter.idName} missed the attack on {receiver.idName}!");
             Debug.Log($"{emitter.idName} missed the attack on {receiver.idName}");
             FloatingTextManager.Instance.ShowText("Miss!", textPos, Color.gray);
+            receiver.ModifyHealth(amount = 0);
             return;
         }
 
