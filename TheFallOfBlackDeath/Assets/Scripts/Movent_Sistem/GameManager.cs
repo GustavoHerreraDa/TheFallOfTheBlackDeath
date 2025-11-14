@@ -325,7 +325,7 @@ public class GameManager : MonoBehaviour
 
                 Destroy(enemy.gameObject);
 
-                //Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + enemy.GroupName);
+                Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + enemy.GroupName);
             }
 
 
