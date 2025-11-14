@@ -56,8 +56,10 @@ public class CharacterSwitcher : MonoBehaviour
         {
             if (fightersDateBase.EnemyDB[i].isMainCharacter)
             {
+
                 currentMainCharacterIndex = fightersDateBase.EnemyDB[i].CharacterSwitcherIndex;
                 Debug.Log("Main Character es " + fightersDateBase.EnemyDB[i].Name);
+                GameManager.Instance.SavePlayerState();
             }
         }
 
@@ -67,6 +69,7 @@ public class CharacterSwitcher : MonoBehaviour
             {
                 currentSecondaryCharacterIndex = fightersDateBase.EnemyDB[i].CharacterSwitcherIndex;
                 Debug.Log("Secondary Character es " + fightersDateBase.EnemyDB[i].Name);
+                GameManager.Instance.SavePlayerState();
             }
         }
     }

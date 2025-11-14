@@ -31,8 +31,6 @@ public class GameManager : MonoBehaviour
     public List<RegionData> Regions = new List<RegionData>();
 
     public GameObject character;
-    public PlayerFighter BadDoctor;
-    public PlayerFighter Assassin;
     //Agrego estas referencias para poder acceder al Fighter desde InventoryUI y equipar objetos.
     public PlayerFighter character1;
     public PlayerFighter character2;
@@ -50,16 +48,6 @@ public class GameManager : MonoBehaviour
     public float corduraActual;
     public float perdidaDeCordura = 2f;
     public TextMeshProUGUI textCordura;
-
-
-    public bool killedOgre;
-    public GameObject ogre;
-    public bool killedMedusa;
-    public GameObject medusa;
-    public bool killedVampire;
-    public GameObject vampire;
-    public bool killedMinotaur;
-    public GameObject minotaur;
 
     private Coroutine corduraRoutine;
 
@@ -219,6 +207,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        var switcher = FindObjectOfType<CharacterSwitcher>();
+        character1 = switcher.characters[switcher.currentMainCharacterIndex].GetComponent<PlayerFighter>();
+        character2 = switcher.characters[switcher.currentSecondaryCharacterIndex].GetComponent<PlayerFighter>();
+
+        StartCoroutine(WaitForPlayer());
         foreach (string element in ListEnemyDefeat.enemiesDefeat)
         {
             Debug.Log(element);
@@ -230,11 +223,17 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(BajarCordura());
 
-        // Inicializar personajes antes de que otros scripts intenten acceder
         if (character1 == null)
-            character1 = BadDoctor;
-        if (character2 == null)
-            character2 = Assassin;
+        {
+            PlayerFighter player = FindObjectOfType<PlayerFighter>();
+            if (player != null)
+            {
+                character1 = player;
+                Debug.Log("PlayerFighter detectado automáticamente: " + player.name);
+            }
+        }
+        // Inicializar personajes antes de que otros scripts intenten acceder
+
     }
 
 
@@ -292,18 +291,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("Level " + level);
             //gameState = GameStates.TOWN_STATE;
 
-            if (SceneManager.GetActiveScene().buildIndex == 1)
-            {
-                ogre = GameObject.Find("Ogre");
-                minotaur = GameObject.Find("WorldMinotaur");
-                medusa = GameObject.Find("WorldMedusa");
-                vampire = GameObject.Find("WorldVampire");
-            }
-            ogre = GameObject.Find("Ogre");
-            minotaur = GameObject.Find("WorldMinotaur");
-            medusa = GameObject.Find("WorldMedusa");
-            vampire = GameObject.Find("WorldVampire");
-
             GameManager.Instance.FindEnemiesAndObjets();
             GameManager.Instance.FindPlayer();
 
@@ -331,34 +318,6 @@ public class GameManager : MonoBehaviour
                 //Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + enemy.GroupName);
             }
 
-            if (killedOgre)
-            {
-                if (ogre != null)
-                {
-                    Destroy(ogre);
-                }
-            }
-            if (killedMedusa)
-            {
-                if (medusa != null)
-                {
-                    Destroy(medusa);
-                }
-            }
-            if (killedMinotaur)
-            {
-                if (minotaur != null)
-                {
-                    Destroy(minotaur);
-                }
-            }
-            if (killedVampire)
-            {
-                if (vampire != null)
-                {
-                    Destroy(vampire);
-                }
-            }
 
 
             for (int i = 0; i < InventoryManager.instance.inventory.Count; i++)
@@ -443,6 +402,15 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("Estado del jugador restaurado. Vida: " + character1.stats.health);
+    }
+
+
+    IEnumerator WaitForPlayer()
+    {
+        while (character1 == null)
+            yield return null; // esperar un frame
+
+        Debug.Log("GameManager detectó a " + character1.name);
     }
 
 }

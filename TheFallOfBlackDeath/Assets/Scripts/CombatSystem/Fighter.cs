@@ -176,6 +176,11 @@ public abstract class Fighter : MonoBehaviour
             this.animator.Play("Damages");
         }
 
+        if (team == Team.PLAYERS && GameManager.Instance != null)
+        {
+            GameManager.Instance.SavePlayerState();
+        }
+
         if (this.isAlive == false)
         {
             audioSource.Play();

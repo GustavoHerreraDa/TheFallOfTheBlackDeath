@@ -225,31 +225,8 @@ public class CombatManager : MonoBehaviour
                         GameManager.Instance.enemyToBattle.Clear();
                         ListEnemyDefeat.enemiesDefeat.Add(groupEnemyName);
 
-                        if(SceneManager.GetActiveScene().buildIndex == 10)
-                        {
-                            Debug.Log("Killed Ogre");
-                            GameManager.Instance.killedOgre = true;
-                        }
-                        if(SceneManager.GetActiveScene().buildIndex == 11)
-                        {
-                            Debug.Log("Killed Medusa");
-
-                            GameManager.Instance.killedMedusa = true;
-                        }
-                        if(SceneManager.GetActiveScene().buildIndex == 12)
-                        {
-                            Debug.Log("killed Vampire");
-
-                            GameManager.Instance.killedVampire = true;
-                        }
-                        if(SceneManager.GetActiveScene().buildIndex == 13)
-                        {
-                            Debug.Log("killedMinotaur");
-
-                            GameManager.Instance.killedMinotaur = true;
-                        }
-
                         PlayerPrefs.SetString("GrupoEnemigo", groupEnemyName);
+                        Debug.Log("se encontraron esto grupos" + groupEnemyName);
                         yield return new WaitForSeconds(2f);
                         SceneManager.LoadScene(1);
 
@@ -257,6 +234,7 @@ public class CombatManager : MonoBehaviour
 
                     if (defeat)
                     {
+                        GameManager.Instance.SavePlayerState();
                         LogPanel.Write("Defeat!");
                         this.isCombatActive = false;
                         yield return new WaitForSeconds(2f);
@@ -435,7 +413,7 @@ public class CombatManager : MonoBehaviour
             }
             else if (enemyDataBase.EnemyDB[i].isSecondaryCharacter && GameManager.Instance.hasRecruitedSecondary)
             {
-                // 👆 Solo instanciamos si está reclutado
+                //Solo instanciamos si está reclutado
                 GameObject secondaryCharacter = Instantiate(
                     enemyDataBase.EnemyDB[i].enemyPrefab,
                     secondaryCharacterPos.transform.position,
