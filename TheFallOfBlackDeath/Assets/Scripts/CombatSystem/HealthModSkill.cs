@@ -19,45 +19,43 @@ public class HealthModSkill : Skill
 
     protected override void OnRun(Fighter receiver)
     {
-        float amount = this.GetModification(receiver);
+        float dmg = this.GetModification(receiver);   // ⭐ ahora se llama "dmg"
         float dice = Random.Range(0f, 1f);
         float adjustedMissChance = GetAdjustedMissChance(receiver);
 
-        Vector3 textPos = receiver.transform.position + Vector3.up * 2f; // posición sobre el personaje
+        Vector3 textPos = receiver.transform.position + Vector3.up * 2f;
 
-        // ❌ Fallo
+        // ❌ Miss
         if (dice <= adjustedMissChance)
         {
             this.messages.Enqueue($"{emitter.idName} missed the attack on {receiver.idName}!");
-            Debug.Log($"{emitter.idName} missed the attack on {receiver.idName}");
             FloatingTextManager.Instance.ShowText("Miss!", textPos, Color.gray);
-            receiver.ModifyHealth(amount = 0);
+            receiver.ModifyHealth(0);                 // ⭐ esto NO pisa el daño
             return;
         }
 
         // 🎯 Crítico
         if (dice <= adjustedMissChance + this.critChance)
         {
-            amount *= 2f;
+            dmg *= 2f;
             this.messages.Enqueue("Critical hit!");
-            this.messages.Enqueue($"Hit for {(int)amount} to {receiver.idName}");
-            FloatingTextManager.Instance.ShowText($"-{(int)amount}!", textPos, Color.yellow);
+            this.messages.Enqueue($"Hit for {(int)dmg} to {receiver.idName}");
+            FloatingTextManager.Instance.ShowText($"-{(int)dmg}!", textPos, Color.yellow);
         }
         else
         {
-            this.messages.Enqueue($"Hit for {(int)amount} to {receiver.idName}");
-            FloatingTextManager.Instance.ShowText($"-{(int)amount}", textPos, Color.red);
+            this.messages.Enqueue($"Hit for {(int)dmg} to {receiver.idName}");
+            FloatingTextManager.Instance.ShowText($"-{(int)dmg}", textPos, Color.red);
         }
 
         if (this.BodyPartTarget != BodyPart.None)
         {
-            receiver.ModifyBodyPartHealth(this.BodyPartTarget, amount);
+            receiver.ModifyBodyPartHealth(this.BodyPartTarget, dmg);
             this.messages.Enqueue($"{emitter.idName} hit on {this.BodyPartTarget}!");
         }
         else
         {
-            receiver.ModifyHealth(amount);
-
+            receiver.ModifyHealth(dmg);
         }
     }
 

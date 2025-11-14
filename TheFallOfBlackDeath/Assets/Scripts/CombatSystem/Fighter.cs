@@ -71,6 +71,10 @@ public abstract class Fighter : MonoBehaviour
         this.modedStats = stats;
         this.statusMods = new List<StatusMod>();
 
+        foreach (var part in bodyParts)
+        {
+            part.currentHealth = part.maxHealth;
+        }
     }
 
     protected void AutoConfigureSkillTargeting(Skill skill)
@@ -172,11 +176,6 @@ public abstract class Fighter : MonoBehaviour
             this.animator.Play("Damages");
         }
 
-        if (team == Team.PLAYERS && GameManager.Instance != null)
-        {
-            GameManager.Instance.SavePlayerState();
-        }
-
         if (this.isAlive == false)
         {
             audioSource.Play();
@@ -200,7 +199,17 @@ public abstract class Fighter : MonoBehaviour
         {
             OnBodyPartDestroyed(target);
         }
+
+        if (target.currentHealth == 0)
+        {
+            Vector3 textPos = transform.position + Vector3.up * 3f;
+            FloatingTextManager.Instance.ShowText($"{part} destroyed!", textPos, Color.magenta);
+
+            //Animator.SetTrigger("LoseLimb"); o un ParticleSystem
+        }
     }
+
+
 
 
     public Stats GetCurrentStats()
