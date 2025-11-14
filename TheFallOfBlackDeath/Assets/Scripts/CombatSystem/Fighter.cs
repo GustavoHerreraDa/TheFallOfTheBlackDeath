@@ -43,7 +43,7 @@ public abstract class Fighter : MonoBehaviour
 
     public Stats stats;
     public Stats modedStats;
-    protected Skill[] skills;
+    public Skill[] skills;
     public StatusCondition statusCondition;
 
     [SerializeField]
