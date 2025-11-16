@@ -5,7 +5,7 @@
         _MainTex("MainTex", 2D) = "white" {}
         _NoiseTex("Noise Texture", 2D) = "white" {}
         _ColorRampTex("Color Ramp", 2D) = "white" {}
-        _NoiseScale("Noise Scale", Float) = 512
+        _NoiseScale("Noise Scale", Float) = 2048
         _XOffset("X Offset", Float) = 0
         _YOffset("Y Offset", Float) = 0
     }
@@ -19,7 +19,7 @@
             {
                 Name "DitherPass"
 
-                // 🟡 Aquí va el stencil correcto
+                
                 Stencil
                 {
                     Ref 1
@@ -70,13 +70,13 @@
                     float3 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv).rgb;
                     float lum = dot(col, float3(0.299, 0.587, 0.114));
 
-                    // Escalado limpio del ruido (tileable)
+                    
                     float2 noiseUV = frac(i.uv * _NoiseScale + float2(_XOffset, _YOffset));
                     float3 threshold = SAMPLE_TEXTURE2D(_NoiseTex, sampler_NoiseTex, noiseUV).rgb;
                     float thresholdLum = dot(threshold, float3(0.299, 0.587, 0.114));
 
-                    float rampVal = lum < thresholdLum ? thresholdLum - lum : 1.0;
-                    float3 rgb = SAMPLE_TEXTURE2D(_ColorRampTex, sampler_ColorRampTex, float2(rampVal, 0.5)).rgb;
+                    float rampVal = lum < thresholdLum ? thresholdLum - lum : 1;
+                    float3 rgb = SAMPLE_TEXTURE2D(_ColorRampTex, sampler_ColorRampTex, float2(rampVal, 0.7)).rgb;
 
                     return float4(rgb, 1);
                 }

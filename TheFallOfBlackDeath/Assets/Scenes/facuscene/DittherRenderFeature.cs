@@ -47,7 +47,7 @@ public class DitherRenderFeature : ScriptableRendererFeature
         public bool enabled = true;
         public Texture2D noiseTex;
         public Texture2D colorRamp;
-        [Range(16, 4096)] public float noiseScale = 512f;
+        [Range(16, 4096)] public float noiseScale = 2048;
         public bool useScrolling = false;
     }
 
