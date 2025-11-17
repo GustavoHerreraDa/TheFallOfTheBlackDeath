@@ -209,8 +209,38 @@ public class CombatManager : MonoBehaviour
                     bool victory = areEnemiesAlive == false;
                     bool defeat = arePlayersAlive == false;
 
+
                     if (victory)
                     {
+                        int totalExp = 0;
+
+                        // Para cada enemigo derrotado
+                        foreach (var enemy in enemyTeam)
+                        {
+                            if (enemy == null) continue;
+
+                            int enemyLevel = enemy.stats.level;
+                            int exp = enemyLevel * 20;
+
+                            // Diferencia de niveles
+                            int playerLevel = playerTeam[0].stats.level;
+
+                            if (enemyLevel > playerLevel)
+                                exp = Mathf.FloorToInt(exp * 2);
+                            else if (enemyLevel < playerLevel)
+                                exp = Mathf.FloorToInt(exp * 0.6f);
+
+                            totalExp += exp;
+                        }
+
+                        foreach (var fighter in playerTeam)
+                        {
+                            if (fighter is PlayerFighter player)
+                            {
+                                player.AddExperience(totalExp);
+                            }
+                        }
+
                         GameManager.Instance.SavePlayerState();
                         audioSource.Play();
                         Animator[] playerAnimators = player.GetComponentsInChildren<Animator>();

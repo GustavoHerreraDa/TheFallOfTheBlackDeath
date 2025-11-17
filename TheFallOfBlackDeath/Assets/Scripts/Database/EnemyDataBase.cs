@@ -19,6 +19,8 @@ public class EnemyDataBase : ScriptableObject
         public float deffense;
         public float spirit;
         public float speed;
+        public int experience;
+        public int experienceToNextLevel;
         public string Description;
         public string LargeDescription;
         public string Name;   
@@ -44,6 +46,8 @@ public class EnemyDataBase : ScriptableObject
                     deffense = EnemyDB[index].deffense, 
                     spirit = EnemyDB[index].spirit, 
                     speed = EnemyDB[index].speed, 
+                    experience = EnemyDB[index].experience,
+                    experienceToNextLevel = EnemyDB[index].experienceToNextLevel,
                     Description = EnemyDB[index].Description, 
                     LargeDescription = EnemyDB[index].LargeDescription, 
                     Name = EnemyDB[index].Name,
@@ -66,7 +70,9 @@ public class EnemyDataBase : ScriptableObject
                     attack = EnemyDB[index].attack, 
                     deffense = EnemyDB[index].deffense + amountAffected, 
                     spirit = EnemyDB[index].spirit, 
-                    speed = EnemyDB[index].speed, 
+                    speed = EnemyDB[index].speed,
+                    experience = EnemyDB[index].experience,
+                    experienceToNextLevel = EnemyDB[index].experienceToNextLevel,
                     Description = EnemyDB[index].Description, 
                     LargeDescription = EnemyDB[index].LargeDescription, 
                     Name = EnemyDB[index].Name,
@@ -91,7 +97,9 @@ public class EnemyDataBase : ScriptableObject
             attack = EnemyDB[index].attack, 
             deffense = EnemyDB[index].deffense, 
             spirit = EnemyDB[index].spirit, 
-            speed = EnemyDB[index].speed, 
+            speed = EnemyDB[index].speed,
+            experience = EnemyDB[index].experience,
+            experienceToNextLevel = EnemyDB[index].experienceToNextLevel,
             Description = EnemyDB[index].Description, 
             LargeDescription = EnemyDB[index].LargeDescription, 
             Name = EnemyDB[index].Name,
@@ -114,7 +122,9 @@ public class EnemyDataBase : ScriptableObject
             attack = EnemyDB[index].attack, 
             deffense = EnemyDB[index].deffense, 
             spirit = EnemyDB[index].spirit, 
-            speed = EnemyDB[index].speed, 
+            speed = EnemyDB[index].speed,
+            experience = EnemyDB[index].experience,
+            experienceToNextLevel = EnemyDB[index].experienceToNextLevel,
             Description = EnemyDB[index].Description, 
             LargeDescription = EnemyDB[index].LargeDescription, 
             Name = EnemyDB[index].Name,

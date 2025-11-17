@@ -19,9 +19,8 @@ public class EnemyFighter : Fighter
         //
 
         if (data.level != 0)
-            this.stats = new Stats(data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed);
-        else
-            this.stats = new Stats(20, 50, 40, 30, 60, 15);
+            this.stats = new Stats(data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed, data.experience, data.experienceToNextLevel);
+
     }
 
     public override void InitTurn()

@@ -24,8 +24,19 @@ public class GameManager : MonoBehaviour
     public class PlayerStatusData
     {
         public float currentHealth;
+        public float maxHealth;
+
+        public int level;
+        public int experience;
+
+        public float attack;
+        public float defense;
+        public float spirit;
+        public float speed;
+
         public List<float> bodyPartsHealth = new List<float>();
     }
+
     public PlayerStatusData savedPlayerStatus;
 
     public List<RegionData> Regions = new List<RegionData>();
@@ -387,23 +398,37 @@ public class GameManager : MonoBehaviour
         if (character1 == null) return;
 
         savedPlayerStatus = new PlayerStatusData();
+        savedPlayerStatus.level = character1.stats.level;
+        savedPlayerStatus.experience = character1.stats.experience;
         savedPlayerStatus.currentHealth = character1.stats.health;
-        savedPlayerStatus.bodyPartsHealth = new List<float>();
+        savedPlayerStatus.maxHealth = character1.stats.maxHealth;
+        savedPlayerStatus.attack = character1.stats.attack;
+        savedPlayerStatus.defense = character1.stats.deffense;
+        savedPlayerStatus.spirit = character1.stats.spirit;
+        savedPlayerStatus.speed = character1.stats.speed;
 
+        savedPlayerStatus.bodyPartsHealth = new List<float>();
         foreach (var part in character1.bodyParts)
         {
             savedPlayerStatus.bodyPartsHealth.Add(part.currentHealth);
         }
 
-        Debug.Log("Estado del jugador guardado. Vida: " + savedPlayerStatus.currentHealth);
+        Debug.Log("Estado del jugador guardado. Vida: " + savedPlayerStatus.currentHealth + " Nivel: " + savedPlayerStatus.level);
     }
 
     public void RestorePlayerState()
     {
         if (savedPlayerStatus == null || character1 == null) return;
 
-        // Restaurar vida
-        character1.stats.health = savedPlayerStatus.currentHealth;
+        // Stats generales
+        character1.stats.level = savedPlayerStatus.level;
+        character1.stats.experience = savedPlayerStatus.experience;
+        character1.stats.maxHealth = savedPlayerStatus.maxHealth;
+        character1.stats.health = Mathf.Clamp(savedPlayerStatus.currentHealth, 0, savedPlayerStatus.maxHealth);
+        character1.stats.attack = savedPlayerStatus.attack;
+        character1.stats.deffense = savedPlayerStatus.defense;
+        character1.stats.spirit = savedPlayerStatus.spirit;
+        character1.stats.speed = savedPlayerStatus.speed;
 
         // Restaurar partes del cuerpo
         for (int i = 0; i < character1.bodyParts.Count && i < savedPlayerStatus.bodyPartsHealth.Count; i++)
@@ -411,14 +436,24 @@ public class GameManager : MonoBehaviour
             character1.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
         }
 
-        Debug.Log("Estado del jugador restaurado. Vida: " + character1.stats.health);
+        // Actualizar UI si existe
+        if (character1.statusPanel != null)
+            character1.statusPanel.SetStats(character1.idName, character1.stats);
+
+        Debug.Log("Estado del jugador restaurado. Vida: " + character1.stats.health + " Nivel: " + character1.stats.level);
     }
     public void ApplySavedStatusToFighter(PlayerFighter fighter)
     {
-        if (savedPlayerStatus == null) return;
+        if (savedPlayerStatus == null || fighter == null) return;
 
-        // Restaurar vida
-        fighter.stats.health = savedPlayerStatus.currentHealth;
+        fighter.stats.level = savedPlayerStatus.level;
+        fighter.stats.experience = savedPlayerStatus.experience;
+        fighter.stats.maxHealth = savedPlayerStatus.maxHealth;
+        fighter.stats.health = Mathf.Clamp(savedPlayerStatus.currentHealth, 0, savedPlayerStatus.maxHealth);
+        fighter.stats.attack = savedPlayerStatus.attack;
+        fighter.stats.deffense = savedPlayerStatus.defense;
+        fighter.stats.spirit = savedPlayerStatus.spirit;
+        fighter.stats.speed = savedPlayerStatus.speed;
 
         // Restaurar partes del cuerpo
         for (int i = 0; i < fighter.bodyParts.Count && i < savedPlayerStatus.bodyPartsHealth.Count; i++)
@@ -426,8 +461,13 @@ public class GameManager : MonoBehaviour
             fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
         }
 
-        Debug.Log("Estado aplicado al jugador dentro del combate. Vida: " + fighter.stats.health);
+        // Actualizar UI del fighter en combate si tiene panel
+        if (fighter.statusPanel != null)
+            fighter.statusPanel.SetStats(fighter.idName, fighter.stats);
+
+        Debug.Log("Estado aplicado al jugador dentro del combate. Vida: " + fighter.stats.health + " Nivel: " + fighter.stats.level);
     }
+
 
 
     IEnumerator WaitForPlayer()

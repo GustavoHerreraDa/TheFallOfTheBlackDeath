@@ -1,4 +1,5 @@
 ﻿//TP2 GUSTAVO TORRES
+using UnityEngine;
 public class Stats
 {
     public float health;
@@ -9,22 +10,27 @@ public class Stats
     public float deffense;
     public float spirit;
     public float speed;
-
-    public Stats(int _level, float _maxhealth, float _attack, float _deffense, float _spirit, float _speed)
+    public int experience;
+    public int experienceToNextLevel = 100;
+    public Stats(int _level, float _maxhealth, float _attack, float _deffense, float _spirit, float _speed, int _exp = 0, int _expNext = 100)
     {
-        this.level = _level;
+        level = _level;
 
-        this.maxHealth = _maxhealth;
-        this.health = _maxhealth;
+        maxHealth = _maxhealth;
+        health = _maxhealth;
 
-        this.attack = _attack;
-        this.deffense = _deffense;
-        this.spirit = _spirit;
-        this.speed = _speed;
+        attack = _attack;
+        deffense = _deffense;
+        spirit = _spirit;
+        speed = _speed;
+
+        experience = _exp;
+        experienceToNextLevel = _expNext;
     }
+
 
     public Stats Clone()
     {
-        return new Stats(this.level, this.maxHealth, this.attack, this.deffense, this.spirit, this.speed);
+        return new Stats(level, maxHealth, attack, deffense, spirit, speed, experience, experienceToNextLevel);
     }
 }

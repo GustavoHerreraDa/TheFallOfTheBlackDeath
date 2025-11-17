@@ -24,11 +24,16 @@ public class PlayerFighter : Fighter
         var data = fightersDateBase.EnemyDB[figherIndex];
         //_IAEnemySimple = gameObject.GetComponent<IAEnemySimple>();
         //
-
-        if (data.level != 0)
-            this.stats = new Stats(data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed);
-        else
-            this.stats = new Stats(21, 60, 50, 45, 20, 20);
+        this.stats = new Stats(
+            data.level,
+            data.maxHealth,
+            data.attack,
+            data.deffense,
+            data.spirit,
+            data.speed,
+            data.experience,
+            data.experienceToNextLevel
+        );
 
         allies = new List<Fighter>();
         allies.Add(this); // Agregar al jugador actual como el primer aliado activo
@@ -192,7 +197,46 @@ public class PlayerFighter : Fighter
         }
     }
 
+    public void AddExperience(int amount)
+    {
+        Debug.Log($"{idName} gana {amount} XP");
 
+        stats.experience += amount;
+
+        bool leveledUp = false;
+
+        while (stats.experience >= stats.experienceToNextLevel)
+        {
+            stats.experience -= stats.experienceToNextLevel;
+            LevelUp();
+            leveledUp = true;
+        }
+
+        if (leveledUp && statusPanel != null)
+            statusPanel.SetStats(idName, stats);
+    }
+    private void LevelUp()
+    {
+        stats.level++;
+
+        // Recalcular exp necesaria para el siguiente nivel
+        stats.experienceToNextLevel = CalculateExpNeeded(stats.level);
+        stats.maxHealth += 10;
+        stats.attack += 5;
+        stats.deffense += 3;
+        stats.spirit += 2;
+        stats.speed += 1;
+
+        stats.health = stats.maxHealth;
+
+        Debug.Log($"{idName} subió al nivel {stats.level}!");
+    }
+
+    private int CalculateExpNeeded(int level)
+    {
+        // Fórmula curva suave
+        return Mathf.FloorToInt(50f * Mathf.Pow(level, 1.4f));
+    }
     public void RemoveStatUpgrade(InventoryDateBase.StatsUpgrade stat, float amount)
     {
         // para revertir un equipamiento
