@@ -7,13 +7,13 @@ public class WorldOgre : MonoBehaviour
 {
     private NavMeshAgent _navMeshAgent;
     private Animator _animator;
-    private SeguirJugador _sj;
+    private FollowPlayer _sj;
 
     public float RaycastDistance;
 
     void Start()
     {
-        _sj = GetComponent<SeguirJugador>();
+        _sj = GetComponent<FollowPlayer>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
     }

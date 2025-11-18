@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7272012cb2b8da74c8f9bdddca113f50, type: 3}
+  m_Name: Priest
+  m_EditorClassIdentifier: 
+  lines:
+  - speakerName: Priest
+    sentence: This place is cursed, and death is the fate that awaits us all. We
+      are merely delaying the inevitable.
+    hasChoices: 1
+    choices:
+    - playerText: YES
+      action: 2
+      nextDialogue: {fileID: 11400000, guid: 3b76bee97ec5c0348b2ea1f0bdf8c701, type: 2}
+      addFlags:
+      - nashe
+      removeFlags: []
+    - playerText: NO
+      action: 2
+      nextDialogue: {fileID: 11400000, guid: 55e4d6383881f444798eff96fecf356f, type: 2}
+      addFlags:
+      - nonashe
+      removeFlags: []

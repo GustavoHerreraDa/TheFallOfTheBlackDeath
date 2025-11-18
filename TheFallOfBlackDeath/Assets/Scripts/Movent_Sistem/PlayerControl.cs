@@ -19,7 +19,7 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float distanciaPiso;
     [SerializeField] private LayerMask mascaraPiso;
     public bool stop;
-    private bool isWalking = false; // Agregamos una variable para rastrear si el jugador est� caminando
+    private bool isWalking = false;
 
     float velocidadGiro;
     public float gravedad = -9.81f;
@@ -38,12 +38,12 @@ public class PlayerControl : MonoBehaviour
 
     private void Update()
     {
-        // Detectar si el jugador est� caminando (puedes ajustar las condiciones seg�n tu juego)
+        
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direccion = new Vector3(horizontal, 0, vertical).normalized;
         isWalking = direccion.magnitude >= 0.1f;
-        // Actualizar canGetEncounter basado en si el jugador est� caminando o no
+        
         if (GameManager.Instance != null)
             GameManager.Instance.canGetEncounter = isWalking;
 

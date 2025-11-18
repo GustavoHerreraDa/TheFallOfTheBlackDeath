@@ -280,6 +280,7 @@ public class CombatManager : MonoBehaviour
                     yield return null;
                     break;
                 case CombatStatus.NEXT_TURN:
+                    SortFightersBySpeed();
                     yield return new WaitForSeconds(0.2f);
 
                     Fighter current = null;

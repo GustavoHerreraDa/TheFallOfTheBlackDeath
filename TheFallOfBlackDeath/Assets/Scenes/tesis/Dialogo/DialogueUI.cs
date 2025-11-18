@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueUI : MonoBehaviour
 {
@@ -19,6 +20,13 @@ public class DialogueUI : MonoBehaviour
     private bool isTyping;
     private string currentSentence;
 
+    [Header("Posibles Respuestas")]
+    public GameObject choicesPanel;
+    public GameObject choiceButtonPrefab;
+    private int selectedIndex = 0;
+    private Button[] currentButtons;
+    public System.Action onTypingFinished;
+
     private void Start()
     {
         ShowUI(false);
@@ -33,6 +41,7 @@ public class DialogueUI : MonoBehaviour
     {
         nameText.text = line.speakerName;
         currentSentence = line.sentence;
+        onTypingFinished = null;
 
         if (typingCoroutine != null)
             StopCoroutine(typingCoroutine);
@@ -59,24 +68,87 @@ public class DialogueUI : MonoBehaviour
         }
 
         isTyping = false;
+        onTypingFinished?.Invoke();
+    }
+
+    public void EnableKeyboardNavigation()
+    {
+        currentButtons = choicesPanel.GetComponentsInChildren<Button>();
+
+        if (currentButtons == null || currentButtons.Length == 0)
+            return;
+
+        selectedIndex = 0;
+        HighlightButton(selectedIndex);
+    }
+
+    private void HighlightButton(int index)
+    {
+        if (currentButtons == null || currentButtons.Length == 0)
+            return;
+
+        for (int i = 0; i < currentButtons.Length; i++)
+        {
+            if (currentButtons[i] == null) continue;
+
+            ColorBlock cb = currentButtons[i].colors;
+            cb.normalColor = (i == index) ? Color.yellow : Color.white;
+            currentButtons[i].colors = cb;
+        }
     }
 
     private void Update()
     {
-        if (dialoguePanel.activeSelf && Input.GetKeyDown(KeyCode.E))
+        if (!choicesPanel.activeSelf)
+            return;
+
+        if (currentButtons == null || currentButtons.Length == 0)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            // Si está escribiendo, mostrar todo de golpe
-            if (isTyping)
-            {
-                StopCoroutine(typingCoroutine);
-                dialogueText.text = currentSentence;
-                isTyping = false;
-            }
-            else
-            {
-                // Si ya terminó de escribir, avanzar o cerrar
-                DialogueManager.Instance.NextLine();
-            }
+            selectedIndex = (selectedIndex - 1 + currentButtons.Length) % currentButtons.Length;
+            HighlightButton(selectedIndex);
         }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            selectedIndex = (selectedIndex + 1) % currentButtons.Length;
+            HighlightButton(selectedIndex);
+        }
+        else if (Input.GetKeyDown(KeyCode.Return))
+        {
+            if (currentButtons[selectedIndex] != null)
+                currentButtons[selectedIndex].onClick.Invoke();
+        }
+    }
+
+    public void ShowChoices(DialogueChoice[] choices)
+    {
+        dialogueText.gameObject.SetActive(false);
+
+
+        foreach (Transform child in choicesPanel.transform)
+            Destroy(child.gameObject);
+
+        choicesPanel.SetActive(true);
+
+        foreach (DialogueChoice choice in choices)
+        {
+            GameObject btnObj = Instantiate(choiceButtonPrefab, choicesPanel.transform);
+            btnObj.GetComponentInChildren<TextMeshProUGUI>().text = choice.playerText;
+
+            btnObj.GetComponent<Button>().onClick.AddListener(() => {
+                DialogueManager.Instance.SelectChoice(choice);
+            });
+        }
+
+        EnableKeyboardNavigation();
+    }
+
+    public void HideChoices()
+    {
+        choicesPanel.SetActive(false);
+        dialogueText.gameObject.SetActive(true);
+        currentButtons = null; 
     }
 }
