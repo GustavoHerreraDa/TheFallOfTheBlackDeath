@@ -57,11 +57,11 @@ public class DialogueEvent : MonoBehaviour
 
     IEnumerator FadeAndDisappearSafe()
     {
-        // Ejecuta el fade y la disolución desde un objeto temporal que NO se desactiva
+        
         GameObject fadeRunner = new GameObject("FadeRunner");
         DialogueEvent tempEvent = fadeRunner.AddComponent<DialogueEvent>();
 
-        // Copiamos datos necesarios
+        
         tempEvent.fadeCanvas = fadeCanvas;
         tempEvent.fadeDuration = fadeDuration;
 

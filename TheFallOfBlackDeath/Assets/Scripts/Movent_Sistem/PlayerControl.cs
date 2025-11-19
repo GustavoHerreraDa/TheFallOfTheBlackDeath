@@ -38,12 +38,12 @@ public class PlayerControl : MonoBehaviour
 
     private void Update()
     {
-        
+        // Detectar si el jugador est� caminando (puedes ajustar las condiciones seg�n tu juego)
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direccion = new Vector3(horizontal, 0, vertical).normalized;
         isWalking = direccion.magnitude >= 0.1f;
-        
+        // Actualizar canGetEncounter basado en si el jugador est� caminando o no
         if (GameManager.Instance != null)
             GameManager.Instance.canGetEncounter = isWalking;
 

@@ -29,11 +29,11 @@ public class DialogueInteractable : MonoBehaviour
     {
         if (canTalk && Input.GetKeyDown(KeyCode.E))
         {
-            // 🔁 Que el NPC mire hacia el jugador
+          
             if (playerTransform != null)
                 LookAtPlayer();
 
-            // 🗨️ Inicia el diálogo y le pasa este NPC al manager
+            
             DialogueManager.Instance.StartDialogue(dialogue, gameObject);
         }
     }
@@ -45,7 +45,7 @@ public class DialogueInteractable : MonoBehaviour
         if (direction != Vector3.zero)
         {
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 1f); // 1f = giro instantáneo
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 1f);
         }
     }
 }
