@@ -18,7 +18,6 @@ public class MainPanel : MonoBehaviour
     public GameObject mainPanel;
     public GameObject optionsPanel;
     public GameObject controlesPanel;
-    public GameObject statsPanel;
     public GameObject introPanel;
 
     private void Awake()
