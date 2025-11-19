@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
     public float perdidaDeCordura = 2f;
     public TextMeshProUGUI textCordura;
 
-    private Coroutine corduraRoutine;
+    //private Coroutine corduraRoutine;
 
     [Header("Vignette Settings")]
     public Material vignetteMaterial;
@@ -161,12 +161,13 @@ public class GameManager : MonoBehaviour
     }
 
     public GameStates gameState;
+
     /*public GameObject Character
     {
         get { return FindObjectOfType<Movent>().gameObject; }
     }
     */
-    public void SetGameState(GameStates newState)
+    /*public void SetGameState(GameStates newState)
     {
         gameState = newState;
 
@@ -184,7 +185,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-
+    */
 
 
 
@@ -232,7 +233,7 @@ public class GameManager : MonoBehaviour
         objectsPickup = ListEnemyDefeat.pickUpsInWorld;
         corduraActual = corduraMax;
 
-        StartCoroutine(BajarCordura());
+        //StartCoroutine(BajarCordura());
 
         if (character1 == null)
         {
@@ -257,7 +258,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    IEnumerator BajarCordura()
+    /*IEnumerator BajarCordura()
 
     {
         while (true)
@@ -270,9 +271,9 @@ public class GameManager : MonoBehaviour
             }
             yield return null;
         }
-    }
+    }*/
 
-    IEnumerator AumentarCordura()
+   /* IEnumerator AumentarCordura()
 
     {
         while (true)
@@ -285,7 +286,7 @@ public class GameManager : MonoBehaviour
             }
             yield return null;
         }
-    }
+    }*/
 
 
     public void FindPlayer()
