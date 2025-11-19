@@ -5,7 +5,8 @@ public class DialogueInteractable : MonoBehaviour
     public Dialogue dialogue;
     private Transform playerTransform;
     private bool canTalk;
-
+    [SerializeField]
+    private bool _canMove;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Charecter"))
@@ -29,12 +30,20 @@ public class DialogueInteractable : MonoBehaviour
     {
         if (canTalk && Input.GetKeyDown(KeyCode.E))
         {
-          
-            if (playerTransform != null)
-                LookAtPlayer();
 
-            
-            DialogueManager.Instance.StartDialogue(dialogue, gameObject);
+            if(_canMove == false)
+            {
+                DialogueManager.Instance.StartDialogue(dialogue, gameObject);
+            }
+
+            else
+            {
+                if (playerTransform != null)
+                    LookAtPlayer();
+
+                DialogueManager.Instance.StartDialogue(dialogue, gameObject);
+
+            }
         }
     }
 
