@@ -46810,7 +46810,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
@@ -46857,6 +46857,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GroupName: Demon
+--- !u!114 &532239618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532239611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d01c474de404bd749881b56f80d6e633, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fightSceneIndex: 6
+--- !u!65 &532239619
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532239611}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 2, z: 1}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1001 &532819134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56268,6 +56302,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fightSceneIndex: 7
+--- !u!195 &636463118 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 5809360958292167830, guid: 61c9962a9a53d8841a716779720a0267, type: 3}
+  m_PrefabInstance: {fileID: 679287386}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &636463120 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5845931237460851605, guid: 61c9962a9a53d8841a716779720a0267, type: 3}
+  m_PrefabInstance: {fileID: 679287386}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &640726463 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f40822b9a5f1a7f41a5cf48c5fa4ca6b, type: 3}
@@ -58680,6 +58724,14 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4279960757689618338, guid: 61c9962a9a53d8841a716779720a0267, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 636463120}
+    - target: {fileID: 4279960757689618338, guid: 61c9962a9a53d8841a716779720a0267, type: 3}
+      propertyPath: agent
+      value: 
+      objectReference: {fileID: 636463118}
+    - target: {fileID: 4279960757689618338, guid: 61c9962a9a53d8841a716779720a0267, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 169624934}
@@ -58690,6 +58742,10 @@ PrefabInstance:
     - target: {fileID: 4279960757689618338, guid: 61c9962a9a53d8841a716779720a0267, type: 3}
       propertyPath: patrullar
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4279960757689618338, guid: 61c9962a9a53d8841a716779720a0267, type: 3}
+      propertyPath: chaseSpeed
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4279960757689618338, guid: 61c9962a9a53d8841a716779720a0267, type: 3}
       propertyPath: audioSource
@@ -92400,7 +92456,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3626585316746491535, guid: e32c2c38dc6437446a6b1a87fdb69f4c, type: 3}
       propertyPath: m_Acceleration
-      value: 60
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3713153320868787989, guid: e32c2c38dc6437446a6b1a87fdb69f4c, type: 3}
       propertyPath: m_Layer
@@ -92420,7 +92476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3918579539477155809, guid: e32c2c38dc6437446a6b1a87fdb69f4c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 65.271
+      value: 52.71
       objectReference: {fileID: 0}
     - target: {fileID: 3918579539477155809, guid: e32c2c38dc6437446a6b1a87fdb69f4c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -143917,7 +143973,7 @@ MonoBehaviour:
   chaseEnterDistance: 20
   chaseExitDistance: 8
   normalSpeed: 3.5
-  chaseSpeed: 6
+  chaseSpeed: 10
   puntoA: {fileID: 1542632100}
   puntoB: {fileID: 883400213}
 --- !u!1 &1649737289
@@ -155171,7 +155227,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d58508896fbfa8a409b1eb4170d9320b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 21.24
+      value: 25.25
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d58508896fbfa8a409b1eb4170d9320b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -155506,6 +155562,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d58508896fbfa8a409b1eb4170d9320b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 532239617}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d58508896fbfa8a409b1eb4170d9320b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 532239618}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d58508896fbfa8a409b1eb4170d9320b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 532239619}
   m_SourcePrefab: {fileID: 100100000, guid: d58508896fbfa8a409b1eb4170d9320b, type: 3}
 --- !u!1001 &1804298155
 PrefabInstance:
