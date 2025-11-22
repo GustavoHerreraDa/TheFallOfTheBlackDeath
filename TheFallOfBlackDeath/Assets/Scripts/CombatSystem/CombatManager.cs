@@ -54,7 +54,6 @@ public class CombatManager : MonoBehaviour
 
     void Start()
     {
-        
 
         if (isRadomEncounter == true)
         {

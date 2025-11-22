@@ -19,6 +19,13 @@ public class CharacterSwitcher : MonoBehaviour
         SetIndex();
         SwitchMainCharacter(currentMainCharacterIndex, true);
         SwitchSecondaryCharacter(currentSecondaryCharacterIndex, true);
+
+        if (characters == null)
+            Debug.LogError("characters es null");
+        else if (characters.Count == 0)
+            Debug.LogError("characters está vacío!");
+
+        SwitchMainCharacter(0, true);
     }
 
     public void SwitchMainCharacter(int characterIndex, bool isFirstTime)

@@ -24,21 +24,25 @@ public class PlayerFighter : Fighter
         var data = fightersDateBase.EnemyDB[figherIndex];
         //_IAEnemySimple = gameObject.GetComponent<IAEnemySimple>();
         //
-        this.stats = new Stats(
-            data.level,
-            data.maxHealth,
-            data.attack,
-            data.deffense,
-            data.spirit,
-            data.speed,
-            data.experience,
-            data.experienceToNextLevel
-        );
+        if (data.level != 0)
+            this.stats = new Stats(
+                data.level,
+                data.maxHealth,
+                data.attack,
+                data.deffense,
+                data.spirit,
+                data.speed,
+                data.experience,
+                data.experienceToNextLevel
+            );
+
+        else
+            this.stats = new Stats(21, 60, 50, 45, 20, 20, 0);
 
         allies = new List<Fighter>();
         allies.Add(this); // Agregar al jugador actual como el primer aliado activo
         activeAllyIndex = 0; // Establecer el jugador actual como el aliado activo inicialmente
-        
+        Debug.LogErrorFormat("las stas del jugador son:" + data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed, data.experience, data.experienceToNextLevel);
     }
 
     public override void InitTurn()

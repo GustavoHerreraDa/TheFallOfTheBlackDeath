@@ -117,6 +117,7 @@ public class InventoryManager : MonoBehaviour
 
         AgregarEquipoEquipado(fighters[0], inventory[0]);
         AgregarEquipoEquipado(fighters[1], inventory[1]);
+
     }
 
     public void updateUI(Transform _ui, InventoryDateBase.Uso uso)

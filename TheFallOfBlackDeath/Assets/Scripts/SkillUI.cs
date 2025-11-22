@@ -58,6 +58,9 @@ public class SkillUI : MonoBehaviour
 
     private void GetSkill()
     {
+        if (player == null)
+            Debug.LogError("PLAYER ES NULL EN SkillUI!!!", this);
+
         var skills = player.GetComponentsInChildren<Skill>();
 
         skill = skills[skillIndex];
