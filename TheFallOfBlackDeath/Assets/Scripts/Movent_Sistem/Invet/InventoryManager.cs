@@ -115,8 +115,8 @@ public class InventoryManager : MonoBehaviour
             playerEquipped.Add(fighters[i], new List<InventoryObjectID>());
         }
 
-        AgregarEquipoEquipado(fighters[0], inventory[0]);
-        AgregarEquipoEquipado(fighters[1], inventory[1]);
+        //AgregarEquipoEquipado(fighters[0], inventory[0]);
+        //AgregarEquipoEquipado(fighters[1], inventory[1]);
 
     }
 

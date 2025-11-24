@@ -42,7 +42,7 @@ public class PlayerFighter : Fighter
         allies = new List<Fighter>();
         allies.Add(this); // Agregar al jugador actual como el primer aliado activo
         activeAllyIndex = 0; // Establecer el jugador actual como el aliado activo inicialmente
-        Debug.LogErrorFormat("las stas del jugador son:" + data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed, data.experience, data.experienceToNextLevel);
+       
     }
 
     public override void InitTurn()
