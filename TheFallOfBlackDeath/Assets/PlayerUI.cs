@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +7,7 @@ using TMPro;
 public class PlayerUI : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Fighter fighter;
+    public PlayerFighter fighter;
     public CombatManager combatManager;
     public TextMeshProUGUI nameHero;
     public TextMeshProUGUI currentHealth;
@@ -21,10 +21,10 @@ public class PlayerUI : MonoBehaviour
 
     public void Awake()
     {
-        GetPlayerFromCombatManager();
+        //GetPlayerFromCombatManager();
     }
 
-    private void GetPlayerFromCombatManager()
+    /*private void GetPlayerFromCombatManager()
     {
         if (combatManager == null)
             return;
@@ -35,7 +35,7 @@ public class PlayerUI : MonoBehaviour
         {
             fighter = _fighter;
         }
-    }
+    }*/
 
     public void Start()
     {
@@ -49,11 +49,16 @@ public class PlayerUI : MonoBehaviour
         if(isMainCharacterUI)
         {
             fighter = GameManager.Instance.character1;
+            //GameManager.Instance.SavePlayerState();
         }
         else
         {
             fighter = GameManager.Instance.character2;
+            //GameManager.Instance.SavePlayerState();
         }
+
+       // var s = fighter.GetCurrentStats();
+
 
         nameHero.text = fighter.idName;
         currentHealth.text = "HP: " + fighter.GetCurrentStats().health.ToString();
@@ -61,6 +66,7 @@ public class PlayerUI : MonoBehaviour
         attack.text = "Attack: " + fighter.GetCurrentStats().attack.ToString();
         defense.text = "Defense: " + fighter.GetCurrentStats().deffense.ToString();
         speed.text = "Speed: " + fighter.GetCurrentStats().speed.ToString();
+
         UpdateSkillUI();
     }
 

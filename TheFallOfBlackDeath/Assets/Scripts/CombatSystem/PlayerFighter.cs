@@ -24,25 +24,16 @@ public class PlayerFighter : Fighter
         var data = fightersDateBase.EnemyDB[figherIndex];
         //_IAEnemySimple = gameObject.GetComponent<IAEnemySimple>();
         //
-        if (data.level != 0)
-            this.stats = new Stats(
-                data.level,
-                data.maxHealth,
-                data.attack,
-                data.deffense,
-                data.spirit,
-                data.speed,
-                data.experience,
-                data.experienceToNextLevel
-            );
 
+        if (data.level != 0)
+            this.stats = new Stats(data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed);
         else
-            this.stats = new Stats(21, 60, 50, 45, 20, 20, 0);
+            this.stats = new Stats(21, 60, 50, 45, 20, 20);
 
         allies = new List<Fighter>();
         allies.Add(this); // Agregar al jugador actual como el primer aliado activo
         activeAllyIndex = 0; // Establecer el jugador actual como el aliado activo inicialmente
-       
+
     }
 
     public override void InitTurn()
@@ -127,7 +118,7 @@ public class PlayerFighter : Fighter
 
     public void SetTargetAndAttack(Fighter enemyFighter)
     {
-        // Si el skill permite seleccionar parte del cuerpo
+        
         if (this.skillToBeExecuted is HealthModSkill)
         {
             this.enemiesPanel.Hide();
@@ -135,7 +126,7 @@ public class PlayerFighter : Fighter
         }
         else
         {
-            // Ejecución normal
+            
             this.skillToBeExecuted.AddReceiver(enemyFighter);
             this.combatManager.OnFighterSkill(this.skillToBeExecuted);
             this.skillPanel.Hide();
@@ -223,7 +214,7 @@ public class PlayerFighter : Fighter
     {
         stats.level++;
 
-        // Recalcular exp necesaria para el siguiente nivel
+        
         stats.experienceToNextLevel = CalculateExpNeeded(stats.level);
         stats.maxHealth += 10;
         stats.attack += 5;
@@ -238,12 +229,12 @@ public class PlayerFighter : Fighter
 
     private int CalculateExpNeeded(int level)
     {
-        // Fórmula curva suave
+        
         return Mathf.FloorToInt(50f * Mathf.Pow(level, 1.4f));
     }
     public void RemoveStatUpgrade(InventoryDateBase.StatsUpgrade stat, float amount)
     {
-        // para revertir un equipamiento
+        
         ApplyStatUpgrade(stat, -amount);
     }
 }

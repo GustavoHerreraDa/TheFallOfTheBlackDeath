@@ -111,7 +111,7 @@ public class PlayerControl : MonoBehaviour
         playerRB.isKinematic = false;
         if (GameManager.Instance != null)
 
-            GameManager.Instance.isWalking = isWalking; // Aseguramos que GameManager.isWalking est� actualizado
+            GameManager.Instance.isWalking = isWalking;
     }
 
     public void StopPlayer(float seconds)
@@ -137,7 +137,7 @@ public class PlayerControl : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        // Verificar si el jugador est� caminando antes de permitir encuentros
+
         if (other.tag == "region1" && isWalking)
         {
             if (GameManager.Instance != null)

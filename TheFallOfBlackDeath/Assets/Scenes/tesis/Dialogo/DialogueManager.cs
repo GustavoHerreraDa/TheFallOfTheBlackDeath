@@ -29,6 +29,7 @@ public class DialogueManager : MonoBehaviour
         if (playerControl != null)
         {
             playerControl.enabled = false;
+            playerControl.anim.SetFloat("Movent", 0f);
             Rigidbody rb = playerControl.GetComponent<Rigidbody>();
             if (rb != null)
             {
@@ -74,8 +75,8 @@ public class DialogueManager : MonoBehaviour
         currentDialogue = null;
 
         if (playerControl != null)
-            playerControl.enabled = true; 
-
+            playerControl.enabled = true;
+        //playerControl.anim.enabled = true;
        
         if (currentNPC != null)
         {
