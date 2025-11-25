@@ -19,22 +19,22 @@ public class HealthModSkill : Skill
 
     protected override void OnRun(Fighter receiver)
     {
-        float dmg = this.GetModification(receiver);   // ⭐ ahora se llama "dmg"
+        float dmg = this.GetModification(receiver);
         float dice = Random.Range(0f, 1f);
         float adjustedMissChance = GetAdjustedMissChance(receiver);
 
         Vector3 textPos = receiver.transform.position + Vector3.up * 2f;
 
-        // ❌ Miss
+        
         if (dice <= adjustedMissChance)
         {
             this.messages.Enqueue($"{emitter.idName} missed the attack on {receiver.idName}!");
             FloatingTextManager.Instance.ShowText("Miss!", textPos, Color.gray);
-            receiver.ModifyHealth(0);                 // ⭐ esto NO pisa el daño
+            receiver.ModifyHealth(0);                
             return;
         }
 
-        // 🎯 Crítico
+        
         if (dice <= adjustedMissChance + this.critChance)
         {
             dmg *= 2f;
@@ -69,28 +69,28 @@ public class HealthModSkill : Skill
     {
         float adjusted = missChance;
 
-        // Si atacamos a la cabeza → +90% de chance de fallo (difícil de acertar)
+      
         if (this.BodyPartTarget == BodyPart.Head)
             adjusted += 0.9f;
 
-        // Si el receptor tiene una pierna destruida -75% de chance de fallo (más fácil de acertar)
+       
         Fighter.BodyPartData rightLeg = receiver.GetBodyPart(BodyPart.RightLeg);
         Fighter.BodyPartData leftLeg = receiver.GetBodyPart(BodyPart.LeftLeg);
 
         bool rightLegDestroyed = rightLeg != null && rightLeg.IsDestroyed;
         bool leftLegDestroyed = leftLeg != null && leftLeg.IsDestroyed;
 
-        // Si ambas piernas están destruidas → penalización extra a los fallos de cabeza
+ 
         if (leftLegDestroyed && rightLegDestroyed && this.BodyPartTarget == BodyPart.Head)
         {
-            adjusted -= 1; // reduce bastante la probabilidad de fallar a la cabeza
+            adjusted -= 1;
         }
         else if (leftLegDestroyed || rightLegDestroyed)
         {
-            adjusted -= 0.5f; // si al menos una pierna está destruida
+            adjusted -= 0.5f;
         }
 
-        // Clamp para mantener entre 0 y 1
+        
         adjusted = Mathf.Clamp01(adjusted);
 
         return adjusted;
@@ -105,21 +105,19 @@ public class HealthModSkill : Skill
                 Stats emitterStats = this.emitter.GetCurrentStats();
                 Stats receiverStats = receiver.GetCurrentStats();
 
-                // Fórmula de daño estilo Pokémon
-                float rawDamage = (((2 * emitterStats.level) / 5) + 2) *
-                                  this.amount *
-                                  (emitterStats.attack / receiverStats.deffense);
+                // Fórmula: https://bulbapedia.bulbagarden.net/wiki/Damage
+                float rawDamage = (((2 * emitterStats.level) / 5) + 2) * this.amount * (emitterStats.attack / receiverStats.deffense);
 
                 return (rawDamage / 50) + 2;
-
             case HealthModType.FIXED:
                 return this.amount;
-
             case HealthModType.PERCENTAGE:
                 Stats rStats = receiver.GetCurrentStats();
+
                 return rStats.maxHealth * this.amount;
         }
 
         throw new System.InvalidOperationException("HealthModSkill::GetDamage. Unreachable!");
     }
+
 }
