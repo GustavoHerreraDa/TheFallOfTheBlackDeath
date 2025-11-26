@@ -55,6 +55,9 @@ public class CombatManager : MonoBehaviour
     void Start()
     {
 
+        GameManager.Instance.SetGameState(GameManager.GameStates.BATTLE_STATE);
+
+
         if (isRadomEncounter == true)
         {
             EncuentrosAleatorios();
@@ -250,7 +253,7 @@ public class CombatManager : MonoBehaviour
                         }
                         LogPanel.Write("Victory!");
                         this.isCombatActive = false;
-                        GameManager.Instance.gameState = GameManager.GameStates.TOWN_STATE;
+                        GameManager.Instance.SetGameState(GameManager.GameStates.TOWN_STATE);
                         GameManager.Instance.enemyToBattle.Clear();
                         ListEnemyDefeat.enemiesDefeat.Add(groupEnemyName);
 

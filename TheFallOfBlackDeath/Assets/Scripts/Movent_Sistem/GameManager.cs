@@ -171,6 +171,7 @@ public class GameManager : MonoBehaviour
     {
         gameState = newState;
 
+        // Detiene corrutinas previas
         if (corduraRoutine != null)
             StopCoroutine(corduraRoutine);
 
@@ -180,12 +181,15 @@ public class GameManager : MonoBehaviour
                 corduraRoutine = StartCoroutine(AumentarCordura());
                 break;
 
+            case GameStates.BATTLE_STATE:
+                break;
+
             default:
                 corduraRoutine = StartCoroutine(BajarCordura());
                 break;
         }
     }
-    
+
 
 
 
@@ -233,7 +237,7 @@ public class GameManager : MonoBehaviour
         objectsPickup = ListEnemyDefeat.pickUpsInWorld;
         corduraActual = corduraMax;
 
-        StartCoroutine(BajarCordura());
+        corduraRoutine = StartCoroutine(BajarCordura());
 
         if (character1 == null)
         {
@@ -265,7 +269,7 @@ public class GameManager : MonoBehaviour
         {
             if (corduraActual > 0)
             {
-                float perdida = (corduraMax * (perdidaDeCordura / 200f)) * Time.deltaTime;
+                float perdida = (corduraMax * (perdidaDeCordura /1000f)) * Time.deltaTime;
                 corduraActual -= perdida;
                 corduraActual = Mathf.Clamp(corduraActual, 0, corduraMax);
             }
@@ -462,7 +466,6 @@ public class GameManager : MonoBehaviour
             fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
         }
 
-        // Actualizar UI del fighter en combate si tiene panel
         if (fighter.statusPanel != null)
             fighter.statusPanel.SetStats(fighter.idName, fighter.stats);
 
