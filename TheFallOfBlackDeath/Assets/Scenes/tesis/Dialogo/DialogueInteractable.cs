@@ -30,22 +30,24 @@ public class DialogueInteractable : MonoBehaviour
     {
         if (canTalk && Input.GetKeyDown(KeyCode.E))
         {
+           
+            if (DialogueManager.Instance.IsDialogueActive)
+                return;
 
-            if(_canMove == false)
+            if (_canMove == false)
             {
                 DialogueManager.Instance.StartDialogue(dialogue, gameObject);
             }
-
             else
             {
                 if (playerTransform != null)
                     LookAtPlayer();
 
                 DialogueManager.Instance.StartDialogue(dialogue, gameObject);
-
             }
         }
     }
+
 
     private void LookAtPlayer()
     {

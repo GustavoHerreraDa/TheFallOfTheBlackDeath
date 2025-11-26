@@ -1,18 +1,29 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GlobalState : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static GlobalState Instance;
+
+    private HashSet<string> flags = new HashSet<string>();
+
+    private void Awake()
     {
-        
+        if (Instance == null) Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool HasFlag(string flag)
     {
-        
+        return flags.Contains(flag);
+    }
+
+    public void AddFlag(string flag)
+    {
+        flags.Add(flag);
+    }
+
+    public void RemoveFlag(string flag)
+    {
+        flags.Remove(flag);
     }
 }

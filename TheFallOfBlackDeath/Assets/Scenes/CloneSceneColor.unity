@@ -11195,6 +11195,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3605696907919549010, guid: ce5a470fd90c55846b6997ec40dc40c8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3952909628141167975, guid: ce5a470fd90c55846b6997ec40dc40c8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6879406498385926958, guid: ce5a470fd90c55846b6997ec40dc40c8, type: 3}
       propertyPath: ResponseMessage
       value: 
@@ -11211,6 +11219,14 @@ PrefabInstance:
       propertyPath: ResponseMessage
       value: 
       objectReference: {fileID: 301453651}
+    - target: {fileID: 7790846302903281793, guid: ce5a470fd90c55846b6997ec40dc40c8, type: 3}
+      propertyPath: InteractMeessage
+      value: 
+      objectReference: {fileID: 301453649}
+    - target: {fileID: 7790846302903281793, guid: ce5a470fd90c55846b6997ec40dc40c8, type: 3}
+      propertyPath: input_responseMessage
+      value: 
+      objectReference: {fileID: 301453650}
     - target: {fileID: 8616518740904041104, guid: ce5a470fd90c55846b6997ec40dc40c8, type: 3}
       propertyPath: m_Name
       value: Character
@@ -20638,6 +20654,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a63978aa38e111f40b58ac7a63137f17, type: 3}
   m_PrefabInstance: {fileID: 1103421750}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &293836407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293836398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ae4d63aeba30354a9e0e92453e321ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onDialogueEnd: 3
+  battleSceneName: BattleScene
+  fadeDuration: 1
+  fadeCanvas: {fileID: 0}
+  npcDisappearDelay: 0.5
+  npcRenderer: {fileID: 0}
+  dissolveSpeed: 1.5
+  dissolveProperty: _DissolveAmount
 --- !u!1 &293896901
 GameObject:
   m_ObjectHideFlags: 0
@@ -24405,7 +24441,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 165.2
+  m_Intensity: 60
   m_Range: 29.22
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -54120,6 +54156,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4123ff036799aee4f8482f0671963a04, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1303605546}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4123ff036799aee4f8482f0671963a04, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1303605549}
   m_SourcePrefab: {fileID: 100100000, guid: 4123ff036799aee4f8482f0671963a04, type: 3}
 --- !u!1001 &695575413
 PrefabInstance:
@@ -54920,7 +54959,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 165.2
+  m_Intensity: 60
   m_Range: 29.22
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -86746,6 +86785,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a63978aa38e111f40b58ac7a63137f17, type: 3}
       insertIndex: -1
       addedObject: {fileID: 293836403}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a63978aa38e111f40b58ac7a63137f17, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 293836407}
   m_SourcePrefab: {fileID: 100100000, guid: a63978aa38e111f40b58ac7a63137f17, type: 3}
 --- !u!1 &1104018015
 GameObject:
@@ -97159,6 +97201,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 388367617}
     - target: {fileID: 5480911531806588926, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
+      propertyPath: character2
+      value: 
+      objectReference: {fileID: 1637569444}
+    - target: {fileID: 5480911531806588926, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
       propertyPath: enemies.Array.data[0]
       value: 
       objectReference: {fileID: 583191187}
@@ -100223,7 +100269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogue: {fileID: 11400000, guid: 0cc270a400d45934a93eac47f8755b4d, type: 2}
-  _canMove: 0
+  _canMove: 1
 --- !u!4 &1270448632 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 84463f356e457c140b21e70c75026fc3, type: 3}
@@ -103066,6 +103112,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4123ff036799aee4f8482f0671963a04, type: 3}
   m_PrefabInstance: {fileID: 694103883}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1303605549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303605541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ae4d63aeba30354a9e0e92453e321ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onDialogueEnd: 3
+  battleSceneName: BattleScene
+  fadeDuration: 1
+  fadeCanvas: {fileID: 0}
+  npcDisappearDelay: 0.5
+  npcRenderer: {fileID: 0}
+  dissolveSpeed: 1.5
+  dissolveProperty: _DissolveAmount
 --- !u!1001 &1304223598
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -126436,6 +126502,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4297791491082409888, guid: f263b4cf3208f1f48ba3fd026028f41d, type: 3}
   m_PrefabInstance: {fileID: 619984046}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1637569444 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3952909628141167975, guid: ce5a470fd90c55846b6997ec40dc40c8, type: 3}
+  m_PrefabInstance: {fileID: 163162450}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54cd0b67e51238547a59bd64b5935e71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1637611794
 PrefabInstance:
   m_ObjectHideFlags: 0

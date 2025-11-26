@@ -11,3 +11,4 @@ public class DialogueChoice
     public string[] addFlags;
     public string[] removeFlags;
 }
+

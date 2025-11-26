@@ -11,7 +11,7 @@ public class DialogueManager : MonoBehaviour
     public PlayerControl playerControl;
 
     private GameObject currentNPC;
-
+    public bool IsDialogueActive => currentDialogue != null;
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -47,13 +47,24 @@ public class DialogueManager : MonoBehaviour
 
     public void NextLine()
     {
+        Debug.Log("NEXT LINE CALLED");
+
+        if (ui.IsTyping)
+        {
+            Debug.Log("Skipping typing");
+            ui.SkipTyping();
+            return;
+        }
+
         currentLineIndex++;
+        Debug.Log("Current index now: " + currentLineIndex);
 
         if (currentLineIndex < currentDialogue.lines.Length)
             ShowLine();
         else
             EndDialogue();
     }
+
 
     private void ShowLine()
     {
@@ -76,7 +87,6 @@ public class DialogueManager : MonoBehaviour
 
         if (playerControl != null)
             playerControl.enabled = true;
-        //playerControl.anim.enabled = true;
        
         if (currentNPC != null)
         {
@@ -93,64 +103,26 @@ public class DialogueManager : MonoBehaviour
     {
         ui.HideChoices();
 
-        // Flags o cambios permanentes (si los usás)
-        /*
         if (choice.addFlags != null)
             foreach (var f in choice.addFlags) GlobalState.Instance.AddFlag(f);
         if (choice.removeFlags != null)
             foreach (var f in choice.removeFlags) GlobalState.Instance.RemoveFlag(f);
-        */
-
-        // Acción especial (batalla, desaparecer NPC, etc.)
+   
         if (choice.action != DialogueEvent.DialogueEndAction.None)
         {
             EndDialogueWithAction(choice.action);
             return;
         }
 
-        // Salto a otro diálogo
+
         if (choice.nextDialogue != null)
         {
             StartDialogue(choice.nextDialogue, currentNPC);
             return;
         }
 
-        // Si no tiene next ni acción → simplemente continúa
         NextLine();
 
-        /*public void SelectChoice(DialogueChoice choice)
-        {
-            ui.HideChoices();
-
-          
-            if (choice.addFlags != null)
-            {
-                foreach (string f in choice.addFlags)
-                    GlobalState.Instance.AddFlag(f);
-            }
-
-            if (choice.removeFlags != null)
-            {
-                foreach (string f in choice.removeFlags)
-                    GlobalState.Instance.RemoveFlag(f);
-            }
-
-            // Eventos especiales (pelea, desaparecer, etc)
-            if (choice.action != DialogueEvent.DialogueEndAction.None)
-            {
-                EndDialogueWithAction(choice.action);
-                return;
-            }
-
-            if (choice.nextDialogue != null)
-            {
-                StartDialogue(choice.nextDialogue, currentNPC);
-                return;
-            }
-
-            NextLine();
-        }
-        */
     }
 
     private void EndDialogueWithAction(DialogueEvent.DialogueEndAction action)
@@ -171,7 +143,6 @@ public class DialogueManager : MonoBehaviour
 
         currentNPC = null;
     }
-
 
 
 }

@@ -8,12 +8,14 @@ public class DialogueEvent : MonoBehaviour
     {
         None,
         StartBattle,
-        Disappear
+        Disappear,
+        RecruitCharacter
     }
 
     [Header("Configuración de evento")]
     public DialogueEndAction onDialogueEnd = DialogueEndAction.None;
     public string battleSceneName = "BattleScene";
+
     public float fadeDuration = 1f;
     public CanvasGroup fadeCanvas;
     public float npcDisappearDelay = 0.5f;
@@ -45,6 +47,10 @@ public class DialogueEvent : MonoBehaviour
 
             case DialogueEndAction.Disappear:
                 StartCoroutine(FadeAndDisappearSafe());
+                break;
+
+            case DialogueEndAction.RecruitCharacter:
+                Recruit();
                 break;
         }
     }
@@ -113,5 +119,11 @@ public class DialogueEvent : MonoBehaviour
             npcMaterialInstance.SetFloat(dissolveProperty, dissolveValue);
             yield return null;
         }
+    }
+
+    private void Recruit()
+    {
+        Debug.Log("NPC Recruitado: " + name);
+
     }
 }

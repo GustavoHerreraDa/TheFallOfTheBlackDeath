@@ -10,6 +10,7 @@ public class DialogueUI : MonoBehaviour
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI dialogueText;
 
+
     [Header("Efecto de voz")]
     public AudioSource audioSource;
     public AudioClip voiceBip;
@@ -17,7 +18,7 @@ public class DialogueUI : MonoBehaviour
     public float typingSpeed = 0.03f;
 
     private Coroutine typingCoroutine;
-    private bool isTyping;
+    public bool IsTyping => isTyping;
     private string currentSentence;
 
     [Header("Posibles Respuestas")]
@@ -26,6 +27,7 @@ public class DialogueUI : MonoBehaviour
     private int selectedIndex = 0;
     private Button[] currentButtons;
     public System.Action onTypingFinished;
+    private bool isTyping;
 
     private void Start()
     {
@@ -150,5 +152,15 @@ public class DialogueUI : MonoBehaviour
         choicesPanel.SetActive(false);
         dialogueText.gameObject.SetActive(true);
         currentButtons = null; 
+    }
+
+    public void SkipTyping()
+    {
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
+        dialogueText.text = currentSentence;
+        isTyping = false;
+        onTypingFinished?.Invoke();
     }
 }
