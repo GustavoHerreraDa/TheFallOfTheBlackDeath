@@ -309,28 +309,42 @@ public class GameManager : MonoBehaviour
         enemies = new List<EnemiesGroup>(FindObjectsOfType<EnemiesGroup>());
         pickObjs = new List<statsOBJ>(FindObjectsOfType<statsOBJ>());
     }
-    private void OnLevelWasLoaded(int level)
+
+
+    void OnEnable()
     {
-        if (level == 1)
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.buildIndex == 1)
         {
-            Debug.Log("Level " + level);
+            Debug.Log("Level " + scene);
             //gameState = GameStates.TOWN_STATE;
 
             GameManager.Instance.FindEnemiesAndObjets();
             GameManager.Instance.FindPlayer();
             GameManager.Instance.RestorePlayerState();
 
-            if (GameManager.Instance.lastPos != Vector3.zero)
-                GameManager.Instance.character.transform.position = new Vector3(GameManager.Instance.lastPos.x - 2.5f, GameManager.Instance.lastPos.y, GameManager.Instance.lastPos.z - 2.5f);
-            //GameManager.Instance.character.transform.position = GameManager.Instance.lastPos;
-            else
+            if (lastPos != Vector3.zero && character != null)
             {
-                GameManager.Instance.character.transform.position = startPost.position;
-                Debug.Log("Start Post es " + startPost.position.x + " " + startPost.position.y + " " + startPost.position.z);
+                character.transform.position = new Vector3(lastPos.x - 2.5f, lastPos.y, lastPos.z - 2.5f);
+                Debug.Log("Player position restored to: " + character.transform.position);
+            }
+            else if (character != null && startPost != null)
+            {
+                character.transform.position = startPost.position;
+                Debug.Log("Player set to startPost: " + startPost.position);
             }
 
+            SetGameState(GameStates.TOWN_STATE);
             string nombre = PlayerPrefs.GetString("GrupoEnemigo");
-
 
             if (nombre == string.Empty)
                 return;
@@ -344,8 +358,6 @@ public class GameManager : MonoBehaviour
                 Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + enemy.GroupName);
             }
 
-
-
             for (int i = 0; i < InventoryManager.instance.inventory.Count; i++)
             {
                 var pickUp = pickObjs.Where(x => x.id == InventoryManager.instance.inventory[i].id).FirstOrDefault();
@@ -355,10 +367,7 @@ public class GameManager : MonoBehaviour
 
                 //Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + pickUp.GroupName);
             }
-
-
         }
-
     }
 
     void RandomEncounter()

@@ -10,6 +10,7 @@ public class Scene_Change : MonoBehaviour
         var player = other.GetComponent<PlayerControl>();
         if (player)
         {
+            Debug.Log("Saving lastPos: " + GameManager.Instance.character.transform.position);
             GameManager.Instance.lastPos = GameManager.Instance.character.transform.position;
 
             // Guardar cuál escena cargar
