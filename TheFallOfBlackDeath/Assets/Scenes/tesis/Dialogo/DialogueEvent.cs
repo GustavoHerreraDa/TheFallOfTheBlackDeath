@@ -59,6 +59,9 @@ public class DialogueEvent : MonoBehaviour
     {
         yield return StartCoroutine(Fade(1));
         SceneManager.LoadScene(battleSceneName);
+        GameManager.Instance.lastPos = GameManager.Instance.character.transform.position;
+        Cursor.lockState = CursorLockMode.None;
+
     }
 
     IEnumerator FadeAndDisappearSafe()

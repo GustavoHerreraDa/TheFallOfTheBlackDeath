@@ -255,9 +255,11 @@ public class CombatManager : MonoBehaviour
                         this.isCombatActive = false;
                         GameManager.Instance.SetGameState(GameManager.GameStates.TOWN_STATE);
                         GameManager.Instance.enemyToBattle.Clear();
-                        ListEnemyDefeat.enemiesDefeat.Add(groupEnemyName);
+                        var realName = enemyTeam[0].GetComponent<EnemiesGroup>().GroupName;
+                        ListEnemyDefeat.enemiesDefeat.Add(realName);
+                        PlayerPrefs.SetString("GrupoEnemigo", realName);
 
-                        PlayerPrefs.SetString("GrupoEnemigo", groupEnemyName);
+                        Debug.Log("Guardando enemigo derrotado REAL: " + realName);
                         Debug.Log("se encontraron esto grupos" + groupEnemyName);
                         yield return new WaitForSeconds(2f);
                         SceneManager.LoadScene(1);
