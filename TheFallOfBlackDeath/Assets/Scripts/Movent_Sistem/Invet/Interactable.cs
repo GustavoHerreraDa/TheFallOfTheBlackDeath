@@ -26,54 +26,65 @@ public abstract class Interactable : MonoBehaviour
         ResponseMessage.SetActive(false);
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("Object Enter");
+        // OBJETO (pickup)
+        if (other.gameObject.CompareTag("Object"))
+        {
+            if (other.GetComponent<statsOBJ>() != null)
+            {
+                InteractMeessage.SetActive(true);
+                objCollider = other;
+                canInteract = true;
+                nameMessage.text = "Press E to pick up item.";
+                Debug.Log("[Interactable] Detected Object -> message set");
+                return;
+            }
+        }
 
-        if (other.gameObject.tag == "Object")
+        // PUERTA
+        if (other.gameObject.CompareTag("Gate"))
         {
-            //Debug.Log("Object Enter");
+            if (other.GetComponent<Gate>() != null)
+            {
+                InteractMeessage.SetActive(true);
+                objCollider = other;
+                canInteract = true;
+                nameMessage.text = "Press E to open gate.";
+                Debug.Log("[Interactable] Detected Gate -> message set");
+                return;
+            }
+        }
 
-            if (other.gameObject.GetComponent<statsOBJ>() != null)
-            {
-                InteractMeessage.SetActive(true);
-                objCollider = other;
-                canInteract = true;
-                nameMessage.text = message;
-            }
-        }
-        if (other.gameObject.tag == "Gate")
+        // PORTAL
+        if (other.gameObject.CompareTag("Portal"))
         {
-            if (other.gameObject.GetComponent<Gate>() != null)
+            if (other.GetComponent<Portal>() != null)
             {
                 InteractMeessage.SetActive(true);
                 objCollider = other;
                 canInteract = true;
-                nameMessage.text = message;
+                nameMessage.text = "Press E to use portal.";
+                Debug.Log("[Interactable] Detected Portal -> message set");
+                return;
             }
         }
-        if (other.gameObject.tag == "Portal")
-        {
-            if (other.gameObject.GetComponent<Portal>() != null)
-            {
-                nameMessage.text = message;
-                InteractMeessage.SetActive(true);
-                objCollider = other;
-                canInteract = true;
-                
-            }
-        }
+
+        // NPC
         if (other.gameObject.CompareTag("NPC"))
         {
-            if (other.gameObject.GetComponent<DialogueInteractable>() != null)
+            if (other.GetComponent<DialogueInteractable>() != null)
             {
                 InteractMeessage.SetActive(true);
                 objCollider = other;
                 canInteract = true;
-                nameMessage.text = message;
+                nameMessage.text = "Press E to talk";
+                Debug.Log("[Interactable] Detected NPC -> message set");
+                return;
             }
         }
     }
+
 
     private void OnTriggerExit(Collider other)
     {

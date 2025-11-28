@@ -8,6 +8,7 @@ namespace Assets.Scripts.Movent_Sistem.Invet
 {
     public interface IInteratable
     {
+        //string GetMessage();
         void Interact();
     }
 }

@@ -15,8 +15,13 @@ public class PickObj : Interactable, IInteratable
     }
     public override void Interact()
     {
+        
+        if (objCollider == null || objCollider.GetComponent<statsOBJ>() == null)
+            return;
+
         player_Animator.Play("Pick");
         pickSound.Play();
+
         statsOBJ i = objCollider.GetComponent<statsOBJ>();
 
         InventoryManager.instance.AddItem(i.id, i.amount, i.uso);
@@ -31,21 +36,21 @@ public class PickObj : Interactable, IInteratable
     }
 
     // Update is called once per frame
-    private void OnTriggerEnter(Collider other)
+    /*public override void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("Object Enter");
+        base.OnTriggerEnter(other);
 
-        if (other.gameObject.tag == "Object")
+        if (other.CompareTag("Object"))
         {
-            //Debug.Log("Object Enter");
-
-            if (other.gameObject.GetComponent<statsOBJ>() != null)
+            if (other.GetComponent<statsOBJ>() != null)
             {
+                Debug.Log("PickObj detectó objeto");
                 InteractMeessage.SetActive(true);
                 objCollider = other;
                 canInteract = true;
             }
         }
-    }
+    }*/
+
 
 }

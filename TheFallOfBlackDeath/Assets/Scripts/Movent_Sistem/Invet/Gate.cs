@@ -22,6 +22,7 @@ public class Gate : MonoBehaviour
     public AudioSource puertaCerradaSonido;
     public delegate void GateOpenedEventHandler();
     public static event GateOpenedEventHandler GateOpened;
+    public string gateMessage = "Press E to open gate.";
 
     void Start()
     {
