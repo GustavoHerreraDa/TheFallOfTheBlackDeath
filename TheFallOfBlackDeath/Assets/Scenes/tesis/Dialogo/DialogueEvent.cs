@@ -30,8 +30,9 @@ public class DialogueEvent : MonoBehaviour
 
     private void Start()
     {
-        if (npcRenderer != null)
+       /* if (npcRenderer != null)
             npcMaterialInstance = npcRenderer.material;
+       */
     }
 
     public void TriggerEvent()

@@ -17,6 +17,7 @@ public class MainPanel : MonoBehaviour
     [Header("Panels")]
     public GameObject mainPanel;
     public GameObject optionsPanel;
+    public GameObject statsPanel;
     public GameObject controlesPanel;
     public GameObject introPanel;
 

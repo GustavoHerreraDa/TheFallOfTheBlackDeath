@@ -409,12 +409,12 @@ GameObject:
   - component: {fileID: 7228399444001451869}
   - component: {fileID: 7228399444001451871}
   - component: {fileID: 7228399444001451866}
+  - component: {fileID: 3120279667427904139}
   - component: {fileID: 4567172318683264132}
   - component: {fileID: 6583610631474649816}
   - component: {fileID: 5529548538600238815}
   - component: {fileID: 9212902164785372528}
   - component: {fileID: 499951326273301129}
-  - component: {fileID: 3120279667427904139}
   m_Layer: 0
   m_Name: Character 1
   m_TagString: Charecter
@@ -491,6 +491,28 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3120279667427904139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7228399444001451873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0ad0a0b0f274f3478bf133ce86a372f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characters:
+  - {fileID: 7228399444447134563}
+  - {fileID: 7871218241418132617}
+  - {fileID: 5541614994889270513}
+  - {fileID: 7340842911864039310}
+  - {fileID: 3426267113897731360}
+  - {fileID: 2436001959934056355}
+  fightersDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
+  currentMainCharacterIndex: 0
+  currentSecondaryCharacterIndex: 0
 --- !u!114 &4567172318683264132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -607,28 +629,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &3120279667427904139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7228399444001451873}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0ad0a0b0f274f3478bf133ce86a372f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characters:
-  - {fileID: 7228399444447134563}
-  - {fileID: 7871218241418132617}
-  - {fileID: 5541614994889270513}
-  - {fileID: 7340842911864039310}
-  - {fileID: 3426267113897731360}
-  - {fileID: 2436001959934056355}
-  fightersDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
-  currentMainCharacterIndex: 0
-  currentSecondaryCharacterIndex: 0
 --- !u!1 &7228399444368592700
 GameObject:
   m_ObjectHideFlags: 0
