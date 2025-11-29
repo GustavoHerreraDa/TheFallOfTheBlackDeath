@@ -313,7 +313,7 @@ public class GameManager : MonoBehaviour
     {
         if (savedPlayerStatus == null || character1 == null) return;
 
-        // Stats generales
+        
         character1.stats.level = savedPlayerStatus.level;
         character1.stats.experience = savedPlayerStatus.experience;
         character1.stats.maxHealth = savedPlayerStatus.maxHealth;
