@@ -285,28 +285,29 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void SavePlayerState()
+    public Stats SavePlayerState(PlayerFighter fighter)
     {
-        if (character1 == null) return;
+        var s = fighter.GetCurrentStats();
 
         savedPlayerStatus = new PlayerStatusData();
-        savedPlayerStatus.level = character1.stats.level;
-        savedPlayerStatus.experience = character1.stats.experience;
-        savedPlayerStatus.currentHealth = character1.stats.health;
-        savedPlayerStatus.maxHealth = character1.stats.maxHealth;
-        savedPlayerStatus.attack = character1.stats.attack;
-        savedPlayerStatus.defense = character1.stats.deffense;
-        savedPlayerStatus.spirit = character1.stats.spirit;
-        savedPlayerStatus.speed = character1.stats.speed;
+        savedPlayerStatus.level = s.level;
+        savedPlayerStatus.experience = s.experience;
+        savedPlayerStatus.currentHealth = s.health;
+        savedPlayerStatus.maxHealth = s.maxHealth;
+        savedPlayerStatus.attack = s.attack;
+        savedPlayerStatus.defense = s.deffense;
+        savedPlayerStatus.spirit = s.spirit;
+        savedPlayerStatus.speed = s.speed;
 
         savedPlayerStatus.bodyPartsHealth = new List<float>();
-        foreach (var part in character1.bodyParts)
+        foreach (var part in fighter.bodyParts)
         {
             savedPlayerStatus.bodyPartsHealth.Add(part.currentHealth);
         }
 
-        Debug.Log("Estado del jugador guardado. Vida: " + savedPlayerStatus.currentHealth + " Nivel: " + savedPlayerStatus.level);
+        return s;
     }
+
 
     public void RestorePlayerState()
     {
@@ -322,13 +323,13 @@ public class GameManager : MonoBehaviour
         character1.stats.spirit = savedPlayerStatus.spirit;
         character1.stats.speed = savedPlayerStatus.speed;
 
-        // Restaurar partes del cuerpo
+        
         for (int i = 0; i < character1.bodyParts.Count && i < savedPlayerStatus.bodyPartsHealth.Count; i++)
         {
             character1.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
         }
 
-        // Actualizar UI si existe
+        
         if (character1.statusPanel != null)
             character1.statusPanel.SetStats(character1.idName, character1.stats);
 

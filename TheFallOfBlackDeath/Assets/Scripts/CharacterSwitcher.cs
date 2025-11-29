@@ -67,7 +67,7 @@ public class CharacterSwitcher : MonoBehaviour
 
                 currentMainCharacterIndex = fightersDateBase.EnemyDB[i].CharacterSwitcherIndex;
                 Debug.Log("Main Character es " + fightersDateBase.EnemyDB[i].Name);
-                GameManager.Instance.SavePlayerState();
+                GameManager.Instance.SavePlayerState(GameManager.Instance.character1);
             }
         }
 
@@ -77,7 +77,7 @@ public class CharacterSwitcher : MonoBehaviour
             {
                 currentSecondaryCharacterIndex = fightersDateBase.EnemyDB[i].CharacterSwitcherIndex;
                 Debug.Log("Secondary Character es " + fightersDateBase.EnemyDB[i].Name);
-                GameManager.Instance.SavePlayerState();
+                GameManager.Instance.SavePlayerState(GameManager.Instance.character2);
             }
         }
     }

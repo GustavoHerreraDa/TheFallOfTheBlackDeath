@@ -243,7 +243,7 @@ public class CombatManager : MonoBehaviour
                             }
                         }
 
-                        GameManager.Instance.SavePlayerState();
+                        GameManager.Instance.SavePlayerState(GameManager.Instance.character1);
                         audioSource.Play();
                         Animator[] playerAnimators = player.GetComponentsInChildren<Animator>();
                         foreach (Animator animator in playerAnimators)
@@ -268,7 +268,7 @@ public class CombatManager : MonoBehaviour
 
                     if (defeat)
                     {
-                        GameManager.Instance.SavePlayerState();
+                        GameManager.Instance.SavePlayerState(GameManager.Instance.character1);
                         LogPanel.Write("Defeat!");
                         this.isCombatActive = false;
                         yield return new WaitForSeconds(2f);

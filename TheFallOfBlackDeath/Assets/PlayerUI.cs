@@ -7,7 +7,7 @@ using TMPro;
 public class PlayerUI : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Fighter fighter;
+    public PlayerFighter fighter;
     public CombatManager combatManager;
     public TextMeshProUGUI nameHero;
     public TextMeshProUGUI currentHealth;
@@ -19,12 +19,12 @@ public class PlayerUI : MonoBehaviour
 
     public bool isMainCharacterUI;
 
-    public void Awake()
+   /* public void Awake()
     {
         GetPlayerFromCombatManager();
-    }
+    }*/
 
-    private void GetPlayerFromCombatManager()
+    /*private void GetPlayerFromCombatManager()
     {
         if (combatManager == null)
             return;
@@ -35,7 +35,7 @@ public class PlayerUI : MonoBehaviour
         {
             fighter = _fighter;
         }
-    }
+    }*/
 
     public void Start()
     {
@@ -44,31 +44,26 @@ public class PlayerUI : MonoBehaviour
 
     public void UpdatePlayerStats()
     {
-        //if (fighter == null)
-        //GetPlayerFromCombatManager();
-        if(isMainCharacterUI)
-        {
-            fighter = GameManager.Instance.character1;
-            //GameManager.Instance.SavePlayerState();
-        }
-        else
-        {
-            fighter = GameManager.Instance.character2;
-            //GameManager.Instance.SavePlayerState();
-        }
+        fighter = isMainCharacterUI ?
+                  GameManager.Instance.character1 :
+                  GameManager.Instance.character2;
 
-       // var s = fighter.GetCurrentStats();
+        
+        GameManager.Instance.ApplySavedStatusToFighter(fighter);
 
+        // Leer stats actuales
+        var stats = fighter.GetCurrentStats();
 
         nameHero.text = fighter.idName;
-        currentHealth.text = "HP: " + fighter.GetCurrentStats().health.ToString();
-        maxHealth.text = fighter.GetCurrentStats().maxHealth.ToString();
-        attack.text = "Attack: " + fighter.GetCurrentStats().attack.ToString();
-        defense.text = "Defense: " + fighter.GetCurrentStats().deffense.ToString();
-        speed.text = "Speed: " + fighter.GetCurrentStats().speed.ToString();
+        currentHealth.text = "HP: " + stats.health.ToString();
+        maxHealth.text = stats.maxHealth.ToString();
+        attack.text = "Attack: " + stats.attack.ToString();
+        defense.text = "Defense: " + stats.deffense.ToString();
+        speed.text = "Speed: " + stats.speed.ToString();
 
         UpdateSkillUI();
     }
+
 
     private void UpdateSkillUI()
     {

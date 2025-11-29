@@ -40,7 +40,9 @@ public class InventoryUI : MonoBehaviour
         {
             character1.UpdateStats(statAffected, amountAffected);
             _isCharacter1Equipped = true;
+            GameManager.Instance.SavePlayerState(character1);
             Debug.Log("Equipamos al character 1");
+
         } 
         //Mas UI
     }
@@ -57,6 +59,7 @@ public class InventoryUI : MonoBehaviour
         {
             character2.UpdateStats(statAffected, amountAffected);
             _isCharacter2Equipped = true;
+            GameManager.Instance.SavePlayerState(character2);
             Debug.Log("Equipamos al character 2");
         }
         //Mas UI
