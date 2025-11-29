@@ -90,16 +90,16 @@ public class GameManager : MonoBehaviour
         switch (gameState)
         {
             case GameStates.SAFE_ZONE:
-                sanity.StartIncreaseSanity();
+                //sanity.StartIncreaseSanity();
                 break;
 
             case GameStates.TOWN_STATE:
             case GameStates.IDLE_STATE:
-                sanity.StartDecreaseSanity();
+                //sanity.StartDecreaseSanity();
                 break;
 
             case GameStates.BATTLE_STATE:
-                sanity.StopSanityChanges();
+                //sanity.StopSanityChanges();
                 break;
         }
     }
