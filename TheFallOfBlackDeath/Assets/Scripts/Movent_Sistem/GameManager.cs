@@ -55,26 +55,7 @@ public class GameManager : MonoBehaviour
     public bool isWalking = false;
     public int enemyAmount;
 
-    public float corduraMax = 100f;
-    public float corduraActual;
-    public float perdidaDeCordura = 2f;
-    public TextMeshProUGUI textCordura;
-
-    private Coroutine corduraRoutine;
-
-    [Header("Vignette Settings")]
-    public Material vignetteMaterial;
-    public float minVigp = 0f;   // Viñeta mínima (cordura alta)
-    public float maxVigp = 1f;   // Viñeta máxima (cordura baja)
-    public float minVigi = 0f;
-    public float maxVigi = 1f;
-
-
-    [Header("Cordura Sound Settings")]
-    public AudioSource lowSanityAudio;
-    public float sanityThreshold = 20f; 
-    private bool isLowSanityPlaying = false;
-
+    public SanitySystem sanity;
     //ENUM
     public enum GameStates
     {
@@ -93,72 +74,6 @@ public class GameManager : MonoBehaviour
 
     public int cuRegions;
 
-    private void Update()
-    {
-        switch (gameState)
-        {
-            case (GameStates.TOWN_STATE):
-                if (corduraActual <= 20)
-                {
-                    RandomEncounter();
-                }
-                if (gotAttacked)
-                {
-                    gameState = GameStates.BATTLE_STATE;
-                }
-                break;
-
-            case (GameStates.BATTLE_STATE):
-                StartBattle();
-                gameState = GameStates.IDLE_STATE;
-                gotAttacked = false;
-                canGetEncounter = false;
-                isWalking = false; // Desactivar los encuentros aleatorios despu�s de un evento exitoso
-                break;
-
-            case (GameStates.IDLE_STATE):
-            case (GameStates.SAFE_ZONE):
-                break;
-        }
-
-
-        canGetEncounter = (corduraActual <= 20);
-
-        textCordura.text = "Sanity: " + Mathf.RoundToInt(corduraActual);
-
-        
-        if (corduraActual <= sanityThreshold && !isLowSanityPlaying)
-        {
-            if (lowSanityAudio != null)
-            {
-                lowSanityAudio.Play();
-                isLowSanityPlaying = true;
-            }
-        }
-        else if (corduraActual > sanityThreshold && isLowSanityPlaying)
-        {
-            if (lowSanityAudio != null)
-            {
-                lowSanityAudio.Stop();
-                isLowSanityPlaying = false;
-            }
-        }
-
-        if (vignetteMaterial != null)
-        {
-           
-            float normalized = Mathf.InverseLerp(corduraMax, sanityThreshold, corduraActual);
-            normalized = Mathf.Clamp01(1f * normalized);
-
-            float vigpValue = Mathf.Lerp(minVigp, maxVigp, normalized);
-            float vigiValue = Mathf.Lerp(minVigi, maxVigi, normalized);
-
-            vignetteMaterial.SetFloat("_vigp", vigpValue);
-            vignetteMaterial.SetFloat("_vigi", vigiValue);
-        }
-
-
-    }
 
     public GameStates gameState;
 
@@ -167,31 +82,27 @@ public class GameManager : MonoBehaviour
         get { return FindObjectOfType<Movent>().gameObject; }
     }
     */
+
     public void SetGameState(GameStates newState)
     {
         gameState = newState;
 
-        // Detiene corrutinas previas
-        if (corduraRoutine != null)
-            StopCoroutine(corduraRoutine);
-
         switch (gameState)
         {
             case GameStates.SAFE_ZONE:
-                corduraRoutine = StartCoroutine(AumentarCordura());
+                sanity.StartIncreaseSanity();
+                break;
+
+            case GameStates.TOWN_STATE:
+            case GameStates.IDLE_STATE:
+                sanity.StartDecreaseSanity();
                 break;
 
             case GameStates.BATTLE_STATE:
-                break;
-
-            default:
-                corduraRoutine = StartCoroutine(BajarCordura());
+                sanity.StopSanityChanges();
                 break;
         }
     }
-
-
-
 
     public List<EnemiesGroup> enemies;
     public List<statsOBJ> pickObjs;
@@ -235,9 +146,6 @@ public class GameManager : MonoBehaviour
 
         groupEnemyDefeat = ListEnemyDefeat.enemiesDefeat;
         objectsPickup = ListEnemyDefeat.pickUpsInWorld;
-        corduraActual = corduraMax;
-
-        corduraRoutine = StartCoroutine(BajarCordura());
 
         if (character1 == null)
         {
@@ -261,36 +169,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-
-    IEnumerator BajarCordura()
-
-    {
-        while (true)
-        {
-            if (corduraActual > 0)
-            {
-                float perdida = (corduraMax * (perdidaDeCordura /1000f)) * Time.deltaTime;
-                corduraActual -= perdida;
-                corduraActual = Mathf.Clamp(corduraActual, 0, corduraMax);
-            }
-            yield return null;
-        }
-    }
-
-   IEnumerator AumentarCordura()
-
-    {
-        while (true)
-        {
-            if (corduraActual < corduraMax)
-            {
-                float ganancia = (corduraMax * (perdidaDeCordura / 100f)) * Time.deltaTime;
-                corduraActual += ganancia;
-                corduraActual = Mathf.Clamp(corduraActual, 0, corduraMax);
-            }
-            yield return null;
-        }
-    }
 
 
     public void FindPlayer()
