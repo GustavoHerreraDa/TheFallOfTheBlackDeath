@@ -41,6 +41,7 @@ public class CharacterSwitcher : MonoBehaviour
             fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, true);
 
             updateMainCharacterUI();
+
         }
     }
 

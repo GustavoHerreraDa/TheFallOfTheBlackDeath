@@ -183,7 +183,7 @@ public class CombatManager : MonoBehaviour
                     if (nextMessage != null)
                     {
                         LogPanel.Write(nextMessage);
-                        yield return new WaitForSeconds(0.2f);
+                        yield return new WaitForSeconds(0.8f);
                     }
                     else
                     {
