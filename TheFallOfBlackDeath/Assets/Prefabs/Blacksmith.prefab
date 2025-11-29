@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4259703240449388098}
-  - component: {fileID: 3100785940206278997}
   m_Layer: 0
   m_Name: Fading Fury
   m_TagString: Untagged
@@ -32,33 +31,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7305297877295874578}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3100785940206278997
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 969892521961305730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dd74448f472bc145af36ff41cafac42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Fading Fury
-  animationDuration: 1.5
-  targeting: 2
-  BodyPartTarget: 0
-  effectPrfb: {fileID: 8189500006840025469, guid: 0a19654f0adc9c6429eff011c5724442, type: 3}
-  SkillDesc: Decrease all enemies attack and defense by 10.
-  skillType: 0
-  iconUI: {fileID: 0}
-  animationName: Intimidate
-  HasItemInInventory: 0
-  ItemsNeeded: []
-  requiredParts: 
-  healAmount: 0
-  attackBuffAmount: -10
-  defenseBuffAmount: -10
 --- !u!1 &3105780398260842073
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,11 +75,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Colossal Hammerstrike
+  skillName: Impact Shot
   animationDuration: 2
   targeting: 4
   BodyPartTarget: 0
-  effectPrfb: {fileID: 6703250321131892297, guid: 2b987d41506d172419fa18578f6ac380, type: 3}
+  effectPrfb: {fileID: 1134129239631916, guid: 7e48ba6b1b968764490bbc70b66e3fe1, type: 3}
   SkillDesc: A powerful blow with the hammer that deals 50 damage to the enemy (10%
     critical chance).
   skillType: 0
@@ -115,10 +87,10 @@ MonoBehaviour:
   animationName: Blow
   HasItemInInventory: 0
   ItemsNeeded: []
-  requiredParts: 
-  amount: -50
+  requiredParts: 01000000
+  amount: -80
   modType: 0
-  critChance: 0.1
+  critChance: 0.7
   missChance: 0
 --- !u!1 &3546500895190041043
 GameObject:
@@ -292,22 +264,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Thundering Forge
+  skillName: Multiple Shot
   animationDuration: 2
   targeting: 2
   BodyPartTarget: 0
-  effectPrfb: {fileID: 6710139492206580332, guid: 95b8d3d65b5d7f1409c4ed1723887826, type: 3}
-  SkillDesc: The blacksmith summons the energy of his forge to unleash a devastating
-    hammer strike. -15 to all enemies.
+  effectPrfb: {fileID: 725748389856807714, guid: 4bda94453d2ca7444a0fff05b2d425f5, type: 3}
+  SkillDesc: Damages all enemies bodyparts for. (-15 true damage))
   skillType: 0
   iconUI: {fileID: 21300000, guid: 0fbbd9262d44f584d8310a7d55840604, type: 3}
   animationName: Forge
   HasItemInInventory: 0
-  ItemsNeeded:
-  - id: 13
-    amount: 1
-    uso: 0
-  requiredParts: 
+  ItemsNeeded: []
+  requiredParts: 05000000
   amount: -15
   modType: 1
   critChance: 0
@@ -343,78 +311,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7305297877295874578}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7260654520947209717
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8006848119082542558}
-  - component: {fileID: 5251786555806156600}
-  - component: {fileID: 121971674288194794}
-  m_Layer: 0
-  m_Name: Fading Fury (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &8006848119082542558
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7260654520947209717}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.008726558, z: -0, w: 0.999962}
-  m_LocalPosition: {x: 6.78, y: 2, z: -0.27999973}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7305297877295874578}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5251786555806156600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7260654520947209717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  amount: -20
---- !u!114 &121971674288194794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7260654520947209717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Fading Fury
-  animationDuration: 1.5
-  targeting: 2
-  BodyPartTarget: 0
-  effectPrfb: {fileID: 3499216465569482894, guid: f2fc97de3837dfe429d9e31b21e766fa, type: 3}
-  SkillDesc: Decrease all enemies attack by 20.
-  skillType: 0
-  iconUI: {fileID: 21300000, guid: 539bc8db00263f6489d6d97d949ad58b, type: 3}
-  animationName: Intimidate
-  HasItemInInventory: 0
-  ItemsNeeded: []
-  requiredParts: 
-  message: '{receiver} loses 20 attack!'
 --- !u!1 &7786955661051944844
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,6 +337,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.851, z: 0.201}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7305297877295874578}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8264631239708923127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1267640072134561466}
+  m_Layer: 0
+  m_Name: Fading Fury (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1267640072134561466
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8264631239708923127}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
+  m_LocalPosition: {x: 7, y: 1.41, z: 2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -478,13 +405,13 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2510422028417999802}
-  - {fileID: 4506396638307855813}
-  - {fileID: 6120028661146193529}
   - {fileID: 7922925822324754533}
   - {fileID: 9220406930678221090}
   - {fileID: 4259703240449388098}
-  - {fileID: 8006848119082542558}
+  - {fileID: 1267640072134561466}
+  - {fileID: 2510422028417999802}
+  - {fileID: 4506396638307855813}
+  - {fileID: 6120028661146193529}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1830900076
@@ -501,23 +428,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyParts:
   - part: 1
-    hitPoint: {fileID: 0}
+    hitPoint: {fileID: 4506396638307855813}
     maxHealth: 100
     currentHealth: 100
   - part: 2
-    hitPoint: {fileID: 0}
-    maxHealth: 100
-    currentHealth: 100
-  - part: 4
-    hitPoint: {fileID: 0}
+    hitPoint: {fileID: 4506396638307855813}
     maxHealth: 100
     currentHealth: 100
   - part: 3
-    hitPoint: {fileID: 0}
-    maxHealth: 100
-    currentHealth: 100
+    hitPoint: {fileID: 4506396638307855813}
+    maxHealth: 1
+    currentHealth: 1
+  - part: 4
+    hitPoint: {fileID: 4506396638307855813}
+    maxHealth: 1
+    currentHealth: 1
+  - part: 5
+    hitPoint: {fileID: 4506396638307855813}
+    maxHealth: 1
+    currentHealth: 1
+  - part: 6
+    hitPoint: {fileID: 4506396638307855813}
+    maxHealth: 1
+    currentHealth: 1
   team: 0
-  idName: Blacksmith
+  idName: Samus
   statusPanel: {fileID: 0}
   animator: {fileID: 0}
   combatManager: {fileID: 0}

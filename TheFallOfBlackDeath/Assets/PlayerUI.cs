@@ -7,7 +7,7 @@ using TMPro;
 public class PlayerUI : MonoBehaviour
 {
     // Start is called before the first frame update
-    public PlayerFighter fighter;
+    public Fighter fighter;
     public CombatManager combatManager;
     public TextMeshProUGUI nameHero;
     public TextMeshProUGUI currentHealth;
@@ -21,10 +21,10 @@ public class PlayerUI : MonoBehaviour
 
     public void Awake()
     {
-        //GetPlayerFromCombatManager();
+        GetPlayerFromCombatManager();
     }
 
-    /*private void GetPlayerFromCombatManager()
+    private void GetPlayerFromCombatManager()
     {
         if (combatManager == null)
             return;
@@ -35,7 +35,7 @@ public class PlayerUI : MonoBehaviour
         {
             fighter = _fighter;
         }
-    }*/
+    }
 
     public void Start()
     {
