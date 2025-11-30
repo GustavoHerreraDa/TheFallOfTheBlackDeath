@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using TMPro;
 
-//TP2 FACUNDO FERREIRO/GUSTAVO TORRES
+
 public class GameManager : MonoBehaviour
 {
     static public GameManager _instance;
@@ -333,7 +333,7 @@ public class GameManager : MonoBehaviour
         if (character1.statusPanel != null)
             character1.statusPanel.SetStats(character1.idName, character1.stats);
 
-        Debug.Log("Estado del jugador restaurado. Vida: " + character1.stats.health + " Nivel: " + character1.stats.level);
+        Debug.Log("vida " + character1.stats.health + " nivel: " + character1.stats.level);
     }
     public void ApplySavedStatusToFighter(PlayerFighter fighter)
     {
@@ -348,7 +348,7 @@ public class GameManager : MonoBehaviour
         fighter.stats.spirit = savedPlayerStatus.spirit;
         fighter.stats.speed = savedPlayerStatus.speed;
 
-        // Restaurar partes del cuerpo
+        
         for (int i = 0; i < fighter.bodyParts.Count && i < savedPlayerStatus.bodyPartsHealth.Count; i++)
         {
             fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
@@ -357,7 +357,7 @@ public class GameManager : MonoBehaviour
         if (fighter.statusPanel != null)
             fighter.statusPanel.SetStats(fighter.idName, fighter.stats);
 
-        Debug.Log("Estado aplicado al jugador dentro del combate. Vida: " + fighter.stats.health + " Nivel: " + fighter.stats.level);
+        Debug.Log("vida: " + fighter.stats.health + " nvel: " + fighter.stats.level);
     }
 
 
@@ -365,9 +365,9 @@ public class GameManager : MonoBehaviour
     IEnumerator WaitForPlayer()
     {
         while (character1 == null)
-            yield return null; // esperar un frame
+            yield return null;
 
-        Debug.Log("GameManager detectó a " + character1.name);
+        Debug.Log("gameManager detectó a " + character1.name);
     }
 
 
