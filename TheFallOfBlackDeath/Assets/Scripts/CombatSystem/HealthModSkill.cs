@@ -28,7 +28,7 @@ public class HealthModSkill : Skill
         
         if (dice <= adjustedMissChance)
         {
-            this.messages.Enqueue($"{emitter.idName} missed the attack on {receiver.idName}!");
+            this.messages.Enqueue($"{emitter.idName} missed on {receiver.idName}!");
             FloatingTextManager.Instance.ShowText("Miss!", textPos, Color.gray);
             receiver.ModifyHealth(0);                
             return;
