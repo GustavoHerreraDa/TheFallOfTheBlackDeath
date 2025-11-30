@@ -360,13 +360,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("vida: " + fighter.stats.health + " nvel: " + fighter.stats.level);
     }
 
-    public IEnumerable<float> BodyPartsIntegrity(PlayerFighter fighter)
+    public IEnumerable<(int current, int max)> BodyPartsIntegrity(PlayerFighter fighter)
     {
         return fighter.bodyParts.Zip(savedPlayerStatus.bodyPartsHealth,
-            (current, saved) => current.currentHealth / saved);
+            (current, max) => ((int)current.currentHealth, (int)max));
     }
-
-
 
     IEnumerator WaitForPlayer()
     {
@@ -375,7 +373,4 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("gameManager detectó a " + character1.name);
     }
-
-
-
 }

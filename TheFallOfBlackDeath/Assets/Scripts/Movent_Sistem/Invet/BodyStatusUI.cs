@@ -1,27 +1,26 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
+using TMPro;
 using System.Linq;
+
 public class BodyStatusUI : MonoBehaviour
 {
-    public TextMeshProUGUI headText;
-    public TextMeshProUGUI torsoText;
-    public TextMeshProUGUI leftArmText;
-    public TextMeshProUGUI rightArmText;
-    public TextMeshProUGUI leftLegText;
-    public TextMeshProUGUI rightLegText;
+    public TextMeshProUGUI headTxt;
+    public TextMeshProUGUI torsoTxt;
+    public TextMeshProUGUI leftArmTxt;
+    public TextMeshProUGUI rightArmTxt;
+    public TextMeshProUGUI leftLegTxt;
+    public TextMeshProUGUI rightLegTxt;
 
-    public GameManager gameManager;
-    public PlayerFighter player;
+    private GameManager gm;
+    private PlayerFighter fighter;
 
-    private void Awake()
+    void Awake()
     {
-       
-        if (gameManager == null)
-            gameManager = GameManager.Instance;
+        if (gm == null)
+            gm = FindObjectOfType<GameManager>();
 
-        
-        if (player == null)
-            player = FindObjectOfType<PlayerFighter>();
+        if (fighter == null)
+            fighter = FindObjectOfType<PlayerFighter>();
     }
 
     private void OnEnable()
@@ -31,16 +30,24 @@ public class BodyStatusUI : MonoBehaviour
 
     public void Refresh()
     {
-        if (gameManager == null || player == null)
+        if (gm == null || fighter == null)
             return;
 
-        var values = gameManager.BodyPartsIntegrity(player).ToList();
+        var data = gm.BodyPartsIntegrity(fighter).ToList();
 
-        headText.text = $"Head:     {(values[0] * 100f):0}%";
-        torsoText.text = $"Torso:    {(values[1] * 100f):0}%";
-        leftArmText.text = $"L-Arm:    {(values[2] * 100f):0}%";
-        rightArmText.text = $"R-Arm:    {(values[3] * 100f):0}%";
-        leftLegText.text = $"L-Leg:    {(values[4] * 100f):0}%";
-        rightLegText.text = $"R-Leg:    {(values[5] * 100f):0}%";
+        Debug.Log("PARTES = " + data.Count);
+
+        for (int i = 0; i < data.Count; i++)
+        {
+            Debug.Log($"Part {i}: {data[i].current}/{data[i].max}");
+        }
+
+        headTxt.text = $"Head: {data[0].current}/{data[0].max}";
+        torsoTxt.text = $"Torso: {data[1].current}/{data[1].max}";
+        leftArmTxt.text = $"L-Arm: {data[2].current}/{data[2].max}";
+        rightArmTxt.text = $"R-Arm: {data[3].current}/{data[3].max}";
+        leftLegTxt.text = $"L-Leg: {data[4].current}/{data[4].max}";
+        rightLegTxt.text = $"R-Leg: {data[5].current}/{data[5].max}";
     }
+
 }

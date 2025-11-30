@@ -41,6 +41,7 @@ public class PlayerUI : MonoBehaviour
     public void Start()
     {
         UpdatePlayerStats();
+
     }
 
     public void UpdatePlayerStats()
