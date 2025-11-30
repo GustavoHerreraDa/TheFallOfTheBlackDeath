@@ -21,47 +21,76 @@ public class InventoryUI : MonoBehaviour
     private bool _isCharacter1Equipped;
     private bool _isCharacter2Equipped;
 
+    public AudioSource audioSource;
+    public AudioClip equipSfx;
+    public AudioClip unequipSfx;
+
+    private Color originalColor;
+    public Color equippedColor = Color.green;
+    public Color unequippedColor = Color.red;
+
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
         character1 = GameManager.Instance.character1;
         character2 = GameManager.Instance.character2;
+
+        originalColor = buttonSprite.color;
     }
 
     public void Character1BTN()
     {
-        if(_isCharacter2Equipped)
+        
+        if (_isCharacter2Equipped)
         {
             character2.UpdateStats(statAffected, -amountAffected);
             _isCharacter2Equipped = false;
+
+            audioSource.PlayOneShot(unequipSfx);
+            GameManager.Instance.SavePlayerState(character2);
+
+            buttonSprite.color = originalColor;
         }
 
-        if(!_isCharacter1Equipped)
+        
+        if (!_isCharacter1Equipped)
         {
+
             character1.UpdateStats(statAffected, amountAffected);
             _isCharacter1Equipped = true;
             GameManager.Instance.SavePlayerState(character1);
-            Debug.Log("Equipamos al character 1");
+            audioSource.PlayOneShot(equipSfx);
 
-        } 
-        //Mas UI
+            buttonSprite.color = equippedColor;
+            Debug.Log("Equipamos al character 1");
+        }
     }
+
 
     public void Character2BTN()
     {
-        if(_isCharacter1Equipped)
+        if (_isCharacter1Equipped)
         {
             character1.UpdateStats(statAffected, -amountAffected);
             _isCharacter1Equipped = false;
-        } 
 
-        if(!_isCharacter2Equipped)
+            audioSource.PlayOneShot(unequipSfx);
+            GameManager.Instance.SavePlayerState(character1);
+
+            buttonSprite.color = originalColor; // Normal
+        }
+
+        if (!_isCharacter2Equipped)
         {
             character2.UpdateStats(statAffected, amountAffected);
             _isCharacter2Equipped = true;
+
+            audioSource.PlayOneShot(equipSfx);
             GameManager.Instance.SavePlayerState(character2);
+
+            buttonSprite.color = equippedColor; // Verde
             Debug.Log("Equipamos al character 2");
         }
-        //Mas UI
     }
+
 }
