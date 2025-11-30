@@ -16,6 +16,7 @@ public class PlayerUI : MonoBehaviour
     public TextMeshProUGUI defense;
     public TextMeshProUGUI speed;
     public SkillUI[] skillsUI;
+    public BodyStatusUI _boddyStatus;
 
     public bool isMainCharacterUI;
 
@@ -62,6 +63,7 @@ public class PlayerUI : MonoBehaviour
         speed.text = "Speed: " + stats.speed.ToString();
 
         UpdateSkillUI();
+        _boddyStatus.Refresh();
     }
 
 

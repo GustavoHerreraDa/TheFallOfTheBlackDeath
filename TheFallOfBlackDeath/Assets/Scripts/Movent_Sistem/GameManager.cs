@@ -360,6 +360,12 @@ public class GameManager : MonoBehaviour
         Debug.Log("vida: " + fighter.stats.health + " nvel: " + fighter.stats.level);
     }
 
+    public IEnumerable<float> BodyPartsIntegrity(PlayerFighter fighter)
+    {
+        return fighter.bodyParts.Zip(savedPlayerStatus.bodyPartsHealth,
+            (current, saved) => current.currentHealth / saved);
+    }
+
 
 
     IEnumerator WaitForPlayer()

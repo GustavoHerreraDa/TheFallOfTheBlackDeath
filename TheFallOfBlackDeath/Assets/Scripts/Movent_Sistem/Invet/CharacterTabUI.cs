@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class CharacterTabUI : MonoBehaviour
 {
+
     [SerializeField] private CharacterSwitcher _characterSwitcher;
 
     public void MainCharacterBTN(int characterIndex)
     {
+
         _characterSwitcher.SwitchMainCharacter(characterIndex, false);
+        //_boddyStatus.Refresh();
+
     }
 
     public void SecondaryCharacterBTN(int characterIndex)

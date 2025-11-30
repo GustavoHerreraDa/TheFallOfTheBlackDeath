@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+
 public class TabInventory : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -15,6 +16,7 @@ public class TabInventory : MonoBehaviour
     public PlayerUI mainCharacterUI;
     public PlayerUI secondaryCharacterUI;
 
+
     private void Start()
     {
         for (int i = 0; i < tabs.Length; i++)
@@ -23,6 +25,7 @@ public class TabInventory : MonoBehaviour
         }
         if (tabs.Length > 0)
             tabs[0].SetActive(true);
+
     }
     public void TurnOnTabs(int tab)
     {
