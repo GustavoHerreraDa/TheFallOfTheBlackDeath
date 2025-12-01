@@ -135,7 +135,7 @@ public abstract class Fighter : MonoBehaviour
                 return this.combatManager.GetOpposingTeam();
         }
 
-        // Esto no deber�a ejecutarse nunca pero hay que ponerlo para hacer al compilador feliz.
+        // Esto no deberia ejecutarse nunca pero hay que ponerlo para hacer al compilador feliz.
         throw new System.InvalidOperationException("Fighter::GetSkillTargets. Unreachable!");
     }
 
