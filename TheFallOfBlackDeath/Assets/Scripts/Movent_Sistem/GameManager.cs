@@ -157,7 +157,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (character1 == null)
+        /*if (character2 == null)
         {
             PlayerFighter player = FindObjectOfType<PlayerFighter>();
             if (player != null)
@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour
                 character1 = player;
                 Debug.Log("PlayerFighter detectado automáticamente: " + player.name);
             }
-        }
+        }*/
 
     }
 

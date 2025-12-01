@@ -37,7 +37,7 @@ public abstract class Interactable : MonoBehaviour
                 objCollider = other;
                 canInteract = true;
                 nameMessage.text = "Press E to pick up item.";
-                Debug.Log("[Interactable] Detected Object -> message set");
+                Debug.Log("apreta e para interactuar");
                 return;
             }
         }
@@ -51,7 +51,7 @@ public abstract class Interactable : MonoBehaviour
                 objCollider = other;
                 canInteract = true;
                 nameMessage.text = "Press E to open gate.";
-                Debug.Log("[Interactable] Detected Gate -> message set");
+                Debug.Log("apreta e para interactuar");
                 return;
             }
         }
@@ -65,7 +65,7 @@ public abstract class Interactable : MonoBehaviour
                 objCollider = other;
                 canInteract = true;
                 nameMessage.text = "Press E to use portal.";
-                Debug.Log("[Interactable] Detected Portal -> message set");
+                Debug.Log("apreta e para interactuar");
                 return;
             }
         }
@@ -79,7 +79,7 @@ public abstract class Interactable : MonoBehaviour
                 objCollider = other;
                 canInteract = true;
                 nameMessage.text = "Press E to talk";
-                Debug.Log("[Interactable] Detected NPC -> message set");
+                Debug.Log("apreta e para interactuar");
                 return;
             }
         }

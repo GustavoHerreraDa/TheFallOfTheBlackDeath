@@ -453,7 +453,7 @@ public class CombatManager : MonoBehaviour
             }
             else if (enemyDataBase.EnemyDB[i].isSecondaryCharacter && GameManager.Instance.hasRecruitedSecondary)
             {
-                //Solo instanciamos si está reclutado
+                //solo instanciarlo si está reclutado
                 GameObject secondaryCharacter = Instantiate(
                     enemyDataBase.EnemyDB[i].enemyPrefab,
                     secondaryCharacterPos.transform.position,
