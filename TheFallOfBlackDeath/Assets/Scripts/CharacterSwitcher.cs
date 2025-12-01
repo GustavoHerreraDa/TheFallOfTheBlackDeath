@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//ignacio chumba
 public class CharacterSwitcher : MonoBehaviour
 {
     public List<GameObject> characters;

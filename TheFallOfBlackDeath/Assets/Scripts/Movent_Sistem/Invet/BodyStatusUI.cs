@@ -33,6 +33,7 @@ public class BodyStatusUI : MonoBehaviour
         if (gm == null || fighter == null)
             return;
 
+        //obtiene cada parte del cuerpo como una lista de tuplas
         var data = gm.BodyPartsIntegrity(fighter).ToList();
 
         Debug.Log("paertes = " + data.Count);
@@ -41,7 +42,7 @@ public class BodyStatusUI : MonoBehaviour
         {
             Debug.Log($"part {i}: {data[i].current}/{data[i].max}");
         }
-
+        //se actualiza
         headTxt.text = $"Head: {data[0].current}/{data[0].max}";
         torsoTxt.text = $"Torso: {data[1].current}/{data[1].max}";
         leftArmTxt.text = $"L-Arm: {data[2].current}/{data[2].max}";

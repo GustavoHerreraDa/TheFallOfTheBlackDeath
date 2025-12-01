@@ -53,7 +53,7 @@ public class PlayerUI : MonoBehaviour
         
         GameManager.Instance.ApplySavedStatusToFighter(fighter);
 
-        // Leer stats actuales
+        // leer stats actuales
         var stats = fighter.GetCurrentStats();
 
         nameHero.text = fighter.idName;

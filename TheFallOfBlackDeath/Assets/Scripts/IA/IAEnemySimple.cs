@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-
+//ferreiro
 public enum EnemyStateSimple
 {
     Attack,
@@ -28,6 +28,7 @@ public class IAEnemySimple : MonoBehaviour
     [SerializeField]
     private EnemyFighter Enemy;
     [SerializeField]
+
     private int MaxPhisicalAttacks;
 
     private int phisicalAttacks;
@@ -74,7 +75,7 @@ public class IAEnemySimple : MonoBehaviour
                     currentState = EnemyStateSimple.UseAbility;
                     execute_Skill = UseAbilityState();
                 }
-                else if (Enemy.GetCurrentStats().health * 100 / Enemy.GetCurrentStats().health < 50 && lastSkill != null && lastSkill.skillType != SkillType.Heal)
+                else if (Enemy.GetCurrentStats().health < Enemy.GetCurrentStats().maxHealth * 0.5f)
                 {
                     currentState = EnemyStateSimple.Heal;
                     execute_Skill = HealState();
@@ -114,7 +115,7 @@ public class IAEnemySimple : MonoBehaviour
 
         if (attackSkills.Count == 0)
         {
-            Debug.Log($"{Enemy.idName} no tiene ataques físicos utilizables por daño corporal.");
+            Debug.Log($"{Enemy.idName} no tiene ataques físicos utilizables.");
             return _skills.FirstOrDefault(s => CanUseSkill(s)); // busca otra habilidad posible
         }
 
@@ -127,7 +128,7 @@ public class IAEnemySimple : MonoBehaviour
 
         if (specialSkills.Count == 0)
         {
-            Debug.Log($"{Enemy.idName} no puede usar habilidades especiales ahora.");
+            Debug.Log($"{Enemy.idName} no puede usar habilidades especiales.");
             return AttackState(); // vuelve a atacar si no puede usar habilidades
         }
 
@@ -158,15 +159,15 @@ public class IAEnemySimple : MonoBehaviour
         if (target == null || target.bodyParts == null || target.bodyParts.Count == 0)
             return BodyPart.None;
 
-        // construimos la lista de partes de partes que no estan destruidas
+        //lista de partes de partes que no estan destruidas
         var availableParts = target.bodyParts
-            .Where(p => !p.IsDestroyed)          // Grupo 1: Where
-            .ToList();                            // Grupo 3: ToList
+            .Where(p => !p.IsDestroyed)      
+            .ToList();
 
         if (availableParts.Count == 0)
             return BodyPart.None;
 
-        // usamos un aggregate para encontrar la parte mas dañada
+        //aggregate para encontrar la parte mas dañada
         Fighter.BodyPartData mostDamaged = null;
 
         // aggregate: devuelve la parte con menor ratio current/max
@@ -177,7 +178,7 @@ public class IAEnemySimple : MonoBehaviour
             return nextRatio < bestRatio ? next : best;
         });
 
-        // Dependiendo de la preferencia devolvemos diferentes resultados
+        // dependiendo de la preferencia devolvemos diferentes resultados
         switch (pref)
         {
             case AIAttackPreference.HeadFocused:
@@ -226,7 +227,7 @@ public class IAEnemySimple : MonoBehaviour
         }
 
       
-        // Priorizar la 'mostDamaged' si existe, si no elegir aleatorio.
+        // Priorizar la mostDamaged si existe si no elegir aleatorio.
         if (mostDamaged != null)
             return mostDamaged.part;
 

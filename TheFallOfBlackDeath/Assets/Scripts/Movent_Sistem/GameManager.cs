@@ -180,15 +180,19 @@ public class GameManager : MonoBehaviour
             //GameManager.Instance.character.transform.position = new Vector3(GameManager.Instance.character.transform.position.x - 0.5f, GameManager.Instance.character.transform.position.y, GameManager.Instance.character.transform.position.z - 0.5f);
         }
     }
-    public void FindEnemiesAndObjets()
+    /*   public void FindEnemiesAndObjets()
     {
         Debug.Log("Buscando enemigos");
 
         enemies = new List<EnemiesGroup>(FindObjectsOfType<EnemiesGroup>());
         pickObjs = new List<statsOBJ>(FindObjectsOfType<statsOBJ>());
     }
+    */
 
-
+    public void FindEnemiesAndObjets()
+    {
+        StartCoroutine(_FindEnemiesAndObjects());
+    }
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -206,6 +210,7 @@ public class GameManager : MonoBehaviour
             print ("level " + scene);
             //gameState = GameStates.TOWN_STATE;
 
+            // busqueda de enemigos y objetos en la escena.
             GameManager.Instance.FindEnemiesAndObjets();
             GameManager.Instance.FindPlayer();
             GameManager.Instance.RestorePlayerState();
@@ -227,17 +232,20 @@ public class GameManager : MonoBehaviour
             if (nombre == string.Empty)
                 return;
 
+            // recorre la lista de los enemigos derrotados y los obj pickeado y los destruye de la escena
             for (int i = 0; i < ListEnemyDefeat.enemiesDefeat.Count; i++)
             {
                 var enemy = enemies.Where(x => x.GroupName == ListEnemyDefeat.enemiesDefeat[i]).FirstOrDefault();
-
-                Destroy(enemy.gameObject);
+                var info = (obj: enemy, name: enemy?.GroupName ?? "<no encontrado>");
+                // busca en la lista `enemies` si el GroupName es igual guardado.
+                if (info.obj != null) { Destroy(info.obj.gameObject); Debug.Log($"GrupoEnemigo {info.name} enemyIndex {i}"); }
 
                 Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + enemy.GroupName);
             }
-
+            // recorre el inventario y destruye los pickups que ya están en el inventario.
             for (int i = 0; i < InventoryManager.instance.inventory.Count; i++)
             {
+                // revisa si coincide el id del item pickeado con el que esta en el inventario.
                 var pickUp = pickObjs.Where(x => x.id == InventoryManager.instance.inventory[i].id).FirstOrDefault();
 
                 if (pickUp != null)
@@ -359,11 +367,14 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("vida: " + fighter.stats.health + " nvel: " + fighter.stats.level);
     }
+    // la vida actual y la vida máxima de cada parte del cuerpo del jugador
     public IEnumerable<(int current, int max)> BodyPartsIntegrity(PlayerFighter fighter)
     {
+        // obtiene la vida actual de cada parte del cuerpo del jugador
         var currents = fighter.bodyParts.Select(bp => (int)bp.currentHealth);
+        // obtiene la vida maxxima de cada parte del cuerpo del jugador
         var maxes = fighter.bodyParts.Select(bp => (int)bp.maxHealth);
-
+        //se combinan en una tupla 
         return currents.Zip(maxes, (c, m) => (c, m));
     }
 
@@ -374,5 +385,51 @@ public class GameManager : MonoBehaviour
             yield return null;
 
         Debug.Log("gameManager detectó a " + character1.name);
+    }
+    // las listas donde se guardan las ref encontradas
+    private IEnumerator _FindEnemiesAndObjects()
+    {
+        Debug.Log("buscando enemigos");
+
+        enemies = new List<EnemiesGroup>();
+        pickObjs = new List<statsOBJ>();
+
+        //buscar enemigos y los agrega a la lista enemies
+        var foundEnemies = FindObjectsOfType<EnemiesGroup>();
+        Debug.Log($"enemigos encontrados en escena: {foundEnemies.Length}");
+        int counter = 0;
+
+        foreach (var e in foundEnemies)
+        {
+            Debug.Log($"agregado enemigo: {e.name}");
+            enemies.Add(e);
+            counter++;
+
+            if (counter >= 10) // cada 10 enemigos liberamos un frame
+            {
+                counter = 0;
+                yield return null;
+            }
+        }
+
+        //buscar objetos
+        var foundObjs = FindObjectsOfType<statsOBJ>();
+        Debug.Log($"objetos encontrados en escena: {foundObjs.Length}");
+        counter = 0;
+
+        foreach (var o in foundObjs)
+        {
+            Debug.Log($"agregado objeto: {o.name} (ID={o.id})");
+            pickObjs.Add(o);
+            counter++;
+
+            if (counter >= 10)// cada 10 items...
+            {
+                counter = 0;
+                yield return null;
+            }
+        }
+
+        Debug.Log("termino busqueda");
     }
 }
