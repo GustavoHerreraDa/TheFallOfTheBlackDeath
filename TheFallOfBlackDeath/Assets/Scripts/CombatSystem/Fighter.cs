@@ -10,7 +10,7 @@ public abstract class Fighter : MonoBehaviour
     {
         public BodyPart part;
         public Transform hitPoint;
-        public float maxHealth = 50f;
+        public float maxHealth = 100f;
         public float currentHealth;
         
 
@@ -98,10 +98,10 @@ public abstract class Fighter : MonoBehaviour
                         skill.AddReceiver(receiver);
 
                        
-                        // aplicamos el efecto a cada parte individual
+                       
                         foreach (var partData in receiver.bodyParts)
                         {
-                            if (!partData.IsDestroyed) // solo partes vivas
+                            if (!partData.IsDestroyed)
                             {
                                 if (skill is HealthModSkill healthSkill)
                                 {

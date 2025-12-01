@@ -51,11 +51,7 @@ public class PlayerFighter : Fighter
 
     }
 
-    /// ================================================
-    /// <summary>
-    /// Se llama desde EnemiesPanel.
-    /// </summary>
-    /// <param name="index"></param>
+
     public void ChangeAlly(int newIndex)
     {
         if (newIndex < 0 || newIndex >= allies.Count)

@@ -272,7 +272,7 @@ public class CombatManager : MonoBehaviour
                         LogPanel.Write("Defeat!");
                         this.isCombatActive = false;
                         yield return new WaitForSeconds(2f);
-                        SceneManager.LoadSceneAsync(7);
+                        SceneManager.LoadSceneAsync(6);
                         sonidoDeDerrota.Play();
                     }
 

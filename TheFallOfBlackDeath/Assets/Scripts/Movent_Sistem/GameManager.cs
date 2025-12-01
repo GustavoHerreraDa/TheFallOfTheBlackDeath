@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     public List<RegionData> Regions = new List<RegionData>();
 
     public GameObject character;
-    //Agrego estas referencias para poder acceder al Fighter desde InventoryUI y equipar objetos.
+    //agrego estas referencias para poder acceder al Fighter desde InventoryUI y equipar objetos.
     public PlayerFighter character1;
     public PlayerFighter character2;
     public bool hasRecruitedSecondary = false;
@@ -203,7 +203,7 @@ public class GameManager : MonoBehaviour
     {
         if (scene.buildIndex == 1)
         {
-            Debug.Log("Level " + scene);
+            print ("level " + scene);
             //gameState = GameStates.TOWN_STATE;
 
             GameManager.Instance.FindEnemiesAndObjets();
@@ -213,12 +213,12 @@ public class GameManager : MonoBehaviour
             if (lastPos != Vector3.zero && character != null)
             {
                 character.transform.position = new Vector3(lastPos.x - 2.5f, lastPos.y, lastPos.z - 2.5f);
-                Debug.Log("Player position restored to: " + character.transform.position);
+                Debug.Log("la poisicion del jugador es" + character.transform.position);
             }
             else if (character != null && startPost != null)
             {
                 character.transform.position = startPost.position;
-                Debug.Log("Player set to startPost: " + startPost.position);
+                Debug.Log("la posicion inicial es " + startPost.position);
             }
 
             SetGameState(GameStates.TOWN_STATE);
@@ -359,12 +359,14 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("vida: " + fighter.stats.health + " nvel: " + fighter.stats.level);
     }
-
     public IEnumerable<(int current, int max)> BodyPartsIntegrity(PlayerFighter fighter)
     {
-        return fighter.bodyParts.Zip(savedPlayerStatus.bodyPartsHealth,
-            (current, max) => ((int)current.currentHealth, (int)max));
+        var currents = fighter.bodyParts.Select(bp => (int)bp.currentHealth);
+        var maxes = fighter.bodyParts.Select(bp => (int)bp.maxHealth);
+
+        return currents.Zip(maxes, (c, m) => (c, m));
     }
+
 
     IEnumerator WaitForPlayer()
     {

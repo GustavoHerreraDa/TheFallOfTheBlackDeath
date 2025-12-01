@@ -35,11 +35,11 @@ public class BodyStatusUI : MonoBehaviour
 
         var data = gm.BodyPartsIntegrity(fighter).ToList();
 
-        Debug.Log("PARTES = " + data.Count);
+        Debug.Log("paertes = " + data.Count);
 
         for (int i = 0; i < data.Count; i++)
         {
-            Debug.Log($"Part {i}: {data[i].current}/{data[i].max}");
+            Debug.Log($"part {i}: {data[i].current}/{data[i].max}");
         }
 
         headTxt.text = $"Head: {data[0].current}/{data[0].max}";

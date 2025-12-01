@@ -75,7 +75,7 @@ public abstract class Skill : MonoBehaviour
         if (!CanUseSkill(emitter))
         {
             this.messages.Enqueue($"{emitter.idName} intentó usar {skillName}, pero no puede por daño corporal.");
-            Debug.LogWarning($"{emitter.idName} no puede usar {skillName} por partes destruidas.");
+            Debug.Log($"{emitter.idName} no puede usar {skillName} por partes destruidas.");
             return;
         }
 
@@ -116,7 +116,7 @@ public abstract class Skill : MonoBehaviour
     protected bool CanUseSkill(Fighter fighter)
     {
         if (requiredParts == null || requiredParts.Count == 0)
-            return true; // no necesita partes específicas
+            return true;
 
         foreach (var part in requiredParts)
         {
