@@ -49,7 +49,7 @@ MonoBehaviour:
   targeting: 3
   BodyPartTarget: 0
   effectPrfb: {fileID: 919132149155446097, guid: f2041259542091146afdff1a16719444, type: 3}
-  SkillDesc: Heal yourself +10
+  SkillDesc: Heal a bodypart +10
   skillType: 0
   iconUI: {fileID: 0}
   animationName: Intimidate
@@ -380,10 +380,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1267640072134561466}
-  - component: {fileID: 7957441239839308314}
-  - component: {fileID: 6236337932246633167}
+  - component: {fileID: 3603071981114249519}
   m_Layer: 0
-  m_Name: Fading Fury (2)
+  m_Name: INSTAKILL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -404,7 +403,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7305297877295874578}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7957441239839308314
+--- !u!114 &3603071981114249519
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -413,36 +412,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 8264631239708923127}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
-  amount: -5
---- !u!114 &6236337932246633167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8264631239708923127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Intimidate
-  animationDuration: 2
+  skillName: INSTA KILL
+  animationDuration: 1
   targeting: 2
   BodyPartTarget: 0
-  effectPrfb: {fileID: 8189500006840025469, guid: 0a19654f0adc9c6429eff011c5724442, type: 3}
-  SkillDesc: Intimidate all enemies
+  effectPrfb: {fileID: 725748389856807714, guid: 4bda94453d2ca7444a0fff05b2d425f5, type: 3}
+  SkillDesc: INSTA KILL ENEMIES
   skillType: 0
   iconUI: {fileID: 0}
-  animationName: Intimidate
+  animationName: Forge
   HasItemInInventory: 0
   ItemsNeeded: []
   requiredParts: 
-  message: 
+  amount: -900
+  modType: 1
+  critChance: 0
+  missChance: 0
 --- !u!1 &8267380649681350226
 GameObject:
   m_ObjectHideFlags: 0
