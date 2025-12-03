@@ -11,6 +11,12 @@ public class BodyStatusUI : MonoBehaviour
     public TextMeshProUGUI leftLegTxt;
     public TextMeshProUGUI rightLegTxt;
 
+
+    public UnityEngine.UI.Image leftArmBrokenImg;
+    public UnityEngine.UI.Image rightArmBrokenImg;
+    public UnityEngine.UI.Image leftLegBrokenImg;
+    public UnityEngine.UI.Image rightLegBrokenImg;
+
     private GameManager gm;
     private PlayerFighter fighter;
 
@@ -49,6 +55,14 @@ public class BodyStatusUI : MonoBehaviour
         rightArmTxt.text = $"R-Arm: {data[3].current}/{data[3].max}";
         leftLegTxt.text = $"L-Leg: {data[4].current}/{data[4].max}";
         rightLegTxt.text = $"R-Leg: {data[5].current}/{data[5].max}";
+
+
+        leftArmBrokenImg.gameObject.SetActive(data[2].current <= 0);
+        rightArmBrokenImg.gameObject.SetActive(data[3].current <= 0);
+        leftLegBrokenImg.gameObject.SetActive(data[4].current <= 0);
+        rightLegBrokenImg.gameObject.SetActive(data[5].current <= 0);
     }
+
+
 
 }
