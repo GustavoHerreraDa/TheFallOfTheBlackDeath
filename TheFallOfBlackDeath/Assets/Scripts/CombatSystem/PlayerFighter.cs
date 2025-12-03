@@ -102,15 +102,38 @@ public class PlayerFighter : Fighter
                 fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
                 stats.attack += amountAffected;
                 break;
+
             case "Defense":
                 fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
                 stats.deffense += amountAffected;
                 break;
+
+            case "Health":
+                // Si querés limitar la vida al máximo:
+                stats.health = Mathf.Clamp(stats.health + amountAffected, 0, stats.maxHealth);
+
+                // (Opcional) Si querés también actualizar la base de datos
+                //fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
+                break;
+
+            case "Speed":
+                stats.speed += amountAffected;
+
+                //fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
+                break;
+
+            case "Spirit":
+                stats.spirit += amountAffected;
+
+                //fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
+                break;
+
             default:
-                Debug.Log("Stat no válido");
+                Debug.LogWarning("Stat no válido: " + statAffected);
                 break;
         }
     }
+
 
     public void SetTargetAndAttack(Fighter enemyFighter)
     {
