@@ -180,19 +180,19 @@ public class GameManager : MonoBehaviour
             //GameManager.Instance.character.transform.position = new Vector3(GameManager.Instance.character.transform.position.x - 0.5f, GameManager.Instance.character.transform.position.y, GameManager.Instance.character.transform.position.z - 0.5f);
         }
     }
-    /*   public void FindEnemiesAndObjets()
+      public void FindEnemiesAndObjets()
     {
         Debug.Log("Buscando enemigos");
 
         enemies = new List<EnemiesGroup>(FindObjectsOfType<EnemiesGroup>());
         pickObjs = new List<statsOBJ>(FindObjectsOfType<statsOBJ>());
     }
-    */
+    
 
-    public void FindEnemiesAndObjets()
+    /*public void FindEnemiesAndObjets()
     {
         StartCoroutine(_FindEnemiesAndObjects());
-    }
+    }*/
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -241,6 +241,7 @@ public class GameManager : MonoBehaviour
                 if (info.obj != null) { Destroy(info.obj.gameObject); Debug.Log($"GrupoEnemigo {info.name} enemyIndex {i}"); }
 
                 Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + enemy.GroupName);
+                Destroy(enemy.gameObject);
             }
             // recorre el inventario y destruye los pickups que ya están en el inventario.
             for (int i = 0; i < InventoryManager.instance.inventory.Count; i++)
@@ -387,7 +388,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("gameManager detectó a " + character1.name);
     }
     // las listas donde se guardan las ref encontradas
-    private IEnumerator _FindEnemiesAndObjects()
+    /*private IEnumerator _FindEnemiesAndObjects()
     {
         Debug.Log("buscando enemigos");
 
@@ -431,5 +432,5 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("termino busqueda");
-    }
+    }*/
 }
