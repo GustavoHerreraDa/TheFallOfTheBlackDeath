@@ -165,8 +165,8 @@ public class GameManager : MonoBehaviour
                 character1 = player;
                 Debug.Log("PlayerFighter detectado automáticamente: " + player.name);
             }
-        }*/
-
+        }
+        */
     }
 
 
@@ -309,12 +309,15 @@ public class GameManager : MonoBehaviour
         savedPlayerStatus.speed = s.speed;
 
         savedPlayerStatus.bodyPartsHealth = new List<float>();
+
+        Debug.Log($"SavePlayerState | fighter: {fighter} | stats: {fighter?.stats}");
         foreach (var part in fighter.bodyParts)
         {
             savedPlayerStatus.bodyPartsHealth.Add(part.currentHealth);
         }
 
         return s;
+       
     }
 
 

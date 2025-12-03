@@ -108,18 +108,18 @@ public class PlayerFighter : Fighter
                 stats.deffense += amountAffected;
                 break;
 
-            case "Health":
+            /*case "Health":
                 // Si querés limitar la vida al máximo:
-                stats.health = Mathf.Clamp(stats.health + amountAffected, 0, stats.maxHealth);
+                stats.maxHealth += amountAffected;
 
-                // (Opcional) Si querés también actualizar la base de datos
-                //fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
-                break;
+                // Mantiene la vida actual dentro del nuevo límite
+                stats.health = Mathf.Clamp(stats.health, 0, stats.maxHealth);
+                break;*/
 
             case "Speed":
                 stats.speed += amountAffected;
 
-                //fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
+                fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
                 break;
 
             case "Spirit":

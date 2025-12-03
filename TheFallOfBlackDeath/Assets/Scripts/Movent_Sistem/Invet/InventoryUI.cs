@@ -86,7 +86,7 @@ public class InventoryUI : MonoBehaviour
             _isCharacter2Equipped = true;
 
             audioSource.PlayOneShot(equipSfx);
-            GameManager.Instance.SavePlayerState(character2);
+            GameManager.Instance.SavePlayerState(character1);
 
             buttonSprite.color = equippedColor; // Verde
             Debug.Log("Equipamos al character 2");
