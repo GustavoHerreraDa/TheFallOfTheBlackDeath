@@ -67,7 +67,7 @@ public class SanitySystem : MonoBehaviour
         {
             if (corduraActual > 0)
             {
-                float perdida = (corduraMax * (perdidaDeCordura / 1000f)) * Time.deltaTime;
+                float perdida = (corduraMax * (perdidaDeCordura / 2000f)) * Time.deltaTime;
                 corduraActual -= perdida;
                 corduraActual = Mathf.Clamp(corduraActual, 0, corduraMax);
             }
