@@ -12,7 +12,7 @@ public abstract class Fighter : MonoBehaviour
         public Transform hitPoint;
         public float maxHealth = 100f;
         public float currentHealth;
-        
+      
 
 
         public BodyPartData(BodyPart part, float health)
@@ -40,7 +40,7 @@ public abstract class Fighter : MonoBehaviour
     public HealthModificationDelegate healthModificationDelegate;
 
     public List<StatusMod> statusMods;
-
+    public bool legBroken;
     public Stats stats;
     public Stats modedStats;
     public Skill[] skills;
@@ -70,6 +70,7 @@ public abstract class Fighter : MonoBehaviour
         this.skills = this.GetComponentsInChildren<Skill>();
         this.modedStats = stats;
         this.statusMods = new List<StatusMod>();
+        legBroken = false;
     }
 
     protected void AutoConfigureSkillTargeting(Skill skill)
@@ -252,10 +253,12 @@ public abstract class Fighter : MonoBehaviour
                 break;
             case BodyPart.LeftLeg:
                 Debug.Log("Piernas destruidas → no puede moverse");
+                legBroken = true;
                 //modedStats.speed -= 5;
                 break;
             case BodyPart.RightLeg:
                 Debug.Log("Piernas destruidas → no puede moverse");
+                legBroken = true;
                 //modedStats.speed -= 5;
                 break;
             case BodyPart.RightArm:
@@ -266,8 +269,23 @@ public abstract class Fighter : MonoBehaviour
                 Debug.Log("Brazos destruidos → no puede atacar");
                 modedStats.attack -= 10;
                 break;
-
+                
         }
+    }
+
+    public Transform GetHitPoint(BodyPart part)
+    {
+        if (part == BodyPart.None)
+            return DamagePivot;
+
+        foreach (var bp in bodyParts)
+        {
+            if (bp.part == part && bp.hitPoint != null)
+                return bp.hitPoint;
+        }
+
+        // Fallback de seguridad
+        return DamagePivot;
     }
 
     public abstract void InitTurn();

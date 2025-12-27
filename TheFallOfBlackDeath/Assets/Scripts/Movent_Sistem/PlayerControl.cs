@@ -7,6 +7,7 @@ public class PlayerControl : MonoBehaviour
 {
     private CharacterController controller;
     private GameObject camara;
+    public Fighter fighter;
 
     [Header("Estadisticas Normales")]
     [SerializeField] private float velocidad;
@@ -78,12 +79,15 @@ public class PlayerControl : MonoBehaviour
             {
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    Vector3 mover = Quaternion.Euler(0, objetivoAngulo, 0) * Vector3.forward;
-                    controller.Move(mover.normalized * velCorriendo * Time.deltaTime);
-                    anim.SetFloat("Movent", 0.2f);
-                    if (GameManager.Instance != null)
+                    if(fighter.legBroken == false)
+                    {
+                        Vector3 mover = Quaternion.Euler(0, objetivoAngulo, 0) * Vector3.forward;
+                        controller.Move(mover.normalized * velCorriendo * Time.deltaTime);
+                        anim.SetFloat("Movent", 0.2f);
+                        if (GameManager.Instance != null)
 
-                        GameManager.Instance.isWalking = true;
+                            GameManager.Instance.isWalking = true;
+                    }
                 }
                 else
                 {

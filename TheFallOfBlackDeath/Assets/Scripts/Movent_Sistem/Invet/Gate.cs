@@ -15,7 +15,7 @@ public class Gate : MonoBehaviour
     private Animator animator;
     public bool IsNeedKey;
     public bool HasKey;
-    public Collider collider;
+    public new Collider collider;
     public bool isOpen;
     public KeyType gateType;
     public AudioSource puertasonido;
