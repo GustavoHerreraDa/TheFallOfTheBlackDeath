@@ -38,7 +38,6 @@ public abstract class Fighter : MonoBehaviour
     public AudioSource audioSource;
     public delegate void HealthModificationDelegate(float amount);
     public HealthModificationDelegate healthModificationDelegate;
-
     public List<StatusMod> statusMods;
     public bool legBroken;
     public Stats stats;
@@ -70,6 +69,8 @@ public abstract class Fighter : MonoBehaviour
         this.skills = this.GetComponentsInChildren<Skill>();
         this.modedStats = stats;
         this.statusMods = new List<StatusMod>();
+
+
         legBroken = false;
     }
 

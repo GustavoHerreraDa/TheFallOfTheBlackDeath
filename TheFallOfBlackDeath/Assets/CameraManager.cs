@@ -12,15 +12,28 @@ public class CameraManager : MonoBehaviour
     public int FighterIndex;
     public GameObject gameObjectFighter;
 
+    [Header("Hit Camera Effect")]
+    [SerializeField] private float hitZoomFOV = 40f;
+    [SerializeField] private float hitZoomSpeed = 12f;
+    [SerializeField] private float hitRecoverSpeed = 8f;
+    [SerializeField] private float hitMoveAmount = 0.3f;
+
+    private float defaultFOV;
+    private Coroutine hitCoroutine;
+
     [SerializeField]
     private float cameraSpeed;
     private void Awake()
+
+    
+
     {
         combatManager = FindObjectOfType<CombatManager>();
     }
     void Start()
     {
         currentCameraIndex = combatManager.fighterIndex;
+        defaultFOV = camera.fieldOfView;
     }
 
     // Update is called once per frame
@@ -50,6 +63,52 @@ public class CameraManager : MonoBehaviour
             }
         }
     }
+
+    public void PlayHitCameraEffect(Transform attacker, Transform defender)
+    {
+        if (hitCoroutine != null)
+            StopCoroutine(hitCoroutine);
+
+        hitCoroutine = StartCoroutine(HitCameraEffect(attacker, defender));
+    }
+
+    IEnumerator HitCameraEffect(Transform attacker, Transform defender)
+    {
+        Vector3 originalPos = camera.transform.position;
+
+        // Punto medio entre atacante y defensor
+        Vector3 hitPoint = (attacker.position + defender.position) * 0.5f;
+        Vector3 dirToHit = (hitPoint - camera.transform.position).normalized;
+        Vector3 zoomPos = camera.transform.position + dirToHit * hitMoveAmount;
+
+        float t = 0f;
+
+        // ZOOM IN
+        while (t < 1f)
+        {
+            t += Time.deltaTime * hitZoomSpeed;
+            camera.fieldOfView = Mathf.Lerp(defaultFOV, hitZoomFOV, t);
+            camera.transform.position = Vector3.Lerp(originalPos, zoomPos, t);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.05f); // micro pausa de impacto
+
+        t = 0f;
+
+        // RECOVER
+        while (t < 1f)
+        {
+            t += Time.deltaTime * hitRecoverSpeed;
+            camera.fieldOfView = Mathf.Lerp(hitZoomFOV, defaultFOV, t);
+            camera.transform.position = Vector3.Lerp(zoomPos, originalPos, t);
+            yield return null;
+        }
+
+        camera.fieldOfView = defaultFOV;
+        camera.transform.position = originalPos;
+    }
+
 
 
     //private void ChangeCameraPositionToCurrentFighter()

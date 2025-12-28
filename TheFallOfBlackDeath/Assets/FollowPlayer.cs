@@ -5,6 +5,8 @@ public class FollowPlayer : MonoBehaviour
 {
     public enum EnemyState { Idle, Patrol, Chase, Death }
 
+
+
     [Header("Estado actual del enemigo")]
     public EnemyState currentState = EnemyState.Idle;
 

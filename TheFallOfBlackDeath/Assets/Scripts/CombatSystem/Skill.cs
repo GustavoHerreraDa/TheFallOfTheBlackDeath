@@ -66,9 +66,11 @@ public abstract class Skill : MonoBehaviour
 
     private void Animate(Fighter receiver)
     {
+
         Transform hitPoint = receiver.GetHitPoint(this.BodyPartTarget);
         var go = Instantiate(this.effectPrfb, hitPoint.position, hitPoint.rotation);
         Destroy(go, this.animationDuration);
+      
     }
 
     public void Run()
