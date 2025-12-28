@@ -284,7 +284,6 @@ public abstract class Fighter : MonoBehaviour
                 return bp.hitPoint;
         }
 
-        // Fallback de seguridad
         return DamagePivot;
     }
 

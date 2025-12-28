@@ -10,7 +10,7 @@ namespace Assets.Scripts.Movent_Sistem.Invet
         {
             base.Start();
             message = "Press E to open.";
-            //responseMessage = "You need a Key to open the Gate.";
+            responseMessage = "You need a Key to open the Gate.";
         }
 
 
@@ -20,8 +20,6 @@ namespace Assets.Scripts.Movent_Sistem.Invet
             Gate i = objCollider.GetComponent<Gate>();
             playerControl.StopPlayer(2f);
             i.OpenGate();
-
-            var gateHasKey = i.IsNeedKey;
 
             if (i.IsNeedKey == true)
                 ShowResponseMessage();

@@ -11,6 +11,7 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public Material originalMaterial;
     public Material highlightMaterial;
+    public GameObject effectPrfb;
 
     private GameObject enemyCanvas;
 
@@ -51,6 +52,8 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             originalMaterial = rend.material;
             rend.material = highlightMaterial;
+            effectPrfb.transform.position = target.transform.position;
+            effectPrfb.SetActive(true);
         }
     }
 
@@ -76,5 +79,6 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         Renderer rend = target.GetComponentInChildren<Renderer>();
         if (rend != null)
             rend.material = originalMaterial;
+            effectPrfb.SetActive(false);
     }
 }

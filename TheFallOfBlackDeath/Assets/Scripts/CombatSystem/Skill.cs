@@ -75,7 +75,7 @@ public abstract class Skill : MonoBehaviour
     {
         if (!CanUseSkill(emitter))
         {
-            this.messages.Enqueue($"{emitter.idName} intentó usar {skillName}, pero no puede por daño corporal.");
+            this.messages.Enqueue($"{emitter.idName} intentó usar {skillName}, pero no puede xq no tiene esa parte del cuerpo.");
             Debug.Log($"{emitter.idName} no puede usar {skillName} por partes destruidas.");
             return;
         }
