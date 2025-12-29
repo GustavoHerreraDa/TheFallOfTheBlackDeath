@@ -1,14 +1,14 @@
 using UnityEngine.UI;
 using UnityEngine;
 using System.Collections;
-
+using TMPro;
 public class tooltip : MonoBehaviour
 
 {
     public SkillManager skillManager;
     private static tooltip instance;
     public Image tool;
-    public Text skillNameTxT;
+    public TextMeshProUGUI skillNameTxT;
     public GameObject ActionsButtonsPanel;
     // Start is called before the first frame update
     void Start()
@@ -26,7 +26,7 @@ public class tooltip : MonoBehaviour
 
         //var couritine = StartCoroutine("HideTooltipEnum"); 
         skillNameTxT.enabled = true;
-        skillNameTxT.GetComponent<Text>().text = skillManager.GetSkillDescription(SkillIndex);
+        skillNameTxT.GetComponent<TextMeshProUGUI>().text = skillManager.GetSkillDescription(SkillIndex);
     }
     public void disableSkillTxT()
     {

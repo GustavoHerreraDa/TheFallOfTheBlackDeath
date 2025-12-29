@@ -1,13 +1,14 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 //TP2 FACUNDO FERREIRO
 public class LogPanel : MonoBehaviour
 {
     //Referencia estatica al panel actual
     protected static LogPanel current;
     //Este panel tiene una referencia a la etiqueta de texto
-    public Text logLabel;
+    public TextMeshProUGUI logLabel;
 
     private void Awake()
     {

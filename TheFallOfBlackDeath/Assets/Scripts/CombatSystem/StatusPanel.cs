@@ -14,6 +14,7 @@ public class StatusPanel : MonoBehaviour
     public Image healthSliderBar;
     public TextMeshProUGUI healthLabelPro;
     public TextMeshProUGUI nameTextLabel;
+    private Material glitchMaterial;
 
     public void SetStats(string name, Stats stats)
     {
@@ -41,22 +42,45 @@ public class StatusPanel : MonoBehaviour
         this.SetHealth(stats.health, stats.maxHealth);
 
     }
-    public void SetHealth(float health, float maxHealth)
+
+    void Awake()
     {
-        //Matfh convierte el flotante health en numeros enteros para que no salgan decimales
-        if (healthLabelPro != null)
-            this.healthLabelPro.text = $"{Mathf.RoundToInt(health)} / {Mathf.RoundToInt(maxHealth)}";
-
-        if (healthLabel != null)
-            this.healthLabel.text = $"{Mathf.RoundToInt(health)} / {Mathf.RoundToInt(maxHealth)}";
-
-        float percentage = health / maxHealth;
-
-        this.healthSlider.value = percentage;
-        //Si el porcentaje de vida es menor al 33% el color de la vida se vuelve rojo
-        if (percentage < 0.33f)
+        if (nameTextLabel != null)
         {
-            this.healthSliderBar.color = Color.red;
+            
+            glitchMaterial = nameTextLabel.fontMaterial;
         }
     }
+
+    public void SetHealth(float health, float maxHealth)
+    {
+        if (healthLabelPro != null)
+            healthLabelPro.text = $"{Mathf.RoundToInt(health)} / {Mathf.RoundToInt(maxHealth)}";
+
+        if (healthLabel != null)
+            healthLabel.text = $"{Mathf.RoundToInt(health)} / {Mathf.RoundToInt(maxHealth)}";
+
+        float percentage = health / maxHealth;
+        healthSlider.value = percentage;
+
+        if (percentage < 0.33f)
+            healthSliderBar.color = Color.red;
+
+        UpdateGlitchEffect(percentage);
+    }
+
+    void UpdateGlitchEffect(float lifePercent)
+    {
+        if (glitchMaterial == null) return;
+
+        // Invertimos: poca vida = valor alto
+        float glitchStrength = 1f - lifePercent;
+
+        glitchMaterial.SetFloat("_GlitchAmount", Mathf.Lerp(0f, 15f, glitchStrength));
+        glitchMaterial.SetFloat("_GlitchTime", Mathf.Lerp(0f, 10f, glitchStrength));
+        glitchMaterial.SetFloat("_GlitchOffset", Mathf.Lerp(0f, 0.03f, glitchStrength));
+        glitchMaterial.SetFloat("_GlitchOffset2", Mathf.Lerp(0f, 0.02f, glitchStrength));
+        glitchMaterial.SetFloat("_ScanLinesAmount", Mathf.Lerp(0f, 120f, glitchStrength));
+    }
+
 }
