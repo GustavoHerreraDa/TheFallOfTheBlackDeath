@@ -190,7 +190,8 @@ public abstract class Fighter : MonoBehaviour
         target.currentHealth = Mathf.Clamp(target.currentHealth + amount, 0, target.maxHealth);
 
         Debug.Log($"{part} recibió {amount}. Salud actual: {target.currentHealth}");
-        this.animator.Play("Damages");
+
+        PlayDamageAnimation(part);
 
         if (prev > 0 && target.IsDestroyed)
         {
@@ -201,8 +202,6 @@ public abstract class Fighter : MonoBehaviour
         {
             Vector3 textPos = transform.position + Vector3.up * 3f;
             FloatingTextManager.Instance.ShowText($"{part} destroyed!", textPos, Color.magenta);
-
-            //Animator.SetTrigger("LoseLimb"); o un ParticleSystem
         }
     }
 
@@ -287,6 +286,44 @@ public abstract class Fighter : MonoBehaviour
 
         return DamagePivot;
     }
+
+
+    protected void PlayDamageAnimation(BodyPart part)
+    {
+        if (animator == null) return;
+
+        switch (part)
+        {
+            case BodyPart.Head:
+                animator.Play("Head");
+                break;
+
+            case BodyPart.Torso:
+                animator.Play("Damages");
+                break;
+
+            case BodyPart.LeftArm:
+                animator.Play("Aleft");
+                break;
+
+            case BodyPart.RightArm:
+                animator.Play("Arigth");
+                break;
+
+            case BodyPart.LeftLeg:
+                animator.Play("Lleft");
+                break;
+
+            case BodyPart.RightLeg:
+                animator.Play("Lrigth");
+                break;
+
+            default:
+                animator.Play("Damages");
+                break;
+        }
+    }
+
 
     public abstract void InitTurn();
 }
