@@ -12,7 +12,8 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public Material originalMaterial;
     public Material highlightMaterial;
     public GameObject effectPrfb;
-
+    private Material[] originalMaterials;
+    private Renderer cachedRenderer;
     private GameObject enemyCanvas;
 
     private void Awake()
@@ -36,25 +37,38 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void Show() => button.gameObject.SetActive(true);
     public void Hide() => button.gameObject.SetActive(false);
 
-    
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (target == null) return;
 
-       
         enemyCanvas = target.GetComponentInChildren<Canvas>(true)?.gameObject;
-
         if (enemyCanvas != null)
             enemyCanvas.SetActive(true);
 
-        Renderer rend = target.GetComponentInChildren<Renderer>();
-        if (rend != null)
+        cachedRenderer = target.GetComponentInChildren<Renderer>();
+        if (cachedRenderer != null)
         {
-            originalMaterial = rend.material;
-            rend.material = highlightMaterial;
-            effectPrfb.transform.position = target.transform.position;
-            effectPrfb.SetActive(true);
+            Material[] mats = cachedRenderer.materials;
+
+            
+            if (originalMaterials == null)
+            {
+                originalMaterials = new Material[mats.Length];
+                mats.CopyTo(originalMaterials, 0);
+            }
+
+            if (mats.Length > 0)
+                mats[0] = highlightMaterial;
+
+            if (mats.Length > 1)
+                mats[1] = highlightMaterial;
+
+            cachedRenderer.materials = mats;
         }
+
+        effectPrfb.transform.position = target.transform.position;
+        effectPrfb.SetActive(true);
     }
 
 
@@ -74,11 +88,12 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (enemyCanvas != null)
             enemyCanvas.SetActive(false);
 
-        if (target == null || originalMaterial == null) return;
+        if (cachedRenderer != null && originalMaterials != null)
+        {
+            cachedRenderer.materials = originalMaterials;
+        }
 
-        Renderer rend = target.GetComponentInChildren<Renderer>();
-        if (rend != null)
-            rend.material = originalMaterial;
-            effectPrfb.SetActive(false);
+        effectPrfb.SetActive(false);
     }
+
 }

@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class StatusPanel : MonoBehaviour
 {
-    public Text nameLabel;
-    public Text levelLabel;
-    public Text healthLabel;
+    public TextMeshProUGUI nameLabel;
+    public TextMeshProUGUI levelLabel;
+    public TextMeshProUGUI healthLabel;
     public TextMeshProUGUI actualDefense;
     public TextMeshProUGUI actualAttack;
     public Slider healthSlider;
