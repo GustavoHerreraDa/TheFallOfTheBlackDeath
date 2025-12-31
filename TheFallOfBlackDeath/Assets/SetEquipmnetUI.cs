@@ -25,10 +25,5 @@ public class SetEquipmnetUI : MonoBehaviour
 
 
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    
 }

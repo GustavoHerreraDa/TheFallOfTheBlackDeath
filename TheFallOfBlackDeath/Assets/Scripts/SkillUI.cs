@@ -17,16 +17,40 @@ public class SkillUI : MonoBehaviour
     public TextMeshProUGUI skillPower;
     public Image skillIcon;
 
+    void OnEnable()
+    {
+        InventoryManager.OnInventoryChanged += UpdateUI;
+        InventoryManager.OnCharacterChanged += OnCharacterChanged;
+    }
+
+    void OnDisable()
+    {
+        InventoryManager.OnInventoryChanged -= UpdateUI;
+        InventoryManager.OnCharacterChanged -= OnCharacterChanged;
+    }
+
     public void Start()
     {
-        skillIcon.color = new Color(1, 1, 1, 0);
-        skillPower.text = "";
+        if (skillIcon != null)
+            skillIcon.color = new Color(1, 1, 1, 0);
+        if (skillPower != null)
+            skillPower.text = "";
+        UpdateUI();
+    }
+
+    private void OnCharacterChanged(PlayerFighter fighter)
+    {
+        // If this UI is bound to the active player, refresh skills reference
+        if (player == null)
+            player = fighter != null ? fighter.gameObject : player;
+        skill = null; // force re-fetch
         UpdateUI();
     }
 
     public void UpdateUI()
     {
         //Debug.Log("Se actuliza UI" + gameObject.name);
+        
 
         if (skill == null)
             GetSkill();

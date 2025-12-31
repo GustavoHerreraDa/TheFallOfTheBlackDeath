@@ -32,10 +32,31 @@ public class InventoryUI : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
-        character1 = GameManager.Instance.character1;
-        character2 = GameManager.Instance.character2;
+        if (GameManager.Instance != null)
+        {
+            character1 = GameManager.Instance.character1;
+            character2 = GameManager.Instance.character2;
+        }
+        originalColor = buttonSprite != null ? buttonSprite.color : Color.white;
+    }
 
-        originalColor = buttonSprite.color;
+    private void OnEnable()
+    {
+        InventoryManager.OnCharacterChanged += OnCharacterChanged;
+    }
+
+    private void OnDisable()
+    {
+        InventoryManager.OnCharacterChanged -= OnCharacterChanged;
+    }
+
+    private void OnCharacterChanged(PlayerFighter fighter)
+    {
+        if (GameManager.Instance != null)
+        {
+            character1 = GameManager.Instance.character1;
+            character2 = GameManager.Instance.character2;
+        }
     }
 
     public void Character1BTN()

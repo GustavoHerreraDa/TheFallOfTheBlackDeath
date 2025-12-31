@@ -323,53 +323,30 @@ public class GameManager : MonoBehaviour
 
     public void RestorePlayerState()
     {
-        if (savedPlayerStatus == null || character1 == null) return;
-
-        
-        character1.stats.level = savedPlayerStatus.level;
-        character1.stats.experience = savedPlayerStatus.experience;
-        character1.stats.maxHealth = savedPlayerStatus.maxHealth;
-        character1.stats.health = Mathf.Clamp(savedPlayerStatus.currentHealth, 0, savedPlayerStatus.maxHealth);
-        character1.stats.attack = savedPlayerStatus.attack;
-        character1.stats.deffense = savedPlayerStatus.defense;
-        character1.stats.spirit = savedPlayerStatus.spirit;
-        character1.stats.speed = savedPlayerStatus.speed;
-
-        
-        for (int i = 0; i < character1.bodyParts.Count && i < savedPlayerStatus.bodyPartsHealth.Count; i++)
-        {
-            character1.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
-        }
-
-        
-        if (character1.statusPanel != null)
-            character1.statusPanel.SetStats(character1.idName, character1.stats);
-
-        Debug.Log("vida " + character1.stats.health + " nivel: " + character1.stats.level);
+        ApplySavedStatusToFighter(character1);
     }
+
     public void ApplySavedStatusToFighter(PlayerFighter fighter)
     {
         if (savedPlayerStatus == null || fighter == null) return;
 
-        fighter.stats.level = savedPlayerStatus.level;
-        fighter.stats.experience = savedPlayerStatus.experience;
-        fighter.stats.maxHealth = savedPlayerStatus.maxHealth;
-        fighter.stats.health = Mathf.Clamp(savedPlayerStatus.currentHealth, 0, savedPlayerStatus.maxHealth);
-        fighter.stats.attack = savedPlayerStatus.attack;
-        fighter.stats.deffense = savedPlayerStatus.defense;
-        fighter.stats.spirit = savedPlayerStatus.spirit;
-        fighter.stats.speed = savedPlayerStatus.speed;
+        var s = fighter.stats;
+        s.level = savedPlayerStatus.level;
+        s.experience = savedPlayerStatus.experience;
+        s.maxHealth = savedPlayerStatus.maxHealth;
+        s.health = Mathf.Clamp(savedPlayerStatus.currentHealth, 0, s.maxHealth);
+        s.attack = savedPlayerStatus.attack;
+        s.deffense = savedPlayerStatus.defense;
+        s.spirit = savedPlayerStatus.spirit;
+        s.speed = savedPlayerStatus.speed;
 
-        
         for (int i = 0; i < fighter.bodyParts.Count && i < savedPlayerStatus.bodyPartsHealth.Count; i++)
         {
             fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
         }
 
-        if (fighter.statusPanel != null)
-            fighter.statusPanel.SetStats(fighter.idName, fighter.stats);
-
-        Debug.Log("vida: " + fighter.stats.health + " nvel: " + fighter.stats.level);
+        fighter.statusPanel?.SetStats(fighter.idName, s);
+        Debug.Log($"Status aplicado a {fighter.name}. Vida: {s.health}");
     }
     // la vida actual y la vida máxima de cada parte del cuerpo del jugador
     public IEnumerable<(int current, int max)> BodyPartsIntegrity(PlayerFighter fighter)

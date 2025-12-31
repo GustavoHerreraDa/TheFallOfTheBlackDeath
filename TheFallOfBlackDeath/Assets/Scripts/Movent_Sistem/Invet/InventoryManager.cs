@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,13 @@ public enum ItemInventoryId
 }
 public class InventoryManager : MonoBehaviour
 {
+    // Observer events for decoupled UI updates
+    public static event Action OnInventoryChanged;
+    public static event Action<PlayerFighter> OnCharacterChanged;
+    public static void NotifyCharacterChanged(PlayerFighter fighter)
+    {
+        OnCharacterChanged?.Invoke(fighter);
+    }
     public static InventoryManager instance;
     public InventoryDateBase datebase;
     public List<InventoryObjectID> inventory;
@@ -26,9 +34,11 @@ public class InventoryManager : MonoBehaviour
     public List<InventoryUI> pool = new List<InventoryUI>();
     public Dictionary<PlayerFighter, List<InventoryObjectID>> playerEquipped;
 
+    // Cache for item data to avoid repeated array indexing and string allocations
+    private Dictionary<int, InventoryDateBase.Object> _itemCache;
+
     void Awake()
     {
-
         if (InventoryManager.instance == null)
         {
             InventoryManager.instance = this;
@@ -37,7 +47,16 @@ public class InventoryManager : MonoBehaviour
         else
         {
             InventoryManager.instance.pool = new List<InventoryUI>();
-            //CreateUI();
+        }
+
+        // Build item cache for faster lookups and safety
+        _itemCache = new Dictionary<int, InventoryDateBase.Object>();
+        if (datebase != null && datebase.DateBase != null)
+        {
+            for (int i = 0; i < datebase.DateBase.Length; i++)
+            {
+                _itemCache[i] = datebase.DateBase[i];
+            }
         }
     }
 
@@ -59,6 +78,9 @@ public class InventoryManager : MonoBehaviour
     public void AddItem(int id, int amount, InventoryDateBase.Uso uso)
     {
         Debug.Log("Add Item");
+        if (inventory == null)
+            inventory = new List<InventoryObjectID>();
+
         for (int i = 0; i < inventory.Count; i++)
         {
             if (inventory[i].id == id)
@@ -66,9 +88,9 @@ public class InventoryManager : MonoBehaviour
                 inventory[i] = new InventoryObjectID(inventory[i].id, inventory[i].amount + amount, uso);
                 updateUI(equipmentUI, InventoryDateBase.Uso.Equipable);
                 updateUI(objetsUI, InventoryDateBase.Uso.Usable);
-
                 updateUI(objetsUI, InventoryDateBase.Uso.SkillNeed);
                 updateUI(objetsUI, InventoryDateBase.Uso.Consumable);
+                OnInventoryChanged?.Invoke();
                 return;
             }
         }
@@ -77,23 +99,26 @@ public class InventoryManager : MonoBehaviour
         updateUI(objetsUI, InventoryDateBase.Uso.Usable);
         updateUI(objetsUI, InventoryDateBase.Uso.SkillNeed);
         updateUI(objetsUI, InventoryDateBase.Uso.Consumable);
+        OnInventoryChanged?.Invoke();
     }
     public void DestroyItem(int id, int amount, InventoryDateBase.Uso uso)
     {
+        if (inventory == null) return;
         for (int i = 0; i < inventory.Count; i++)
         {
             if (inventory[i].id == id)
             {
-                inventory[i] = new InventoryObjectID(inventory[i].id, inventory[i].amount - amount, uso); ;
+                inventory[i] = new InventoryObjectID(inventory[i].id, inventory[i].amount - amount, uso);
                 if (inventory[i].amount <= 0)
                 {
                     inventory.Remove(inventory[i]);
-                    updateUI(equipmentUI, InventoryDateBase.Uso.Equipable);
-                    updateUI(objetsUI, InventoryDateBase.Uso.Usable);
-                    updateUI(objetsUI, InventoryDateBase.Uso.SkillNeed);
-                    updateUI(objetsUI, InventoryDateBase.Uso.Consumable);
-                    return;
                 }
+                updateUI(equipmentUI, InventoryDateBase.Uso.Equipable);
+                updateUI(objetsUI, InventoryDateBase.Uso.Usable);
+                updateUI(objetsUI, InventoryDateBase.Uso.SkillNeed);
+                updateUI(objetsUI, InventoryDateBase.Uso.Consumable);
+                OnInventoryChanged?.Invoke();
+                return;
             }
         }
     }
@@ -122,6 +147,8 @@ public class InventoryManager : MonoBehaviour
 
     public void updateUI(Transform _ui, InventoryDateBase.Uso uso)
     {
+        if (_ui == null || prefab == null || datebase == null)
+            return;
 
         //Debug.Log("updateinventory funciono");
         for (int i = 0; i < pool.Count; i++)
@@ -270,8 +297,24 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public bool TryGetItemData(int id, out InventoryDateBase.Object data)
+    {
+        data = default;
+        if (_itemCache != null && _itemCache.TryGetValue(id, out data))
+            return true;
+        if (datebase != null && datebase.DateBase != null && id >= 0 && id < datebase.DateBase.Length)
+        {
+            data = datebase.DateBase[id];
+            return true;
+        }
+        return false;
+    }
+
     public InventoryDateBase.Object GetItemInformation(int _id)
     {
-        return datebase.DateBase[_id];
+        if (TryGetItemData(_id, out var data))
+            return data;
+        Debug.LogWarning($"GetItemInformation: invalid id {_id}");
+        return default;
     }
 }

@@ -21,19 +21,36 @@ public class PlayerFighter : Fighter
 
     void Awake()
     {
-        var data = fightersDateBase.EnemyDB[figherIndex];
-        //_IAEnemySimple = gameObject.GetComponent<IAEnemySimple>();
-        //
+        // Initialize stats with safe defaults in case DB is missing/invalid
+        Stats safeDefaults = new Stats(21, 60, 50, 45, 20, 20);
 
-        if (data.level != 0)
-            this.stats = new Stats(data.level, data.maxHealth, data.attack, data.deffense, data.spirit, data.speed);
+        if (fightersDateBase != null && figherIndex >= 0 && figherIndex < fightersDateBase.EnemyDB.Count)
+        {
+            var data = fightersDateBase.EnemyDB[figherIndex];
+            Debug.Log($"[PlayerFighter.Awake] Loading stats for figherIndex={figherIndex} | FromDB: lvl={data.level}, hp={data.maxHealth}, atk={data.attack}, def={data.deffense}, spr={data.spirit}, spd={data.speed}");
+
+            // Per-stat validation and fallbacks to avoid zero-initialization at runtime
+            int level = data.level > 0 ? data.level : safeDefaults.level;
+            float maxHp = data.maxHealth > 0 ? data.maxHealth : safeDefaults.maxHealth;
+            float atk = data.attack > 0 ? data.attack : safeDefaults.attack;
+            float def = data.deffense > 0 ? data.deffense : safeDefaults.deffense;
+            float spr = data.spirit > 0 ? data.spirit : safeDefaults.spirit;
+            float spd = data.speed > 0 ? data.speed : safeDefaults.speed;
+
+            this.stats = new Stats(level, maxHp, atk, def, spr, spd);
+        }
         else
-            this.stats = new Stats(21, 60, 50, 45, 20, 20);
+        {
+            Debug.LogWarning($"[PlayerFighter.Awake] fightersDateBase is null or figherIndex out of range (index={figherIndex}). Using safe defaults.");
+            this.stats = safeDefaults;
+        }
+
+        // Ensure health is within bounds
+        this.stats.health = Mathf.Clamp(this.stats.health, 1, this.stats.maxHealth);
 
         allies = new List<Fighter>();
         allies.Add(this); // Agregar al jugador actual como el primer aliado activo
         activeAllyIndex = 0; // Establecer el jugador actual como el aliado activo inicialmente
-
     }
 
     public override void InitTurn()
@@ -94,43 +111,51 @@ public class PlayerFighter : Fighter
 
     public void UpdateStats(string statAffected, float amountAffected)
     {
-        var data = fightersDateBase.EnemyDB[figherIndex];
+        Debug.Log($"[PlayerFighter.UpdateStats] id={idName} idx={figherIndex} stat={statAffected} delta={amountAffected}");
 
         switch (statAffected)
         {
             case "Attack":
-                fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
                 stats.attack += amountAffected;
                 break;
 
             case "Defense":
-                fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
                 stats.deffense += amountAffected;
                 break;
 
-            /*case "Health":
-                // Si querés limitar la vida al máximo:
-                stats.maxHealth += amountAffected;
+            case "Health":
+                stats.health = Mathf.Clamp(stats.health + amountAffected, 0, stats.maxHealth);
+                break;
 
-                // Mantiene la vida actual dentro del nuevo límite
+            case "MaxHealth":
+                stats.maxHealth = Mathf.Max(1, stats.maxHealth + amountAffected);
                 stats.health = Mathf.Clamp(stats.health, 0, stats.maxHealth);
-                break;*/
+                break;
 
             case "Speed":
                 stats.speed += amountAffected;
-
-                fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
                 break;
 
             case "Spirit":
                 stats.spirit += amountAffected;
-
-                //fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
                 break;
 
             default:
                 Debug.LogWarning("Stat no válido: " + statAffected);
                 break;
+        }
+
+        // Do NOT mutate ScriptableObject assets during play. Persist progression via GameManager saves instead.
+        if (!Application.isPlaying && fightersDateBase != null)
+        {
+            fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statAffected);
+        }
+
+        // Refresh UI and save runtime state
+        statusPanel?.SetStats(idName, stats);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SavePlayerState(this);
         }
     }
 
@@ -209,6 +234,13 @@ public class PlayerFighter : Fighter
                 stats.spirit += amount;
                 break;
         }
+
+        // Reflect changes in UI and persist via GameManager runtime save
+        statusPanel?.SetStats(idName, stats);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SavePlayerState(this);
+        }
     }
 
     public void AddExperience(int amount)
@@ -228,6 +260,11 @@ public class PlayerFighter : Fighter
 
         if (leveledUp && statusPanel != null)
             statusPanel.SetStats(idName, stats);
+
+        if (leveledUp && GameManager.Instance != null)
+        {
+            GameManager.Instance.SavePlayerState(this);
+        }
     }
     private void LevelUp()
     {

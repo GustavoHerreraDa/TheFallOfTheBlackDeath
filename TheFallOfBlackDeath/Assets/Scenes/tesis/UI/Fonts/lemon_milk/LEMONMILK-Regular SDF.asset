@@ -1802,7 +1802,10 @@ Material:
   m_Shader: {fileID: 4800000, guid: a4661b5654e6ce44385da28e17f70d91, type: 3}
   m_Parent: {fileID: 2100000, guid: f4ade9e43a17d0542b52f3651524933c, type: 2}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - BEVEL_ON
+  - GLOW_ON
+  - UNDERLAY_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -1826,23 +1829,26 @@ Material:
     - _GlitchOffset2: 0.0218
     - _GlitchTime: 0
     - _GlowInner: 0
-    - _GlowOffset: 1
-    - _GlowOuter: 0.486
-    - _GlowPower: 0.809
+    - _GlowOffset: -0.45
+    - _GlowOuter: 1
+    - _GlowPower: 1
     - _GradientScale: 10
     - _OutlineSoftness: 0
     - _ScaleRatioA: 0.9
-    - _ScaleRatioB: 0.61322343
+    - _ScaleRatioB: 0.91125
     - _ScaleRatioC: 0.91125
-    - _ScanLinesAmount: 40
-    - _ScanLinesOpacity: 0.354
+    - _ScanLinesAmount: 20
+    - _ScanLinesOpacity: 0.2
     - _ScanLinesSpeed: 2
     - _TextureHeight: 1024
     - _TextureWidth: 1024
+    - _UnderlayDilate: 0.05
+    - _UnderlaySoftness: 0
     - _WeightBold: 0.75
     m_Colors:
     - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
-    - _GlowColor: {r: 1, g: 0.009791803, b: 0, a: 0.5}
+    - _GlowColor: {r: 0.05724919, g: 1, b: 0, a: 0.5}
+    - _UnderlayColor: {r: 1, g: 0, b: 0, a: 0.5}
   m_BuildTextureStacks: []
 --- !u!28 &5528957382606295073
 Texture2D:

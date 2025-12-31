@@ -42,9 +42,9 @@ public class Menu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (Inventorymenu.activeSelf) // Si el Inventorymenu está activo, no abrir el Pausemenu
+            if (Inventorymenu.activeSelf) // Si el Inventorymenu estï¿½ activo, no abrir el Pausemenu
             {
-                // Código adicional si se desea realizar alguna acción cuando se intenta abrir el Pausemenu con el Inventorymenu activo
+                // Cï¿½digo adicional si se desea realizar alguna acciï¿½n cuando se intenta abrir el Pausemenu con el Inventorymenu activo
                 return;
             }
 
@@ -64,9 +64,9 @@ public class Menu : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
-            if (Pausemenu.activeSelf) // Si el Pausemenu está activo, no abrir el Inventorymenu
+            if (Pausemenu.activeSelf) // Si el Pausemenu estï¿½ activo, no abrir el Inventorymenu
             {
-                // Código adicional si se desea realizar alguna acción cuando se intenta abrir el Inventorymenu con el Pausemenu activo
+                // Cï¿½digo adicional si se desea realizar alguna acciï¿½n cuando se intenta abrir el Inventorymenu con el Pausemenu activo
                 return;
             }
 
@@ -121,7 +121,7 @@ public class Menu : MonoBehaviour
     }
     private void Inventoryfalse()
     {
-        inventorySound.Play();
+            inventorySound.Play();
         Cursor.lockState = CursorLockMode.None;
         Inventorymenu.SetActive(true);
         inventory = true;

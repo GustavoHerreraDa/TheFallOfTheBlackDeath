@@ -40,8 +40,7 @@ public class CombatManager : MonoBehaviour
     public List<Transform> spawnPoints = new List<Transform>();
     public BodyPartPanel bodyPartPanel;
 
-
-
+    public bool IsReady { get; private set; }
 
     private List<Fighter> returnBuffer;
     public TurnsDisplay turnsDisplay;
@@ -51,6 +50,74 @@ public class CombatManager : MonoBehaviour
 
     public AudioSource audioSource;
     public AudioSource sonidoDeDerrota;
+
+    [ContextMenu("DebugCombat")]
+    public void DebugCombat()
+    {
+        // Destroys existing fighters and spawns a simple 1v1 with hardcoded stats
+        foreach (var f in FindObjectsOfType<Fighter>())
+        {
+            DestroyImmediate(f.gameObject);
+        }
+
+        // Create parent for players
+        var playersRoot = new GameObject("PlayersRoot");
+        playersRoot.transform.position = Vector3.zero;
+
+        // Create Player
+        var playerGO = new GameObject("Player_Debug");
+        playerGO.transform.SetParent(playersRoot.transform);
+        playerGO.transform.position = mainCharacterPos != null ? mainCharacterPos.position : Vector3.left * 2f;
+        var playerF = playerGO.AddComponent<PlayerFighter>();
+        playerF.team = Team.PLAYERS;
+        playerF.idName = "Player_Debug";
+        playerF.stats = new Stats(21, 60, 20, 10, 5, 8);
+        playerF.animator = playerGO.AddComponent<Animator>();
+
+        // Body parts minimal setup
+        playerF.bodyParts = new List<Fighter.BodyPartData>
+        {
+            new Fighter.BodyPartData(BodyPart.Head, 30),
+            new Fighter.BodyPartData(BodyPart.Torso, 60),
+            new Fighter.BodyPartData(BodyPart.LeftArm, 30),
+            new Fighter.BodyPartData(BodyPart.RightArm, 30),
+            new Fighter.BodyPartData(BodyPart.LeftLeg, 30),
+            new Fighter.BodyPartData(BodyPart.RightLeg, 30),
+        };
+
+        // Create Enemy
+        var enemyGO = new GameObject("Enemy_Debug");
+        enemyGO.transform.position = spawnPoints != null && spawnPoints.Count > 0 ? spawnPoints[0].position : Vector3.right * 2f;
+        var enemyF = enemyGO.AddComponent<EnemyFighter>();
+        enemyF.team = Team.ENEMIES;
+        enemyF.idName = "Enemy_Debug";
+        enemyF.stats = new Stats(21, 60, 15, 8, 5, 6);
+        enemyF.animator = enemyGO.AddComponent<Animator>();
+        enemyF.bodyParts = new List<Fighter.BodyPartData>
+        {
+            new Fighter.BodyPartData(BodyPart.Head, 30),
+            new Fighter.BodyPartData(BodyPart.Torso, 60),
+            new Fighter.BodyPartData(BodyPart.LeftArm, 30),
+            new Fighter.BodyPartData(BodyPart.RightArm, 30),
+            new Fighter.BodyPartData(BodyPart.LeftLeg, 30),
+            new Fighter.BodyPartData(BodyPart.RightLeg, 30),
+        };
+
+        // Ensure CombatManager references
+        this.fighters = new Fighter[] { playerF, enemyF };
+        foreach (var fgtr in this.fighters)
+        {
+            fgtr.combatManager = this;
+        }
+        this.MakeTeams();
+        this.SortFightersBySpeed();
+        this.fighterIndex = -1;
+        this.isCombatActive = true;
+        this.combatStatus = CombatStatus.NEXT_TURN;
+        IsReady = true;
+
+        Debug.Log("[CombatManager.DebugCombat] Spawned 1v1 debug combat. Players=" + playerTeam.Length + " Enemies=" + enemyTeam.Length);
+    }
 
     void Start()
     {
@@ -74,6 +141,10 @@ public class CombatManager : MonoBehaviour
         this.SortFightersBySpeed();
         this.MakeTeams();
         DefineStatsManager();
+
+        // Mark readiness after teams and fighters are set
+        IsReady = (playerTeam != null && playerTeam.Length > 0) || (enemyTeam != null && enemyTeam.Length > 0);
+        Debug.Log($"[CombatManager] Ready={IsReady} fighters={fighters.Length} players={playerTeam.Length} enemies={enemyTeam.Length}");
 
         LogPanel.Write("Battle initiated.");
 
