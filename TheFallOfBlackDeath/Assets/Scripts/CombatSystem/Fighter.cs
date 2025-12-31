@@ -162,15 +162,18 @@ public abstract class Fighter : MonoBehaviour
         }
 
         this.statusPanel.SetHealth(this.stats.health, this.stats.maxHealth);
-
-     
-        if (amount > 0f)
+        
+        if (amount == 0f)
         {
-            this.animator.Play("Heal");
+            animator.Play("Miss");
+        }
+        else if (amount > 0f)
+        {
+            animator.Play("Heal");
         }
         else
         {
-            this.animator.Play("Damages");
+            animator.Play("Damages");
         }
 
         if (this.isAlive == false)
