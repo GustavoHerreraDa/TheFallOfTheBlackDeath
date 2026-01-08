@@ -12,12 +12,12 @@ public class Stats
     public float speed;
     public int experience;
     public int experienceToNextLevel = 100;
-    public Stats(int _level, float _maxhealth, float _attack, float _deffense, float _spirit, float _speed, int _exp = 0, int _expNext = 100)
+    public Stats(int _level, float _maxhealth, float _health, float _attack, float _deffense, float _spirit, float _speed, int _exp = 0, int _expNext = 100)
     {
         level = _level;
 
         maxHealth = _maxhealth;
-        health = _maxhealth;
+        health = _health;
 
         attack = _attack;
         deffense = _deffense;
@@ -26,11 +26,13 @@ public class Stats
 
         experience = _exp;
         experienceToNextLevel = _expNext;
+        
     }
-
+    
+    
 
     public Stats Clone()
     {
-        return new Stats(level, maxHealth, attack, deffense, spirit, speed, experience, experienceToNextLevel);
+        return new Stats(level, maxHealth, health, attack, deffense, spirit, speed, experience, experienceToNextLevel);
     }
 }

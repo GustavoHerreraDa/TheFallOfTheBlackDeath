@@ -14,17 +14,18 @@ public class EnemyFighter : Fighter
     void Awake()
     {
         // Initialize enemy stats safely, falling back if DB is invalid
-        Stats safeDefaults = new Stats(5, 30, 10, 8, 5, 5);
+        Stats safeDefaults = new Stats(5, 30, 10, 8, 5, 5, 20, 0);
         if (EnemyDateBase != null && EnemyIndex >= 0 && EnemyIndex < EnemyDateBase.EnemyDB.Count)
         {
             var data = EnemyDateBase.EnemyDB[EnemyIndex];
             int level = data.level > 0 ? data.level : safeDefaults.level;
             float maxHp = data.maxHealth > 0 ? data.maxHealth : safeDefaults.maxHealth;
+            float hp = data.hp > 0 ? data.hp : safeDefaults.health;
             float atk = data.attack > 0 ? data.attack : safeDefaults.attack;
             float def = data.deffense > 0 ? data.deffense : safeDefaults.deffense;
             float spr = data.spirit > 0 ? data.spirit : safeDefaults.spirit;
             float spd = data.speed > 0 ? data.speed : safeDefaults.speed;
-            this.stats = new Stats(level, maxHp, atk, def, spr, spd, data.experience, data.experienceToNextLevel);
+            this.stats = new Stats(level, maxHp,  hp, atk,def, spr, spd, data.experience, data.experienceToNextLevel);
         }
         else
         {

@@ -26,15 +26,12 @@ public class CharacterSwitcher : MonoBehaviour
     void Start()
     {
         SetIndex();
+
         SwitchMainCharacter(currentMainCharacterIndex, true);
         SwitchSecondaryCharacter(currentSecondaryCharacterIndex, true);
 
-        if (characters == null)
-            Debug.LogError("characters es null");
-        else if (characters.Count == 0)
-            Debug.LogError("characters est� vac�o!");
-
-        SwitchMainCharacter(0, true);
+        GameManager.Instance.SavePlayerState(GameManager.Instance.character1);
+        GameManager.Instance.SavePlayerState(GameManager.Instance.character2);
     }
 
     public void SwitchMainCharacter(int characterIndex, bool isFirstTime)
@@ -113,10 +110,8 @@ public class CharacterSwitcher : MonoBehaviour
         {
             if (fightersDateBase.EnemyDB[i].isMainCharacter)
             {
-
                 currentMainCharacterIndex = fightersDateBase.EnemyDB[i].CharacterSwitcherIndex;
                 Debug.Log("Main Character es " + fightersDateBase.EnemyDB[i].Name);
-                GameManager.Instance.SavePlayerState(GameManager.Instance.character1);
             }
         }
 
@@ -126,8 +121,8 @@ public class CharacterSwitcher : MonoBehaviour
             {
                 currentSecondaryCharacterIndex = fightersDateBase.EnemyDB[i].CharacterSwitcherIndex;
                 Debug.Log("Secondary Character es " + fightersDateBase.EnemyDB[i].Name);
-                GameManager.Instance.SavePlayerState(GameManager.Instance.character2);
             }
         }
     }
+
 }

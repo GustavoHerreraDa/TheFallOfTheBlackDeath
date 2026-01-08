@@ -1,5 +1,77 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4807311760874787864
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1977787413681107410}
+  - component: {fileID: 8321046753719393932}
+  - component: {fileID: 412087168108317596}
+  m_Layer: 3
+  m_Name: Fortalecer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1977787413681107410
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4807311760874787864}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7540624642153775675}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8321046753719393932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4807311760874787864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  amount: 10
+--- !u!114 &412087168108317596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4807311760874787864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Defensive posture
+  animationDuration: 1
+  targeting: 3
+  BodyPartTarget: 0
+  effectPrfb: {fileID: 3280519133390621005, guid: a71be3e7990efb040a07565c43cbb198, type: 3}
+  SkillDesc: 
+  skillType: 1
+  iconUI: {fileID: 0}
+  animationName: Attack
+  HasItemInInventory: 0
+  ItemsNeeded: []
+  requiredParts: 02000000
+  message: '{receiver} raises deffense!'
 --- !u!1 &7171326190173550243
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,6 +572,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Intimidate
       objectReference: {fileID: 0}
+    - target: {fileID: 8264631239708923127, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8267380649681350226, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       propertyPath: m_Name
       value: BattleBlacksmith
@@ -545,6 +621,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7305297877295874578, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       insertIndex: 0
       addedObject: {fileID: 8551209928948996996}
+    - targetCorrespondingSourceObject: {fileID: 7305297877295874578, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      insertIndex: 5
+      addedObject: {fileID: 1977787413681107410}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
 --- !u!4 &7540624642153775675 stripped

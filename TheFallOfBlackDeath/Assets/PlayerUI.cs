@@ -46,25 +46,43 @@ public class PlayerUI : MonoBehaviour
 
     public void UpdatePlayerStats()
     {
-        fighter = isMainCharacterUI ?
-                  GameManager.Instance.character1 :
-                  GameManager.Instance.character2;
+        if (GameManager.Instance == null)
+            return;
 
-        
-        GameManager.Instance.ApplySavedStatusToFighter(fighter);
+        fighter = isMainCharacterUI
+            ? GameManager.Instance.character1
+            : GameManager.Instance.character2;
 
-        // leer stats actuales
+        if (fighter == null)
+        {
+            Debug.LogWarning($"[PlayerUI] Fighter todavía no asignado (isMain={isMainCharacterUI})");
+            return;
+        }
+
         var stats = fighter.GetCurrentStats();
 
-        nameHero.text = fighter.idName;
-        currentHealth.text = "HP: " + stats.health.ToString();
-        maxHealth.text = stats.maxHealth.ToString();
-        attack.text = "Attack: " + stats.attack.ToString();
-        defense.text = "Defense: " + stats.deffense.ToString();
-        speed.text = "Speed: " + stats.speed.ToString();
+        if (nameHero != null)
+            nameHero.text = fighter.idName;
+
+        if (currentHealth != null)
+            currentHealth.text = "HP: " + stats.health;
+
+        if (maxHealth != null)
+            maxHealth.text = stats.maxHealth.ToString();
+
+        if (attack != null)
+            attack.text = "Attack: " + stats.attack;
+
+        if (defense != null)
+            defense.text = "Defense: " + stats.deffense;
+
+        if (speed != null)
+            speed.text = "Speed: " + stats.speed;
 
         UpdateSkillUI();
-        _boddyStatus.Refresh();
+
+        if (_boddyStatus != null)
+            _boddyStatus.Refresh();
     }
 
 
@@ -81,7 +99,14 @@ public class PlayerUI : MonoBehaviour
     //Actualizo la UI en cada recarga para mostrar los cambios cuando equipo un item.
     void OnEnable()
     {
-        UpdatePlayerStats();
+        CharacterSwitcher.updateMainCharacterUI += UpdatePlayerStats;
+        CharacterSwitcher.updateSecondaryCharacterUI += UpdatePlayerStats;
+    }
+
+    void OnDisable()
+    {
+        CharacterSwitcher.updateMainCharacterUI -= UpdatePlayerStats;
+        CharacterSwitcher.updateSecondaryCharacterUI -= UpdatePlayerStats;
     }
 
 

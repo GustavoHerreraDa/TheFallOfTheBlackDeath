@@ -20,12 +20,18 @@ namespace Assets.Scripts.Movent_Sistem.Invet
             Gate i = objCollider.GetComponent<Gate>();
             playerControl.StopPlayer(2f);
             i.OpenGate();
-
+            player_Animator.Play("Open");
+         
             if (i.IsNeedKey == true)
-                ShowResponseMessage();
-            else
             {
-                player_Animator.Play("Open");
+                player_Animator.Play("key");
+                ShowResponseMessage();
+            }
+
+        else
+
+        {
+                
                 InteractMeessage.SetActive(false);
                 canInteract = false;
                 nameMessage.text = message;

@@ -296,28 +296,31 @@ public class GameManager : MonoBehaviour
 
     public Stats SavePlayerState(PlayerFighter fighter)
     {
-        var s = fighter.GetCurrentStats();
-
-        savedPlayerStatus = new PlayerStatusData();
-        savedPlayerStatus.level = s.level;
-        savedPlayerStatus.experience = s.experience;
-        savedPlayerStatus.currentHealth = s.health;
-        savedPlayerStatus.maxHealth = s.maxHealth;
-        savedPlayerStatus.attack = s.attack;
-        savedPlayerStatus.defense = s.deffense;
-        savedPlayerStatus.spirit = s.spirit;
-        savedPlayerStatus.speed = s.speed;
-
-        savedPlayerStatus.bodyPartsHealth = new List<float>();
-
-        Debug.Log($"SavePlayerState | fighter: {fighter} | stats: {fighter?.stats}");
-        foreach (var part in fighter.bodyParts)
+        if (fighter == null || fighter.stats == null)
         {
-            savedPlayerStatus.bodyPartsHealth.Add(part.currentHealth);
+            Debug.LogError("SavePlayerState: fighter o stats es null");
+            return null;
         }
 
+        Stats s = fighter.stats;
+
+        savedPlayerStatus = new PlayerStatusData
+        {
+            level = s.level,
+            experience = s.experience,
+            currentHealth = s.health,
+            maxHealth = s.maxHealth,
+            attack = s.attack,
+            defense = s.deffense,
+            spirit = s.spirit,
+            speed = s.speed,
+            bodyPartsHealth = new List<float>()
+        };
+
+        foreach (var part in fighter.bodyParts)
+            savedPlayerStatus.bodyPartsHealth.Add(part.currentHealth);
+
         return s;
-       
     }
 
 

@@ -22,7 +22,7 @@ public class PlayerFighter : Fighter
     void Awake()
     {
         // Initialize stats with safe defaults in case DB is missing/invalid
-        Stats safeDefaults = new Stats(21, 60, 50, 45, 20, 20);
+        Stats safeDefaults = new Stats(21, 60, 60, 45, 20, 20, 20);
 
         if (fightersDateBase != null && figherIndex >= 0 && figherIndex < fightersDateBase.EnemyDB.Count)
         {
@@ -32,12 +32,13 @@ public class PlayerFighter : Fighter
             // Per-stat validation and fallbacks to avoid zero-initialization at runtime
             int level = data.level > 0 ? data.level : safeDefaults.level;
             float maxHp = data.maxHealth > 0 ? data.maxHealth : safeDefaults.maxHealth;
+            float hp = data.hp > 0 ? data.hp : safeDefaults.health;
             float atk = data.attack > 0 ? data.attack : safeDefaults.attack;
             float def = data.deffense > 0 ? data.deffense : safeDefaults.deffense;
             float spr = data.spirit > 0 ? data.spirit : safeDefaults.spirit;
             float spd = data.speed > 0 ? data.speed : safeDefaults.speed;
 
-            this.stats = new Stats(level, maxHp, atk, def, spr, spd);
+            this.stats = new Stats(level, maxHp,  hp, atk,def, spr, spd, data.experience, data.experienceToNextLevel);
         }
         else
         {

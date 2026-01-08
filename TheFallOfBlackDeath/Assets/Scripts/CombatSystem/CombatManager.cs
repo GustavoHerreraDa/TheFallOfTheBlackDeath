@@ -51,7 +51,7 @@ public class CombatManager : MonoBehaviour
     public AudioSource audioSource;
     public AudioSource sonidoDeDerrota;
 
-    [ContextMenu("DebugCombat")]
+    /*[ContextMenu("DebugCombat")]
     public void DebugCombat()
     {
         // Destroys existing fighters and spawns a simple 1v1 with hardcoded stats
@@ -117,7 +117,7 @@ public class CombatManager : MonoBehaviour
         IsReady = true;
 
         Debug.Log("[CombatManager.DebugCombat] Spawned 1v1 debug combat. Players=" + playerTeam.Length + " Enemies=" + enemyTeam.Length);
-    }
+    }*/
 
     void Start()
     {

@@ -14,6 +14,15 @@ public class StatsManager : MonoBehaviour
     {
         UpdateUI();
     }
+    
+    private void Awake()
+    {
+        actualAttack = GameObject.Find("Txt_Attack")
+            .GetComponent<TextMeshProUGUI>();
+
+        actualDefense = GameObject.Find("Txt_Defense")
+            .GetComponent<TextMeshProUGUI>();
+    }
     void Update()
     {
         //UpdateUI();
@@ -22,6 +31,7 @@ public class StatsManager : MonoBehaviour
 
     public void UpdateUI()
     {
+        
         this.SetDefense(fighter.GetCurrentStats().deffense);
         this.SetAttack(fighter.GetCurrentStats().attack);
         Debug.Log("se recibio las estadisticas de estos player" + fighter);

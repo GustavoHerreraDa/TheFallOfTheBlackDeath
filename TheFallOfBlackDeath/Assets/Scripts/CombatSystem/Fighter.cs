@@ -207,13 +207,10 @@ public abstract class Fighter : MonoBehaviour
             FloatingTextManager.Instance.ShowText($"{part} destroyed!", textPos, Color.magenta);
         }
     }
-
-
-
-
+    
     public Stats GetCurrentStats()
     {
-        Stats modedStats = this.stats;
+        Stats modedStats = this.stats.Clone();
 
         foreach (var mod in this.statusMods)
         {
@@ -222,6 +219,7 @@ public abstract class Fighter : MonoBehaviour
 
         return modedStats;
     }
+
 
     public StatusCondition GetCurrentStatusCondition()
     {

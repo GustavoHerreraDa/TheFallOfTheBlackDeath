@@ -14,6 +14,7 @@ public class EnemyDataBase : ScriptableObject
         public GameObject enemyPrefab;
         public int prefabIndex;
         public float maxHealth;
+        public float hp;
         public int level;
         public float attack;
         public float deffense;
@@ -41,6 +42,7 @@ public class EnemyDataBase : ScriptableObject
                     enemyPrefab = EnemyDB[index].enemyPrefab,
                     prefabIndex = EnemyDB[index].prefabIndex,
                     maxHealth = EnemyDB[index].maxHealth, 
+                    hp = EnemyDB[index].hp,
                     level = EnemyDB[index].level, 
                     attack = EnemyDB[index].attack + amountAffected, 
                     deffense = EnemyDB[index].deffense, 
@@ -66,6 +68,7 @@ public class EnemyDataBase : ScriptableObject
                     enemyPrefab = EnemyDB[index].enemyPrefab,
                     prefabIndex = EnemyDB[index].prefabIndex,
                     maxHealth = EnemyDB[index].maxHealth, 
+                    hp = EnemyDB[index].hp,
                     level = EnemyDB[index].level, 
                     attack = EnemyDB[index].attack, 
                     deffense = EnemyDB[index].deffense + amountAffected, 
@@ -93,6 +96,7 @@ public class EnemyDataBase : ScriptableObject
             enemyPrefab = EnemyDB[index].enemyPrefab,
             prefabIndex = EnemyDB[index].prefabIndex,
             maxHealth = EnemyDB[index].maxHealth, 
+            hp = EnemyDB[index].hp,
             level = EnemyDB[index].level, 
             attack = EnemyDB[index].attack, 
             deffense = EnemyDB[index].deffense, 
@@ -118,6 +122,7 @@ public class EnemyDataBase : ScriptableObject
             enemyPrefab = EnemyDB[index].enemyPrefab,
             prefabIndex = EnemyDB[index].prefabIndex,
             maxHealth = EnemyDB[index].maxHealth, 
+            hp = EnemyDB[index].hp,
             level = EnemyDB[index].level, 
             attack = EnemyDB[index].attack, 
             deffense = EnemyDB[index].deffense, 
