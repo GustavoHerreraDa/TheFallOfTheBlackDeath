@@ -8,4 +8,5 @@ public class statsOBJ : MonoBehaviour
     public int id;
     public int amount;
     public Uso uso;
+    public Animation animation;
 }

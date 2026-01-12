@@ -32,7 +32,7 @@ public class PickObj : Interactable, IInteratable
         playerControl.StopPlayer(1.3f);
         canInteract = false;
         ShowResponseMessage();
-        Destroy(i.gameObject);
+        //Destroy(i.gameObject);
     }
 
     // Update is called once per frame
@@ -44,7 +44,7 @@ public class PickObj : Interactable, IInteratable
         {
             if (other.GetComponent<statsOBJ>() != null)
             {
-                Debug.Log("PickObj detectó objeto");
+                Debug.Log("PickObj detectï¿½ objeto");
                 InteractMeessage.SetActive(true);
                 objCollider = other;
                 canInteract = true;

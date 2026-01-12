@@ -14,7 +14,7 @@ public class InventoryDateBase : ScriptableObject
     [System.Serializable]
     public struct Object
     {
-
+        public Animation animation;
         public string name;
         public Sprite sprite;
         public Uso uso;
