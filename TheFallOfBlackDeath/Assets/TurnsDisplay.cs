@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TurnsDisplay : MonoBehaviour
 {
     // Start is called before the first frame update
     public CombatManager CombatManager;
-    Text[] textComponents;
+    TextMeshProUGUI[] textComponents;
     void Awake()
     {
         // Obtener todos los componentes Text en los hijos del objeto actual
-        textComponents = GetComponentsInChildren<Text>();
+        textComponents = GetComponentsInChildren<TextMeshProUGUI>();
 
         // Iterar sobre los componentes encontrados
        
@@ -25,7 +26,7 @@ public class TurnsDisplay : MonoBehaviour
             textComponents[i].text = fighters[i].idName;
             i++;
         }
-        foreach (Text otext in textComponents)
+        foreach (TextMeshProUGUI otext in textComponents)
         {
             if (otext.text == string.Empty)
                 otext.gameObject.SetActive(false);

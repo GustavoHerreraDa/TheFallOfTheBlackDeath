@@ -10,6 +10,8 @@ public class tooltip : MonoBehaviour
     public Image tool;
     public TextMeshProUGUI skillNameTxT;
     public GameObject ActionsButtonsPanel;
+
+    public GameObject fondoUi;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,13 +19,14 @@ public class tooltip : MonoBehaviour
         tool.enabled = false;
         skillNameTxT.enabled = false;
         instance = this;
+        fondoUi.SetActive(false);
     }
 
 
     public void mouseOver(int SkillIndex)
     {
         tool.enabled = true;
-
+        fondoUi.SetActive(true);
         //var couritine = StartCoroutine("HideTooltipEnum"); 
         skillNameTxT.enabled = true;
         skillNameTxT.GetComponent<TextMeshProUGUI>().text = skillManager.GetSkillDescription(SkillIndex);
@@ -31,6 +34,7 @@ public class tooltip : MonoBehaviour
     public void disableSkillTxT()
     {
         tool.enabled = false;
+        fondoUi.SetActive(false);
         skillNameTxT.enabled = false;
     }
 
