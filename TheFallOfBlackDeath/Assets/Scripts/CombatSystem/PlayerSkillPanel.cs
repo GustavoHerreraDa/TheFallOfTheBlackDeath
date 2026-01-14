@@ -7,7 +7,7 @@ using TMPro;
 public class PlayerSkillPanel : MonoBehaviour
 {
     public GameObject[] skillButtons;
-    public Text[] skillButtonLabels;
+    public TextMeshProUGUI[] skillButtonLabels;
 
     private PlayerFighter targetFigther;
 
