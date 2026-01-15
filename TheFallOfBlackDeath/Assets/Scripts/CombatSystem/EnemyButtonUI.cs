@@ -1,99 +1,106 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections.Generic; // Necesario para List
 
 public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public Button button;
-    public Text label;
+    public TextMeshProUGUI label;
     public int index;
     public Fighter target;
 
-    public Material originalMaterial;
     public Material highlightMaterial;
     public GameObject effectPrfb;
-    private Material[] originalMaterials;
-    private Renderer cachedRenderer;
+
+    // Cambiamos a listas para manejar múltiples piezas
+    private List<Renderer> allRenderers = new List<Renderer>();
+    private List<Material[]> originalMaterialsList = new List<Material[]>();
+    
     private GameObject enemyCanvas;
 
     private void Awake()
     {
-        if (button == null)
-            button = GetComponent<Button>();
-        if (label == null)
-            label = GetComponentInChildren<Text>();
+        if (button == null) button = GetComponent<Button>();
+        if (label == null) label = GetComponentInChildren<TextMeshProUGUI>();
     }
 
-    public void SetText(string text)
-    {
-        label.text = text;
-    }
-
-    public void SetTarget(Fighter fighter)
-    {
-        target = fighter;
-    }
-
+    public void SetText(string text) => label.text = text;
+    public void SetTarget(Fighter fighter) => target = fighter;
     public void Show() => button.gameObject.SetActive(true);
     public void Hide() => button.gameObject.SetActive(false);
-
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (target == null) return;
 
+        // Activar Canvas del enemigo
         enemyCanvas = target.GetComponentInChildren<Canvas>(true)?.gameObject;
-        if (enemyCanvas != null)
-            enemyCanvas.SetActive(true);
+        if (enemyCanvas != null) enemyCanvas.SetActive(true);
 
-        cachedRenderer = target.GetComponentInChildren<Renderer>();
-        if (cachedRenderer != null)
+        // LIMPIEZA: Obtenemos TODOS los renderers de las piezas (Head, Torso, etc.)
+        allRenderers.Clear();
+        originalMaterialsList.Clear();
+        allRenderers.AddRange(target.GetComponentsInChildren<Renderer>());
+
+        foreach (Renderer rend in allRenderers)
         {
-            Material[] mats = cachedRenderer.materials;
+            // Guardamos los materiales originales de esta pieza específica
+            Material[] mats = rend.materials;
+            Material[] savedMats = new Material[mats.Length];
+            mats.CopyTo(savedMats, 0);
+            originalMaterialsList.Add(savedMats);
 
-            
-            if (originalMaterials == null)
+            // Aplicamos el highlight a todos los slots de material de esta pieza
+            Material[] highlightMats = new Material[mats.Length];
+            for (int i = 0; i < highlightMats.Length; i++)
             {
-                originalMaterials = new Material[mats.Length];
-                mats.CopyTo(originalMaterials, 0);
+                highlightMats[i] = highlightMaterial;
             }
-
-            if (mats.Length > 0)
-                mats[0] = highlightMaterial;
-
-            if (mats.Length > 1)
-                mats[1] = highlightMaterial;
-
-            cachedRenderer.materials = mats;
+            rend.materials = highlightMats;
         }
 
-        effectPrfb.transform.position = target.transform.position;
-        effectPrfb.SetActive(true);
+        // Efecto visual
+        if (effectPrfb != null)
+        {
+            effectPrfb.transform.position = target.transform.position;
+            effectPrfb.SetActive(true);
+        }
     }
 
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        HideCanvasAndReset();
-    }
-
-    
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        HideCanvasAndReset();
-    }
+    public void OnPointerExit(PointerEventData eventData) => HideCanvasAndReset();
+    public void OnPointerClick(PointerEventData eventData) => HideCanvasAndReset();
 
     private void HideCanvasAndReset()
     {
-        if (enemyCanvas != null)
-            enemyCanvas.SetActive(false);
+        if (enemyCanvas != null) enemyCanvas.SetActive(false);
 
-        if (cachedRenderer != null && originalMaterials != null)
+        // Restauramos los materiales originales de cada pieza
+        for (int i = 0; i < allRenderers.Count; i++)
         {
-            cachedRenderer.materials = originalMaterials;
+            if (allRenderers[i] != null && i < originalMaterialsList.Count)
+            {
+                allRenderers[i].materials = originalMaterialsList[i];
+            }
         }
 
-        effectPrfb.SetActive(false);
+        if (effectPrfb != null) effectPrfb.SetActive(false);
     }
+    
+    public void ResetHighlight()
+    {
+        if (enemyCanvas != null) enemyCanvas.SetActive(false);
 
+        // Restauramos los materiales originales de todas las piezas detectadas
+        for (int i = 0; i < allRenderers.Count; i++)
+        {
+            if (allRenderers[i] != null && i < originalMaterialsList.Count)
+            {
+                allRenderers[i].materials = originalMaterialsList[i];
+            }
+        }
+
+        if (effectPrfb != null) effectPrfb.SetActive(false);
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 //TP2 AUGUSTO NANINI/FACUNDO FERREIRO
@@ -34,22 +35,19 @@ public class EnemiesPanel : MonoBehaviour
     public void OnTargetButtonClick(int index)
     {
         Fighter target = this.targets[index];
-
         this.targetFighter.SetTargetAndAttack(target);
 
-       
+        // Iteramos sobre todos los botones para limpiar el highlight de todos los enemigos
         foreach (var btn in this.buttons)
         {
-            if (btn != null && btn.target != null)
+            if (btn != null)
             {
-                Renderer rend = btn.target.GetComponentInChildren<Renderer>();
-                if (rend != null && btn.originalMaterial != null)
-                    rend.material = btn.originalMaterial;
+                // Usamos un método dentro de EnemyButtonUI para que cada enemigo 
+                // restaure TODAS sus piezas (Head, Torso, etc.)
+                btn.ResetHighlight(); 
             }
         }
     }
-
-
     public void Show(PlayerFighter playerFighter, Fighter[] targets)
     {
         this.gameObject.SetActive(true);
@@ -127,7 +125,7 @@ public class EnemiesPanel : MonoBehaviour
 
         btn.index = index;
         btn.button = btnGO.GetComponent<Button>();
-        btn.label = btnGO.GetComponentInChildren<Text>();
+        btn.label = btnGO.GetComponentInChildren<TextMeshProUGUI>();
 
         
         btn.button.onClick.AddListener(() => { this.OnTargetButtonClick(btn.index); });
