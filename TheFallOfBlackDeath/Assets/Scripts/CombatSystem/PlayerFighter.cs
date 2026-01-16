@@ -163,22 +163,25 @@ public class PlayerFighter : Fighter
 
     public void SetTargetAndAttack(Fighter enemyFighter)
     {
-        
+        EnemyButtonUI enemyBtn = enemiesPanel.GetButtonFor(enemyFighter);
+        if (enemyBtn != null)
+            enemyBtn.ForceReset();
+
         if (this.skillToBeExecuted is HealthModSkill)
         {
-            this.enemiesPanel.Hide();
-            this.bodyPartPanel.Show(this, enemyFighter, this.skillToBeExecuted);
+            enemiesPanel.Hide();
+            bodyPartPanel.Show(this, enemyFighter, this.skillToBeExecuted);
         }
         else
         {
-            
-            this.skillToBeExecuted.AddReceiver(enemyFighter);
-            this.combatManager.OnFighterSkill(this.skillToBeExecuted);
-            this.skillPanel.Hide();
-            this.enemiesPanel.Hide();
-            this.combatManager.UpdateStatsUI();
+            skillToBeExecuted.AddReceiver(enemyFighter);
+            combatManager.OnFighterSkill(skillToBeExecuted);
+            skillPanel.Hide();
+            enemiesPanel.Hide();
+            combatManager.UpdateStatsUI();
         }
     }
+
     public void Return()
     {
         this.skillPanel.Show();

@@ -10,18 +10,19 @@ public class BodyPartPanel : MonoBehaviour
     public GameObject sampleButton; 
     public Transform buttonContainer; 
 
+    [Header("Visual Effects")]
+    public Material globalHighlightMaterial; 
+
     private PlayerFighter player;
     private Fighter target;
     private Skill skill;
 
     private List<Button> buttons = new List<Button>();
     private List<BodyPart> parts = new List<BodyPart>();
-    
-    public Material globalHighlightMaterial; // Lo asignas una sola vez en el Inspector del Panel
 
     void Awake()
     {
-        sampleButton.SetActive(false);
+        if(sampleButton != null) sampleButton.SetActive(false);
         Hide();
     }
 
@@ -32,11 +33,12 @@ public class BodyPartPanel : MonoBehaviour
         target = targetFighter;
         skill = currentSkill;
 
-        // Limpieza de botones anteriores
+        // 1. Limpieza de botones anteriores para evitar duplicados
         foreach (var btn in buttons) if(btn != null) Destroy(btn.gameObject);
         buttons.Clear();
         parts.Clear();
 
+        // 2. Generar botones para cada parte del cuerpo activa
         int index = 0;
         foreach (var partData in target.bodyParts)
         {
@@ -62,35 +64,35 @@ public class BodyPartPanel : MonoBehaviour
         if (label != null)
             label.text = part.ToString();
 
-        // --- Lógica de Iluminación Específica ---
+        // 🔍 Buscar el Renderer REAL de esa parte
         Renderer partRenderer = FindPartRenderer(part);
-    
-        // Añadimos el manejador de Hover al botón de la interfaz
-        var hover = btnGO.AddComponent<PartHoverHandler>();
-    
-        // CAMBIO AQUÍ: Ahora usamos el material del panel, no el del target
-        hover.Init(partRenderer, globalHighlightMaterial); 
 
+        if (partRenderer != null)
+        {
+            // 🔒 El handler es el ÚNICO responsable del highlight
+            PartHoverHandler hover = btnGO.AddComponent<PartHoverHandler>();
+            hover.Init(partRenderer, globalHighlightMaterial);
+        }
+        else
+        {
+            Debug.LogWarning($"[BodyPartPanel] Renderer no encontrado para {part}");
+        }
+
+        // Click = seleccionar parte y atacar
         btn.onClick.AddListener(() => OnBodyPartClick(part));
+
         return btn;
     }
-    
-    // Busca la malla que corresponde a la parte del cuerpo (ej: "Head", "LeftArm")
+
     private Renderer FindPartRenderer(BodyPart part)
     {
         string partName = part.ToString();
         
-        // 1. Intenta encontrar el objeto por nombre exacto dentro del Armature/Modelo
+        // Buscamos en todos los hijos del enemigo el Renderer que coincida con el nombre
         foreach (Renderer r in target.GetComponentsInChildren<Renderer>())
         {
-            if (r.name.Equals(partName, System.StringComparison.OrdinalIgnoreCase)) 
-                return r;
-        }
-
-        // 2. Si falló, busca por coincidencia parcial (ej: "Head_GEO")
-        foreach (Renderer r in target.GetComponentsInChildren<Renderer>())
-        {
-            if (r.name.Contains(partName)) 
+            // Compara nombres ignorando mayúsculas/minúsculas o si contiene la palabra (ej: Head_GEO)
+            if (r.name.Equals(partName, System.StringComparison.OrdinalIgnoreCase) || r.name.Contains(partName)) 
                 return r;
         }
         return null;
@@ -98,9 +100,19 @@ public class BodyPartPanel : MonoBehaviour
 
     private void OnBodyPartClick(BodyPart part)
     {
+        // LIMPIEZA TOTAL: Antes de cerrar, forzamos a todas las mallas a volver a su color
+        foreach (var btn in buttons)
+        {
+            if (btn == null) continue;
+            PartHoverHandler handler = btn.GetComponent<PartHoverHandler>();
+            if (handler != null) handler.ResetToOriginal();
+        }
+
+        // Ejecutar ataque
         skill.BodyPartTarget = part;
         skill.AddReceiver(target);
         player.combatManager.OnFighterSkill(skill);
+
         Hide();
     }
 
@@ -124,4 +136,6 @@ public class BodyPartPanel : MonoBehaviour
 
         gameObject.SetActive(false);
     }
+    
+    
 }

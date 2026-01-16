@@ -103,4 +103,9 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         if (effectPrfb != null) effectPrfb.SetActive(false);
     }
+    
+    public void ForceReset()
+    {
+        HideCanvasAndReset();
+    }
 }

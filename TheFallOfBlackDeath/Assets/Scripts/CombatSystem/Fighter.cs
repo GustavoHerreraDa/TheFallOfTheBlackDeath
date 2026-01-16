@@ -240,7 +240,11 @@ public abstract class Fighter : MonoBehaviour
     private void OnBodyPartDestroyed(BodyPartData part)
     {
         
+        // 1. Notificar al evento (para la UI)
         OnBodyPartDestroyedEvent?.Invoke(part.part);
+
+        // 2. OCULTAR LA MALLA (MESH)
+        HidePartMesh(part.part);
 
         switch (part.part)
         {
@@ -324,7 +328,24 @@ public abstract class Fighter : MonoBehaviour
                 break;
         }
     }
+    
+    private void HidePartMesh(BodyPart part)
+    {
+        string partName = part.ToString();
+        // Buscamos todos los renderers hijos
+        Renderer[] allRenderers = GetComponentsInChildren<Renderer>(true);
 
-
+        foreach (Renderer r in allRenderers)
+        {
+            // Si el nombre del objeto coincide con la parte (ej: "Head")
+            if (r.name.Equals(partName, System.StringComparison.OrdinalIgnoreCase) || r.name.Contains(partName))
+            {
+                // Desactivamos el objeto completo para que no se vea ni se pueda clickear
+                r.gameObject.SetActive(false);
+                Debug.Log($"Malla de {partName} ocultada.");
+            }
+        }
+    }
+    
     public abstract void InitTurn();
 }

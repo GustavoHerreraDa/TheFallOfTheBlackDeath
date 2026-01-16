@@ -1,143 +1,131 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-//TP2 AUGUSTO NANINI/FACUNDO FERREIRO
+
+// TP2 AUGUSTO NANINI / FACUNDO FERREIRO
 public class EnemiesPanel : MonoBehaviour
 {
     public GameObject sampleButton;
     public GameObject botonReturn;
 
     private PlayerFighter targetFighter;
-    private List<Fighter> targets;
-
-    private List<EnemyButtonUI> buttons;
+    private readonly List<Fighter> targets = new();
+    private readonly List<EnemyButtonUI> buttons = new();
 
     private float baseHeight;
     private RectTransform rectTransform;
 
-    void Awake()
+    private void Awake()
     {
-        this.targets = new List<Fighter>();
-        this.buttons = new List<EnemyButtonUI>();
+        rectTransform = GetComponent<RectTransform>();
+        baseHeight = rectTransform.rect.height;
 
-        this.rectTransform = this.GetComponent<RectTransform>();
-        this.baseHeight = this.rectTransform.rect.height;
-
-        
-        EnemyButtonUI btn = this.InsertNewButton(this.sampleButton, 0);
+        EnemyButtonUI btn = InsertNewButton(sampleButton, 0);
         btn.Hide();
 
-        this.Hide();
+        Hide();
     }
 
-    public void OnTargetButtonClick(int index)
+    public void Show(PlayerFighter playerFighter, Fighter[] enemyTargets)
     {
-        Fighter target = this.targets[index];
-        this.targetFighter.SetTargetAndAttack(target);
-
-        // Iteramos sobre todos los botones para limpiar el highlight de todos los enemigos
-        foreach (var btn in this.buttons)
-        {
-            if (btn != null)
-            {
-                // Usamos un método dentro de EnemyButtonUI para que cada enemigo 
-                // restaure TODAS sus piezas (Head, Torso, etc.)
-                btn.ResetHighlight(); 
-            }
-        }
-    }
-    public void Show(PlayerFighter playerFighter, Fighter[] targets)
-    {
-        this.gameObject.SetActive(true);
+        gameObject.SetActive(true);
         botonReturn.SetActive(true);
-        this.targetFighter = playerFighter;
 
-        int btnIndex = 0;
+        targetFighter = playerFighter;
+        targets.Clear();
 
-        foreach (var target in targets)
+        int index = 0;
+
+        foreach (var enemy in enemyTargets)
         {
-            EnemyButtonUI btn = this.ActivateNextButton(btnIndex);
-            btn.SetText(target.idName);
-            btn.SetTarget(target);
+            EnemyButtonUI btn = ActivateNextButton(index);
+            btn.SetText(enemy.idName);
+            btn.SetTarget(enemy);
 
-            this.targets.Add(target);
-
-            btnIndex++;
+            targets.Add(enemy);
+            index++;
         }
 
-
-        this.rectTransform.sizeDelta = new Vector2(
-            this.rectTransform.rect.width,
-            this.baseHeight * targets.Length
+        rectTransform.sizeDelta = new Vector2(
+            rectTransform.sizeDelta.x,
+            baseHeight * enemyTargets.Length
         );
     }
 
     public void Hide()
     {
-        this.sampleButton.SetActive(false);
-        this.botonReturn.SetActive(false);
-        foreach (var btn in this.buttons)
+        sampleButton.SetActive(false);
+        botonReturn.SetActive(false);
+
+        foreach (var btn in buttons)
         {
-            btn.Hide();
+            if (btn != null) btn.Hide();
         }
 
-        this.targets.Clear();
+        targets.Clear();
     }
+
+    // ================= BUTTON CLICK =================
+
+    public void OnTargetButtonClick(int index)
+    {
+        if (index < 0 || index >= targets.Count) return;
+
+        Fighter target = targets[index];
+        targetFighter.SetTargetAndAttack(target);
+
+        // Limpiar highlight de TODOS los enemigos
+        foreach (var btn in buttons)
+        {
+            if (btn != null) btn.ResetHighlight();
+        }
+    }
+
+    // ================= INTERNAL =================
 
     private EnemyButtonUI ActivateNextButton(int index)
     {
-        foreach (var btn in this.buttons)
+        foreach (var btn in buttons)
         {
             if (btn.index == index)
             {
                 btn.Show();
-                btn.target = this.targets.Count > index ? this.targets[index] : null;
                 return btn;
             }
         }
 
-        
-        GameObject btnGO = Instantiate(this.sampleButton);
-        btnGO.transform.SetParent(this.transform);
+        GameObject btnGO = Instantiate(sampleButton, transform);
         btnGO.transform.localScale = Vector3.one;
 
-        
-        EnemyButtonUI but = this.InsertNewButton(btnGO, index);
-
-        
-        if (this.targets.Count > index)
-            but.target = this.targets[index];
-
-        but.Show();
-        return but;
+        EnemyButtonUI btnNew = InsertNewButton(btnGO, index);
+        btnNew.Show();
+        return btnNew;
     }
-
 
     private EnemyButtonUI InsertNewButton(GameObject btnGO, int index)
     {
-       
         EnemyButtonUI btn = btnGO.GetComponent<EnemyButtonUI>();
-
-        if (btn == null)
-            btn = btnGO.AddComponent<EnemyButtonUI>();
+        if (btn == null) btn = btnGO.AddComponent<EnemyButtonUI>();
 
         btn.index = index;
         btn.button = btnGO.GetComponent<Button>();
         btn.label = btnGO.GetComponentInChildren<TextMeshProUGUI>();
 
-        
-        btn.button.onClick.AddListener(() => { this.OnTargetButtonClick(btn.index); });
+        btn.button.onClick.AddListener(() => OnTargetButtonClick(btn.index));
 
-        this.buttons.Add(btn);
+        buttons.Add(btn);
         return btn;
     }
-
-    public void Show()
+    
+    public EnemyButtonUI GetButtonFor(Fighter fighter)
     {
-        this.sampleButton.SetActive(true);
-        botonReturn.SetActive(true);
+        foreach (var btn in buttons)
+        {
+            if (btn != null && btn.target == fighter)
+                return btn;
+        }
+        return null;
     }
 
 }
