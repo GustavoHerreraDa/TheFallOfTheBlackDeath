@@ -55,7 +55,7 @@ public class PlayerUI : MonoBehaviour
 
         if (fighter == null)
         {
-            Debug.LogWarning($"[PlayerUI] Fighter todavía no asignado (isMain={isMainCharacterUI})");
+            Debug.Log($"[PlayerUI] Fighter todavía no asignado (isMain={isMainCharacterUI})");
             return;
         }
 
