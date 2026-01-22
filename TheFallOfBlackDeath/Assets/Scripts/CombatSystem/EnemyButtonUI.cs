@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System.Collections.Generic; // Necesario para List
+using System.Collections.Generic;
 
 public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
@@ -14,7 +14,6 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public Material highlightMaterial;
     public GameObject effectPrfb;
 
-    // Cambiamos a listas para manejar múltiples piezas
     private List<Renderer> allRenderers = new List<Renderer>();
     private List<Material[]> originalMaterialsList = new List<Material[]>();
     
@@ -33,26 +32,27 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        // === COMUNICACIÓN CON CAMERAMANAGER ===
+        if (CameraManager.Instance != null)
+            CameraManager.Instance.SetSelectionZoom(true);
+        // ======================================
+
         if (target == null) return;
 
-        // Activar Canvas del enemigo
         enemyCanvas = target.GetComponentInChildren<Canvas>(true)?.gameObject;
         if (enemyCanvas != null) enemyCanvas.SetActive(true);
 
-        // LIMPIEZA: Obtenemos TODOS los renderers de las piezas (Head, Torso, etc.)
         allRenderers.Clear();
         originalMaterialsList.Clear();
         allRenderers.AddRange(target.GetComponentsInChildren<Renderer>());
 
         foreach (Renderer rend in allRenderers)
         {
-            // Guardamos los materiales originales de esta pieza específica
             Material[] mats = rend.materials;
             Material[] savedMats = new Material[mats.Length];
             mats.CopyTo(savedMats, 0);
             originalMaterialsList.Add(savedMats);
 
-            // Aplicamos el highlight a todos los slots de material de esta pieza
             Material[] highlightMats = new Material[mats.Length];
             for (int i = 0; i < highlightMats.Length; i++)
             {
@@ -61,7 +61,6 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             rend.materials = highlightMats;
         }
 
-        // Efecto visual
         if (effectPrfb != null)
         {
             effectPrfb.transform.position = target.transform.position;
@@ -74,9 +73,13 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     private void HideCanvasAndReset()
     {
+        // === RESETEAR ZOOM ===
+        if (CameraManager.Instance != null)
+            CameraManager.Instance.SetSelectionZoom(false);
+        // =====================
+
         if (enemyCanvas != null) enemyCanvas.SetActive(false);
 
-        // Restauramos los materiales originales de cada pieza
         for (int i = 0; i < allRenderers.Count; i++)
         {
             if (allRenderers[i] != null && i < originalMaterialsList.Count)
@@ -90,9 +93,11 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     
     public void ResetHighlight()
     {
-        if (enemyCanvas != null) enemyCanvas.SetActive(false);
+        // Aseguramos que si se resetea externamente, el zoom también se vaya
+        if (CameraManager.Instance != null)
+            CameraManager.Instance.SetSelectionZoom(false);
 
-        // Restauramos los materiales originales de todas las piezas detectadas
+        if (enemyCanvas != null) enemyCanvas.SetActive(false);
         for (int i = 0; i < allRenderers.Count; i++)
         {
             if (allRenderers[i] != null && i < originalMaterialsList.Count)
@@ -100,7 +105,6 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 allRenderers[i].materials = originalMaterialsList[i];
             }
         }
-
         if (effectPrfb != null) effectPrfb.SetActive(false);
     }
     

@@ -1,53 +1,81 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering; // NECESARIO
+using UnityEngine.Rendering.Universal; // NECESARIO PARA URP
 
 public class CameraManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public static CameraManager Instance;
+
     private CombatManager combatManager;
-    public Camera camera;
+    private ChromaticAberration chromaticAberration;
+    [Header("Cameras")]
+    public Camera mainCamera;       
+    public Camera shaderCamera;     
 
     public int currentCameraIndex;
     public int FighterIndex;
     public GameObject gameObjectFighter;
+
+    [Header("Post Processing (FX)")]
+    public Volume globalVolume; // <--- ARRASTRA TU GLOBAL VOLUME AQU脥
+    private LensDistortion lensDistortion; // Referencia interna al efecto
+    [Range(-1f, 1f)]
+    public float targetDistortion = -0.4f; // Intensidad al seleccionar (-0.5 es un buen valor tipo "succi贸n")
+    public float distortionSpeed = 5f;
 
     [Header("Hit Camera Effect")]
     [SerializeField] private float hitZoomFOV = 40f;
     [SerializeField] private float hitZoomSpeed = 12f;
     [SerializeField] private float hitRecoverSpeed = 8f;
     [SerializeField] private float hitMoveAmount = 0.3f;
+    
+    [Header("Glitch Effect Settings")]
+    public float glitchDuration = 0.2f;
+    public float maxGlitchIntensity = 1f;
+    
+    private Coroutine glitchCoroutine;
+    
+    [Header("Selection Zoom (UI Hover)")]
+    [SerializeField] private float selectionZoomFOV = 45f;
+    [SerializeField] private float selectionZoomSpeed = 5f;
+    private bool isHoveringEnemy = false;
+    private bool isHitActive = false;
 
     private float defaultFOV;
     private Coroutine hitCoroutine;
 
     [SerializeField]
     private float cameraSpeed;
+
     private void Awake()
-
-    
-
     {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+
         combatManager = FindObjectOfType<CombatManager>();
     }
+
     void Start()
     {
         currentCameraIndex = combatManager.fighterIndex;
-        defaultFOV = camera.fieldOfView;
-    }
+        
+        if (mainCamera != null) defaultFOV = mainCamera.fieldOfView;
+        
+        UpdateFOV(defaultFOV);
 
-    // Update is called once per frame
-    /*void Update()
-    {
-        FighterIndex = combatManager.fighterIndex;
-
-        if (currentCameraIndex != combatManager.fighterIndex)
+        // === INICIALIZAR LENS DISTORTION ===
+        if (globalVolume != null)
         {
-            currentCameraIndex = combatManager.fighterIndex;
-            ChangeCameraPositionToCurrentFighter();
-
+            globalVolume.profile.TryGet(out lensDistortion);
+            globalVolume.profile.TryGet(out chromaticAberration); // <--- OBTENEMOS EL EFECTO
         }
-    }*/
+        else
+        {
+            Debug.LogWarning("CameraManager: No has asignado el 'Global Volume' en el inspector.");
+        }
+    }
 
     private void Update()
     {
@@ -62,6 +90,37 @@ public class CameraManager : MonoBehaviour
                 ChangeCameraPositionToCurrentFighter();
             }
         }
+
+        // L贸gica de Zoom (FOV)
+        if (!isHitActive && mainCamera != null)
+        {
+            float targetFOV = isHoveringEnemy ? selectionZoomFOV : defaultFOV;
+            float newFOV = Mathf.Lerp(mainCamera.fieldOfView, targetFOV, Time.deltaTime * selectionZoomSpeed);
+            UpdateFOV(newFOV);
+        }
+
+        // === L脫GICA DE DISTORSI脫N DE LENTE ===
+        if (lensDistortion != null && !isHitActive)
+        {
+            // Si estamos encima del enemigo, usamos el valor target (ej: -0.4), si no, 0.
+            float targetValue = isHoveringEnemy ? targetDistortion : 0f;
+            
+            // Interpolamos suavemente el valor actual hacia el target
+            float newValue = Mathf.Lerp(lensDistortion.intensity.value, targetValue, Time.deltaTime * distortionSpeed);
+            
+            lensDistortion.intensity.value = newValue;
+        }
+    }
+
+    private void UpdateFOV(float fov)
+    {
+        if (mainCamera != null) mainCamera.fieldOfView = fov;
+        if (shaderCamera != null) shaderCamera.fieldOfView = fov;
+    }
+
+    public void SetSelectionZoom(bool active)
+    {
+        isHoveringEnemy = active;
     }
 
     public void PlayHitCameraEffect(Transform attacker, Transform defender)
@@ -74,65 +133,72 @@ public class CameraManager : MonoBehaviour
 
     IEnumerator HitCameraEffect(Transform attacker, Transform defender)
     {
-        Vector3 originalPos = camera.transform.position;
+        isHitActive = true;
+        
+        Vector3 originalPos = mainCamera.transform.position;
+        // Guardamos la distorsi贸n actual para restaurarla o manipularla en el golpe si quisieras
+        float startDistortion = lensDistortion != null ? lensDistortion.intensity.value : 0f;
 
-        // Punto medio entre atacante y defensor
         Vector3 hitPoint = (attacker.position + defender.position) * 0.5f;
-        Vector3 dirToHit = (hitPoint - camera.transform.position).normalized;
-        Vector3 zoomPos = camera.transform.position + dirToHit * hitMoveAmount;
+        Vector3 dirToHit = (hitPoint - mainCamera.transform.position).normalized;
+        Vector3 zoomPos = mainCamera.transform.position + dirToHit * hitMoveAmount;
 
         float t = 0f;
 
-        // ZOOM IN
+        // ZOOM IN (GOLPE)
         while (t < 1f)
         {
             t += Time.deltaTime * hitZoomSpeed;
-            camera.fieldOfView = Mathf.Lerp(defaultFOV, hitZoomFOV, t);
-            camera.transform.position = Vector3.Lerp(originalPos, zoomPos, t);
+            
+            float currentFOV = Mathf.Lerp(defaultFOV, hitZoomFOV, t);
+            Vector3 currentPos = Vector3.Lerp(originalPos, zoomPos, t);
+
+            // Opcional: Aumentar distorsi贸n violentamente en el golpe
+            if (lensDistortion != null) 
+                lensDistortion.intensity.value = Mathf.Lerp(startDistortion, -0.6f, t); 
+
+            UpdateFOV(currentFOV);
+            mainCamera.transform.position = currentPos;
+            
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.05f); // micro pausa de impacto
+        yield return new WaitForSeconds(0.05f);
 
         t = 0f;
 
-        // RECOVER
+        // RECOVER (RECUPERACI脫N)
         while (t < 1f)
         {
             t += Time.deltaTime * hitRecoverSpeed;
-            camera.fieldOfView = Mathf.Lerp(hitZoomFOV, defaultFOV, t);
-            camera.transform.position = Vector3.Lerp(zoomPos, originalPos, t);
+            
+            float currentFOV = Mathf.Lerp(hitZoomFOV, defaultFOV, t);
+            Vector3 currentPos = Vector3.Lerp(zoomPos, originalPos, t);
+            
+            // Regresar distorsi贸n a 0
+            if (lensDistortion != null) 
+                lensDistortion.intensity.value = Mathf.Lerp(-0.6f, 0f, t);
+
+            UpdateFOV(currentFOV);
+            mainCamera.transform.position = currentPos;
+            
             yield return null;
         }
 
-        camera.fieldOfView = defaultFOV;
-        camera.transform.position = originalPos;
+        UpdateFOV(defaultFOV);
+        mainCamera.transform.position = originalPos;
+        if(lensDistortion != null) lensDistortion.intensity.value = 0f; // Asegurar reset
+        
+        isHitActive = false;
     }
-
-
-
-    //private void ChangeCameraPositionToCurrentFighter()
-    //{
-    //    var currentFighter = combatManager.fighters[FighterIndex];
-
-    //    // Utiliza Lerp para interpolar suavemente entre la posici髇 actual de la c醡ara y la nueva posici髇
-    //    //Vector3 targetDirection = lookTarget.position - camera.transform.position;
-    //    //Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
-
-    //    StartCoroutine(MoveCameraSmoothly(camera.transform.position, currentFighter.CameraPivot.position, camera.transform.rotation, currentFighter.CameraPivot.rotation, cameraSpeed));
-    //}
 
     private void ChangeCameraPositionToCurrentFighter()
     {
-
+        
         var currentFighter = combatManager.fighters[FighterIndex];
-
-        //gameObjectFighter = currentFighter.gameObject;
-        //camera.transform.position = currentFighter.CameraPivot.position;
-        //camera.transform.LookAt(currentFighter.transform);
-        StartCoroutine(MoveCameraSmoothly(camera.transform.position, currentFighter.CameraPivot.position, camera.transform.rotation, currentFighter.CameraPivot.rotation, cameraSpeed));
+        StartCoroutine(MoveCameraSmoothly(mainCamera.transform.position, currentFighter.CameraPivot.position, mainCamera.transform.rotation, currentFighter.CameraPivot.rotation, cameraSpeed));
+        
     }
-
 
     IEnumerator MoveCameraSmoothly(Vector3 startPos, Vector3 endPos, Quaternion startRot, Quaternion endRot, float speed)
     {
@@ -141,14 +207,41 @@ public class CameraManager : MonoBehaviour
         while (t < 1)
         {
             t += Time.deltaTime * speed;
-            camera.transform.position = Vector3.Lerp(startPos, endPos, t);
-            camera.transform.rotation = Quaternion.Slerp(startRot, endRot, t);
+            mainCamera.transform.position = Vector3.Lerp(startPos, endPos, t);
+            mainCamera.transform.rotation = Quaternion.Slerp(startRot, endRot, t);
             yield return null;
         }
-        //Debug.Log("Final del traslado Smooth ");
+    }
+    
+    public void TriggerDamageGlitch()
+    {
+        if (chromaticAberration == null) return;
 
-        //camera.transform.rotation = Quaternion.RotateTowards(camera.transform.rotation, targetRotation, 45);
+        // Si ya hay un glitch ocurriendo, lo reiniciamos
+        if (glitchCoroutine != null) StopCoroutine(glitchCoroutine);
+        glitchCoroutine = StartCoroutine(GlitchRoutine());
+    }
 
+    IEnumerator GlitchRoutine()
+    {
+        // 1. Subida brusca (Impacto)
+        float t = 0;
+        while(t < 0.05f) // Muy r谩pido
+        {
+            t += Time.deltaTime;
+            chromaticAberration.intensity.value = Mathf.Lerp(0, maxGlitchIntensity, t / 0.05f);
+            yield return null;
+        }
 
+        // 2. Bajada suave (Recuperaci贸n)
+        t = 0;
+        while (t < glitchDuration)
+        {
+            t += Time.deltaTime;
+            chromaticAberration.intensity.value = Mathf.Lerp(maxGlitchIntensity, 0, t / glitchDuration);
+            yield return null;
+        }
+
+        chromaticAberration.intensity.value = 0;
     }
 }

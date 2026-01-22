@@ -174,6 +174,12 @@ public abstract class Fighter : MonoBehaviour
         else
         {
             animator.Play("Damages");
+            
+            if (this.GetComponent<PlayerFighter>() != null) 
+            {
+                if (CameraManager.Instance != null)
+                    CameraManager.Instance.TriggerDamageGlitch();
+            }
         }
 
         if (this.isAlive == false)
@@ -195,7 +201,12 @@ public abstract class Fighter : MonoBehaviour
         Debug.Log($"{part} recibió {amount}. Salud actual: {target.currentHealth}");
 
         PlayDamageAnimation(part);
-
+        
+        if (this.GetComponent<PlayerFighter>() != null) 
+        {
+            if (CameraManager.Instance != null)
+                CameraManager.Instance.TriggerDamageGlitch();
+        }
         if (prev > 0 && target.IsDestroyed)
         {
             OnBodyPartDestroyed(target);
