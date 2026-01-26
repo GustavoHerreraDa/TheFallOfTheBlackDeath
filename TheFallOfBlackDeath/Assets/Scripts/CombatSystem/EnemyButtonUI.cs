@@ -35,7 +35,11 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         // === COMUNICACIÓN CON CAMERAMANAGER ===
         if (CameraManager.Instance != null)
             CameraManager.Instance.SetSelectionZoom(true);
-        // ======================================
+        
+        // === NUEVO: ACTIVAR BLOOM VERDE ===
+        if (BloomManager.Instance != null)
+            BloomManager.Instance.SetEnemyHighlight(true);
+        // ==================================
 
         if (target == null) return;
 
@@ -76,7 +80,11 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         // === RESETEAR ZOOM ===
         if (CameraManager.Instance != null)
             CameraManager.Instance.SetSelectionZoom(false);
-        // =====================
+
+        // === NUEVO: DESACTIVAR BLOOM VERDE ===
+        if (BloomManager.Instance != null)
+            BloomManager.Instance.SetEnemyHighlight(false);
+        // =====================================
 
         if (enemyCanvas != null) enemyCanvas.SetActive(false);
 
@@ -93,9 +101,13 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     
     public void ResetHighlight()
     {
-        // Aseguramos que si se resetea externamente, el zoom también se vaya
         if (CameraManager.Instance != null)
             CameraManager.Instance.SetSelectionZoom(false);
+
+        // === NUEVO: ASEGURAR RESETEO DE BLOOM ===
+        if (BloomManager.Instance != null)
+            BloomManager.Instance.SetEnemyHighlight(false);
+        // ========================================
 
         if (enemyCanvas != null) enemyCanvas.SetActive(false);
         for (int i = 0; i < allRenderers.Count; i++)

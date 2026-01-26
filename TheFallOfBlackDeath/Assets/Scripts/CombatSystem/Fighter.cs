@@ -26,7 +26,9 @@ public abstract class Fighter : MonoBehaviour
     }
     public List<BodyPartData> bodyParts;
 
-
+    [Header("Visual Effects")]
+    [SerializeField] 
+    private GameObject partDestroyedVFX;
 
     public event System.Action<BodyPart> OnBodyPartDestroyedEvent;
 
@@ -253,7 +255,16 @@ public abstract class Fighter : MonoBehaviour
         
         // 1. Notificar al evento (para la UI)
         OnBodyPartDestroyedEvent?.Invoke(part.part);
-
+        
+        if (partDestroyedVFX != null)
+        {
+            // Usamos tu función GetHitPoint() que ya tiene lógica de seguridad
+            // Si la parte no tiene punto asignado, usará el DamagePivot (el pecho/centro)
+            Transform spawnLocation = GetHitPoint(part.part);
+            
+            Instantiate(partDestroyedVFX, spawnLocation.position, Quaternion.identity);
+        }
+        
         // 2. OCULTAR LA MALLA (MESH)
         HidePartMesh(part.part);
 
@@ -343,20 +354,20 @@ public abstract class Fighter : MonoBehaviour
     private void HidePartMesh(BodyPart part)
     {
         string partName = part.ToString();
-        // Buscamos todos los renderers hijos
         Renderer[] allRenderers = GetComponentsInChildren<Renderer>(true);
 
         foreach (Renderer r in allRenderers)
         {
-            // Si el nombre del objeto coincide con la parte (ej: "Head")
             if (r.name.Equals(partName, System.StringComparison.OrdinalIgnoreCase) || r.name.Contains(partName))
             {
-                // Desactivamos el objeto completo para que no se vea ni se pueda clickear
-                r.gameObject.SetActive(false);
-                Debug.Log($"Malla de {partName} ocultada.");
+                // CAMBIO IMPORTANTE:
+                // No desactives el objeto (r.gameObject.SetActive(false))
+                // Solo desactiva el componente que lo dibuja.
+                r.enabled = false; 
+                
+                Debug.Log($"Malla de {partName} ocultada (Renderer desactivado).");
             }
         }
     }
-    
     public abstract void InitTurn();
 }

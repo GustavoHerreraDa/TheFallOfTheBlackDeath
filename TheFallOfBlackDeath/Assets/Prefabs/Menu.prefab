@@ -1840,6 +1840,7 @@ GameObject:
   - component: {fileID: 653282428663644517}
   - component: {fileID: 653282428663644514}
   - component: {fileID: 4170394668612732685}
+  - component: {fileID: 8913906790273571161}
   m_Layer: 5
   m_Name: Log panel
   m_TagString: Untagged
@@ -1918,6 +1919,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logLabel: {fileID: 1221536489790747261}
+--- !u!114 &8913906790273571161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 653282428663644512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbab287d1c42f8e4dbceaf07d16ada3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textoTMP: {fileID: 1221536489790747261}
+  velocidadEscritura: 0.05
 --- !u!1 &653282428994636315
 GameObject:
   m_ObjectHideFlags: 0
@@ -5875,8 +5890,6 @@ MonoBehaviour:
   target: {fileID: 0}
   highlightMaterial: {fileID: 2100000, guid: d31de14cef9a845eda8a2fe52a7f1e2f, type: 2}
   effectPrfb: {fileID: 0}
-  zoomFactor: 0.15
-  zoomSpeed: 5
 --- !u!1 &5705166165842765225
 GameObject:
   m_ObjectHideFlags: 0
@@ -8010,7 +8023,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9065047753975954724, guid: 2e9e5c41a3e57ef4cb21c1628acc46fd, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9065047753975954724, guid: 2e9e5c41a3e57ef4cb21c1628acc46fd, type: 3}
       propertyPath: m_AnchorMin.x
@@ -8018,7 +8031,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9065047753975954724, guid: 2e9e5c41a3e57ef4cb21c1628acc46fd, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9065047753975954724, guid: 2e9e5c41a3e57ef4cb21c1628acc46fd, type: 3}
       propertyPath: m_SizeDelta.x
@@ -8062,7 +8075,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9065047753975954724, guid: 2e9e5c41a3e57ef4cb21c1628acc46fd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9065047753975954724, guid: 2e9e5c41a3e57ef4cb21c1628acc46fd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9072,6 +9085,10 @@ PrefabInstance:
       propertyPath: _boddyStatus
       value: 
       objectReference: {fileID: 179160692244998171}
+    - target: {fileID: 4966193902912078368, guid: eede95cdab6e0d84e9200e7bf1e864b7, type: 3}
+      propertyPath: combatManager
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4966193902912078368, guid: eede95cdab6e0d84e9200e7bf1e864b7, type: 3}
       propertyPath: isMainCharacterUI
       value: 1
