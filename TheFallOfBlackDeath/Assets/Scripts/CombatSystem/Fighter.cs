@@ -262,7 +262,7 @@ public abstract class Fighter : MonoBehaviour
             // Si la parte no tiene punto asignado, usará el DamagePivot (el pecho/centro)
             Transform spawnLocation = GetHitPoint(part.part);
             
-            Instantiate(partDestroyedVFX, spawnLocation.position, Quaternion.identity);
+            GameObject vfx = Instantiate(partDestroyedVFX, spawnLocation.position, spawnLocation.rotation);
         }
         
         // 2. OCULTAR LA MALLA (MESH)
