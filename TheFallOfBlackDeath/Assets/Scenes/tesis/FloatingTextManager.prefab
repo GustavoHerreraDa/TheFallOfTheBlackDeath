@@ -33,9 +33,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 437413724097027445}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 26.03, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -25}
   m_SizeDelta: {x: 381.08, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &441571365806551823
@@ -147,10 +147,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea8625d76a6789e45a5572701c064f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 8019123811833079891}
-  floatSpeed: 1
-  fadeTime: 5000
-  lookAtCamera: 1
+  textMesh: {fileID: 8019123811833079891}
+  normalSpeed: 1
+  criticalSpeed: 2
+  randomOffset: {x: 0.5, y: 0, z: 0}
+  normalSize: 1
+  criticalSize: 1.5
 --- !u!1 &8192213419587336144
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +203,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floatingTextPrefab: {fileID: 3963934726973468794}
-  worldCanvas: {fileID: 4445324441184451891}
+  container: {fileID: 437413724097027445}
+  initialPoolSize: 10
 --- !u!1 &8305835490107256222
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,7 +289,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &6684650175420025828
 MonoBehaviour:
   m_ObjectHideFlags: 0

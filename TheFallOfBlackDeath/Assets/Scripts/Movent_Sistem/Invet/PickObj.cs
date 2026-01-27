@@ -32,7 +32,7 @@ public class PickObj : Interactable, IInteratable
         playerControl.StopPlayer(1.3f);
         canInteract = false;
         ShowResponseMessage();
-        //Destroy(i.gameObject);
+        Destroy(i.gameObject);
     }
 
     // Update is called once per frame
