@@ -11,67 +11,65 @@ public class DitherFeature : ScriptableRendererFeature
         public Shader shader;
         public Texture2D ditherTex;
         public Texture2D rampTex;
-        public bool useScrolling = false;
-        public FilterMode filterMode = FilterMode.Bilinear;
+        public float noiseScale = 256.0f; // Controlar escala desde el inspector
+        [Range(0, 1)] public float spread = 0.5f; // Controlar intensidad
     }
 
     public DitherSettings settings = new DitherSettings();
+    DitherPass pass;
 
     class DitherPass : ScriptableRenderPass
     {
-
         private Material material;
         private DitherSettings settings;
-        [System.Obsolete]
-        private RenderTargetHandle tempTexture;
+        private RTHandle tempTextureHandle; // EL NUEVO SISTEMA
 
         public DitherPass(DitherSettings settings)
         {
             this.settings = settings;
-            if (settings.shader)
-                material = new Material(settings.shader);
-            tempTexture.Init("_TempDitherTex");
+            if (settings.shader) material = new Material(settings.shader);
         }
 
-        [System.Obsolete]
+        // Se llama cuando la cámara se configura (antes de renderizar)
+        public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
+        {
+            var desc = renderingData.cameraData.cameraTargetDescriptor;
+            desc.depthBufferBits = 0; // No necesitamos profundidad
+            
+            // Reasignar el RTHandle automáticamente si la resolución cambia
+            RenderingUtils.ReAllocateIfNeeded(ref tempTextureHandle, desc, FilterMode.Point, TextureWrapMode.Clamp, name: "_TempDitherTex");
+        }
+
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
-            if (!settings.enabled) return;
-            if (material == null) return;
+            if (!settings.enabled || material == null) return;
 
             var cmd = CommandBufferPool.Get("DitherPass");
-            ref var cameraData = ref renderingData.cameraData;
-
             
-            var source = cameraData.renderer.cameraColorTargetHandle;
+            // En URP moderno, accedemos al source así:
+            var source = renderingData.cameraData.renderer.cameraColorTargetHandle;
+            var camera = renderingData.cameraData.camera;
 
+            // --- LÓGICA DE OBRA DINN MEJORADA ---
+            // Enviamos la matriz inversa de vista para calcular la dirección del rayo en el shader
+            material.SetMatrix("_InverseView", camera.cameraToWorldMatrix);
             material.SetTexture("_NoiseTex", settings.ditherTex);
             material.SetTexture("_ColorRampTex", settings.rampTex);
-
-            float xOffset = 0f, yOffset = 0f;
-            var cam = cameraData.camera;
-            if (settings.useScrolling)
-            {
-                var euler = cam.transform.eulerAngles;
-                xOffset = 4.0f * euler.y / cam.fieldOfView;
-                yOffset = -2.0f * cam.aspect * euler.x / cam.fieldOfView;
-            }
-            material.SetFloat("_XOffset", xOffset);
-            material.SetFloat("_YOffset", yOffset);
-
-            var desc = renderingData.cameraData.cameraTargetDescriptor;
-            desc.depthBufferBits = 0;
-
-            cmd.GetTemporaryRT(tempTexture.id, desc, settings.filterMode);
-            Blit(cmd, source, tempTexture.Identifier(), material);
-            Blit(cmd, tempTexture.Identifier(), source);
+            material.SetFloat("_NoiseScale", settings.noiseScale);
+            
+            // Blit usando RTHandles (Source -> Temp -> Source)
+            Blitter.BlitCameraTexture(cmd, source, tempTextureHandle, material, 0);
+            Blitter.BlitCameraTexture(cmd, tempTextureHandle, source);
 
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
-            cmd.ReleaseTemporaryRT(tempTexture.id);
+        }
+
+        public void Dispose()
+        {
+            tempTextureHandle?.Release();
         }
     }
-    DitherPass pass;
 
     public override void Create()
     {
@@ -83,24 +81,12 @@ public class DitherFeature : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        if (pass == null || !settings.enabled)
-            return;
-
-        // ✅ Evitar aplicar el efecto en cámaras Overlay, SceneView o UI
-        var cameraData = renderingData.cameraData;
-        var camera = cameraData.camera;
-
-        // Si no es la cámara principal o es de tipo Overlay, salimos
-        if (cameraData.renderType == CameraRenderType.Overlay)
-            return;
-
-        // También podés filtrar por nombre o tag:
-        // if (camera.tag != "MainCamera") return;
-
-        // (Opcional) Si usás una cámara específica para UI:
-        // if (camera.CompareTag("UICamera")) return;
-
+        if (renderingData.cameraData.renderType == CameraRenderType.Overlay) return;
         renderer.EnqueuePass(pass);
     }
 
+    protected override void Dispose(bool disposing)
+    {
+        pass?.Dispose();
+    }
 }

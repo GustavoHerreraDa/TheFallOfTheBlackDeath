@@ -1,25 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5376384812523807780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
-  m_Name: FullScreenPassRendererFeature
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  injectionPoint: 600
-  fetchColorBuffer: 0
-  requirements: 0
-  passMaterial: {fileID: 2100000, guid: d891e51cee27ab849bedea60b6aad008, type: 2}
-  passIndex: 0
-  bindDepthStencilAttachment: 0
-  m_Version: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38,8 +18,7 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: 4488807751817803052}
   - {fileID: 489342030544111390}
-  - {fileID: -5376384812523807780}
-  m_RendererFeatureMap: 2cb51e18de724b3e1e0740f0fb7dca06dc9bb6917f3e63b5
+  m_RendererFeatureMap: 2cb51e18de724b3e1e0740f0fb7dca06
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -97,10 +76,10 @@ MonoBehaviour:
   settings:
     enabled: 1
     shader: {fileID: 4800000, guid: 298bbcde5766b3346b6c86aadd427d99, type: 3}
-    ditherTex: {fileID: 2800000, guid: cef68d921cff07f4abbbee4bdb8513c6, type: 3}
+    ditherTex: {fileID: 2800000, guid: 32ab7770ee4e31e4a9dd9e01432ee5c3, type: 3}
     rampTex: {fileID: 2800000, guid: 0e9663b98b189d9428f26628e62bd381, type: 3}
-    useScrolling: 1
-    filterMode: 0
+    noiseScale: 1920
+    spread: 0.5
 --- !u!114 &4488807751817803052
 MonoBehaviour:
   m_ObjectHideFlags: 0
