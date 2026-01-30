@@ -37,6 +37,18 @@ public class InventoryManager : MonoBehaviour
     // Cache for item data to avoid repeated array indexing and string allocations
     private Dictionary<int, InventoryDateBase.Object> _itemCache;
 
+    
+    void OnEnable()
+    {
+        DialogueManager.OnGiveItem += HandleGiveItem;
+    }
+
+    // Desuscribirse (MUY IMPORTANTE)
+    void OnDisable()
+    {
+        DialogueManager.OnGiveItem -= HandleGiveItem;
+    }
+    
     void Awake()
     {
         if (InventoryManager.instance == null)
@@ -317,4 +329,16 @@ public class InventoryManager : MonoBehaviour
         Debug.LogWarning($"GetItemInformation: invalid id {_id}");
         return default;
     }
+    
+    private void HandleGiveItem(int id, int amount, InventoryDateBase.Uso uso)
+    {
+        Debug.Log($"InventoryManager: Recibido item {id} x{amount}");
+        
+        // Llamamos a tu método existente AddItem
+        
+        AddItem(id, amount, uso);
+        
+        // Opcional: Mostrar feedback visual en pantalla tipo "¡Has conseguido una Poción!"
+    }
+    
 }

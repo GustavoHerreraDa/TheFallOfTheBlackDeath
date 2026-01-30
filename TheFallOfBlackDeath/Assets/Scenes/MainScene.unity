@@ -12436,6 +12436,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 4329570409556485195, guid: ce5a470fd90c55846b6997ec40dc40c8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.956
+      objectReference: {fileID: 0}
     - target: {fileID: 4333892701544666354, guid: ce5a470fd90c55846b6997ec40dc40c8, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -59253,6 +59257,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4123ff036799aee4f8482f0671963a04, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1303605549}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4123ff036799aee4f8482f0671963a04, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1303605551}
   m_SourcePrefab: {fileID: 100100000, guid: 4123ff036799aee4f8482f0671963a04, type: 3}
 --- !u!1001 &695575413
 PrefabInstance:
@@ -98833,14 +98840,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2885283777964057050, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2885283777964057050, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
-      propertyPath: m_NavMeshData
-      value: 
-      objectReference: {fileID: 23800000, guid: 9825d7f05d22c274ead02e6bb1edc036, type: 2}
     - target: {fileID: 5480911531806588925, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.10414696
@@ -98913,25 +98912,12 @@ PrefabInstance:
       propertyPath: enemyToBattle.Array.data[2]
       value: 
       objectReference: {fileID: 1648397398}
-    - target: {fileID: 5480911531806588926, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
-      propertyPath: groupEnemyDefeat.Array.size
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 5480911531806588927, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 5620160925806897458, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
-      propertyPath: Loop
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5620160925806897458, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
-      propertyPath: m_Volume
-      value: 0.4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 5480911531961402853, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
@@ -104895,6 +104881,39 @@ MonoBehaviour:
   npcRenderer: {fileID: 0}
   dissolveSpeed: 1.5
   dissolveProperty: _DissolveAmount
+--- !u!114 &1303605551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303605541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54cd0b67e51238547a59bd64b5935e71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyParts: []
+  partDestroyedVFX: {fileID: 0}
+  team: 0
+  idName: Warrior
+  statusPanel: {fileID: 0}
+  animator: {fileID: 0}
+  combatManager: {fileID: 0}
+  audioSource: {fileID: 0}
+  statusMods: []
+  legBroken: 0
+  skills: []
+  statusCondition: {fileID: 0}
+  CameraPivot: {fileID: 0}
+  DamagePivot: {fileID: 0}
+  skillPanel: {fileID: 0}
+  enemiesPanel: {fileID: 0}
+  bodyPartPanel: {fileID: 0}
+  fightersDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
+  figherIndex: 13
+  ally1: {fileID: 0}
+  ally2: {fileID: 0}
 --- !u!1001 &1304223598
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -131315,7 +131334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3185119010548182552, guid: ef7635904a56bdd408dc3e5da93ce560, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00014213742
+      value: 0.0010173303
       objectReference: {fileID: 0}
     - target: {fileID: 3450030355710622933, guid: ef7635904a56bdd408dc3e5da93ce560, type: 3}
       propertyPath: m_AnchoredPosition.y

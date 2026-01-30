@@ -9,10 +9,11 @@ public class DialogueEvent : MonoBehaviour
         None,
         StartBattle,
         Disappear,
-        RecruitCharacter
+        RecruitCharacter,
+        GiveItem
     }
 
-    [Header("Configuración de evento")]
+    [Header("Configuraciï¿½n de evento")]
     public DialogueEndAction onDialogueEnd = DialogueEndAction.None;
     public string battleSceneName = "BattleScene";
 

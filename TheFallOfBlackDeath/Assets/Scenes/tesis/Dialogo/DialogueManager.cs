@@ -6,11 +6,15 @@ public class DialogueManager : MonoBehaviour
     private Dialogue currentDialogue;
     private int currentLineIndex;
     private DialogueUI ui;
-
+    public delegate void GiveItemHandler(int id, int amount, InventoryDateBase.Uso type);
+    public static event GiveItemHandler OnGiveItem;
+    
     [Header("Player")]
     public PlayerControl playerControl;
 
     private GameObject currentNPC;
+    public delegate void RecruitEventHandler(GameObject npc, int fighterIndex);
+    public static event RecruitEventHandler OnRecruitCharacter;
     public bool IsDialogueActive => currentDialogue != null;
     private void Awake()
     {
@@ -103,17 +107,30 @@ public class DialogueManager : MonoBehaviour
     {
         ui.HideChoices();
 
+        // Flags logic...
         if (choice.addFlags != null)
             foreach (var f in choice.addFlags) GlobalState.Instance.AddFlag(f);
         if (choice.removeFlags != null)
             foreach (var f in choice.removeFlags) GlobalState.Instance.RemoveFlag(f);
-   
+
+        // --- LÓGICA DE DAR ITEM ---
+        if (choice.action == DialogueEvent.DialogueEndAction.GiveItem)
+        {
+            // Disparamos el evento con los datos que pusiste en el ScriptableObject
+            Debug.Log($"Dialogo: Regalando item ID {choice.itemID}");
+            OnGiveItem?.Invoke(choice.itemID, choice.itemAmount, choice.itemType);
+            
+            // Cerramos el diálogo inmediatamente después
+            EndDialogueWithAction(choice.action);
+            return;
+        }
+        // ---------------------------
+
         if (choice.action != DialogueEvent.DialogueEndAction.None)
         {
             EndDialogueWithAction(choice.action);
             return;
         }
-
 
         if (choice.nextDialogue != null)
         {
@@ -122,25 +139,34 @@ public class DialogueManager : MonoBehaviour
         }
 
         NextLine();
-
     }
 
     private void EndDialogueWithAction(DialogueEvent.DialogueEndAction action)
     {
         ui.ShowUI(false);
-
-        if (playerControl != null)
-            playerControl.enabled = true;
+        if (playerControl != null) playerControl.enabled = true;
 
         if (currentNPC != null)
         {
-            DialogueEvent evt = currentNPC.GetComponent<DialogueEvent>();
-            if (evt != null)
-                evt.onDialogueEnd = action;
+            if (action == DialogueEvent.DialogueEndAction.RecruitCharacter)
+            {
+                // BUSCAMOS EL ID ANTES DE DISPARAR
+                PlayerFighter npcData = currentNPC.GetComponent<PlayerFighter>();
+            
+                if (npcData != null)
+                {
+                    // Disparamos el evento pasando el objeto Y su índice de base de datos
+                    OnRecruitCharacter?.Invoke(currentNPC, npcData.figherIndex);
+                }
+                else
+                {
+                    Debug.LogError($"El NPC {currentNPC.name} no tiene componente PlayerFighter. No se puede obtener su ID.");
+                }
+            }
 
+            DialogueEvent evt = currentNPC.GetComponent<DialogueEvent>();
             evt?.TriggerEvent();
         }
-
         currentNPC = null;
     }
 

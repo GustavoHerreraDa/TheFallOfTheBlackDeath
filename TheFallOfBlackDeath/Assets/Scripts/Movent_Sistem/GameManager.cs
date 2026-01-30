@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     }
 
     public PlayerStatusData savedPlayerStatus;
-
+    public EnemyDataBase globalEnemyDatabase;
     public List<RegionData> Regions = new List<RegionData>();
 
     public GameObject character;
@@ -196,11 +196,13 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        DialogueManager.OnRecruitCharacter += HandleRecruitment;
     }
 
     void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        DialogueManager.OnRecruitCharacter -= HandleRecruitment;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -256,8 +258,8 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    void RandomEncounter()
+    //OFF de manera temporal reactivar cuando aplique el sistema de sanidad
+   /* void RandomEncounter()
     {
         if (canGetEncounter)
         {
@@ -268,7 +270,9 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    void StartBattle()
+    */
+    //OFF de manera temporal reactivar cuando aplique el sistema de sanidad
+   /* void StartBattle()
     {
         //AMOUNT OF ENEMYS
         enemyAnount = Random.Range(1, Regions[cuRegions].maxAmountEnemys + 1);
@@ -292,7 +296,7 @@ public class GameManager : MonoBehaviour
         gotAttacked = false;
         //canGetEncounter = false;
     }
-
+*/
 
     public Stats SavePlayerState(PlayerFighter fighter)
     {
@@ -370,6 +374,50 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("gameManager detectó a " + character1.name);
     }
+    
+    
+    
+    private void HandleRecruitment(GameObject npc, int index) // <--- Recibe el int
+    {
+        Debug.Log($"GameManager: Reclutando personaje ID {index} ({npc.name})");
+
+        // VALIDACIÓN: ¿Ya tenemos compañero?
+        if (this.character2 != null)
+        {
+            Debug.LogWarning("¡Party llena! No se puede reclutar.");
+            return; 
+        }
+
+        // PASO CRÍTICO: Actualizar la Base de Datos
+        // Esto hace que CombatManager.InstantiatePlayerFighters funcione en la próxima pelea
+        
+        if (globalEnemyDatabase != null)
+        {
+            globalEnemyDatabase.SetSecondaryCharacter(index, true);
+        }
+        else
+        {
+            // Fallback: Usar la DB referenciada en el character1 si la global es null
+            character1.fightersDateBase.SetSecondaryCharacter(index, true);
+        }
+
+        // Configuración en tiempo real (para la escena actual)
+        PlayerFighter newAlly = npc.GetComponent<PlayerFighter>();
+        if (newAlly != null)
+        {
+            this.character2 = newAlly;
+            this.hasRecruitedSecondary = true;
+        
+            // Guardar estado inicial
+            SavePlayerState(newAlly);
+
+            // Opcional: Aquí se podria agregar el script de partyfollower para que siga al protagonista
+            // npc.AddComponent<PartyFollower>();
+        
+            Debug.Log("Reclutamiento completado y guardado en DB.");
+        }
+    }
+    
     // las listas donde se guardan las ref encontradas
     /*private IEnumerator _FindEnemiesAndObjects()
     {
