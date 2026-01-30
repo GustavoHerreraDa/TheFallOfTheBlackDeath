@@ -51,73 +51,6 @@ public class CombatManager : MonoBehaviour
     public AudioSource audioSource;
     public AudioSource sonidoDeDerrota;
 
-    /*[ContextMenu("DebugCombat")]
-    public void DebugCombat()
-    {
-        // Destroys existing fighters and spawns a simple 1v1 with hardcoded stats
-        foreach (var f in FindObjectsOfType<Fighter>())
-        {
-            DestroyImmediate(f.gameObject);
-        }
-
-        // Create parent for players
-        var playersRoot = new GameObject("PlayersRoot");
-        playersRoot.transform.position = Vector3.zero;
-
-        // Create Player
-        var playerGO = new GameObject("Player_Debug");
-        playerGO.transform.SetParent(playersRoot.transform);
-        playerGO.transform.position = mainCharacterPos != null ? mainCharacterPos.position : Vector3.left * 2f;
-        var playerF = playerGO.AddComponent<PlayerFighter>();
-        playerF.team = Team.PLAYERS;
-        playerF.idName = "Player_Debug";
-        playerF.stats = new Stats(21, 60, 20, 10, 5, 8);
-        playerF.animator = playerGO.AddComponent<Animator>();
-
-        // Body parts minimal setup
-        playerF.bodyParts = new List<Fighter.BodyPartData>
-        {
-            new Fighter.BodyPartData(BodyPart.Head, 30),
-            new Fighter.BodyPartData(BodyPart.Torso, 60),
-            new Fighter.BodyPartData(BodyPart.LeftArm, 30),
-            new Fighter.BodyPartData(BodyPart.RightArm, 30),
-            new Fighter.BodyPartData(BodyPart.LeftLeg, 30),
-            new Fighter.BodyPartData(BodyPart.RightLeg, 30),
-        };
-
-        // Create Enemy
-        var enemyGO = new GameObject("Enemy_Debug");
-        enemyGO.transform.position = spawnPoints != null && spawnPoints.Count > 0 ? spawnPoints[0].position : Vector3.right * 2f;
-        var enemyF = enemyGO.AddComponent<EnemyFighter>();
-        enemyF.team = Team.ENEMIES;
-        enemyF.idName = "Enemy_Debug";
-        enemyF.stats = new Stats(21, 60, 15, 8, 5, 6);
-        enemyF.animator = enemyGO.AddComponent<Animator>();
-        enemyF.bodyParts = new List<Fighter.BodyPartData>
-        {
-            new Fighter.BodyPartData(BodyPart.Head, 30),
-            new Fighter.BodyPartData(BodyPart.Torso, 60),
-            new Fighter.BodyPartData(BodyPart.LeftArm, 30),
-            new Fighter.BodyPartData(BodyPart.RightArm, 30),
-            new Fighter.BodyPartData(BodyPart.LeftLeg, 30),
-            new Fighter.BodyPartData(BodyPart.RightLeg, 30),
-        };
-
-        // Ensure CombatManager references
-        this.fighters = new Fighter[] { playerF, enemyF };
-        foreach (var fgtr in this.fighters)
-        {
-            fgtr.combatManager = this;
-        }
-        this.MakeTeams();
-        this.SortFightersBySpeed();
-        this.fighterIndex = -1;
-        this.isCombatActive = true;
-        this.combatStatus = CombatStatus.NEXT_TURN;
-        IsReady = true;
-
-        Debug.Log("[CombatManager.DebugCombat] Spawned 1v1 debug combat. Players=" + playerTeam.Length + " Enemies=" + enemyTeam.Length);
-    }*/
 
     void Start()
     {
@@ -158,8 +91,8 @@ public class CombatManager : MonoBehaviour
 
     public void EncuentrosAleatorios()
     {
-        Cursor.lockState = CursorLockMode.None; // Desbloquear el cursor
-        Cursor.visible = true; // Hacer el cursor visible
+        Cursor.lockState = CursorLockMode.None; 
+        Cursor.visible = true; 
 
         for (int i = 0; i < GameManager.Instance.enemyAnount; i++)
         {
@@ -503,43 +436,49 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    private void InstantiatePlayerFighters()
+private void InstantiatePlayerFighters()
+{
+
+    if (statusPanel2 != null)
+        statusPanel2.gameObject.SetActive(false);
+
+
+    if (statusPanel1 != null)
+        statusPanel1.gameObject.SetActive(true);
+
+    for (int i = 0; i < enemyDataBase.EnemyDB.Count; i++)
     {
-        for (int i = 0; i < enemyDataBase.EnemyDB.Count; i++)
+        if (enemyDataBase.EnemyDB[i].isMainCharacter)
         {
-            if (enemyDataBase.EnemyDB[i].isMainCharacter)
-            {
-                GameObject mainCharacter = Instantiate(
-                    enemyDataBase.EnemyDB[i].enemyPrefab,
-                    mainCharacterPos.transform.position,
-                    Quaternion.Euler(-0.4f, -90, 0),
-                    playerParent.transform
-                );
-                mainCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel1, enemiesPanel, bodyPartPanel);
-                var newFighter = mainCharacter.GetComponent<PlayerFighter>();
-                GameManager.Instance.character1 = newFighter;
-                GameManager.Instance.ApplySavedStatusToFighter(newFighter);
+            GameObject mainCharacter = Instantiate(
+                enemyDataBase.EnemyDB[i].enemyPrefab,
+                mainCharacterPos.transform.position,
+                Quaternion.Euler(-0.4f, -90, 0),
+                playerParent.transform
+            );
+            mainCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel1, enemiesPanel, bodyPartPanel);
+            var newFighter = mainCharacter.GetComponent<PlayerFighter>();
+            GameManager.Instance.character1 = newFighter;
+            GameManager.Instance.ApplySavedStatusToFighter(newFighter);
+        }
+        else if (enemyDataBase.EnemyDB[i].isSecondaryCharacter && GameManager.Instance.hasRecruitedSecondary)
+        {
+            if (statusPanel2 != null)
+                statusPanel2.gameObject.SetActive(true);
 
-
-            }
-            else if (enemyDataBase.EnemyDB[i].isSecondaryCharacter && GameManager.Instance.hasRecruitedSecondary)
-            {
-                //solo instanciarlo si está reclutado
-                GameObject secondaryCharacter = Instantiate(
-                    enemyDataBase.EnemyDB[i].enemyPrefab,
-                    secondaryCharacterPos.transform.position,
-                    Quaternion.Euler(-0.4f, -90, 0),
-                    playerParent.transform
-
-                );
-                secondaryCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel2, enemiesPanel, bodyPartPanel);
-                var newFighter = secondaryCharacter.GetComponent<PlayerFighter>();
-                GameManager.Instance.character2 = newFighter;
-                GameManager.Instance.ApplySavedStatusToFighter(newFighter);
-
-
-            }
+            GameObject secondaryCharacter = Instantiate(
+                enemyDataBase.EnemyDB[i].enemyPrefab,
+                secondaryCharacterPos.transform.position,
+                Quaternion.Euler(-0.4f, -90, 0),
+                playerParent.transform
+            );
+            
+            secondaryCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel2, enemiesPanel, bodyPartPanel);
+            var newFighter = secondaryCharacter.GetComponent<PlayerFighter>();
+            GameManager.Instance.character2 = newFighter;
+            GameManager.Instance.ApplySavedStatusToFighter(newFighter);
         }
     }
+}
 
 }
