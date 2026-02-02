@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterSwitcher : MonoBehaviour
 {
     public List<GameObject> characters;
-    public EnemyDataBase fightersDateBase;
+    public globalDataBase fightersDateBase;
     public int currentMainCharacterIndex;
     public int currentSecondaryCharacterIndex;
 

@@ -8,7 +8,7 @@ public class PlayerFighter : Fighter
     public EnemiesPanel enemiesPanel;
     public BodyPartPanel bodyPartPanel;
 
-    public EnemyDataBase fightersDateBase;
+    public globalDataBase fightersDateBase;
     public int figherIndex;
     private int activeAllyIndex;
     public Fighter ally1;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "EnemyDB", menuName = "Enemy/List", order = 1)]
-public class EnemyDataBase : ScriptableObject
+public class globalDataBase : ScriptableObject
 {
     [System.Serializable]
     public struct EnemyStats

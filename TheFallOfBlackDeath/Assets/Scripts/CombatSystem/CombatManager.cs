@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public enum CombatStatus
 {
@@ -23,7 +24,7 @@ public class CombatManager : MonoBehaviour
     public Transform mainCharacterPos;
     public Transform secondaryCharacterPos;
     public GameObject playerParent;
-    public EnemyDataBase enemyDataBase;
+    [FormerlySerializedAs("enemyDataBase")] public globalDataBase globalDataBase;
     public EnemyFighter[] enemyFighters;
     public string groupEnemyName;
     public Fighter[] playerTeam;
@@ -446,12 +447,12 @@ private void InstantiatePlayerFighters()
     if (statusPanel1 != null)
         statusPanel1.gameObject.SetActive(true);
 
-    for (int i = 0; i < enemyDataBase.EnemyDB.Count; i++)
+    for (int i = 0; i < globalDataBase.EnemyDB.Count; i++)
     {
-        if (enemyDataBase.EnemyDB[i].isMainCharacter)
+        if (globalDataBase.EnemyDB[i].isMainCharacter)
         {
             GameObject mainCharacter = Instantiate(
-                enemyDataBase.EnemyDB[i].enemyPrefab,
+                globalDataBase.EnemyDB[i].enemyPrefab,
                 mainCharacterPos.transform.position,
                 Quaternion.Euler(-0.4f, -90, 0),
                 playerParent.transform
@@ -461,13 +462,13 @@ private void InstantiatePlayerFighters()
             GameManager.Instance.character1 = newFighter;
             GameManager.Instance.ApplySavedStatusToFighter(newFighter);
         }
-        else if (enemyDataBase.EnemyDB[i].isSecondaryCharacter && GameManager.Instance.hasRecruitedSecondary)
+        else if (globalDataBase.EnemyDB[i].isSecondaryCharacter && GameManager.Instance.hasRecruitedSecondary)
         {
             if (statusPanel2 != null)
                 statusPanel2.gameObject.SetActive(true);
 
             GameObject secondaryCharacter = Instantiate(
-                enemyDataBase.EnemyDB[i].enemyPrefab,
+                globalDataBase.EnemyDB[i].enemyPrefab,
                 secondaryCharacterPos.transform.position,
                 Quaternion.Euler(-0.4f, -90, 0),
                 playerParent.transform

@@ -2,12 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Serialization;
+
 //TP2 FACUNDO FERREIRO
 public class EnemyFighter : Fighter
 {
     public AIAttackPreference attackPreference = AIAttackPreference.Random;
 
-    public EnemyDataBase EnemyDateBase;
+    [FormerlySerializedAs("EnemyDateBase")] public globalDataBase globalDateBase;
     public int EnemyIndex;
     public IAEnemySimple _IAEnemySimple;
 
@@ -15,9 +17,9 @@ public class EnemyFighter : Fighter
     {
         // Initialize enemy stats safely, falling back if DB is invalid
         Stats safeDefaults = new Stats(5, 30, 10, 8, 5, 5, 20, 0);
-        if (EnemyDateBase != null && EnemyIndex >= 0 && EnemyIndex < EnemyDateBase.EnemyDB.Count)
+        if (globalDateBase != null && EnemyIndex >= 0 && EnemyIndex < globalDateBase.EnemyDB.Count)
         {
-            var data = EnemyDateBase.EnemyDB[EnemyIndex];
+            var data = globalDateBase.EnemyDB[EnemyIndex];
             int level = data.level > 0 ? data.level : safeDefaults.level;
             float maxHp = data.maxHealth > 0 ? data.maxHealth : safeDefaults.maxHealth;
             float hp = data.hp > 0 ? data.hp : safeDefaults.health;

@@ -7,7 +7,7 @@ using TMPro;
 
 public class CharactersUI : MonoBehaviour
 {
-    public EnemyDataBase fightersDateBase;
+    public globalDataBase fightersDateBase;
 
     [Header("Main Character")]
     [SerializeField] private Image _mainCharacterImage;

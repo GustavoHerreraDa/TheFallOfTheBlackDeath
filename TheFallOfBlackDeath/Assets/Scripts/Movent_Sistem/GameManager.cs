@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using TMPro;
+using UnityEngine.Serialization;
 
 
 public class GameManager : MonoBehaviour
@@ -38,7 +39,7 @@ public class GameManager : MonoBehaviour
     }
 
     public PlayerStatusData savedPlayerStatus;
-    public EnemyDataBase globalEnemyDatabase;
+    [FormerlySerializedAs("globalEnemyDatabase")] public globalDataBase globalGlobalDatabase;
     public List<RegionData> Regions = new List<RegionData>();
 
     public GameObject character;
@@ -391,9 +392,9 @@ public class GameManager : MonoBehaviour
         // PASO CRÍTICO: Actualizar la Base de Datos
         // Esto hace que CombatManager.InstantiatePlayerFighters funcione en la próxima pelea
         
-        if (globalEnemyDatabase != null)
+        if (globalGlobalDatabase != null)
         {
-            globalEnemyDatabase.SetSecondaryCharacter(index, true);
+            globalGlobalDatabase.SetSecondaryCharacter(index, true);
         }
         else
         {
