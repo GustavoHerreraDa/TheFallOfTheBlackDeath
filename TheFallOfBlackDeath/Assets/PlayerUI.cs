@@ -84,7 +84,6 @@ public class PlayerUI : MonoBehaviour
         if (_boddyStatus != null)
             _boddyStatus.Refresh();
         
-        GameManager.Instance.OnPlayerStatsUpdated += UpdatePlayerStats;
     }
 
 
@@ -104,23 +103,20 @@ public class PlayerUI : MonoBehaviour
         // 1. Si cambias de personaje (Tu código actual)
         CharacterSwitcher.updateMainCharacterUI += UpdatePlayerStats;
         CharacterSwitcher.updateSecondaryCharacterUI += UpdatePlayerStats;
-
-        // 2. Si cambian los stats, vida o inventario (El código nuevo)
+        
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnPlayerStatsUpdated += UpdatePlayerStats;
         }
-    
-        // 3. Forzar actualización al abrir por si acaso
+        
         UpdatePlayerStats();
     }
 
     void OnDisable()
     {
-        
         CharacterSwitcher.updateMainCharacterUI -= UpdatePlayerStats;
         CharacterSwitcher.updateSecondaryCharacterUI -= UpdatePlayerStats;
-
+        
         /*if (GameManager.Instance != null)
         {
             GameManager.Instance.OnPlayerStatsUpdated -= UpdatePlayerStats;
