@@ -13,13 +13,14 @@ public abstract class Fighter : MonoBehaviour
         public float maxHealth = 100f;
         public float currentHealth;
       
-
+        public PartStatus currentStatus = PartStatus.None;
 
         public BodyPartData(BodyPart part, float health)
         {
             this.part = part;
             this.maxHealth = health;
             this.currentHealth = health;
+            this.currentStatus = PartStatus.None;
         }
 
         public bool IsDestroyed => currentHealth <= 0;
