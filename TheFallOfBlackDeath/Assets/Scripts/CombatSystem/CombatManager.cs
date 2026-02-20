@@ -35,7 +35,6 @@ public class CombatManager : MonoBehaviour
     public bool isCombatActive;
     public CombatStatus combatStatus;
     private Skill currentFighterSkill;
-    public bool isWaitingForQTE = false;
     public int enemyAmount;
     //SPAWN POINTS
     public bool isRadomEncounter = false;
@@ -175,12 +174,7 @@ public class CombatManager : MonoBehaviour
 
                     // Executing fighter skill
                     currentFighterSkill.Run();
-                    
-                    while (isWaitingForQTE) 
-                    {
-                        yield return null; 
-                    }
-                    
+
                     // Wait for fighter skill animation
                     yield return new WaitForSeconds(currentFighterSkill.animationDuration);
 
