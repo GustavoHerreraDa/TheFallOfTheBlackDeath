@@ -71,7 +71,10 @@ public class BodyPartPanel : MonoBehaviour
         {
             // 🔒 El handler es el ÚNICO responsable del highlight
             PartHoverHandler hover = btnGO.AddComponent<PartHoverHandler>();
-            hover.Init(partRenderer, globalHighlightMaterial);
+            
+            // --- UPDATED INIT CALL ---
+            // Pass the skill, target, part, and label for the damage preview
+            hover.Init(partRenderer, globalHighlightMaterial, skill, target, part, label);
         }
         else
         {
@@ -83,7 +86,7 @@ public class BodyPartPanel : MonoBehaviour
 
         return btn;
     }
-
+    
     private Renderer FindPartRenderer(BodyPart part)
     {
         string partName = part.ToString();

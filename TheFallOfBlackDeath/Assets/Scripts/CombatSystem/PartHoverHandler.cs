@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro; // Needed to update the button text
 
 public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
@@ -8,10 +9,24 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
     [SerializeField]
     private Material[] originalMaterials; 
 
-    public void Init(Renderer rend, Material highMat)
+    // --- NEW VARIABLES FOR DAMAGE PREVIEW ---
+    private Skill currentSkill;
+    private Fighter targetFighter;
+    private BodyPart targetPart;
+    private TextMeshProUGUI buttonLabel;
+    private string originalText;
+
+    // Updated Init method to receive the necessary data
+    public void Init(Renderer rend, Material highMat, Skill skill, Fighter target, BodyPart part, TextMeshProUGUI label)
     {
         targetRenderer = rend;
         highlightMaterial = highMat;
+        
+        currentSkill = skill;
+        targetFighter = target;
+        targetPart = part;
+        buttonLabel = label;
+        originalText = label.text; // Store the original text (e.g., "RightArm")
 
         if (rend != null)
         {
@@ -20,17 +35,35 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
             mats.CopyTo(originalMaterials, 0);
         }
     }
+    
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (targetRenderer == null || highlightMaterial == null) return;
-
-        // Reemplazamos TODOS los slots de materiales por el shader de escaneo
-        // Esto elimina el outline blanco mientras está seleccionado
-        Material[] highlightSheet = new Material[targetRenderer.materials.Length];
-        for (int i = 0; i < highlightSheet.Length; i++) {
-            highlightSheet[i] = highlightMaterial;
+        // 1. Visual Highlight (Your existing code)
+        if (targetRenderer != null && highlightMaterial != null)
+        {
+            Material[] highlightSheet = new Material[targetRenderer.materials.Length];
+            for (int i = 0; i < highlightSheet.Length; i++) {
+                highlightSheet[i] = highlightMaterial;
+            }
+            targetRenderer.materials = highlightSheet;
         }
-        targetRenderer.materials = highlightSheet;
+
+        // 2. --- NEW: DAMAGE PREVIEW CALCULATION ---
+        if (currentSkill != null && currentSkill is HealthModSkill healthSkill && targetFighter != null)
+        {
+            // Temporarily set the skill's target part so GetAdjustedMissChance calculates correctly
+            BodyPart previousTarget = healthSkill.BodyPartTarget;
+            healthSkill.BodyPartTarget = targetPart;
+
+            // Calculate potential damage
+            float estimatedDamage = healthSkill.GetEstimatedDamage(targetFighter, targetPart);
+            
+            // Format the text to look juicy (e.g., "RightArm <color=red>[-45]</color>")
+            buttonLabel.text = $"{originalText} <color=#ff3333>[-{(int)estimatedDamage}]</color>";
+
+            // Restore the previous target just in case
+            healthSkill.BodyPartTarget = previousTarget;
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData) => ResetToOriginal();
@@ -39,8 +72,15 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void ResetToOriginal()
     {
+        // 1. Reset Visuals
         if (targetRenderer != null && originalMaterials != null) {
             targetRenderer.materials = originalMaterials;
+        }
+
+        // 2. Reset Text
+        if (buttonLabel != null && originalText != null)
+        {
+            buttonLabel.text = originalText;
         }
     }
 

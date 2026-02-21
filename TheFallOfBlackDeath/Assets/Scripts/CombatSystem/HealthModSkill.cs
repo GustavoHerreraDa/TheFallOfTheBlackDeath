@@ -157,5 +157,34 @@ public class HealthModSkill : Skill
 
         throw new System.InvalidOperationException("HealthModSkill::GetDamage. Unreachable!");
     }
+    
+    public float GetEstimatedDamage(Fighter receiver, BodyPart targetPartType)
+    {
+        // 1. Calculamos el daño base
+        float baseDmg = this.GetModification(receiver);
+
+        // 2. Simulamos la sinergia
+        if (targetPartType != BodyPart.None)
+        {
+            Fighter.BodyPartData targetPart = receiver.GetBodyPart(targetPartType);
+        
+            if (targetPart != null && !targetPart.IsDestroyed)
+            {
+                // Copiamos la misma lógica matemática que tienes en el OnRun()
+                if (targetPart.currentStatus == PartStatus.Corroded && this.damageType == DamageType.Kinetic)
+                {
+                    baseDmg *= 2.5f; // Multiplicador brutal
+                }
+                else if (targetPart.currentStatus == PartStatus.Corroded && this.damageType == DamageType.Thermal)
+                {
+                    baseDmg *= 1.5f; // Multiplicador de Combustión
+                }
+                
+                // (Si en el futuro agregas más sinergias, como daño x2 si está Electrified, las agregas aquí también)
+            }
+        }
+
+        return baseDmg;
+    }
 
 }
