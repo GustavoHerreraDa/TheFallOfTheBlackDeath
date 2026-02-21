@@ -14,6 +14,8 @@ public abstract class Fighter : MonoBehaviour
         public float currentHealth;
       
         public PartStatus currentStatus = PartStatus.None;
+        [Header("Penalizaciones al destruirse")]
+        public List<StatusMod> destructionPenalties = new List<StatusMod>();
 
         public BodyPartData(BodyPart part, float health)
         {
@@ -253,51 +255,41 @@ public abstract class Fighter : MonoBehaviour
 
     private void OnBodyPartDestroyed(BodyPartData part)
     {
-        
-        // 1. Notificar al evento (para la UI)
+        // 1. Notificar al evento
         OnBodyPartDestroyedEvent?.Invoke(part.part);
         
         if (partDestroyedVFX != null)
         {
-            // Usamos tu función GetHitPoint() que ya tiene lógica de seguridad
-            // Si la parte no tiene punto asignado, usará el DamagePivot (el pecho/centro)
             Transform spawnLocation = GetHitPoint(part.part);
-            
-            GameObject vfx = Instantiate(partDestroyedVFX, spawnLocation.position, spawnLocation.rotation);
+            Instantiate(partDestroyedVFX, spawnLocation.position, spawnLocation.rotation);
         }
         
-        // 2. OCULTAR LA MALLA (MESH)
+        // 2. Ocultar la malla
         HidePartMesh(part.part);
 
+        // 3. NUEVA LÓGICA DE BALANCEO: Aplicar penalizaciones desde el Inspector
+        foreach (StatusMod penalty in part.destructionPenalties)
+        {
+            if (penalty != null)
+            {
+                this.statusMods.Add(penalty);
+                Debug.Log($"{idName} sufrió una penalización de {penalty.amount} en {penalty.type} por perder {part.part}");
+            }
+        }
+
+        // 4. Lógica de reglas "Duras" (Cosas que no son solo restas de stats)
         switch (part.part)
         {
             case BodyPart.Head:
-                Debug.Log("Cabeza destruida → muerte instantánea");
-                ModifyHealth(-stats.health);
-                break;
             case BodyPart.Torso:
-                Debug.Log("Torso destruido → muerte instantánea");
+                Debug.Log($"{part.part} destruido → muerte instantánea");
                 ModifyHealth(-stats.health);
                 break;
             case BodyPart.LeftLeg:
-                Debug.Log("Piernas destruidas → no puede moverse");
-                legBroken = true;
-                //modedStats.speed -= 5;
-                break;
             case BodyPart.RightLeg:
-                Debug.Log("Piernas destruidas → no puede moverse");
+                Debug.Log("Piernas destruidas → flag legBroken activada");
                 legBroken = true;
-                //modedStats.speed -= 5;
                 break;
-            case BodyPart.RightArm:
-                Debug.Log("Brazos destruidos → no puede atacar");
-                modedStats.attack -= 10;
-                break;
-            case BodyPart.LeftArm:
-                Debug.Log("Brazos destruidos → no puede atacar");
-                modedStats.attack -= 10;
-                break;
-                
         }
     }
 

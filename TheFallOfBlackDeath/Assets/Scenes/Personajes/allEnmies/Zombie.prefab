@@ -31,6 +31,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8587871857291689939}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1997501815185043262
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8825937113565346854}
+  - component: {fileID: 2338059308173478690}
+  m_Layer: 6
+  m_Name: LegRPenaltie
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8825937113565346854
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997501815185043262}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6661930053333581850}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2338059308173478690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997501815185043262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
+  amount: -10
 --- !u!1 &2473935840786194241
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,6 +133,8 @@ MonoBehaviour:
   HasItemInInventory: 0
   ItemsNeeded: []
   requiredParts: 01000000
+  damageType: 0
+  statusToApply: 0
   amount: -50
   modType: 0
   critChance: 0
@@ -199,6 +247,98 @@ MonoBehaviour:
   expireMessage: the blessing fade
   turnDuration: 4
   percentage: 0.2
+--- !u!1 &3758632617080536060
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5901818517603352207}
+  - component: {fileID: 5766245719923857353}
+  m_Layer: 6
+  m_Name: ArmRPenaltie
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5901818517603352207
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3758632617080536060}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6661930053333581850}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5766245719923857353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3758632617080536060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  amount: 100
+--- !u!1 &4337024349513101487
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 954016406784690241}
+  - component: {fileID: 3558749733039608141}
+  m_Layer: 6
+  m_Name: ArmLPenaltie
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &954016406784690241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4337024349513101487}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6661930053333581850}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3558749733039608141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4337024349513101487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  amount: 100
 --- !u!1 &4550523899469940420
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,6 +679,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6359360385344956253}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6600344881458608174
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6661930053333581850}
+  - component: {fileID: 3131483253165813050}
+  m_Layer: 6
+  m_Name: LegLPenaltie
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6661930053333581850
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6600344881458608174}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8825937113565346854}
+  - {fileID: 954016406784690241}
+  - {fileID: 5901818517603352207}
+  m_Father: {fileID: 8204355791575303952}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3131483253165813050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6600344881458608174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
+  amount: -10
 --- !u!1 &6721876283865533393
 GameObject:
   m_ObjectHideFlags: 0
@@ -735,6 +924,7 @@ Transform:
   - {fileID: 8736713319817051504}
   - {fileID: 6736966204008527179}
   - {fileID: 529149971522100949}
+  - {fileID: 6661930053333581850}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8204355791406637776
@@ -754,26 +944,42 @@ MonoBehaviour:
     hitPoint: {fileID: 8445027268797374945}
     maxHealth: 50
     currentHealth: 50
+    currentStatus: 0
+    destructionPenalties: []
   - part: 2
     hitPoint: {fileID: 3640375067332182741}
     maxHealth: 50
     currentHealth: 50
+    currentStatus: 0
+    destructionPenalties: []
   - part: 5
     hitPoint: {fileID: 4129036882060401883}
     maxHealth: 10
     currentHealth: 10
+    currentStatus: 0
+    destructionPenalties:
+    - {fileID: 5766245719923857353}
   - part: 4
     hitPoint: {fileID: 8721678896434276945}
     maxHealth: 10
     currentHealth: 10
+    currentStatus: 0
+    destructionPenalties:
+    - {fileID: 3558749733039608141}
   - part: 3
     hitPoint: {fileID: 3704595152712898423}
     maxHealth: 1
     currentHealth: 1
+    currentStatus: 0
+    destructionPenalties:
+    - {fileID: 2338059308173478690}
   - part: 6
     hitPoint: {fileID: 3027497354999501266}
     maxHealth: 1
     currentHealth: 1
+    currentStatus: 0
+    destructionPenalties:
+    - {fileID: 3131483253165813050}
   partDestroyedVFX: {fileID: 6087500944831947826, guid: 700ae01d1c4cad541b0109731b13ee30, type: 3}
   team: 1
   idName: Zombie
