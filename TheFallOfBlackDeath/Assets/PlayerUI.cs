@@ -83,6 +83,7 @@ public class PlayerUI : MonoBehaviour
 
         if (_boddyStatus != null)
             _boddyStatus.Refresh();
+        
     }
 
 
@@ -99,14 +100,27 @@ public class PlayerUI : MonoBehaviour
     //Actualizo la UI en cada recarga para mostrar los cambios cuando equipo un item.
     void OnEnable()
     {
+        // 1. Si cambias de personaje (Tu código actual)
         CharacterSwitcher.updateMainCharacterUI += UpdatePlayerStats;
         CharacterSwitcher.updateSecondaryCharacterUI += UpdatePlayerStats;
+        
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnPlayerStatsUpdated += UpdatePlayerStats;
+        }
+        
+        UpdatePlayerStats();
     }
 
     void OnDisable()
     {
         CharacterSwitcher.updateMainCharacterUI -= UpdatePlayerStats;
         CharacterSwitcher.updateSecondaryCharacterUI -= UpdatePlayerStats;
+        
+        /*if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnPlayerStatsUpdated -= UpdatePlayerStats;
+        }*/
     }
 
 

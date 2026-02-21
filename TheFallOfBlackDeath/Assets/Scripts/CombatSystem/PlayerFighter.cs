@@ -18,10 +18,10 @@ public class PlayerFighter : Fighter
     private Skill skillToBeExecuted;
 
     private List<Fighter> allies;
-
+ 
     void Awake()
     {
-        // Initialize stats with safe defaults in case DB is missing/invalid
+        //Esto es por si el globaldatabase falla en algun momento
         Stats safeDefaults = new Stats(21, 60, 60, 45, 20, 20, 20);
 
         if (fightersDateBase != null && figherIndex >= 0 && figherIndex < fightersDateBase.EnemyDB.Count)
@@ -52,6 +52,17 @@ public class PlayerFighter : Fighter
         allies = new List<Fighter>();
         allies.Add(this); // Agregar al jugador actual como el primer aliado activo
         activeAllyIndex = 0; // Establecer el jugador actual como el aliado activo inicialmente
+        
+        
+        //ESTO FUNCIONA PORQUE MODIFIQUE EL ORDEN DE EJECUCION PARA QUE PRIMERO SEA EL GAME MANAGER
+        if (GameManager.Instance != null)
+        {
+            if (GameManager.Instance.savedPlayerStatus != null && GameManager.Instance.savedPlayerStatus.maxHealth > 0)
+            {
+                GameManager.Instance.ApplySavedStatusToFighter(this);
+                Debug.Log($"[PlayerFighter] Stats sincronizados desde GameManager. Ataque actual: {stats.attack}");
+            }
+        }    
     }
 
     public override void InitTurn()

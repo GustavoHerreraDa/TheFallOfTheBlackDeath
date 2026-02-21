@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
 
         public List<float> bodyPartsHealth = new List<float>();
     }
+    
+    public event System.Action OnPlayerStatsUpdated;
 
     public PlayerStatusData savedPlayerStatus;
     [FormerlySerializedAs("globalEnemyDatabase")] public globalDataBase globalGlobalDatabase;
@@ -65,6 +67,12 @@ public class GameManager : MonoBehaviour
         IDLE_STATE,
         SAFE_ZONE
 
+    }
+    
+    public void RefreshUI()
+    {
+        // El ?.Invoke() significa: "Si hay alguien escuchando, avísale".
+        OnPlayerStatsUpdated?.Invoke();
     }
 
     //BATTLE
@@ -320,18 +328,24 @@ public class GameManager : MonoBehaviour
             spirit = s.spirit,
             speed = s.speed,
             bodyPartsHealth = new List<float>()
+            
         };
-
+        
         foreach (var part in fighter.bodyParts)
             savedPlayerStatus.bodyPartsHealth.Add(part.currentHealth);
-
-        return s;
+        
+        {
+            return s;
+            RefreshUI();
+        }
+        
     }
 
 
     public void RestorePlayerState()
     {
         ApplySavedStatusToFighter(character1);
+        RefreshUI();
     }
 
     public void ApplySavedStatusToFighter(PlayerFighter fighter)
@@ -365,6 +379,7 @@ public class GameManager : MonoBehaviour
         var maxes = fighter.bodyParts.Select(bp => (int)bp.maxHealth);
         //se combinan en una tupla 
         return currents.Zip(maxes, (c, m) => (c, m));
+        
     }
 
 

@@ -43,7 +43,6 @@ public class InventoryManager : MonoBehaviour
         DialogueManager.OnGiveItem += HandleGiveItem;
     }
 
-    // Desuscribirse (MUY IMPORTANTE)
     void OnDisable()
     {
         DialogueManager.OnGiveItem -= HandleGiveItem;
@@ -61,7 +60,7 @@ public class InventoryManager : MonoBehaviour
             InventoryManager.instance.pool = new List<InventoryUI>();
         }
 
-        // Build item cache for faster lookups and safety
+
         _itemCache = new Dictionary<int, InventoryDateBase.Object>();
         if (datebase != null && datebase.DateBase != null)
         {

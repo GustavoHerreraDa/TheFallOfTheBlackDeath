@@ -7,6 +7,10 @@ public enum HealthModType
 
 public class HealthModSkill : Skill
 {
+    [Header("Synergy Settings")]
+    public DamageType damageType;
+    public PartStatus statusToApply = PartStatus.None;
+    
     [Header("Health Mod")]
     public float amount;
     public HealthModType modType;
@@ -25,6 +29,40 @@ public class HealthModSkill : Skill
 
         Vector3 textPos = receiver.transform.position + Vector3.up * 2f;
 
+        // --- LÓGICA DE SINERGIAS (NUEVO) ---
+        bool synergyTriggered = false;
+
+        if (this.BodyPartTarget != BodyPart.None)
+        {
+            Fighter.BodyPartData targetPart = receiver.GetBodyPart(this.BodyPartTarget);
+        
+            if (targetPart != null && !targetPart.IsDestroyed)
+            {
+                // EJEMPLO 1: Impacto sobre armadura derretida
+                if (targetPart.currentStatus == PartStatus.Corroded && this.damageType == DamageType.Kinetic)
+                {
+                    dmg *= 2.5f; // Multiplicador brutal
+                    synergyTriggered = true;
+                    targetPart.currentStatus = PartStatus.Bleeding; // Evoluciona el estado
+                    this.messages.Enqueue("¡ASTILLAMIENTO CRÍTICO! Armadura rota.");
+                }
+                // EJEMPLO 2: Combustión (Fuego sobre Químico)
+                else if (targetPart.currentStatus == PartStatus.Corroded && this.damageType == DamageType.Thermal)
+                {
+                    dmg *= 1.5f;
+                    synergyTriggered = true;
+                    targetPart.currentStatus = PartStatus.Burning;
+                    this.messages.Enqueue("¡COMBUSTIÓN QUÍMICA!");
+                }
+            
+                // Si la habilidad aplica un estado nuevo y no hubo sinergia que lo sobreescriba
+                if (!synergyTriggered && this.statusToApply != PartStatus.None)
+                {
+                    targetPart.currentStatus = this.statusToApply;
+                    this.messages.Enqueue($"{targetPart.part} ahora está {this.statusToApply}");
+                }
+            }
+        }
         
         if (dice <= adjustedMissChance)
         {
