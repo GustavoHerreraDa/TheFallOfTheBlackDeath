@@ -78,12 +78,18 @@ public class HealthModSkill : Skill
             dmg *= 2f;
             this.messages.Enqueue("Critical hit!");
             this.messages.Enqueue($"Hit for {(int)dmg} to {receiver.idName}");
-            FloatingTextManager.Instance.ShowText($"-{(int)dmg}!", textPos, Color.yellow);
+            FloatingTextManager.Instance.ShowText($"-{(int)dmg}!", textPos, Color.yellow, true);
+            //Para el game feel
+            CameraManager.Instance.TriggerHitStop(0.15f);
+            CameraManager.Instance.TriggerShake(0.3f, 0.6f);
         }
         else
         {
             this.messages.Enqueue($"Hit for {(int)dmg} to {receiver.idName}");
             FloatingTextManager.Instance.ShowText($"-{(int)dmg}", textPos, Color.red);
+            
+            // ¡EL JUICE PARA EL GOLPE NORMAL! (Temblor suave, sin Hit Stop)
+            CameraManager.Instance.TriggerShake(0.1f, 0.15f);
         }
 
         if (this.BodyPartTarget != BodyPart.None)

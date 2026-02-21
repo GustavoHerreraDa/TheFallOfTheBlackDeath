@@ -266,8 +266,13 @@ public abstract class Fighter : MonoBehaviour
         
         // 2. Ocultar la malla
         HidePartMesh(part.part);
-
+        
+        CameraManager.Instance.TriggerHitStop(0.25f); // Hit stop muy pronunciado
+        CameraManager.Instance.TriggerShake(0.3f, 0.8f); // Temblor violento
+        CameraManager.Instance.TriggerDamageGlitch(); //aberración cromática
+        
         // 3. NUEVA LÓGICA DE BALANCEO: Aplicar penalizaciones desde el Inspector
+        
         foreach (StatusMod penalty in part.destructionPenalties)
         {
             if (penalty != null)

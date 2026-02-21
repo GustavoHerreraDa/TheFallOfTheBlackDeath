@@ -7,7 +7,16 @@ using UnityEngine.Rendering.Universal; // NECESARIO PARA URP
 public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance;
+    
+    [Header("Juice / Game Feel")]
+    [SerializeField] private float defaultShakeDuration = 0.2f;
+    [SerializeField] private float defaultShakeMagnitude = 0.3f;
+    [SerializeField] private float defaultHitStopDuration = 0.1f;
 
+    private Coroutine shakeCoroutine;
+    
+    
+    
     private CombatManager combatManager;
     private ChromaticAberration chromaticAberration;
     [Header("Cameras")]
@@ -243,5 +252,56 @@ public class CameraManager : MonoBehaviour
         }
 
         chromaticAberration.intensity.value = 0;
+    }
+    
+    
+    public void TriggerShake(float duration = -1f, float magnitude = -1f)
+    {
+        if (duration < 0) duration = defaultShakeDuration;
+        if (magnitude < 0) magnitude = defaultShakeMagnitude;
+
+        if (shakeCoroutine != null) StopCoroutine(shakeCoroutine);
+        shakeCoroutine = StartCoroutine(ShakeRoutine(duration, magnitude));
+    }
+
+    private IEnumerator ShakeRoutine(float duration, float magnitude)
+    {
+        Vector3 originalLocalPos = mainCamera.transform.localPosition;
+        float elapsed = 0.0f;
+
+        while (elapsed < duration)
+        {
+            // Generamos posiciones aleatorias para simular la vibración
+            float x = Random.Range(-1f, 1f) * magnitude;
+            float y = Random.Range(-1f, 1f) * magnitude;
+
+            mainCamera.transform.localPosition = new Vector3(originalLocalPos.x + x, originalLocalPos.y + y, originalLocalPos.z);
+            
+            // IMPORTANTE: Usamos unscaledDeltaTime para que la cámara tiemble incluso si el tiempo está congelado
+            elapsed += Time.unscaledDeltaTime; 
+            yield return null;
+        }
+
+        // Devolvemos la cámara a su posición original
+        mainCamera.transform.localPosition = originalLocalPos;
+    }
+
+    // --- LÓGICA DE HIT STOP (Pausa de Impacto) ---
+    public void TriggerHitStop(float duration = -1f)
+    {
+        if (duration < 0) duration = defaultHitStopDuration;
+        StartCoroutine(HitStopRoutine(duration));
+    }
+
+    private IEnumerator HitStopRoutine(float duration)
+    {
+        // 1. Ralentizamos el tiempo al 5% (casi congelado)
+        Time.timeScale = 0.05f; 
+        
+        // 2. Esperamos en TIEMPO REAL (independiente del timeScale)
+        yield return new WaitForSecondsRealtime(duration); 
+        
+        // 3. Restauramos la velocidad normal del juego
+        Time.timeScale = 1f;
     }
 }
