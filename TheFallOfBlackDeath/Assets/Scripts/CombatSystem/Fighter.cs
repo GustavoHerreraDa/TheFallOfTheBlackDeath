@@ -268,8 +268,11 @@ public abstract class Fighter : MonoBehaviour
         HidePartMesh(part.part);
         
         CameraManager.Instance.TriggerHitStop(0.25f); // Hit stop muy pronunciado
-        CameraManager.Instance.TriggerShake(0.3f, 0.8f); // Temblor violento
-        CameraManager.Instance.TriggerDamageGlitch(); //aberración cromática
+        CameraManager.Instance.TriggerShake(5.0f);    // ¡Temblor híper violento (Fuerza 5)!
+        CameraManager.Instance.TriggerDamageGlitch(); // Aberración cromática
+        
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.armorBreakSound, 1f);
         
         // 3. NUEVA LÓGICA DE BALANCEO: Aplicar penalizaciones desde el Inspector
         

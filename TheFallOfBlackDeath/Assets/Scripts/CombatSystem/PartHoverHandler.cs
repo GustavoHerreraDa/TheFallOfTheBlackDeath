@@ -38,6 +38,10 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
     
     public void OnPointerEnter(PointerEventData eventData)
     {
+        
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.uiHoverSound, 0.5f, false);
+        
         // 1. Visual Highlight (Your existing code)
         if (targetRenderer != null && highlightMaterial != null)
         {

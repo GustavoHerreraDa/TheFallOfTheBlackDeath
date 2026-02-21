@@ -44,7 +44,7 @@ public class HealthModSkill : Skill
                     dmg *= 2.5f; // Multiplicador brutal
                     synergyTriggered = true;
                     targetPart.currentStatus = PartStatus.Bleeding; // Evoluciona el estado
-                    this.messages.Enqueue("¡ASTILLAMIENTO CRÍTICO! Armadura rota.");
+                    this.messages.Enqueue("¡EXTREME CRÍTIC!");
                 }
                 // EJEMPLO 2: Combustión (Fuego sobre Químico)
                 else if (targetPart.currentStatus == PartStatus.Corroded && this.damageType == DamageType.Thermal)
@@ -79,17 +79,25 @@ public class HealthModSkill : Skill
             this.messages.Enqueue("Critical hit!");
             this.messages.Enqueue($"Hit for {(int)dmg} to {receiver.idName}");
             FloatingTextManager.Instance.ShowText($"-{(int)dmg}!", textPos, Color.yellow, true);
-            //Para el game feel
+            
+            // --- JUICE PARA EL CRÍTICO ---
             CameraManager.Instance.TriggerHitStop(0.15f);
-            CameraManager.Instance.TriggerShake(0.3f, 0.6f);
+            CameraManager.Instance.TriggerShake(2.5f);
+            
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.hitCriticalSound, 1f);
         }
         else
         {
             this.messages.Enqueue($"Hit for {(int)dmg} to {receiver.idName}");
             FloatingTextManager.Instance.ShowText($"-{(int)dmg}", textPos, Color.red);
             
-            // ¡EL JUICE PARA EL GOLPE NORMAL! (Temblor suave, sin Hit Stop)
-            CameraManager.Instance.TriggerShake(0.1f, 0.15f);
+            // Temblor suave, sin Hit Stop
+            CameraManager.Instance.TriggerShake(0.5f); // Fuerza baja para golpe estándar
+            
+            AudioClip hitSoundToPlay = this.customImpactSound != null ? this.customImpactSound : AudioManager.Instance.hitNormalSound;
+
+            AudioManager.Instance.PlaySFX(hitSoundToPlay, 0.7f);
         }
 
         if (this.BodyPartTarget != BodyPart.None)

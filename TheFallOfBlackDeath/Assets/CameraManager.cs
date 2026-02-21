@@ -1,8 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering; // NECESARIO
-using UnityEngine.Rendering.Universal; // NECESARIO PARA URP
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using Cinemachine; // ADD THIS
 
 public class CameraManager : MonoBehaviour
 {
@@ -57,6 +57,9 @@ public class CameraManager : MonoBehaviour
 
     [SerializeField]
     private float cameraSpeed;
+
+    [Header("Screen Shake (Cinemachine)")]
+    [SerializeField] private CinemachineImpulseSource impulseSource; // ADD THIS
 
     private void Awake()
     {
@@ -255,13 +258,17 @@ public class CameraManager : MonoBehaviour
     }
     
     
-    public void TriggerShake(float duration = -1f, float magnitude = -1f)
+// --- NUEVA LÓGICA DE SCREEN SHAKE CON CINEMACHINE ---
+    public void TriggerShake(float force)
     {
-        if (duration < 0) duration = defaultShakeDuration;
-        if (magnitude < 0) magnitude = defaultShakeMagnitude;
-
-        if (shakeCoroutine != null) StopCoroutine(shakeCoroutine);
-        shakeCoroutine = StartCoroutine(ShakeRoutine(duration, magnitude));
+        if (impulseSource != null)
+        {
+            // Generamos una dirección aleatoria para que cada impacto vibre distinto
+            Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0).normalized;
+            
+            // Disparamos el impulso multiplicando la dirección por la fuerza
+            impulseSource.GenerateImpulse(randomDirection * force); 
+        }
     }
 
     private IEnumerator ShakeRoutine(float duration, float magnitude)
