@@ -93,7 +93,7 @@ public class HealthModSkill : Skill
             FloatingTextManager.Instance.ShowText($"-{(int)dmg}", textPos, Color.red);
             
             // Temblor suave, sin Hit Stop
-            CameraManager.Instance.TriggerShake(0.5f); // Fuerza baja para golpe estándar
+            CameraManager.Instance.TriggerShake(1f); // Fuerza baja para golpe estándar
             
             AudioClip hitSoundToPlay = this.customImpactSound != null ? this.customImpactSound : AudioManager.Instance.hitNormalSound;
 

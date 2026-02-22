@@ -261,7 +261,7 @@ public abstract class Fighter : MonoBehaviour
         if (partDestroyedVFX != null)
         {
             Transform spawnLocation = GetHitPoint(part.part);
-            Instantiate(partDestroyedVFX, spawnLocation.position, spawnLocation.rotation);
+            GameObject vfx = Instantiate(partDestroyedVFX, spawnLocation.position, spawnLocation.rotation, spawnLocation);
         }
         
         // 2. Ocultar la malla
