@@ -21,49 +21,14 @@ public class HealthModSkill : Skill
 
     bool missedAttack = false;
 
-    protected override void OnRun(Fighter receiver)
+protected override void OnRun(Fighter receiver)
     {
-        float dmg = this.GetModification(receiver);
+        float baseDmg = this.GetModification(receiver);
         float dice = Random.Range(0f, 1f);
         float adjustedMissChance = GetAdjustedMissChance(receiver);
-
         Vector3 textPos = receiver.transform.position + Vector3.up * 2f;
 
-        // --- LÓGICA DE SINERGIAS (NUEVO) ---
-        bool synergyTriggered = false;
-
-        if (this.BodyPartTarget != BodyPart.None)
-        {
-            Fighter.BodyPartData targetPart = receiver.GetBodyPart(this.BodyPartTarget);
-        
-            if (targetPart != null && !targetPart.IsDestroyed)
-            {
-                // EJEMPLO 1: Impacto sobre armadura derretida
-                if (targetPart.currentStatus == PartStatus.Corroded && this.damageType == DamageType.Kinetic)
-                {
-                    dmg *= 2.5f; // Multiplicador brutal
-                    synergyTriggered = true;
-                    targetPart.currentStatus = PartStatus.Bleeding; // Evoluciona el estado
-                    this.messages.Enqueue("¡EXTREME CRÍTIC!");
-                }
-                // EJEMPLO 2: Combustión (Fuego sobre Químico)
-                else if (targetPart.currentStatus == PartStatus.Corroded && this.damageType == DamageType.Thermal)
-                {
-                    dmg *= 1.5f;
-                    synergyTriggered = true;
-                    targetPart.currentStatus = PartStatus.Burning;
-                    this.messages.Enqueue("¡COMBUSTIÓN QUÍMICA!");
-                }
-            
-                // Si la habilidad aplica un estado nuevo y no hubo sinergia que lo sobreescriba
-                if (!synergyTriggered && this.statusToApply != PartStatus.None)
-                {
-                    targetPart.currentStatus = this.statusToApply;
-                    this.messages.Enqueue($"{targetPart.part} ahora está {this.statusToApply}");
-                }
-            }
-        }
-        
+        // 1. CHEQUEO DE FALLO
         if (dice <= adjustedMissChance)
         {
             this.messages.Enqueue($"{emitter.idName} missed on {receiver.idName}!");
@@ -72,15 +37,12 @@ public class HealthModSkill : Skill
             return;
         }
 
-        
-        if (dice <= adjustedMissChance + this.critChance)
+        // 2. CHEQUEO DE CRÍTICO Y GAME FEEL
+        bool isCrit = (dice <= adjustedMissChance + this.critChance);
+        if (isCrit)
         {
-            dmg *= 2f;
+            baseDmg *= 2f; // Duplicamos el daño base si es crítico
             this.messages.Enqueue("Critical hit!");
-            this.messages.Enqueue($"Hit for {(int)dmg} to {receiver.idName}");
-            FloatingTextManager.Instance.ShowText($"-{(int)dmg}!", textPos, Color.yellow, true);
-            
-            // --- JUICE PARA EL CRÍTICO ---
             CameraManager.Instance.TriggerHitStop(0.15f);
             CameraManager.Instance.TriggerShake(2.5f);
             
@@ -89,26 +51,79 @@ public class HealthModSkill : Skill
         }
         else
         {
-            this.messages.Enqueue($"Hit for {(int)dmg} to {receiver.idName}");
-            FloatingTextManager.Instance.ShowText($"-{(int)dmg}", textPos, Color.red);
-            
-            // Temblor suave, sin Hit Stop
-            CameraManager.Instance.TriggerShake(1f); // Fuerza baja para golpe estándar
-            
+            CameraManager.Instance.TriggerShake(1f);
             AudioClip hitSoundToPlay = this.customImpactSound != null ? this.customImpactSound : AudioManager.Instance.hitNormalSound;
-
-            AudioManager.Instance.PlaySFX(hitSoundToPlay, 0.7f);
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySFX(hitSoundToPlay, 0.7f);
         }
 
-        if (this.BodyPartTarget != BodyPart.None)
+        // 3. APLICACIÓN DE DAÑO Y SINERGIAS
+        if (this.targeting == SkillTargeting.ALL_OPPONENTS)
         {
-            receiver.ModifyBodyPartHealth(this.BodyPartTarget, dmg);
-            this.messages.Enqueue($"{emitter.idName} hit on {this.BodyPartTarget}!");
+            // ATAQUE EN ÁREA: Le pega a TODAS las partes no destruidas
+            float totalAreaDmg = 0;
+            foreach (var part in receiver.bodyParts)
+            {
+                if (!part.IsDestroyed)
+                {
+                    float finalPartDmg = ApplySynergy(part, baseDmg);
+                    receiver.ModifyBodyPartHealth(part.part, finalPartDmg);
+                    totalAreaDmg += finalPartDmg;
+                }
+            }
+            
+            this.messages.Enqueue($"Hit for {(int)totalAreaDmg} to {receiver.idName} (AoE)");
+            FloatingTextManager.Instance.ShowText($"-{(int)totalAreaDmg}", textPos, isCrit ? Color.yellow : Color.red, isCrit);
+        }
+        else if (this.BodyPartTarget != BodyPart.None)
+        {
+            Fighter.BodyPartData targetPart = receiver.GetBodyPart(this.BodyPartTarget);
+            if (targetPart != null && !targetPart.IsDestroyed)
+            {
+                float finalDmg = ApplySynergy(targetPart, baseDmg);
+                receiver.ModifyBodyPartHealth(this.BodyPartTarget, finalDmg);
+                
+                this.messages.Enqueue($"Hit for {(int)finalDmg} to {receiver.idName}");
+                FloatingTextManager.Instance.ShowText($"-{(int)finalDmg}", textPos, isCrit ? Color.yellow : Color.red, isCrit);
+            }
         }
         else
         {
-            receiver.ModifyHealth(dmg);
+            // ATAQUE GENERAL (A la vida base, sin apuntar a extremidades)
+            receiver.ModifyHealth(baseDmg);
+            this.messages.Enqueue($"Hit for {(int)baseDmg} to {receiver.idName}");
+            FloatingTextManager.Instance.ShowText($"-{(int)baseDmg}", textPos, isCrit ? Color.yellow : Color.red, isCrit);
         }
+    }
+
+    // --- FUNCIÓN AUXILIAR PARA LAS SINERGIAS ---
+    // Mantiene tu OnRun limpio y se asegura de que la matemática sea igual para todos
+    private float ApplySynergy(Fighter.BodyPartData targetPart, float dmg)
+    {
+        bool synergyTriggered = false;
+
+        if (targetPart.currentStatus == PartStatus.Corroded && this.damageType == DamageType.Kinetic)
+        {
+            dmg *= 2.5f; 
+            synergyTriggered = true;
+            targetPart.currentStatus = PartStatus.Bleeding; 
+            this.messages.Enqueue("¡EXTREME CRÍTIC!");
+        }
+        else if (targetPart.currentStatus == PartStatus.Corroded && this.damageType == DamageType.Thermal)
+        {
+            dmg *= 1.5f;
+            synergyTriggered = true;
+            targetPart.currentStatus = PartStatus.Burning;
+            this.messages.Enqueue("¡COMBUSTIÓN QUÍMICA!");
+        }
+
+        if (!synergyTriggered && this.statusToApply != PartStatus.None)
+        {
+            targetPart.currentStatus = this.statusToApply;
+            this.messages.Enqueue($"{targetPart.part} ahora está {this.statusToApply}");
+        }
+
+        return dmg;
     }
 
     private float GetAdjustedMissChance(Fighter receiver)
