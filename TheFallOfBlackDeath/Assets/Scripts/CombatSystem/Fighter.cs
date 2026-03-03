@@ -135,15 +135,7 @@ public abstract class Fighter : MonoBehaviour
             case SkillTargeting.AUTO:
             case SkillTargeting.ALL_ALLIES:
             case SkillTargeting.ALL_OPPONENTS:
-            {
-                Fighter[] enemies = this.combatManager.GetOpposingTeam();
-                foreach (var receiver in enemies)
-                {
-                    
-                    skill.AddReceiver(receiver); 
-                }
-                break;
-            }
+                throw new System.InvalidOperationException("Unimplemented! This skill doesn't need manual targeting.");
             case SkillTargeting.SINGLE_ALLY:
                 return this.combatManager.GetAllyTeam();
             case SkillTargeting.SINGLE_OPPONENT:
