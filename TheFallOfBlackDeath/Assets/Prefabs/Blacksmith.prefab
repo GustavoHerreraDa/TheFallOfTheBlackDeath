@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4259703240449388098}
-  - component: {fileID: 564539071807557134}
+  - component: {fileID: 2499414552199274266}
   m_Layer: 0
   m_Name: Fading Fury
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7305297877295874578}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &564539071807557134
+--- !u!114 &2499414552199274266
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,23 +41,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 969892521961305730}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Script: {fileID: 11500000, guid: cd512efa830145a2a8f36d1adbcb72ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Rest
-  animationDuration: 2
-  targeting: 3
-  BodyPartTarget: 0
+  skillName: ULTIMATE
+  animationDuration: 0
+  targeting: 2
+  BodyPartTarget: 1
   effectPrfb: {fileID: 7904898002847524615, guid: a2ccf81a1d5b163448ebdf66b5e746d6, type: 3}
-  SkillDesc: Heal a bodypart +10
+  SkillDesc: Attack all enemies
   skillType: 0
   iconUI: {fileID: 0}
   animationName: Intimidate
   HasItemInInventory: 0
   ItemsNeeded: []
+  activationSound: {fileID: 0}
+  customImpactSound: {fileID: 0}
+  sanityCost: 40
   requiredParts: 
-  amount: 10
-  modType: 0
+  damageType: 0
+  statusToApply: 1
+  amount: 150
+  modType: 1
   critChance: 0
   missChance: 0
 --- !u!1 &3105780398260842073
@@ -116,7 +121,12 @@ MonoBehaviour:
   animationName: Blow
   HasItemInInventory: 0
   ItemsNeeded: []
+  activationSound: {fileID: 0}
+  customImpactSound: {fileID: 0}
+  sanityCost: 0
   requiredParts: 01000000
+  damageType: 0
+  statusToApply: 0
   amount: -80
   modType: 0
   critChance: 0.7
@@ -304,7 +314,12 @@ MonoBehaviour:
   animationName: Forge
   HasItemInInventory: 0
   ItemsNeeded: []
+  activationSound: {fileID: 0}
+  customImpactSound: {fileID: 0}
+  sanityCost: 0
   requiredParts: 05000000
+  damageType: 0
+  statusToApply: 0
   amount: -15
   modType: 1
   critChance: 0
@@ -473,6 +488,9 @@ MonoBehaviour:
   animationName: Attack
   HasItemInInventory: 0
   ItemsNeeded: []
+  activationSound: {fileID: 0}
+  customImpactSound: {fileID: 0}
+  sanityCost: 0
   requiredParts: 02000000
   message: '{receiver} raises deffense!'
 --- !u!1 &8264631239708923127
@@ -530,7 +548,12 @@ MonoBehaviour:
   animationName: Forge
   HasItemInInventory: 0
   ItemsNeeded: []
+  activationSound: {fileID: 0}
+  customImpactSound: {fileID: 0}
+  sanityCost: 0
   requiredParts: 
+  damageType: 0
+  statusToApply: 0
   amount: -900
   modType: 1
   critChance: 0
@@ -595,26 +618,38 @@ MonoBehaviour:
     hitPoint: {fileID: 2748436024142012363}
     maxHealth: 50
     currentHealth: 50
+    currentStatus: 0
+    destructionPenalties: []
   - part: 2
     hitPoint: {fileID: 4506396638307855813}
     maxHealth: 100
     currentHealth: 100
+    currentStatus: 0
+    destructionPenalties: []
   - part: 4
     hitPoint: {fileID: 2855259568693459355}
     maxHealth: 50
     currentHealth: 50
+    currentStatus: 0
+    destructionPenalties: []
   - part: 5
     hitPoint: {fileID: 2632346583128520102}
     maxHealth: 50
     currentHealth: 50
+    currentStatus: 0
+    destructionPenalties: []
   - part: 3
     hitPoint: {fileID: 1512331033442765950}
     maxHealth: 50
     currentHealth: 50
+    currentStatus: 0
+    destructionPenalties: []
   - part: 6
     hitPoint: {fileID: 4305608650434634873}
     maxHealth: 50
     currentHealth: 50
+    currentStatus: 0
+    destructionPenalties: []
   partDestroyedVFX: {fileID: 0}
   team: 0
   idName: Samus

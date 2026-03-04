@@ -48,6 +48,9 @@ public abstract class Skill : MonoBehaviour
     [Tooltip("El sonido que hace al impactar (ej: explosión de fuego, corte de espada)")]
     public AudioClip customImpactSound;
 
+    [Header("Sanity Cost")]
+    public float sanityCost = 0f;
+
 
     [Header("Body Requirements")]
     public List<BodyPart> requiredParts = new List<BodyPart>();

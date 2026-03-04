@@ -71084,7 +71084,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Follow: {fileID: 1925873523}
-  Distance: 8
+  Distance: 10
   CameraAngleYPOS: 90
   CameraAngleYNEG: 50
 --- !u!114 &840311877
@@ -87465,6 +87465,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 700, y: 0, z: 800}
   m_Center: {x: -350, y: 0, z: -400}
+--- !u!114 &1076175562 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7576671115990054045, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
+  m_PrefabInstance: {fileID: 1226162120}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f8e9086065e0d14ca78d6268a9004c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1076217269
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -99860,6 +99871,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1683490394601153806, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -809
+      objectReference: {fileID: 0}
+    - target: {fileID: 1683490394601153806, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 477
+      objectReference: {fileID: 0}
     - target: {fileID: 5480911531806588925, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.10414696
@@ -99900,6 +99919,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5480911531806588926, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
+      propertyPath: sanity
+      value: 
+      objectReference: {fileID: 1076175562}
     - target: {fileID: 5480911531806588926, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
       propertyPath: character
       value: 
@@ -132363,7 +132386,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3185119010548182552, guid: ef7635904a56bdd408dc3e5da93ce560, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00012034173
+      value: -0.000008153045
       objectReference: {fileID: 0}
     - target: {fileID: 3450030355710622933, guid: ef7635904a56bdd408dc3e5da93ce560, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -137047,6 +137070,7 @@ MonoBehaviour:
   corduraActual: 0
   perdidaDeCordura: 2
   sanityThreshold: 20
+  desperationThreshold: 50
   textCordura: {fileID: 1697185947}
   vignetteMaterial: {fileID: 2100000, guid: d891e51cee27ab849bedea60b6aad008, type: 2}
   lowSanityAudio: {fileID: 1697185946}

@@ -21,6 +21,28 @@ public class HealthModSkill : Skill
 
     bool missedAttack = false;
 
+    // Calculates final crit chance with emitter stats and Desperation passive
+    protected virtual float GetAdjustedCritChance()
+    {
+        float adjusted = Mathf.Clamp01(this.critChance);
+
+        // Bonus from emitter's speed
+        var stats = this.emitter != null ? this.emitter.GetCurrentStats() : null;
+        if (stats != null)
+        {
+            adjusted += stats.speed / 200f;
+        }
+
+        // Desperation bonus if emitter is PlayerFighter and sanity is low
+        var gm = GameManager.Instance;
+        if (this.emitter is PlayerFighter && gm != null && gm.sanity != null && gm.sanity.IsInDesperation())
+        {
+            adjusted += 0.30f;
+        }
+
+        return Mathf.Clamp01(adjusted);
+    }
+
 protected override void OnRun(Fighter receiver)
     {
         float baseDmg = this.GetModification(receiver);
@@ -38,7 +60,8 @@ protected override void OnRun(Fighter receiver)
         }
 
         // 2. CHEQUEO DE CRÍTICO Y GAME FEEL
-        bool isCrit = (dice <= adjustedMissChance + this.critChance);
+        float adjustedCritChance = GetAdjustedCritChance();
+        bool isCrit = (dice <= adjustedMissChance + adjustedCritChance);
         if (isCrit)
         {
             baseDmg *= 2f; // Duplicamos el daño base si es crítico
@@ -163,13 +186,26 @@ protected override void OnRun(Fighter receiver)
         switch (this.modType)
         {
             case HealthModType.STAT_BASED:
-                Stats emitterStats = this.emitter.GetCurrentStats();
-                Stats receiverStats = receiver.GetCurrentStats();
+                Stats emitterStats = this.emitter != null ? this.emitter.GetCurrentStats() : null;
+                Stats receiverStats = receiver != null ? receiver.GetCurrentStats() : null;
+                if (emitterStats == null || receiverStats == null)
+                {
+                    return this.amount; // Fallback to base amount if stats are unavailable
+                }
+
+                float receiverDefense = receiverStats.deffense;
+                var gm = GameManager.Instance;
+                if (receiver is PlayerFighter && gm != null && gm.sanity != null && gm.sanity.IsInDesperation())
+                {
+                    receiverDefense *= 0.8f; // -20% defense under Desperation
+                }
+
+                receiverDefense = Mathf.Max(1f, receiverDefense); // avoid div by zero or extreme values
 
                 // Fórmula: https://bulbapedia.bulbagarden.net/wiki/Damage
-                float rawDamage = (((2 * emitterStats.level) / 5) + 2) * this.amount * (emitterStats.attack / receiverStats.deffense);
+                float rawDamage = (((2 * emitterStats.level) / 5f) + 2f) * this.amount * (emitterStats.attack / receiverDefense);
 
-                return (rawDamage / 50) + 2;
+                return (rawDamage / 50f) + 2f;
             case HealthModType.FIXED:
                 return this.amount;
             case HealthModType.PERCENTAGE:
