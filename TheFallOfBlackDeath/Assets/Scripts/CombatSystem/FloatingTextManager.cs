@@ -9,7 +9,7 @@ public class FloatingTextManager : MonoBehaviour
     public GameObject floatingTextPrefab;
     public Transform container;
     public int initialPoolSize = 20;
-
+    public Transform textSpawnPoint;
     
     private Stack<FloatingText> textPool = new Stack<FloatingText>();
 
