@@ -63,8 +63,8 @@ public class Movent : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Transition);
         }
 
-        movement.y = RGB.velocity.y;
-        RGB.velocity = movement;
+        movement.y = RGB.linearVelocity.y;
+        RGB.linearVelocity = movement;
 
         Anim.SetFloat("Movent", movent);
         
