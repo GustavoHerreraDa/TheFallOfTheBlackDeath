@@ -39,6 +39,17 @@ public abstract class Skill : MonoBehaviour
     public string animationName;
     public bool HasItemInInventory;
     public List<InventoryManager.InventoryObjectID> ItemsNeeded;
+    
+    [Header("SFX - Habilidad")]
+    [Tooltip("El sonido que hace al lanzarse (ej: disparo, grito, carga mágica)")]
+    public AudioClip activationSound; 
+    
+    // (Opcional si quieres que cada ataque suene distinto al pegar)
+    [Tooltip("El sonido que hace al impactar (ej: explosión de fuego, corte de espada)")]
+    public AudioClip customImpactSound;
+
+    [Header("Sanity Cost")]
+    public float sanityCost = 0f;
 
 
     [Header("Body Requirements")]
@@ -81,7 +92,11 @@ public abstract class Skill : MonoBehaviour
             Debug.Log($"{emitter.idName} no puede usar {skillName} por partes destruidas.");
             return;
         }
-
+        
+        if (AudioManager.Instance != null && this.activationSound != null)
+        {
+            AudioManager.Instance.PlaySFX(this.activationSound, 0.8f);
+        }
         foreach (var receiver in this.receivers)
         {
             this.Animate(receiver);

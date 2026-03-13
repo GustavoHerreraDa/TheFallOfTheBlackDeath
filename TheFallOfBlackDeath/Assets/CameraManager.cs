@@ -1,13 +1,33 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering; // NECESARIO
-using UnityEngine.Rendering.Universal; // NECESARIO PARA URP
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using Cinemachine; // ADD THIS
 
 public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance;
+    
+    [Header("Breathing Effect (Health Based)")]
+    public bool enableBreathing = true;
+    public float normalBreathSpeed = 2f;
+    public float normalBreathAmplitude = 0.5f; // Movimiento suave del FOV
+    
+    public float panicBreathSpeed = 7f; // Hiperventilación
+    public float panicBreathAmplitude = 2.5f; // Pulso profundo
+    [Range(0f, 1f)] public float lowHealthThreshold = 0.4f; // Se agita a partir del 40% de vida
 
+    private float currentBreathTime = 0f;
+    
+    [Header("Juice / Game Feel")]
+    [SerializeField] private float defaultShakeDuration = 0.2f;
+    [SerializeField] private float defaultShakeMagnitude = 0.3f;
+    [SerializeField] private float defaultHitStopDuration = 0.1f;
+
+    private Coroutine shakeCoroutine;
+    
+    
+    
     private CombatManager combatManager;
     private ChromaticAberration chromaticAberration;
     [Header("Cameras")]
@@ -48,6 +68,9 @@ public class CameraManager : MonoBehaviour
 
     [SerializeField]
     private float cameraSpeed;
+
+    [Header("Screen Shake (Cinemachine)")]
+    [SerializeField] private CinemachineImpulseSource impulseSource; // ADD THIS
 
     private void Awake()
     {
@@ -90,13 +113,21 @@ public class CameraManager : MonoBehaviour
                 ChangeCameraPositionToCurrentFighter();
             }
         }
-
-        // Lógica de Zoom (FOV)
+        
+        // Lógica de Zoom (FOV) y Respiración
         if (!isHitActive && mainCamera != null)
         {
-            float targetFOV = isHoveringEnemy ? selectionZoomFOV : defaultFOV;
-            float newFOV = Mathf.Lerp(mainCamera.fieldOfView, targetFOV, Time.deltaTime * selectionZoomSpeed);
-            UpdateFOV(newFOV);
+            if (enableBreathing)
+            {
+                ApplyBreathingEffect();
+            }
+            else
+            {
+                // Tu código original por si decides apagar la respiración
+                float targetFOV = isHoveringEnemy ? selectionZoomFOV : defaultFOV;
+                float newFOV = Mathf.Lerp(mainCamera.fieldOfView, targetFOV, Time.deltaTime * selectionZoomSpeed);
+                UpdateFOV(newFOV);
+            }
         }
 
         // === LÓGICA DE DISTORSIÓN DE LENTE ===
@@ -214,15 +245,15 @@ public class CameraManager : MonoBehaviour
     }
     
     public void TriggerDamageGlitch()
-    {
-        if (chromaticAberration == null) return;
+    {/*if (chromaticAberration == null) return;
 
         // Si ya hay un glitch ocurriendo, lo reiniciamos
         if (glitchCoroutine != null) StopCoroutine(glitchCoroutine);
         glitchCoroutine = StartCoroutine(GlitchRoutine());
+        */
     }
 
-    IEnumerator GlitchRoutine()
+    /*IEnumerator GlitchRoutine()
     {
         // 1. Subida brusca (Impacto)
         float t = 0;
@@ -243,5 +274,99 @@ public class CameraManager : MonoBehaviour
         }
 
         chromaticAberration.intensity.value = 0;
+    }
+    */
+    
+// --- NUEVA LÓGICA DE SCREEN SHAKE CON CINEMACHINE ---
+    public void TriggerShake(float force)
+    {
+        if (impulseSource != null)
+        {
+            // Generamos una dirección aleatoria para que cada impacto vibre distinto
+            Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0).normalized;
+            
+            // Disparamos el impulso multiplicando la dirección por la fuerza
+            impulseSource.GenerateImpulse(randomDirection * force); 
+        }
+    }
+
+    private IEnumerator ShakeRoutine(float duration, float magnitude)
+    {
+        Vector3 originalLocalPos = mainCamera.transform.localPosition;
+        float elapsed = 0.0f;
+
+        while (elapsed < duration)
+        {
+            // Generamos posiciones aleatorias para simular la vibración
+            float x = Random.Range(-1f, 1f) * magnitude;
+            float y = Random.Range(-1f, 1f) * magnitude;
+
+            mainCamera.transform.localPosition = new Vector3(originalLocalPos.x + x, originalLocalPos.y + y, originalLocalPos.z);
+            
+            // IMPORTANTE: Usamos unscaledDeltaTime para que la cámara tiemble incluso si el tiempo está congelado
+            elapsed += Time.unscaledDeltaTime; 
+            yield return null;
+        }
+
+        // Devolvemos la cámara a su posición original
+        mainCamera.transform.localPosition = originalLocalPos;
+    }
+
+    // --- LÓGICA DE HIT STOP (Pausa de Impacto) ---
+    public void TriggerHitStop(float duration = -1f)
+    {
+        if (duration < 0) duration = defaultHitStopDuration;
+        StartCoroutine(HitStopRoutine(duration));
+    }
+
+    private IEnumerator HitStopRoutine(float duration)
+    {
+        // 1. Ralentizamos el tiempo al 5% (casi congelado)
+        Time.timeScale = 0.05f; 
+        
+        // 2. Esperamos en TIEMPO REAL (independiente del timeScale)
+        yield return new WaitForSecondsRealtime(duration); 
+        
+        // 3. Restauramos la velocidad normal del juego
+        Time.timeScale = 1f;
+    }
+    
+    private void ApplyBreathingEffect()
+    {
+        if (combatManager == null || combatManager.fighters == null || FighterIndex < 0 || FighterIndex >= combatManager.fighters.Length) return;
+
+        var currentFighter = combatManager.fighters[FighterIndex];
+        if (currentFighter == null || !currentFighter.isAlive) return;
+        
+        float currentHp = currentFighter.GetCurrentStats().health;
+        float maxHp = currentFighter.GetCurrentStats().maxHealth;
+        float hpPercent = currentHp / Mathf.Max(1f, maxHp);
+        
+        float currentSpeed = normalBreathSpeed;
+        float currentAmplitude = normalBreathAmplitude;
+
+        if (hpPercent <= lowHealthThreshold)
+        {
+            float panicFactor = 1f - (hpPercent / lowHealthThreshold);
+            currentSpeed = Mathf.Lerp(normalBreathSpeed, panicBreathSpeed, panicFactor);
+            currentAmplitude = Mathf.Lerp(normalBreathAmplitude, panicBreathAmplitude, panicFactor);
+        }
+
+        //Calculamos la respiración SOLO si no estamos apuntando al enemigo
+        float breathOffset = 0f;
+        if (!isHoveringEnemy)
+        {
+            
+            currentBreathTime += Time.deltaTime * currentSpeed;
+            
+            breathOffset = Mathf.Sin(currentBreathTime) * currentAmplitude;
+        }
+
+        
+        float targetFOV = (isHoveringEnemy ? selectionZoomFOV : defaultFOV) + breathOffset;
+
+        
+        float newFOV = Mathf.Lerp(mainCamera.fieldOfView, targetFOV, Time.deltaTime * selectionZoomSpeed);
+        UpdateFOV(newFOV);
     }
 }

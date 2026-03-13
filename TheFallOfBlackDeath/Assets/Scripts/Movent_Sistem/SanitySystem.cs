@@ -9,6 +9,7 @@ public class SanitySystem : MonoBehaviour
     public float corduraActual;
     public float perdidaDeCordura = 2f;
     public float sanityThreshold = 20f;
+    public float desperationThreshold = 50f;
 
     [Header("References")]
     public TextMeshProUGUI textCordura;
@@ -124,5 +125,18 @@ public class SanitySystem : MonoBehaviour
             lowSanityAudio.Stop();
             isLowSanityPlaying = false;
         }
+    }
+
+    // Decrease sanity instantly by a given amount and clamp within [0, corduraMax]
+    public void DecreaseSanityInstantly(float amount)
+    {
+        if (amount <= 0f) return; // no-op for non-positive inputs
+        corduraActual = Mathf.Clamp(corduraActual - amount, 0f, corduraMax);
+    }
+
+    // Helper to check if current sanity is in desperation zone
+    public bool IsInDesperation()
+    {
+        return corduraActual <= desperationThreshold;
     }
 }

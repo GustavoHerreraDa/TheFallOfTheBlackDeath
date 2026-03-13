@@ -33,6 +33,13 @@ public class DitherRenderFeature : ScriptableRendererFeature
             var cmd = CommandBufferPool.Get(profilerTag);
             var source = renderingData.cameraData.renderer.cameraColorTargetHandle;
 
+            // EL ESCUDO
+            if (source == null || source.rt == null) 
+            {
+                CommandBufferPool.Release(cmd);
+                return; 
+            }
+
             Blitter.BlitCameraTexture(cmd, source, tempRT, material, 0);
             Blitter.BlitCameraTexture(cmd, tempRT, source);
 
@@ -74,21 +81,13 @@ public class DitherRenderFeature : ScriptableRendererFeature
 
         Camera cam = renderingData.cameraData.camera;
 
-        float xOffset = 0f;
-        float yOffset = 0f;
-
-        if (settings.useScrolling && cam != null)
-        {
-            var euler = cam.transform.eulerAngles;
-            xOffset = 4.0f * euler.y / cam.fieldOfView;
-            yOffset = -2.0f * cam.aspect * euler.x / cam.fieldOfView;
-        }
-
         material.SetTexture("_NoiseTex", settings.noiseTex);
         material.SetTexture("_ColorRampTex", settings.colorRamp);
         material.SetFloat("_NoiseScale", settings.noiseScale);
-        material.SetFloat("_XOffset", xOffset);
-        material.SetFloat("_YOffset", yOffset);
+        
+        // --- LA LÍNEA MÁGICA QUE FALTABA ---
+        // Esto le dice al shader exactamente dónde está la cámara y hacia dónde mira
+        material.SetMatrix("_InverseView", cam.cameraToWorldMatrix);
 
         var desc = renderingData.cameraData.cameraTargetDescriptor;
         pass.Setup(desc);

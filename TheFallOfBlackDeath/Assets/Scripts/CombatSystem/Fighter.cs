@@ -135,7 +135,14 @@ public abstract class Fighter : MonoBehaviour
             case SkillTargeting.AUTO:
             case SkillTargeting.ALL_ALLIES:
             case SkillTargeting.ALL_OPPONENTS:
-                throw new System.InvalidOperationException("Unimplemented! This skill doesn't need manual targeting.");
+            {
+                Fighter[] enemies = this.combatManager.GetOpposingTeam();
+                foreach (var receiver in enemies)
+                {
+                    skill.AddReceiver(receiver); 
+                }
+                break;
+            }
             case SkillTargeting.SINGLE_ALLY:
                 return this.combatManager.GetAllyTeam();
             case SkillTargeting.SINGLE_OPPONENT:
@@ -261,13 +268,21 @@ public abstract class Fighter : MonoBehaviour
         if (partDestroyedVFX != null)
         {
             Transform spawnLocation = GetHitPoint(part.part);
-            Instantiate(partDestroyedVFX, spawnLocation.position, spawnLocation.rotation);
+            GameObject vfx = Instantiate(partDestroyedVFX, spawnLocation.position, spawnLocation.rotation, spawnLocation);
         }
         
         // 2. Ocultar la malla
         HidePartMesh(part.part);
-
+        
+        CameraManager.Instance.TriggerHitStop(0.25f); // Hit stop muy pronunciado
+        CameraManager.Instance.TriggerShake(5.0f);    // ¡Temblor híper violento (Fuerza 5)!
+        CameraManager.Instance.TriggerDamageGlitch(); // Aberración cromática
+        
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.armorBreakSound, 1f);
+        
         // 3. NUEVA LÓGICA DE BALANCEO: Aplicar penalizaciones desde el Inspector
+        
         foreach (StatusMod penalty in part.destructionPenalties)
         {
             if (penalty != null)
