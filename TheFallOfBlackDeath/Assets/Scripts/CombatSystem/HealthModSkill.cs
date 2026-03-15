@@ -46,12 +46,12 @@ public class HealthModSkill : Skill
 protected override void OnRun(Fighter receiver)
     {
         float baseDmg = this.GetModification(receiver);
-        float dice = Random.Range(0f, 1f);
+        float missRoll = Random.value;
         float adjustedMissChance = GetAdjustedMissChance(receiver);
         Vector3 textPos = receiver.transform.position + Vector3.up * 2f;
 
         // 1. CHEQUEO DE FALLO
-        if (dice <= adjustedMissChance)
+        if (missRoll < adjustedMissChance)
         {
             this.messages.Enqueue($"{emitter.idName} missed on {receiver.idName}!");
             FloatingTextManager.Instance.ShowText("Miss!", textPos, Color.gray);
@@ -61,7 +61,10 @@ protected override void OnRun(Fighter receiver)
 
         // 2. CHEQUEO DE CRÍTICO Y GAME FEEL
         float adjustedCritChance = GetAdjustedCritChance();
-        bool isCrit = (dice <= adjustedMissChance + adjustedCritChance);
+        float denom = Mathf.Max(1f - adjustedMissChance, 0.0001f);
+        float effectiveCritChance = Mathf.Clamp01(adjustedCritChance / denom);
+        float critRoll = Random.value;
+        bool isCrit = (critRoll < effectiveCritChance);
         if (isCrit)
         {
             baseDmg *= 2f; // Duplicamos el daño base si es crítico
