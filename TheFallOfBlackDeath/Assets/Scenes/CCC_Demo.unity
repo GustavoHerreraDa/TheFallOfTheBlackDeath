@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: a7324bcdac4a0c24b843ea0a0282b023, type: 2}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -433,55 +433,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 860a00df38bb45747863505b9e88f7fd, type: 3}
---- !u!1 &523785472
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 523785474}
-  - component: {fileID: 523785473}
-  m_Layer: 0
-  m_Name: SanityVisuals
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &523785473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 523785472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b53571f8e3051549800b37f4aaaea99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  globalVolume: {fileID: 1371803038}
-  maxSanityForEffect: 100
-  maxChromaticIntensity: 1
-  baseSanityPulseSpeed: 2
-  panicSanityPulseSpeed: 8
---- !u!4 &523785474
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 523785472}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 53.90857, y: 4.032957, z: 21.865793}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &590966265
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1620,6 +1571,7 @@ GameObject:
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
+  - component: {fileID: 963194231}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1768,7 +1720,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    m_ImpulseDuration: 0.2
+    m_ImpulseDuration: 1
     m_ImpulseType: 0
     m_DissipationRate: 0.25
     m_RawSignal: {fileID: 0}
@@ -1799,7 +1751,29 @@ MonoBehaviour:
     m_DissipationMode: 2
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
-  m_DefaultVelocity: {x: 2, y: 2, z: 0}
+  m_DefaultVelocity: {x: 0.2, y: 0.2, z: 0}
+--- !u!114 &963194231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c11265b855408d42af33d62691f5194, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Cinemachine::Cinemachine.CinemachineIndependentImpulseListener
+  m_ChannelMask: 1
+  m_Gain: 0.2
+  m_Use2DDistance: 0
+  m_UseLocalSpace: 1
+  m_ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &982232655
 GameObject:
   m_ObjectHideFlags: 0
@@ -2497,11 +2471,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4753013448424819418, guid: 778bd09d217ded0469daf82304f20b36, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4753013448424819418, guid: 778bd09d217ded0469daf82304f20b36, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4868773746460608004, guid: 778bd09d217ded0469daf82304f20b36, type: 3}
       propertyPath: m_Name
@@ -3389,7 +3363,7 @@ MonoBehaviour:
   panicBreathAmplitude: 2.5
   lowHealthThreshold: 0.4
   defaultShakeDuration: 0.2
-  defaultShakeMagnitude: 0.3
+  defaultShakeMagnitude: 0
   defaultHitStopDuration: 0.1
   mainCamera: {fileID: 963194227}
   shaderCamera: {fileID: 1172023487}
@@ -5184,4 +5158,3 @@ SceneRoots:
   - {fileID: 1230804151}
   - {fileID: 1103027998}
   - {fileID: 2126321799}
-  - {fileID: 523785474}
