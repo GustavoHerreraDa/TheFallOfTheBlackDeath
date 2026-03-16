@@ -31,6 +31,71 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1415036211754034001}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &996539238965934458
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8821541127227955882}
+  - component: {fileID: 380670529944311470}
+  m_Layer: 6
+  m_Name: Nasty punch
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8821541127227955882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996539238965934458}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.2370467, y: 0.19197543, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8204355791575303952}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &380670529944311470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996539238965934458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: ShootHead
+  animationDuration: 2
+  targeting: 4
+  BodyPartTarget: 0
+  effectPrfb: {fileID: 1429954232896169633, guid: 83036083a4ebcd34f98131bd3cf6f4d2, type: 3}
+  SkillDesc: 
+  skillType: 0
+  iconUI: {fileID: 0}
+  animationName: Attack 2
+  HasItemInInventory: 0
+  ItemsNeeded: []
+  activationSound: {fileID: 0}
+  customImpactSound: {fileID: 0}
+  sanityCost: 0
+  requiredParts: 05000000
+  damageType: 0
+  statusToApply: 0
+  amount: -60
+  modType: 0
+  critChance: 0
+  missChance: 0.7
 --- !u!1 &1997501815185043262
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,7 +153,7 @@ GameObject:
   - component: {fileID: 2473935840786194242}
   - component: {fileID: 2473935840786194243}
   m_Layer: 6
-  m_Name: ShootHead
+  m_Name: Scratch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,128 +194,19 @@ MonoBehaviour:
   SkillDesc: 
   skillType: 0
   iconUI: {fileID: 0}
-  animationName: Attack
+  animationName: Attack 3
   HasItemInInventory: 0
   ItemsNeeded: []
   activationSound: {fileID: 0}
   customImpactSound: {fileID: 0}
-  requiredParts: 01000000
-  damageType: 0
-  statusToApply: 0
-  amount: -50
-  modType: 0
-  critChance: 0
-  missChance: 0
---- !u!1 &2473935841907953189
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2473935841907953190}
-  - component: {fileID: 2473935841111144778}
-  m_Layer: 6
-  m_Name: Blessed
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2473935841907953190
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2473935841907953189}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.2370467, y: 0.19197543, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2516008902096504828}
-  m_Father: {fileID: 8204355791575303952}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2473935841111144778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2473935841907953189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Blessed
-  animationDuration: 1.5
-  targeting: 3
-  BodyPartTarget: 0
-  effectPrfb: {fileID: 1545806602296978, guid: 9e4577abe56a95f4a91d29a0473cd30c, type: 3}
-  SkillDesc: 
-  skillType: 1
-  iconUI: {fileID: 0}
-  animationName: Attack
-  HasItemInInventory: 0
-  ItemsNeeded: []
-  activationSound: {fileID: 0}
-  customImpactSound: {fileID: 0}
+  sanityCost: 0
   requiredParts: 05000000
---- !u!1 &3663964162458456325
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2516008902096504828}
-  - component: {fileID: 7318773401872772419}
-  m_Layer: 6
-  m_Name: Regeneracion
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2516008902096504828
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3663964162458456325}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2473935841907953190}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7318773401872772419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3663964162458456325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b51e2ef5a84f96f409ceb956945277e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectPrfb: {fileID: 1545806602296978, guid: 9e4577abe56a95f4a91d29a0473cd30c, type: 3}
-  animationDuration: 1
-  receptionMessage: (receiver) is blessed
-  applyMessage: The blessing heals (receiver)
-  expireMessage: the blessing fade
-  turnDuration: 4
-  percentage: 0.2
+  damageType: 0
+  statusToApply: 1
+  amount: -25
+  modType: 0
+  critChance: 0.2
+  missChance: 0.2
 --- !u!1 &3758632617080536060
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,7 +403,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -1780621753267509775, guid: 248a8af626575fb4a845d8218a0af7f6, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 53b658a6b8d13214aaaed1cca006c572, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 53b658a6b8d13214aaaed1cca006c572, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.3
   m_Pitch: 1
@@ -575,7 +532,7 @@ GameObject:
   - component: {fileID: 7320465467311383779}
   - component: {fileID: 2473935840519725557}
   m_Layer: 6
-  m_Name: Paralisis
+  m_Name: Fear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -609,7 +566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Paralysis
+  skillName: Fear
   animationDuration: 1.5
   targeting: 4
   BodyPartTarget: 0
@@ -622,6 +579,7 @@ MonoBehaviour:
   ItemsNeeded: []
   activationSound: {fileID: 0}
   customImpactSound: {fileID: 0}
+  sanityCost: 0
   requiredParts: 01000000
 --- !u!1 &5738567212565840000
 GameObject:
@@ -888,6 +846,7 @@ MonoBehaviour:
   ItemsNeeded: []
   activationSound: {fileID: 0}
   customImpactSound: {fileID: 0}
+  sanityCost: 0
   requiredParts: 02000000
   message: '{receiver} raises deffense!'
 --- !u!1 &8204355791575341872
@@ -924,7 +883,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2473935840786194242}
-  - {fileID: 2473935841907953190}
+  - {fileID: 8821541127227955882}
   - {fileID: 7320465467311383779}
   - {fileID: 6745241579275778434}
   - {fileID: 3466180727041470565}
@@ -962,29 +921,29 @@ MonoBehaviour:
     destructionPenalties: []
   - part: 5
     hitPoint: {fileID: 4129036882060401883}
-    maxHealth: 10
-    currentHealth: 10
+    maxHealth: 100
+    currentHealth: 100
     currentStatus: 0
     destructionPenalties:
     - {fileID: 5766245719923857353}
   - part: 4
     hitPoint: {fileID: 8721678896434276945}
-    maxHealth: 10
-    currentHealth: 10
+    maxHealth: 100
+    currentHealth: 100
     currentStatus: 0
     destructionPenalties:
     - {fileID: 3558749733039608141}
   - part: 3
     hitPoint: {fileID: 3704595152712898423}
-    maxHealth: 1
-    currentHealth: 1
+    maxHealth: 100
+    currentHealth: 100
     currentStatus: 0
     destructionPenalties:
     - {fileID: 2338059308173478690}
   - part: 6
     hitPoint: {fileID: 3027497354999501266}
-    maxHealth: 1
-    currentHealth: 1
+    maxHealth: 100
+    currentHealth: 100
     currentStatus: 0
     destructionPenalties:
     - {fileID: 3131483253165813050}
@@ -1020,7 +979,7 @@ MonoBehaviour:
   Enemy: {fileID: 8204355791406637776}
   MaxPhisicalAttacks: 0
   _skills:
-  - {fileID: 2473935841111144778}
+  - {fileID: 0}
   - {fileID: 2473935840519725557}
   - {fileID: 2473935841089252606}
   - {fileID: 2473935840786194243}
@@ -1133,11 +1092,11 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8276472669682167204, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7bf6225885499694c959a9f1ce655205, type: 2}
     - target: {fileID: -8276472669682167204, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: f857a84ae6dd79645935db226c708d35, type: 2}
     - target: {fileID: -8091065807258942056, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
@@ -1161,11 +1120,11 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -7650206968906546411, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7bf6225885499694c959a9f1ce655205, type: 2}
     - target: {fileID: -7650206968906546411, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: f857a84ae6dd79645935db226c708d35, type: 2}
     - target: {fileID: -7107342587403584723, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
@@ -1177,11 +1136,11 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -6873251246516084380, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7bf6225885499694c959a9f1ce655205, type: 2}
     - target: {fileID: -6873251246516084380, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: f857a84ae6dd79645935db226c708d35, type: 2}
     - target: {fileID: -6859734995054323733, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
@@ -1197,11 +1156,11 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -5554106439846000168, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7bf6225885499694c959a9f1ce655205, type: 2}
     - target: {fileID: -5554106439846000168, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: f857a84ae6dd79645935db226c708d35, type: 2}
     - target: {fileID: -5331282631945313676, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
@@ -1229,11 +1188,11 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -666985854777507172, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7bf6225885499694c959a9f1ce655205, type: 2}
     - target: {fileID: -666985854777507172, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: f857a84ae6dd79645935db226c708d35, type: 2}
     - target: {fileID: 827075974287967996, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
@@ -1245,11 +1204,11 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 839202837652029412, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7bf6225885499694c959a9f1ce655205, type: 2}
     - target: {fileID: 839202837652029412, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: f857a84ae6dd79645935db226c708d35, type: 2}
     - target: {fileID: 919132149155446097, guid: a473e27f2222d1b4aa3a266db46e3156, type: 3}
@@ -1517,7 +1476,7 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9125900486774397886, guid: adfd3a4c671647242ac8a362a3d9f9f6, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7bf6225885499694c959a9f1ce655205, type: 2}
     m_RemovedComponents: []
@@ -1599,7 +1558,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9125900486774397886, guid: adfd3a4c671647242ac8a362a3d9f9f6, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7bf6225885499694c959a9f1ce655205, type: 2}
     m_RemovedComponents: []
@@ -1677,7 +1636,7 @@ PrefabInstance:
       value: L_Lwound
       objectReference: {fileID: 0}
     - target: {fileID: 9125900486774397886, guid: adfd3a4c671647242ac8a362a3d9f9f6, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7bf6225885499694c959a9f1ce655205, type: 2}
     m_RemovedComponents: []
@@ -1759,7 +1718,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9125900486774397886, guid: adfd3a4c671647242ac8a362a3d9f9f6, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7bf6225885499694c959a9f1ce655205, type: 2}
     m_RemovedComponents: []
@@ -2213,7 +2172,7 @@ PrefabInstance:
       value: Rwound
       objectReference: {fileID: 0}
     - target: {fileID: 9125900486774397886, guid: adfd3a4c671647242ac8a362a3d9f9f6, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7bf6225885499694c959a9f1ce655205, type: 2}
     m_RemovedComponents: []
@@ -2469,7 +2428,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &6037287041394011380
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2483,6 +2442,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
