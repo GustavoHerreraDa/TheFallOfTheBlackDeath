@@ -70,7 +70,7 @@ protected override void OnRun(Fighter receiver)
             baseDmg *= 2f; // Duplicamos el daño base si es crítico
             this.messages.Enqueue("Critical hit!");
             CameraManager.Instance.TriggerHitStop(0.15f);
-            CameraManager.Instance.TriggerShake(2.5f);
+            
             
             if (AudioManager.Instance != null)
                 AudioManager.Instance.PlaySFX(AudioManager.Instance.hitCriticalSound, 1f);
@@ -146,7 +146,7 @@ protected override void OnRun(Fighter receiver)
         if (!synergyTriggered && this.statusToApply != PartStatus.None)
         {
             targetPart.currentStatus = this.statusToApply;
-            this.messages.Enqueue($"{targetPart.part} ahora está {this.statusToApply}");
+            this.messages.Enqueue($"{targetPart.part} Is now {this.statusToApply}");
         }
 
         return dmg;

@@ -7,6 +7,9 @@ using UnityEngine.Serialization;
 //TP2 FACUNDO FERREIRO
 public class EnemyFighter : Fighter
 {
+    [Header("Narrative")]
+    [Tooltip("Override narrative lines for this enemy. If null, NarrativeLogManager will look up by idName in its database.")]
+    public EnemyNarrativeEntry narrativeData;
     public AIAttackPreference attackPreference = AIAttackPreference.Random;
 
     [FormerlySerializedAs("EnemyDateBase")] public globalDataBase globalDateBase;

@@ -17,6 +17,8 @@ public enum CombatStatus
 
 public class CombatManager : MonoBehaviour
 {
+    [Header("Narrative (Optional)")]
+    public NarrativeLogManager narrativeLogManager;
     public EnemiesPanel enemiesPanel;
     public StatusPanel statusPanel1;
     public StatusPanel statusPanel2;
@@ -81,6 +83,14 @@ public class CombatManager : MonoBehaviour
         Debug.Log($"[CombatManager] Ready={IsReady} fighters={fighters.Length} players={playerTeam.Length} enemies={enemyTeam.Length}");
 
         LogPanel.Write("Battle initiated.");
+        // Narrative: announce enemy encounter lines (optional)
+        if (narrativeLogManager != null && enemyFighters != null)
+        {
+            foreach (var e in enemyFighters)
+            {
+                if (e != null) narrativeLogManager.EnemyEncounter(e);
+            }
+        }
 
         this.combatStatus = CombatStatus.NEXT_TURN;
 
@@ -334,6 +344,11 @@ public class CombatManager : MonoBehaviour
                     }
 
                     LogPanel.Write($"{currentFighter.idName} has the turn.");
+                    // Narrative: contextual enemy turn line (optional)
+                    if (narrativeLogManager != null && currentFighter is EnemyFighter ef)
+                    {
+                        narrativeLogManager.EnemyTurn(ef);
+                    }
                     if (currentFighter.gameObject.activeInHierarchy)
                     {
                         currentFighter.InitTurn();

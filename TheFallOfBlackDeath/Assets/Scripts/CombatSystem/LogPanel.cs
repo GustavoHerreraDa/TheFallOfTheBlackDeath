@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 //TP2 FACUNDO FERREIRO
+[RequireComponent(typeof(CanvasGroup))]
 public class LogPanel : MonoBehaviour
 {
     //Referencia estatica al panel actual
@@ -10,14 +12,70 @@ public class LogPanel : MonoBehaviour
     //Este panel tiene una referencia a la etiqueta de texto
     public TextMeshProUGUI logLabel;
 
+    [Header("Fade Settings")]
+    public float fadeInTime = 0.35f;
+    public float visibleDuration = 2f;
+    public float fadeOutTime = 0.35f;
+
+    private CanvasGroup canvasGroup;
+    private Coroutine fadeRoutine;
+
     private void Awake()
     {
         current = this;
+        canvasGroup = GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        canvasGroup.alpha = 0f;
     }
+
     //Funcion estatica write para escribir un mensaje
     public static void Write(string message)
     {
+        if (current == null)
+            return;
+        if (current.fadeRoutine != null)
+        {
+            current.StopCoroutine(current.fadeRoutine);
+            current.fadeRoutine = null;
+        }
         current.logLabel.text = message;
+        current.fadeRoutine = current.StartCoroutine(current.ShowMessageRoutine());
+    }
+
+    private IEnumerator ShowMessageRoutine()
+    {
+        // Fade In
+        yield return FadeTo(1f, fadeInTime);
+        // Stay visible
+        float t = 0f;
+        while (t < visibleDuration)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
+        // Fade Out
+        yield return FadeTo(0f, fadeOutTime);
+        fadeRoutine = null;
+    }
+
+    private IEnumerator FadeTo(float target, float duration)
+    {
+        float start = canvasGroup.alpha;
+        float elapsed = 0f;
+        if (duration <= 0f)
+        {
+            canvasGroup.alpha = target;
+            yield break;
+        }
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            canvasGroup.alpha = Mathf.Lerp(start, target, t);
+            yield return null;
+        }
+        canvasGroup.alpha = target;
     }
 
     internal static void Write(string idName, string v)

@@ -1751,7 +1751,7 @@ MonoBehaviour:
     m_DissipationMode: 2
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
-  m_DefaultVelocity: {x: 0.2, y: 0.2, z: 0}
+  m_DefaultVelocity: {x: 0.2, y: 0.2, z: 0.2}
 --- !u!114 &963194231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1805,6 +1805,71 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1059884190
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1059884191}
+  - component: {fileID: 1059884192}
+  m_Layer: 6
+  m_Name: Shoot Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1059884191
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059884190}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.2370467, y: 0.19197543, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1084656198}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1059884192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059884190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Shoot Head
+  animationDuration: 2
+  targeting: 4
+  BodyPartTarget: 0
+  effectPrfb: {fileID: 1429954232896169633, guid: 83036083a4ebcd34f98131bd3cf6f4d2, type: 3}
+  SkillDesc: 
+  skillType: 1
+  iconUI: {fileID: 0}
+  animationName: Attack
+  HasItemInInventory: 0
+  ItemsNeeded: []
+  activationSound: {fileID: 8300000, guid: f47d3c1f15c803843a292870a883c9d6, type: 3}
+  customImpactSound: {fileID: 8300000, guid: 0fe09f61574cc9a4c9ec8073db056db6, type: 3}
+  sanityCost: 0
+  requiredParts: 01000000
+  damageType: 0
+  statusToApply: 0
+  amount: -30
+  modType: 0
+  critChance: 0
+  missChance: 0
 --- !u!114 &1074256361 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2808314296040147932, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
@@ -3309,9 +3374,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97497910f9737fb498a668278a08ffff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusMaterials:
-  - status: 1
-    fxMaterial: {fileID: 2100000, guid: b61fd5928cb23044e96a2a8466b6e540, type: 2}
+--- !u!1 &1693014220
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1693014222}
+  - component: {fileID: 1693014221}
+  m_Layer: 0
+  m_Name: NarrativeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1693014221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693014220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f65f05a45d554b9bba53efb01b11a9b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NarrativeLogManager
+  database: {fileID: 11400000, guid: 52fe9507b04f745478780d729a634d26, type: 2}
+  player: {fileID: 0}
+  lowHealthThreshold: 0.3
+--- !u!4 &1693014222
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693014220}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 43.17134, y: 3.51196, z: 35.63065}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1823586575
 GameObject:
   m_ObjectHideFlags: 0
@@ -4317,6 +4426,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1626512603}
     - target: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
+      propertyPath: narrativeLogManager
+      value: 
+      objectReference: {fileID: 1693014221}
+    - target: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
       propertyPath: secondaryCharacterPos
       value: 
       objectReference: {fileID: 982232656}
@@ -4373,6 +4486,10 @@ PrefabInstance:
       value: Nasty Punch
       objectReference: {fileID: 0}
     - target: {fileID: 380670529944311470, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      propertyPath: effectPrfb
+      value: 
+      objectReference: {fileID: 8307060409358143758, guid: 8f767d0b23c8e3b4cb2ead5380b1074d, type: 3}
+    - target: {fileID: 380670529944311470, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: missChance
       value: 0.3
       objectReference: {fileID: 0}
@@ -4404,6 +4521,10 @@ PrefabInstance:
       propertyPath: skillName
       value: Scratch
       objectReference: {fileID: 0}
+    - target: {fileID: 2473935840786194243, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      propertyPath: effectPrfb
+      value: 
+      objectReference: {fileID: 3600389243222657682, guid: 3fee2e03e4bdc854bb38f7bcbca7c75d, type: 3}
     - target: {fileID: 2473935840786194243, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: missChance
       value: 0.1
@@ -4683,7 +4804,10 @@ PrefabInstance:
     - {fileID: 2700512991073721580, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
     - {fileID: 5191570027301989645, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
     - {fileID: 743926977703336700, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8204355791575303952, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 1059884191}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8204355791575341872, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       insertIndex: -1
@@ -5270,3 +5394,4 @@ SceneRoots:
   - {fileID: 1230804151}
   - {fileID: 1103027998}
   - {fileID: 2126321799}
+  - {fileID: 1693014222}
