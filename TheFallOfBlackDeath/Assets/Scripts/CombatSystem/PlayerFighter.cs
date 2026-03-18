@@ -422,9 +422,9 @@ public class PlayerFighter : Fighter
             BodyPartData partData = GetBodyPart(part);
             if (partData != null)
                 partData.currentHealth = 0;
-
-            HidePartMesh(part);
         }
+
+        SyncBodyPartVisuals();
 
         if (entry.currentHealth > 0)
             stats.health = Mathf.Clamp(entry.currentHealth, 0, stats.maxHealth);

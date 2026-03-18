@@ -366,6 +366,16 @@ public abstract class Fighter : MonoBehaviour
         }
     }
     
+    public void SyncBodyPartVisuals()
+    {
+        if (bodyParts == null) return;
+        foreach (var partData in bodyParts)
+        {
+            if (partData.IsDestroyed)
+                HidePartMesh(partData.part);
+        }
+    }
+
     protected void HidePartMesh(BodyPart part)
     {
         string partName = part.ToString();

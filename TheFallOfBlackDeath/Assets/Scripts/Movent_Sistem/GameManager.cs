@@ -430,6 +430,8 @@ public class GameManager : MonoBehaviour
             fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
         }
 
+        fighter.SyncBodyPartVisuals();
+
         fighter.statusPanel?.SetStats(fighter.idName, s);
         Debug.Log($"Status aplicado a {fighter.name}. Vida: {s.health}");
     }
