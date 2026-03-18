@@ -44,7 +44,8 @@ public abstract class Fighter : MonoBehaviour
     public delegate void HealthModificationDelegate(float amount);
     public HealthModificationDelegate healthModificationDelegate;
     public List<StatusMod> statusMods;
-    public bool legBroken;
+    public bool legBroken => bodyParts != null && bodyParts.Exists(p =>
+        (p.part == BodyPart.LeftLeg || p.part == BodyPart.RightLeg) && p.IsDestroyed);
     public Stats stats;
     public Stats modedStats;
     public Skill[] skills;
@@ -76,7 +77,7 @@ public abstract class Fighter : MonoBehaviour
         this.statusMods = new List<StatusMod>();
 
 
-        legBroken = false;
+
     }
 
     protected void AutoConfigureSkillTargeting(Skill skill)
@@ -273,6 +274,13 @@ public abstract class Fighter : MonoBehaviour
         
         // 2. Ocultar la malla
         HidePartMesh(part.part);
+
+        // 2.b Persistencia mínima: si este Fighter es un PlayerFighter, guardar estado de la parte destruida
+        var playerFighter = GetComponent<PlayerFighter>();
+        if (playerFighter != null)
+        {
+            playerFighter.SaveBodyPartState(part.part);
+        }
         
         CameraManager.Instance.TriggerHitStop(0.25f); // Hit stop muy pronunciado
         CameraManager.Instance.TriggerShake(5.0f);    // ¡Temblor híper violento (Fuerza 5)!
@@ -302,8 +310,7 @@ public abstract class Fighter : MonoBehaviour
                 break;
             case BodyPart.LeftLeg:
             case BodyPart.RightLeg:
-                Debug.Log("Piernas destruidas → flag legBroken activada");
-                legBroken = true;
+                Debug.Log("Pierna destruida → el jugador no podrá correr");
                 break;
         }
     }
@@ -359,7 +366,7 @@ public abstract class Fighter : MonoBehaviour
         }
     }
     
-    private void HidePartMesh(BodyPart part)
+    protected void HidePartMesh(BodyPart part)
     {
         string partName = part.ToString();
         Renderer[] allRenderers = GetComponentsInChildren<Renderer>(true);

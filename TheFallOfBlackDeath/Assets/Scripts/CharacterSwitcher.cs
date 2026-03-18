@@ -24,38 +24,56 @@ public class CharacterSwitcher : MonoBehaviour
             Debug.LogError("characters es null");
         else if (characters.Count == 0)
             Debug.LogError("characters est  vac o!");
-
-        SwitchMainCharacter(0, true);
     }
 
     public void SwitchMainCharacter(int characterIndex, bool isFirstTime)
     {
-        if (GameManager.Instance != null)
+        if (fightersDateBase == null || characters == null || characterIndex < 0 || characterIndex >= characters.Count)
+            return;
+
+        // Clear previous main flag without relying on GameManager
+        for (int i = 0; i < fightersDateBase.EnemyDB.Count; i++)
         {
-            fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, false);
-
-            currentMainCharacterIndex = characterIndex;
-
-            GameManager.Instance.character1 = characters[characterIndex].GetComponent<PlayerFighter>();
-
-            fightersDateBase.SetMainCharacter(GameManager.Instance.character1.figherIndex, true);
-
-            updateMainCharacterUI();
-
+            if (fightersDateBase.EnemyDB[i].isMainCharacter)
+            {
+                fightersDateBase.SetMainCharacter(fightersDateBase.EnemyDB[i].CharacterSwitcherIndex, false);
+            }
         }
+
+        currentMainCharacterIndex = characterIndex;
+        var pf = characters[characterIndex]?.GetComponent<PlayerFighter>();
+        if (pf != null)
+        {
+            GameManager.Instance?.SetMainCharacter(pf);
+            fightersDateBase.SetMainCharacter(pf.figherIndex, true);
+        }
+
+        updateMainCharacterUI?.Invoke();
     }
 
     public void SwitchSecondaryCharacter(int characterIndex, bool isFirstTime)
     {
-        fightersDateBase.SetSecondaryCharacter(GameManager.Instance.character2.figherIndex, false);
+        if (fightersDateBase == null || characters == null || characterIndex < 0 || characterIndex >= characters.Count)
+            return;
+
+        // Clear previous secondary flag without relying on GameManager
+        for (int i = 0; i < fightersDateBase.EnemyDB.Count; i++)
+        {
+            if (fightersDateBase.EnemyDB[i].isSecondaryCharacter)
+            {
+                fightersDateBase.SetSecondaryCharacter(fightersDateBase.EnemyDB[i].CharacterSwitcherIndex, false);
+            }
+        }
 
         currentSecondaryCharacterIndex = characterIndex;
+        var pf = characters[characterIndex]?.GetComponent<PlayerFighter>();
+        if (pf != null)
+        {
+            GameManager.Instance?.SetSecondaryCharacter(pf);
+            fightersDateBase.SetSecondaryCharacter(pf.figherIndex, true);
+        }
 
-        GameManager.Instance.character2 = characters[characterIndex].GetComponent<PlayerFighter>();
-
-        fightersDateBase.SetSecondaryCharacter(GameManager.Instance.character2.figherIndex, true);
-
-        updateSecondaryCharacterUI();
+        updateSecondaryCharacterUI?.Invoke();
     }
 
     private void SetIndex()
@@ -64,10 +82,8 @@ public class CharacterSwitcher : MonoBehaviour
         {
             if (fightersDateBase.EnemyDB[i].isMainCharacter)
             {
-
                 currentMainCharacterIndex = fightersDateBase.EnemyDB[i].CharacterSwitcherIndex;
                 Debug.Log("Main Character es " + fightersDateBase.EnemyDB[i].Name);
-                GameManager.Instance.SavePlayerState(GameManager.Instance.character1);
             }
         }
 
@@ -77,7 +93,6 @@ public class CharacterSwitcher : MonoBehaviour
             {
                 currentSecondaryCharacterIndex = fightersDateBase.EnemyDB[i].CharacterSwitcherIndex;
                 Debug.Log("Secondary Character es " + fightersDateBase.EnemyDB[i].Name);
-                GameManager.Instance.SavePlayerState(GameManager.Instance.character2);
             }
         }
     }

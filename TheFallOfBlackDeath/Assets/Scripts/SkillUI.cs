@@ -85,7 +85,12 @@ public class SkillUI : MonoBehaviour
         if (player == null)
             Debug.Log("PLAYER ES NULL EN SkillUI!!!", this);
 
-        var skills = player.GetComponentsInChildren<Skill>();
+        var skills = player.GetComponentsInChildren<Skill>(true);
+        if (skills == null || skillIndex < 0 || skillIndex >= skills.Length)
+        {
+            Debug.LogWarning($"[SkillUI.GetSkill] Invalid index {skillIndex} (skillsCount={(skills!=null?skills.Length:0)}) on {gameObject.name}", this);
+            return;
+        }
 
         skill = skills[skillIndex];
 

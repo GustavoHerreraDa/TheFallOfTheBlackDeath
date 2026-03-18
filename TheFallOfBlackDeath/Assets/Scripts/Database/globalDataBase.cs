@@ -27,6 +27,8 @@ public class globalDataBase : ScriptableObject
         public string Name;   
         public int CharacterSwitcherIndex;
         public Sprite characterImage;
+        public List<BodyPart> destroyedParts;
+        public float currentHealth;
     }
 
     public void UpdateFighterStats(int index, float amountAffected, string statAffected)

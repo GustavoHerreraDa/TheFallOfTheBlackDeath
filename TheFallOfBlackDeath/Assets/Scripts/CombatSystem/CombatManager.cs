@@ -258,7 +258,17 @@ public class CombatManager : MonoBehaviour
                             }
                         }
 
-                        GameManager.Instance.SavePlayerState(GameManager.Instance.character1);
+                        // Save all player fighters' state
+                        if (playerTeam != null)
+                        {
+                            foreach (var f in playerTeam)
+                            {
+                                if (f is PlayerFighter pf)
+                                {
+                                    GameManager.Instance.SavePlayerState(pf);
+                                }
+                            }
+                        }
                         audioSource.Play();
                         Animator[] playerAnimators = player.GetComponentsInChildren<Animator>();
                         foreach (Animator animator in playerAnimators)
@@ -283,7 +293,17 @@ public class CombatManager : MonoBehaviour
 
                     if (defeat)
                     {
-                        GameManager.Instance.SavePlayerState(GameManager.Instance.character1);
+                        // Save all player fighters' state on defeat as well
+                        if (playerTeam != null)
+                        {
+                            foreach (var f in playerTeam)
+                            {
+                                if (f is PlayerFighter pf)
+                                {
+                                    GameManager.Instance.SavePlayerState(pf);
+                                }
+                            }
+                        }
                         LogPanel.Write("Defeat!");
                         this.isCombatActive = false;
                         yield return new WaitForSeconds(2f);
@@ -474,7 +494,7 @@ private void InstantiatePlayerFighters()
             );
             mainCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel1, enemiesPanel, bodyPartPanel);
             var newFighter = mainCharacter.GetComponent<PlayerFighter>();
-            GameManager.Instance.character1 = newFighter;
+            GameManager.Instance.SetMainCharacter(newFighter);
             GameManager.Instance.ApplySavedStatusToFighter(newFighter);
         }
         else if (globalDataBase.EnemyDB[i].isSecondaryCharacter && GameManager.Instance.hasRecruitedSecondary)
@@ -491,7 +511,7 @@ private void InstantiatePlayerFighters()
             
             secondaryCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel2, enemiesPanel, bodyPartPanel);
             var newFighter = secondaryCharacter.GetComponent<PlayerFighter>();
-            GameManager.Instance.character2 = newFighter;
+            GameManager.Instance.SetSecondaryCharacter(newFighter);
             GameManager.Instance.ApplySavedStatusToFighter(newFighter);
         }
     }
