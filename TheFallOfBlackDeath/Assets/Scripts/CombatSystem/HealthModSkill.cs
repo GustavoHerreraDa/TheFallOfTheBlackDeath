@@ -69,6 +69,7 @@ protected override void OnRun(Fighter receiver)
         {
             baseDmg *= 2f; // Duplicamos el daño base si es crítico
             this.messages.Enqueue("Critical hit!");
+            CameraManager.Instance.TriggerShake(1f);
             CameraManager.Instance.TriggerHitStop(0.15f);
             
             
@@ -77,7 +78,7 @@ protected override void OnRun(Fighter receiver)
         }
         else
         {
-            CameraManager.Instance.TriggerShake(1f);
+            CameraManager.Instance.TriggerShake(0.6f);
             AudioClip hitSoundToPlay = this.customImpactSound != null ? this.customImpactSound : AudioManager.Instance.hitNormalSound;
             if (AudioManager.Instance != null)
                 AudioManager.Instance.PlaySFX(hitSoundToPlay, 0.7f);

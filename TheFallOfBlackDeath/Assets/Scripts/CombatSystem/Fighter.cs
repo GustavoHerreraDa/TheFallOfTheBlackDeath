@@ -283,7 +283,7 @@ public abstract class Fighter : MonoBehaviour
         }
         
         CameraManager.Instance.TriggerHitStop(0.25f); // Hit stop muy pronunciado
-        CameraManager.Instance.TriggerShake(5.0f);    // ¡Temblor híper violento (Fuerza 5)!
+        CameraManager.Instance.TriggerShake(1.4f);    // ¡Temblor híper violento (Fuerza 5)!
         CameraManager.Instance.TriggerDamageGlitch(); // Aberración cromática
         
         if (AudioManager.Instance != null)
