@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
     public PlayerFighter character1;
     public PlayerFighter character2;
     public bool hasRecruitedSecondary = false;
+    public bool hasValidLastPos = false;
     public Vector3 lastPos;
     public Transform startPost;
     public List<string> groupEnemyDefeat;
@@ -238,11 +239,16 @@ public class GameManager : MonoBehaviour
 
     public void FindPlayer()
     {
-        character = FindObjectOfType<PlayerControl>().gameObject;
-        if (character != null)
+        var playerControl = FindObjectOfType<PlayerControl>();
+        if (playerControl != null)
         {
-            character.transform.position = new Vector3(character.transform.position.x - 0.5f, character.transform.position.y, character.transform.position.z - 0.5f);
-            //GameManager.Instance.character.transform.position = new Vector3(GameManager.Instance.character.transform.position.x - 0.5f, GameManager.Instance.character.transform.position.y, GameManager.Instance.character.transform.position.z - 0.5f);
+            character = playerControl.gameObject;
+            // REMOVIDO: No modificar posición aquí, se hace en RestorePlayerPositionSafely
+            Debug.Log($"Player encontrado: {character.name}");
+        }
+        else
+        {
+            Debug.LogWarning("PlayerControl no encontrado en la escena");
         }
     }
       public void FindEnemiesAndObjets()
@@ -282,16 +288,8 @@ public class GameManager : MonoBehaviour
             GameManager.Instance.FindPlayer();
             GameManager.Instance.RestorePlayerState();
 
-            if (lastPos != Vector3.zero && character != null)
-            {
-                character.transform.position = new Vector3(lastPos.x - 2.5f, lastPos.y, lastPos.z - 2.5f);
-                Debug.Log("la poisicion del jugador es" + character.transform.position);
-            }
-            else if (character != null && startPost != null)
-            {
-                character.transform.position = startPost.position;
-                Debug.Log("la posicion inicial es " + startPost.position);
-            }
+            // CORRECCIÓN: Aplicar posición de forma segura con corrutina
+            StartCoroutine(RestorePlayerPositionSafely());
 
             SetGameState(GameStates.TOWN_STATE);
             string nombre = PlayerPrefs.GetString("GrupoEnemigo");
@@ -456,8 +454,97 @@ public class GameManager : MonoBehaviour
         Debug.Log("gameManager detectó a " + character1.name);
     }
     
+    // Nuevo método para restaurar posición de forma segura
+    private IEnumerator RestorePlayerPositionSafely()
+    {
+        // Esperar un frame para que la escena termine de cargar
+        yield return null;
+        
+        int maxAttempts = 60; // 1 segundo máximo en 60fps
+        int attempts = 0;
+        
+        // Esperar hasta que el player esté completamente listo
+        while (character == null && attempts < maxAttempts)
+        {
+            FindPlayer();
+            yield return new WaitForFixedUpdate();
+            attempts++;
+        }
+        
+        if (character != null)
+        {
+            CharacterController controller = character.GetComponent<CharacterController>();
+            
+            // Si tiene CharacterController, usamos método seguro
+            if (controller != null)
+            {
+                // Desactivar CharacterController temporalmente
+                controller.enabled = false;
+                
+                // Aplicar posición guardada o inicial
+                if (hasValidLastPos)
+                {
+                    character.transform.position = lastPos;
+                    Debug.Log($"Posición restaurada: {lastPos}");
+                }
+                else if (startPost != null)
+                {
+                    character.transform.position = startPost.position;
+                    Debug.Log($"Posición inicial aplicada: {startPost.position}");
+                }
+                
+                // Esperar un frame y reactivar
+                yield return new WaitForFixedUpdate();
+                controller.enabled = true;
+            }
+            else
+            {
+                // Si no tiene CharacterController, aplicar directamente
+                if (hasValidLastPos)
+                {
+                    character.transform.position = lastPos;
+                }
+                else if (startPost != null)
+                {
+                    character.transform.position = startPost.position;
+                }
+            }
+            
+            // Limpiar flag después de aplicar
+            hasValidLastPos = false;
+        }
+        else
+        {
+            Debug.LogError("No se pudo encontrar el character después de cargar la escena");
+        }
+    }
     
     
+    
+    // Métodos públicos para manejar posición desde otros scripts
+    public void SaveCurrentPosition()
+    {
+        if (character != null)
+        {
+            lastPos = character.transform.position;
+            hasValidLastPos = true;
+            Debug.Log($"Posición guardada: {lastPos}");
+        }
+    }
+    
+    public void SaveCurrentPosition(Vector3 position)
+    {
+        lastPos = position;
+        hasValidLastPos = true;
+        Debug.Log($"Posición guardada manualmente: {lastPos}");
+    }
+    
+    public void ClearSavedPosition()
+    {
+        hasValidLastPos = false;
+        lastPos = Vector3.zero;
+    }
+
     private void HandleRecruitment(GameObject npc, int index) // <--- Recibe el int
     {
         Debug.Log($"GameManager: Reclutando personaje ID {index} ({npc.name})");
@@ -498,4 +585,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("Reclutamiento completado y guardado en DB.");
         }
     }
+    
+    
 }

@@ -10,13 +10,13 @@ public class Scene_Change : MonoBehaviour
         var player = other.GetComponent<PlayerControl>();
         if (player)
         {
-            Debug.Log("Saving lastPos: " + GameManager.Instance.character.transform.position);
-            GameManager.Instance.lastPos = GameManager.Instance.character.transform.position;
+            Debug.Log("Saving lastPos: " + player.transform.position);
 
-            
+            GameManager.Instance.lastPos = player.transform.position;
+            GameManager.Instance.hasValidLastPos = true;
+
             PlayerPrefs.SetInt("NextScene", fightSceneIndex);
 
-           
             SceneManager.LoadScene("LoadingScene");
 
             Cursor.lockState = CursorLockMode.None;
