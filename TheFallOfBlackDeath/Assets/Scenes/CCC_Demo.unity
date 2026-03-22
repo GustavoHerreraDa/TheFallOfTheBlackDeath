@@ -3207,15 +3207,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4851685992321550413, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
       propertyPath: m_Color.b
-      value: 0.12549019
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4851685992321550413, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
       propertyPath: m_Color.g
-      value: 0.83081365
+      value: 0.8470589
       objectReference: {fileID: 0}
     - target: {fileID: 4851685992321550413, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
       propertyPath: m_Color.r
-      value: 0.972549
+      value: 0.015686275
       objectReference: {fileID: 0}
     - target: {fileID: 5100190822114371584, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3482,7 +3482,7 @@ MonoBehaviour:
   lowHealthThreshold: 0.4
   defaultShakeDuration: 0.2
   defaultShakeMagnitude: 0
-  defaultHitStopDuration: 0.1
+  defaultHitStopDuration: 0.2
   mainCamera: {fileID: 963194227}
   shaderCamera: {fileID: 1172023487}
   currentCameraIndex: 0
@@ -3944,13 +3944,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f97cc5a534a29469bc020972b65141, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootSound: {fileID: 8300000, guid: 51750070d31d3f0438d93f3fa2cff5e6, type: 3}
-  hitNormalSound: {fileID: 8300000, guid: d87722084dfa648099032619741bbbbc, type: 3}
-  hitCriticalSound: {fileID: 8300000, guid: 4bd08c33e040f9740b0d93a6e300fbc7, type: 3}
-  armorBreakSound: {fileID: 8300000, guid: b4897afae8c155c49a816eb0e11d8b5d, type: 3}
-  uiHoverSound: {fileID: 8300000, guid: b65dcffb56395470e8d3a6bbcefbd8de, type: 3}
+  shootSound: {fileID: 8300000, guid: b4897afae8c155c49a816eb0e11d8b5d, type: 3}
+  hitNormalSound: {fileID: 8300000, guid: b4897afae8c155c49a816eb0e11d8b5d, type: 3}
+  hitCriticalSound: {fileID: 8300000, guid: 22fec6d6950049a49a2231f223f16a82, type: 3}
+  armorBreakSound: {fileID: 8300000, guid: 0fe09f61574cc9a4c9ec8073db056db6, type: 3}
+  uiHoverSound: {fileID: 8300000, guid: 35cf7766e9e2aa542811e896fde57989, type: 3}
   uiClickSound: {fileID: 8300000, guid: 9aa7d4a2d51e9ea4fb6c3e122a6e22bb, type: 3}
-  pitchVariation: 0.15
+  pitchVariation: 0.2
 --- !u!4 &2126321799
 Transform:
   m_ObjectHideFlags: 0
@@ -4509,22 +4509,26 @@ PrefabInstance:
     - target: {fileID: 826446737449764570, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: f01a7bb8ed5aba044ae720ddfe2af295, type: 2}
+      objectReference: {fileID: 2100000, guid: d33bfa5338dda6b44b51642aca3844b8, type: 2}
     - target: {fileID: 1006938865448741730, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: f01a7bb8ed5aba044ae720ddfe2af295, type: 2}
+      objectReference: {fileID: 2100000, guid: d33bfa5338dda6b44b51642aca3844b8, type: 2}
     - target: {fileID: 1515552733050796587, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: f01a7bb8ed5aba044ae720ddfe2af295, type: 2}
+      objectReference: {fileID: 2100000, guid: d33bfa5338dda6b44b51642aca3844b8, type: 2}
     - target: {fileID: 2323888251169085530, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: f01a7bb8ed5aba044ae720ddfe2af295, type: 2}
+      objectReference: {fileID: 2100000, guid: d33bfa5338dda6b44b51642aca3844b8, type: 2}
     - target: {fileID: 2473935840519725557, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: skillType
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2473935840519725557, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      propertyPath: BodyPartTarget
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2473935840786194243, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: skillName
@@ -4550,6 +4554,10 @@ PrefabInstance:
       propertyPath: customImpactSound
       value: 
       objectReference: {fileID: 8300000, guid: 0fe09f61574cc9a4c9ec8073db056db6, type: 3}
+    - target: {fileID: 2473935841089252606, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      propertyPath: 'requiredParts.Array.data[0]'
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2528578188918320830, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4597,7 +4605,7 @@ PrefabInstance:
     - target: {fileID: 3618233263937810662, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: f01a7bb8ed5aba044ae720ddfe2af295, type: 2}
+      objectReference: {fileID: 2100000, guid: d33bfa5338dda6b44b51642aca3844b8, type: 2}
     - target: {fileID: 3704595152712898423, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.42261422
@@ -4781,7 +4789,7 @@ PrefabInstance:
     - target: {fileID: 8530716558215887778, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: f01a7bb8ed5aba044ae720ddfe2af295, type: 2}
+      objectReference: {fileID: 2100000, guid: d33bfa5338dda6b44b51642aca3844b8, type: 2}
     - target: {fileID: 8721678896434276945, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: m_LocalRotation.w
       value: -0.41469333

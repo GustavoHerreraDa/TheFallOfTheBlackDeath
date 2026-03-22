@@ -91,7 +91,7 @@ public class StatsManager : MonoBehaviour
         if (actualDefense == null)
             return;
 
-        actualDefense.text = deffense.ToString("F0"); // Formato sin decimales
+        actualDefense.text = deffense.ToString("F0");
 
         // Resetear color por defecto
         actualDefense.color = Color.white;
@@ -116,7 +116,7 @@ public class StatsManager : MonoBehaviour
         if (actualAttack == null)
             return;
 
-        actualAttack.text = attack.ToString("F0"); // Formato sin decimales
+        actualAttack.text = attack.ToString("F0");
 
         // Resetear color por defecto
         actualAttack.color = Color.white;
