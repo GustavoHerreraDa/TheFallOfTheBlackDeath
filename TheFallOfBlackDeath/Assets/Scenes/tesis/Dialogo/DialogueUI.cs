@@ -126,7 +126,7 @@ public class DialogueUI : MonoBehaviour
 
     public void ShowChoices(DialogueChoice[] choices)
     {
-        dialogueText.gameObject.SetActive(false);
+        dialoguePanel.SetActive(false);
 
 
         foreach (Transform child in choicesPanel.transform)
@@ -150,7 +150,7 @@ public class DialogueUI : MonoBehaviour
     public void HideChoices()
     {
         choicesPanel.SetActive(false);
-        dialogueText.gameObject.SetActive(true);
+        dialoguePanel.SetActive(true);
         currentButtons = null; 
     }
 

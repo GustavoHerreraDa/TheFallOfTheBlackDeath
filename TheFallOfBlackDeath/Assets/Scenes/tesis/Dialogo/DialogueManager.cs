@@ -116,7 +116,7 @@ public class DialogueManager : MonoBehaviour
         // --- LÓGICA DE DAR ITEM ---
         if (choice.action == DialogueEvent.DialogueEndAction.GiveItem)
         {
-            // Disparamos el evento con los datos que pusiste en el ScriptableObject
+            // Disparamos el evento con los datos del ScriptableObject
             Debug.Log($"Dialogo: Regalando item ID {choice.itemID}");
             OnGiveItem?.Invoke(choice.itemID, choice.itemAmount, choice.itemType);
             
