@@ -138,14 +138,8 @@ public class PlayerFighter : Fighter
         int count = (this.skills != null) ? this.skills.Length : 0;
         Debug.Log($"[PlayerFighter.InitTurn] skills count={count} for {idName}");
 
-        // Let the UI panel generate buttons dynamically based on actual skills count
         this.skillPanel.ShowForPlayer(this);
-
-        // Mostrar información del aliado activo en el panel de estado
-        Fighter activeAlly = allies[activeAllyIndex];
-        statusPanel.SetStats(activeAlly.idName, activeAlly.stats);
     }
-
 
     public void ChangeAlly(int newIndex)
     {

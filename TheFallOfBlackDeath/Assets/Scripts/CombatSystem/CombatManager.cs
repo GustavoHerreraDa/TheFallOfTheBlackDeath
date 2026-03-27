@@ -20,8 +20,6 @@ public class CombatManager : MonoBehaviour
     [Header("Narrative (Optional)")]
     public NarrativeLogManager narrativeLogManager;
     public EnemiesPanel enemiesPanel;
-    public StatusPanel statusPanel1;
-    public StatusPanel statusPanel2;
     public PlayerSkillPanel skillPanel;
     public Transform mainCharacterPos;
     public Transform secondaryCharacterPos;
@@ -472,49 +470,60 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-private void InstantiatePlayerFighters()
-{
-
-    if (statusPanel2 != null)
-        statusPanel2.gameObject.SetActive(false);
-
-
-    if (statusPanel1 != null)
-        statusPanel1.gameObject.SetActive(true);
-
-    for (int i = 0; i < globalDataBase.EnemyDB.Count; i++)
+    private void InstantiatePlayerFighters()
     {
-        if (globalDataBase.EnemyDB[i].isMainCharacter)
+        for (int i = 0; i < globalDataBase.EnemyDB.Count; i++)
         {
-            GameObject mainCharacter = Instantiate(
-                globalDataBase.EnemyDB[i].enemyPrefab,
-                mainCharacterPos.transform.position,
-                Quaternion.Euler(-0.4f, -90, 0),
-                playerParent.transform
-            );
-            mainCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel1, enemiesPanel, bodyPartPanel);
-            var newFighter = mainCharacter.GetComponent<PlayerFighter>();
-            GameManager.Instance.SetMainCharacter(newFighter);
-            GameManager.Instance.ApplySavedStatusToFighter(newFighter);
-        }
-        else if (globalDataBase.EnemyDB[i].isSecondaryCharacter && GameManager.Instance.hasRecruitedSecondary)
-        {
-            if (statusPanel2 != null)
-                statusPanel2.gameObject.SetActive(true);
+            if (globalDataBase.EnemyDB[i].isMainCharacter)
+            {
+                GameObject mainCharacter = Instantiate(
+                    globalDataBase.EnemyDB[i].enemyPrefab,
+                    mainCharacterPos.transform.position,
+                    Quaternion.Euler(-0.4f, -90, 0),
+                    playerParent.transform
+                );
 
-            GameObject secondaryCharacter = Instantiate(
-                globalDataBase.EnemyDB[i].enemyPrefab,
-                secondaryCharacterPos.transform.position,
-                Quaternion.Euler(-0.4f, -90, 0),
-                playerParent.transform
-            );
+                var playerFighter = mainCharacter.GetComponent<PlayerFighter>();
+
+                
+                playerFighter.GetSkillPanel(
+                    skillPanel,
+                    playerFighter.statusPanel,
+                    enemiesPanel,
+                    bodyPartPanel
+                );
+
+                GameManager.Instance.SetMainCharacter(playerFighter);
+                GameManager.Instance.ApplySavedStatusToFighter(playerFighter);
+                FindObjectOfType<CombatStatusUIController>()
+                    .RegisterPlayer(playerFighter);
+            }
+            else if (globalDataBase.EnemyDB[i].isSecondaryCharacter && GameManager.Instance.hasRecruitedSecondary)
+            {
+                GameObject secondaryCharacter = Instantiate(
+                    globalDataBase.EnemyDB[i].enemyPrefab,
+                    secondaryCharacterPos.transform.position,
+                    Quaternion.Euler(-0.4f, -90, 0),
+                    playerParent.transform
+                );
+
+                var playerFighter = secondaryCharacter.GetComponent<PlayerFighter>();
+
+                playerFighter.GetSkillPanel(
+                    skillPanel,
+                    playerFighter.statusPanel,
+                    enemiesPanel,
+                    bodyPartPanel
+                );
+
+                GameManager.Instance.SetSecondaryCharacter(playerFighter);
+                GameManager.Instance.ApplySavedStatusToFighter(playerFighter);
+                FindObjectOfType<CombatStatusUIController>()
+                    .RegisterPlayer(playerFighter);
+            }
             
-            secondaryCharacter.GetComponent<PlayerFighter>().GetSkillPanel(skillPanel, statusPanel2, enemiesPanel, bodyPartPanel);
-            var newFighter = secondaryCharacter.GetComponent<PlayerFighter>();
-            GameManager.Instance.SetSecondaryCharacter(newFighter);
-            GameManager.Instance.ApplySavedStatusToFighter(newFighter);
+            
         }
     }
-}
 
 }
