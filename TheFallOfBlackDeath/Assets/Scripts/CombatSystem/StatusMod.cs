@@ -21,14 +21,14 @@ public class StatusMod : MonoBehaviour
         {
             case StatusModType.ATTACK_MOD:
                 modedStats.attack += this.amount;
-                if (modedStats.attack <= 20) modedStats.attack = 20;
-                if (modedStats.attack >= 80) modedStats.attack = 80;
+                if (modedStats.attack <= 1) modedStats.attack = 1;
+                if (modedStats.attack >= 100) modedStats.attack = 100;
                 break;
 
             case StatusModType.DEFFENSE_MOD:
                 modedStats.deffense += this.amount;
-                if (modedStats.deffense <= 20) modedStats.deffense = 20;
-                if (modedStats.deffense >= 80) modedStats.deffense = 80;
+                if (modedStats.deffense <= 1) modedStats.deffense = 1;
+                if (modedStats.deffense >= 40) modedStats.deffense = 40;
                 break;
 
             // <-- ¡NUEVO! Lógica para afectar la velocidad

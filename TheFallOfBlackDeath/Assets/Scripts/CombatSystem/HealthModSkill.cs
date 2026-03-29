@@ -110,16 +110,16 @@ protected override void OnRun(Fighter receiver)
                 float finalDmg = ApplySynergy(targetPart, baseDmg);
                 receiver.ModifyBodyPartHealth(this.BodyPartTarget, finalDmg);
                 
-                this.messages.Enqueue($"Hit for {(int)finalDmg} to {receiver.idName}");
+                this.messages.Enqueue($"{emitter.idName} hit {receiver.idName}'s {this.BodyPartTarget} for {(int)finalDmg}");
                 FloatingTextManager.Instance.ShowText($"-{(int)finalDmg}", textPos, isCrit ? Color.yellow : Color.red, isCrit);
             }
         }
+        
         else
+        
         {
-            // ATAQUE GENERAL (A la vida base, sin apuntar a extremidades)
-            receiver.ModifyHealth(baseDmg);
-            this.messages.Enqueue($"Hit for {(int)baseDmg} to {receiver.idName}");
-            FloatingTextManager.Instance.ShowText($"-{(int)baseDmg}", textPos, isCrit ? Color.yellow : Color.red, isCrit);
+            Debug.Log("Global damage disabled. Skill requires a body part target.");
+            return;
         }
     }
 
