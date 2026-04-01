@@ -31,6 +31,71 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4365854760234543687}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3775203182423032757
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1031318027904477493}
+  - component: {fileID: 3060292627439491967}
+  m_Layer: 6
+  m_Name: Skull Crusher
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1031318027904477493
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3775203182423032757}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
+  m_LocalPosition: {x: 7, y: 1.41, z: 2.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7540624642153775675}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3060292627439491967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3775203182423032757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd512efa830145a2a8f36d1adbcb72ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Skull Crusher
+  animationDuration: 0
+  targeting: 4
+  BodyPartTarget: 0
+  effectPrfb: {fileID: 7904898002847524615, guid: a2ccf81a1d5b163448ebdf66b5e746d6, type: 3}
+  SkillDesc: <Left Arm Required> 40 True Damage, no miss chances
+  skillType: 0
+  iconUI: {fileID: 0}
+  animationName: Left Punch
+  HasItemInInventory: 0
+  ItemsNeeded: []
+  activationSound: {fileID: 8300000, guid: 5357356d2fe42d9498d22abb01ff8e39, type: 3}
+  customImpactSound: {fileID: 8300000, guid: b9252d72e21413841a0ead4552eacb5a, type: 3}
+  sanityCost: 0
+  requiredParts: 04000000
+  damageType: 0
+  statusToApply: 0
+  amount: -40
+  modType: 1
+  critChance: 0
+  missChance: 0
 --- !u!1001 &55517513963511535
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -700,7 +765,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2499414552199274266, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       propertyPath: BodyPartTarget
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2499414552199274266, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       propertyPath: activationSound
@@ -710,6 +775,14 @@ PrefabInstance:
       propertyPath: customImpactSound
       value: 
       objectReference: {fileID: 8300000, guid: b9252d72e21413841a0ead4552eacb5a, type: 3}
+    - target: {fileID: 2499414552199274266, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: requiredParts.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2499414552199274266, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: 'requiredParts.Array.data[0]'
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2515406948168916520, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -1414,7 +1487,11 @@ PrefabInstance:
     - {fileID: 266927403816216705, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
     - {fileID: 3688403351492129819, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
     - {fileID: 8264631239708923127, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+    - {fileID: 8257872021981262443, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7305297877295874578, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      insertIndex: 5
+      addedObject: {fileID: 1031318027904477493}
     - targetCorrespondingSourceObject: {fileID: 7305297877295874578, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2494033778493403909}
