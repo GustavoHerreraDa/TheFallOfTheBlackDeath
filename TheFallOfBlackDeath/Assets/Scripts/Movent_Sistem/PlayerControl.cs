@@ -39,12 +39,12 @@ public class PlayerControl : MonoBehaviour
 
     private void Update()
     {
-        // Detectar si el jugador est� caminando (puedes ajustar las condiciones seg�n tu juego)
+        
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direccion = new Vector3(horizontal, 0, vertical).normalized;
         isWalking = direccion.magnitude >= 0.1f;
-        // Actualizar canGetEncounter basado en si el jugador est� caminando o no
+        
         if (GameManager.Instance != null)
             GameManager.Instance.canGetEncounter = isWalking;
 
@@ -88,6 +88,18 @@ public class PlayerControl : MonoBehaviour
 
                             GameManager.Instance.isWalking = true;
                     }
+
+                    if (fighter.legBroken == true)
+                    {
+                        Vector3 mover = Quaternion.Euler(0, objetivoAngulo, 0) * Vector3.forward;
+                        controller.Move(mover.normalized * velocidad * Time.deltaTime);
+                        anim.SetFloat("Movent", 0.1f);
+                        if (GameManager.Instance != null)
+
+                            GameManager.Instance.isWalking = true;
+                    }
+                        
+                        
                 }
                 else
                 {
@@ -101,6 +113,7 @@ public class PlayerControl : MonoBehaviour
             }
             else
             {
+                
                 anim.SetFloat("Movent", 0f);
                 if (GameManager.Instance != null)
 

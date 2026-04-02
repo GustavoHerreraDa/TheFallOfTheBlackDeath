@@ -263,7 +263,7 @@ public abstract class Fighter : MonoBehaviour
 
     private void OnBodyPartDestroyed(BodyPartData part)
     {
-        // 1. Notificar al evento
+        //  Notificar al evento
         OnBodyPartDestroyedEvent?.Invoke(part.part);
         
         if (partDestroyedVFX != null)
@@ -272,24 +272,23 @@ public abstract class Fighter : MonoBehaviour
             GameObject vfx = Instantiate(partDestroyedVFX, spawnLocation.position, spawnLocation.rotation, spawnLocation);
         }
         
-        // 2. Ocultar la malla
+        //  Ocultar la malla
         HidePartMesh(part.part);
 
-        // 2.b Persistencia mínima: si este Fighter es un PlayerFighter, guardar estado de la parte destruida
+        
         var playerFighter = GetComponent<PlayerFighter>();
         if (playerFighter != null)
         {
             playerFighter.SaveBodyPartState(part.part);
         }
         
-        CameraManager.Instance.TriggerHitStop(0.25f); // Hit stop muy pronunciado
-        CameraManager.Instance.TriggerShake(1.4f);    // ¡Temblor híper violento (Fuerza 5)!
+        CameraManager.Instance.TriggerHitStop(0.25f); // Hit stop 
+        CameraManager.Instance.TriggerShake(1.4f);    // Camera Shake
         CameraManager.Instance.TriggerDamageGlitch(); // Aberración cromática
         
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX(AudioManager.Instance.armorBreakSound, 1f);
         
-        // 3. NUEVA LÓGICA DE BALANCEO: Aplicar penalizaciones desde el Inspector
         
         foreach (StatusMod penalty in part.destructionPenalties)
         {
