@@ -102,23 +102,7 @@ public abstract class Fighter : MonoBehaviour
 
                     foreach (var receiver in enemies)
                     {
-                        
                         skill.AddReceiver(receiver);
-
-                       
-                       
-                        foreach (var partData in receiver.bodyParts)
-                        {
-                            if (!partData.IsDestroyed)
-                            {
-                                if (skill is HealthModSkill healthSkill)
-                                {
-                                    float amount = healthSkill.GetModification(receiver);
-                                    receiver.ModifyBodyPartHealth(partData.part, amount);
-
-                                }
-                            }
-                        }
                     }
                     break;
                 }

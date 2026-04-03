@@ -117,8 +117,6 @@ public class EnemyFighter : Fighter
 
             if (skill is HealthModSkill healthSkill)
             {
-                float damage = healthSkill.GetModification(target);
-                target.ModifyHealth(damage);
                 Debug.Log($"{this.idName} eligió atacar {target.idName}'s {chosenPart}");
             }
         }
