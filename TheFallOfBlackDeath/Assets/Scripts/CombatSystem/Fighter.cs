@@ -207,6 +207,13 @@ public abstract class Fighter : MonoBehaviour
     {
         BodyPartData target = bodyParts.Find(p => p.part == part);
         if (target == null) return;
+        
+        
+        if (amount < 0 && !target.IsDestroyed)
+        {
+            StartCoroutine(DamageFlickerEffect(part, 1.2f)); // 1.2s de parpadeo
+        }
+
 
         float prev = target.currentHealth;
         target.currentHealth = Mathf.Clamp(target.currentHealth + amount, 0, target.maxHealth);
@@ -394,4 +401,38 @@ public abstract class Fighter : MonoBehaviour
         }
     }
     public abstract void InitTurn();
+    
+    private System.Collections.IEnumerator DamageFlickerEffect(BodyPart part, float duration)
+    {
+        string partName = part.ToString();
+        Renderer[] allRenderers = GetComponentsInChildren<Renderer>(true);
+        List<Renderer> partRenderers = new List<Renderer>();
+
+        // Filtrar renderers de la parte específica (mismo criterio que HidePartMesh)
+        foreach (Renderer r in allRenderers)
+        {
+            if (r.name.Equals(partName, System.StringComparison.OrdinalIgnoreCase) || r.name.Contains(partName))
+                partRenderers.Add(r);
+        }
+
+        float elapsed = 0;
+        while (elapsed < duration)
+        {
+            // Si la parte se destruyó durante el efecto, detenemos el parpadeo
+            if (GetBodyPart(part).IsDestroyed) break;
+
+            foreach (var r in partRenderers) r.enabled = !r.enabled;
+        
+            float interval = 0.1f;
+            yield return new WaitForSeconds(interval);
+            elapsed += interval;
+        }
+
+        // Asegurar que queden encendidos si NO están destruidos
+        if (!GetBodyPart(part).IsDestroyed)
+        {
+            foreach (var r in partRenderers) r.enabled = true;
+        }
+    }
+    
 }

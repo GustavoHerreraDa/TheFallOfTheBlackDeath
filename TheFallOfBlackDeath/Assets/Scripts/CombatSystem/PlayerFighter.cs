@@ -139,6 +139,7 @@ public class PlayerFighter : Fighter
         Debug.Log($"[PlayerFighter.InitTurn] skills count={count} for {idName}");
 
         this.skillPanel.ShowForPlayer(this);
+        statusPanel?.gameObject.SetActive(true);
     }
 
     public void ChangeAlly(int newIndex)
@@ -183,12 +184,16 @@ public class PlayerFighter : Fighter
             Fighter[] receivers = this.GetSkillTargets(this.skillToBeExecuted);
             this.enemiesPanel.Show(this, receivers);
             this.skillPanel.Hide();
+            statusPanel?.gameObject.SetActive(false);
         }
         else
         {
             this.AutoConfigureSkillTargeting(this.skillToBeExecuted);
             this.combatManager.OnFighterSkill(this.skillToBeExecuted);
+
             this.skillPanel.Hide();
+            
+            statusPanel?.gameObject.SetActive(false);
         }
     }
 
