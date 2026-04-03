@@ -2,96 +2,91 @@
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class DitherRenderFeature : ScriptableRendererFeature
+public class DitherFeatures : ScriptableRendererFeature
 {
-    class DitherRenderPass : ScriptableRenderPass
-    {
-        private Material material;
-        private RTHandle tempRT;
-        private string profilerTag = "DitherEffect";
-        private static readonly int NoiseTexID = Shader.PropertyToID("_NoiseTex");
-        private static readonly int ColorRampTexID = Shader.PropertyToID("_ColorRampTex");
-        private static readonly int XOffsetID = Shader.PropertyToID("_XOffset");
-        private static readonly int YOffsetID = Shader.PropertyToID("_YOffset");
-        private static readonly int NoiseScaleID = Shader.PropertyToID("_NoiseScale");
-
-        public DitherRenderPass(Material mat)
-        {
-            material = mat;
-            renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
-        }
-
-        public void Setup(RenderTextureDescriptor desc)
-        {
-            RenderingUtils.ReAllocateIfNeeded(ref tempRT, desc, FilterMode.Bilinear, name: "_TempDitherTex");
-        }
-
-        public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
-        {
-            if (material == null) return;
-
-            var cmd = CommandBufferPool.Get(profilerTag);
-            var source = renderingData.cameraData.renderer.cameraColorTargetHandle;
-
-            // EL ESCUDO
-            if (source == null || source.rt == null) 
-            {
-                CommandBufferPool.Release(cmd);
-                return; 
-            }
-
-            Blitter.BlitCameraTexture(cmd, source, tempRT, material, 0);
-            Blitter.BlitCameraTexture(cmd, tempRT, source);
-
-            context.ExecuteCommandBuffer(cmd);
-            CommandBufferPool.Release(cmd);
-        }
-    }
-
     [System.Serializable]
     public class DitherSettings
     {
         public bool enabled = true;
-        public Texture2D noiseTex;
-        public Texture2D colorRamp;
-        [Range(16, 4096)] public float noiseScale = 2048;
-        public bool useScrolling = false;
+        public Shader shader;
+        public Texture2D ditherTex;
+        public Texture2D rampTex;
+        public float noiseScale = 256.0f; // Controlar escala desde el inspector
+        [Range(0, 1)] public float spread = 0.5f; // Controlar intensidad
     }
 
     public DitherSettings settings = new DitherSettings();
-    private DitherRenderPass pass;
-    private Material material;
+    DitherPass pass;
+
+    class DitherPass : ScriptableRenderPass
+    {
+        private Material material;
+        private DitherSettings settings;
+        private RTHandle tempTextureHandle; // EL NUEVO SISTEMA
+
+        public DitherPass(DitherSettings settings)
+        {
+            this.settings = settings;
+            if (settings.shader) material = new Material(settings.shader);
+        }
+
+        // Se llama cuando la cámara se configura (antes de renderizar)
+        public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
+        {
+            var desc = renderingData.cameraData.cameraTargetDescriptor;
+            desc.depthBufferBits = 0; // No necesitamos profundidad
+            
+            // Reasignar el RTHandle automáticamente si la resolución cambia
+            RenderingUtils.ReAllocateIfNeeded(ref tempTextureHandle, desc, FilterMode.Point, TextureWrapMode.Clamp, name: "_TempDitherTex");
+        }
+
+        public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
+        {
+            if (!settings.enabled || material == null) return;
+
+            var cmd = CommandBufferPool.Get("DitherPass");
+            
+            // En URP moderno, accedemos al source así:
+            var source = renderingData.cameraData.renderer.cameraColorTargetHandle;
+            var camera = renderingData.cameraData.camera;
+
+            // --- LÓGICA DE OBRA DINN MEJORADA ---
+            // Enviamos la matriz inversa de vista para calcular la dirección del rayo en el shader
+            material.SetMatrix("_InverseView", camera.cameraToWorldMatrix);
+            material.SetTexture("_NoiseTex", settings.ditherTex);
+            material.SetTexture("_ColorRampTex", settings.rampTex);
+            material.SetFloat("_NoiseScale", settings.noiseScale);
+            
+            // Blit usando RTHandles (Source -> Temp -> Source)
+            Blitter.BlitCameraTexture(cmd, source, tempTextureHandle, material, 0);
+            Blitter.BlitCameraTexture(cmd, tempTextureHandle, source);
+
+            context.ExecuteCommandBuffer(cmd);
+            CommandBufferPool.Release(cmd);
+        }
+
+        public void Dispose()
+        {
+            tempTextureHandle?.Release();
+        }
+    }
 
     public override void Create()
     {
-        Shader shader = Shader.Find("Hidden/URP/DitherEffect");
-        if (shader == null)
+        pass = new DitherPass(settings)
         {
-            Debug.LogError("❌ Dither shader not found!");
-            return;
-        }
-
-        material = new Material(shader);
-        pass = new DitherRenderPass(material);
+            renderPassEvent = RenderPassEvent.AfterRenderingTransparents
+        };
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        if (material == null || !settings.enabled) return;
-
-        Camera cam = renderingData.cameraData.camera;
-
-        material.SetTexture("_NoiseTex", settings.noiseTex);
-        material.SetTexture("_ColorRampTex", settings.colorRamp);
-        material.SetFloat("_NoiseScale", settings.noiseScale);
-        
-        // --- LA LÍNEA MÁGICA QUE FALTABA ---
-        // Esto le dice al shader exactamente dónde está la cámara y hacia dónde mira
-        material.SetMatrix("_InverseView", cam.cameraToWorldMatrix);
-
-        var desc = renderingData.cameraData.cameraTargetDescriptor;
-        pass.Setup(desc);
+        if (renderingData.cameraData.renderType == CameraRenderType.Overlay) return;
         renderer.EnqueuePass(pass);
     }
 
+    protected override void Dispose(bool disposing)
+    {
+        pass?.Dispose();
+    }
 }

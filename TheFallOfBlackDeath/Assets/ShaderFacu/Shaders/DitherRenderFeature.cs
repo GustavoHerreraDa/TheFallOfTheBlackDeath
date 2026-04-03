@@ -9,10 +9,15 @@ public class DitherFeature : ScriptableRendererFeature
     {
         public bool enabled = true;
         public Shader shader;
-        public Texture2D ditherTex;
-        public Texture2D rampTex;
-        public float noiseScale = 256.0f; // Controlar escala desde el inspector
-        [Range(0, 1)] public float spread = 0.5f; // Controlar intensidad
+        public Texture2D blueNoiseTex;
+        public float noiseScale = 256.0f;
+        [Range(1, 4)] public int bitDepth = 1;
+        [Range(0, 1)] public float contrast = 0.5f;
+        [Range(0, 1)] public float brightness = 0.5f;
+        [Range(0, 1)] public float threshold = 0.5f;
+        [Range(0, 5)] public float edgeStrength = 1.0f;
+        [Range(0, 1)] public float edgeThreshold = 0.1f;
+        public bool animatedNoise = false;
     }
 
     public DitherSettings settings = new DitherSettings();
@@ -28,6 +33,12 @@ public class DitherFeature : ScriptableRendererFeature
         {
             this.settings = settings;
             if (settings.shader) material = new Material(settings.shader);
+        }
+
+        public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
+        {
+            // Requerir Depth y Normals para el shader
+            ConfigureInput(ScriptableRenderPassInput.Depth | ScriptableRenderPassInput.Normal);
         }
 
         // Se llama cuando la cámara se configura (antes de renderizar)
@@ -51,12 +62,16 @@ public class DitherFeature : ScriptableRendererFeature
             var camera = renderingData.cameraData.camera;
 
             // --- LÓGICA DE OBRA DINN MEJORADA ---
-            // Enviamos la matriz inversa de vista para calcular la dirección del rayo en el shader
-            material.SetMatrix("_InverseView", camera.cameraToWorldMatrix);
-            material.SetTexture("_NoiseTex", settings.ditherTex);
-            material.SetTexture("_ColorRampTex", settings.rampTex);
+            material.SetTexture("_BlueNoiseTex", settings.blueNoiseTex);
             material.SetFloat("_NoiseScale", settings.noiseScale);
-            
+            material.SetInt("_BitDepth", settings.bitDepth);
+            material.SetFloat("_Contrast", settings.contrast);
+            material.SetFloat("_Brightness", settings.brightness);
+            material.SetFloat("_Threshold", settings.threshold);
+            material.SetFloat("_EdgeStrength", settings.edgeStrength);
+            material.SetFloat("_EdgeThreshold", settings.edgeThreshold);
+            material.SetFloat("_DitherTime", settings.animatedNoise ? Time.time : 0.0f);
+
             // Blit usando RTHandles (Source -> Temp -> Source)
             Blitter.BlitCameraTexture(cmd, source, tempTextureHandle, material, 0);
             Blitter.BlitCameraTexture(cmd, tempTextureHandle, source);
