@@ -164,5 +164,10 @@ public abstract class Skill : MonoBehaviour
     }
 
 
+    public virtual bool CanTriggerSynergy(Fighter target, BodyPart part = BodyPart.None)
+    {
+        return false;
+    }
+
     protected abstract void OnRun(Fighter receiver);
 }

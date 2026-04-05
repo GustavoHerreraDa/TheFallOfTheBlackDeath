@@ -9,6 +9,10 @@ public class PlayerSkillPanel : MonoBehaviour
     public GameObject[] skillButtons;
     public TextMeshProUGUI[] skillButtonLabels;
 
+    [Header("Synergy Feedback")]
+    public Color synergyColor = Color.yellow;
+    public Color normalColor = Color.green;
+
     private PlayerFighter targetFigther;
 
     void Awake()
@@ -40,7 +44,31 @@ public class PlayerSkillPanel : MonoBehaviour
 
         this.skillButtons[index].SetActive(true);
         var button = this.skillButtons[index].GetComponent<Button>();
-        if (button != null) button.interactable = isUsable;
+        if (button != null)
+        {
+            button.interactable = isUsable;
+
+            // Detección de sinergia
+            bool synergyAvailable = false;
+            if (targetFigther != null && targetFigther.combatManager != null && targetFigther.combatManager.enemyTeam != null)
+            {
+                foreach (var enemy in targetFigther.combatManager.enemyTeam)
+                {
+                    if (enemy != null && enemy.isAlive && skill.CanTriggerSynergy(enemy))
+                    {
+                        synergyAvailable = true;
+                        break;
+                    }
+                }
+            }
+
+            // Aplicar feedback visual
+            var image = button.GetComponent<Image>();
+            if (image != null)
+            {
+                image.color = synergyAvailable ? synergyColor : normalColor;
+            }
+        }
         this.skillButtonLabels[index].text = skillName;
     }
 
@@ -71,7 +99,31 @@ public class PlayerSkillPanel : MonoBehaviour
 
         this.skillButtons[index].SetActive(true);
         var button = this.skillButtons[index].GetComponent<Button>();
-        if (button != null) button.interactable = interactable;
+        if (button != null)
+        {
+            button.interactable = interactable;
+
+            // Detección de sinergia
+            bool synergyAvailable = false;
+            if (targetFigther != null && targetFigther.combatManager != null && targetFigther.combatManager.enemyTeam != null)
+            {
+                foreach (var enemy in targetFigther.combatManager.enemyTeam)
+                {
+                    if (enemy != null && enemy.isAlive && skill.CanTriggerSynergy(enemy))
+                    {
+                        synergyAvailable = true;
+                        break;
+                    }
+                }
+            }
+
+            // Aplicar feedback visual
+            var image = button.GetComponent<Image>();
+            if (image != null)
+            {
+                image.color = synergyAvailable ? synergyColor : normalColor;
+            }
+        }
         this.skillButtonLabels[index].text = skillName;
     }
 

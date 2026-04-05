@@ -52,22 +52,27 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
             targetRenderer.materials = highlightSheet;
         }
 
-        // 2. --- NEW: DAMAGE PREVIEW CALCULATION ---
-        if (currentSkill != null && currentSkill is HealthModSkill healthSkill && targetFighter != null)
-        {
-            // Temporarily set the skill's target part so GetAdjustedMissChance calculates correctly
-            BodyPart previousTarget = healthSkill.BodyPartTarget;
-            healthSkill.BodyPartTarget = targetPart;
+            // 2. --- NEW: DAMAGE PREVIEW CALCULATION ---
+            if (currentSkill != null && currentSkill is HealthModSkill healthSkill && targetFighter != null)
+            {
+                // Temporarily set the skill's target part so GetAdjustedMissChance calculates correctly
+                BodyPart previousTarget = healthSkill.BodyPartTarget;
+                healthSkill.BodyPartTarget = targetPart;
 
-            // Calculate potential damage
-            float estimatedDamage = healthSkill.GetEstimatedDamage(targetFighter, targetPart);
-            
-            // Format the text to look juicy (e.g., "RightArm <color=red>[-45]</color>")
-            buttonLabel.text = $"{originalText} <color=#ff3333>[-{(int)estimatedDamage}]</color>";
+                // Calculate potential damage
+                float estimatedDamage = healthSkill.GetEstimatedDamage(targetFighter, targetPart);
+                
+                // Synergy Check
+                bool hasSynergy = healthSkill.CanTriggerSynergy(targetFighter, targetPart);
+                string damageColor = hasSynergy ? "#ffff00" : "#ff3333";
+                string synergyText = hasSynergy ? " <color=#ffff00>[COMBO!]</color>" : "";
 
-            // Restore the previous target just in case
-            healthSkill.BodyPartTarget = previousTarget;
-        }
+                // Format the text to look juicy (e.g., "RightArm <color=red>[-45]</color>")
+                buttonLabel.text = $"{originalText}{synergyText} <color={damageColor}>[-{(int)estimatedDamage}]</color>";
+
+                // Restore the previous target just in case
+                healthSkill.BodyPartTarget = previousTarget;
+            }
     }
 
     public void OnPointerExit(PointerEventData eventData) => ResetToOriginal();

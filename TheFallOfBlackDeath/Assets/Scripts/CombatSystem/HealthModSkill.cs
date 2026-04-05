@@ -123,6 +123,42 @@ protected override void OnRun(Fighter receiver)
         }
     }
 
+    public override bool CanTriggerSynergy(Fighter target, BodyPart part = BodyPart.None)
+    {
+        if (target == null) return false;
+
+        if (part != BodyPart.None)
+        {
+            Fighter.BodyPartData targetPart = target.GetBodyPart(part);
+            return IsSynergyPossible(targetPart);
+        }
+        else
+        {
+            // Si no se especifica parte, revisamos si alguna parte del enemigo permite sinergia
+            foreach (var p in target.bodyParts)
+            {
+                if (!p.IsDestroyed && IsSynergyPossible(p))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool IsSynergyPossible(Fighter.BodyPartData targetPart)
+    {
+        if (targetPart == null || targetPart.IsDestroyed) return false;
+
+        if (targetPart.currentStatus == PartStatus.Corroded && (this.damageType == DamageType.Kinetic || this.damageType == DamageType.Thermal))
+        {
+            return true;
+        }
+        
+        // Aquí se pueden agregar más condiciones en el futuro fácilmente
+        
+        return false;
+    }
+
     // --- FUNCIÓN AUXILIAR PARA LAS SINERGIAS ---
     // Mantiene tu OnRun limpio y se asegura de que la matemática sea igual para todos
     private float ApplySynergy(Fighter.BodyPartData targetPart, float dmg)

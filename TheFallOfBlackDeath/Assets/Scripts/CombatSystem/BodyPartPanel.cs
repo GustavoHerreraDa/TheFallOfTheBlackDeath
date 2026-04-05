@@ -62,7 +62,15 @@ public class BodyPartPanel : MonoBehaviour
         Button btn = btnGO.GetComponent<Button>();
         TextMeshProUGUI label = btnGO.GetComponentInChildren<TextMeshProUGUI>();
         if (label != null)
+        {
             label.text = part.ToString();
+            
+            // Highlight synergy in label
+            if (skill != null && skill.CanTriggerSynergy(target, part))
+            {
+                label.text = $"<b>{part}</b> <color=#ffff00>[SYNERGY!]</color>";
+            }
+        }
 
         // 🔍 Buscar el Renderer REAL de esa parte
         Renderer partRenderer = FindPartRenderer(part);
