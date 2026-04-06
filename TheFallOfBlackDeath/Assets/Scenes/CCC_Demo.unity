@@ -370,7 +370,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5776229361405665704, guid: c9570fe5ad9a4df4bb1d5ee35ecf3a1e, type: 3}
   m_PrefabInstance: {fileID: 8352410690929413886}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8352410690929413889}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fb378c3cdf89b247a08f832dc38e553, type: 3}
@@ -2039,7 +2039,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Shoot Head
-  animationDuration: 2
+  animationDuration: 5
   targeting: 4
   BodyPartTarget: 0
   effectPrfb: {fileID: 1429954232896169633, guid: 83036083a4ebcd34f98131bd3cf6f4d2, type: 3}
@@ -4287,6 +4287,10 @@ PrefabInstance:
       value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 380670529944311470, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      propertyPath: animationDuration
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 380670529944311470, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: 'requiredParts.Array.data[0]'
       value: 4
       objectReference: {fileID: 0}
@@ -4302,6 +4306,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: d33bfa5338dda6b44b51642aca3844b8, type: 2}
+    - target: {fileID: 2288759366594403960, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      propertyPath: animationDuration
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2323888251169085530, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
@@ -4335,9 +4343,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: f47d3c1f15c803843a292870a883c9d6, type: 3}
     - target: {fileID: 2473935840786194243, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      propertyPath: animationDuration
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2473935840786194243, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: customImpactSound
       value: 
       objectReference: {fileID: 8300000, guid: 0fe09f61574cc9a4c9ec8073db056db6, type: 3}
+    - target: {fileID: 2473935841089252606, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      propertyPath: animationDuration
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2473935841089252606, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: 'requiredParts.Array.data[0]'
       value: 5
@@ -4788,14 +4804,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2611806303450083517, guid: c9570fe5ad9a4df4bb1d5ee35ecf3a1e, type: 3}
-      propertyPath: skillManager
-      value: 
-      objectReference: {fileID: 8352410690929413888}
-    - target: {fileID: 2611806303450083517, guid: c9570fe5ad9a4df4bb1d5ee35ecf3a1e, type: 3}
-      propertyPath: ActionsButtonsPanel
-      value: 
-      objectReference: {fileID: 8352410690929413889}
     - target: {fileID: 2651826039485508021, guid: c9570fe5ad9a4df4bb1d5ee35ecf3a1e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4896,18 +4904,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 1691333299}
-    - target: {fileID: 5776229361405665704, guid: c9570fe5ad9a4df4bb1d5ee35ecf3a1e, type: 3}
-      propertyPath: normalColor.b
-      value: 0.09019608
-      objectReference: {fileID: 0}
-    - target: {fileID: 5776229361405665704, guid: c9570fe5ad9a4df4bb1d5ee35ecf3a1e, type: 3}
-      propertyPath: normalColor.g
-      value: 0.6901961
-      objectReference: {fileID: 0}
-    - target: {fileID: 5776229361405665704, guid: c9570fe5ad9a4df4bb1d5ee35ecf3a1e, type: 3}
-      propertyPath: normalColor.r
-      value: 0.23137257
-      objectReference: {fileID: 0}
     - target: {fileID: 5788066766332190058, guid: c9570fe5ad9a4df4bb1d5ee35ecf3a1e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4992,10 +4988,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1691333300}
-    - target: {fileID: 7601187905642341605, guid: c9570fe5ad9a4df4bb1d5ee35ecf3a1e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
-      value: 
-      objectReference: {fileID: 8352410690929413889}
     - target: {fileID: 8519503302602277875, guid: c9570fe5ad9a4df4bb1d5ee35ecf3a1e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5019,39 +5011,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9061519529037186305, guid: c9570fe5ad9a4df4bb1d5ee35ecf3a1e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8352410690929413888}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9570fe5ad9a4df4bb1d5ee35ecf3a1e, type: 3}
---- !u!1 &8352410690929413887 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9061519529037186305, guid: c9570fe5ad9a4df4bb1d5ee35ecf3a1e, type: 3}
-  m_PrefabInstance: {fileID: 8352410690929413886}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8352410690929413888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8352410690929413887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33b60526213f98b4984ca53688510a97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SkillManager
-  currentCharacterIndex: 0
-  currentCharacterObj: {fileID: 0}
-  SetSkill: 0
-  skillPanel: {fileID: 368129022}
-  enemySelection: {fileID: 709497594}
-  bodyPartPanel: {fileID: 501859439}
---- !u!1 &8352410690929413889 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8969760519238669406, guid: c9570fe5ad9a4df4bb1d5ee35ecf3a1e, type: 3}
-  m_PrefabInstance: {fileID: 8352410690929413886}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9082851447141892854
 PrefabInstance:
   m_ObjectHideFlags: 0
