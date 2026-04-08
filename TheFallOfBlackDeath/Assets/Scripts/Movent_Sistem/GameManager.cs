@@ -614,13 +614,16 @@ public class GameManager : MonoBehaviour
 
     private void SetupFollower(GameObject npc)
     {
-        FollowPlayer follower = npc.GetComponent<FollowPlayer>();
-        if (follower == null) follower = npc.AddComponent<FollowPlayer>();
+        AllyFollower follower = npc.GetComponent<AllyFollower>();
+        if (follower == null) follower = npc.AddComponent<AllyFollower>();
+
+        // Si existe un script FollowPlayer antiguo (enemigo), lo desactivamos o removemos
+        FollowPlayer oldFollower = npc.GetComponent<FollowPlayer>();
+        if (oldFollower != null) oldFollower.enabled = false;
         
-        follower.player = character1.transform;
-        follower.currentState = FollowPlayer.EnemyState.Chase; 
-        follower.chaseEnterDistance = 2f;
-        follower.chaseExitDistance = 100f;
+        follower.target = character1.transform;
+        follower.stoppingDistance = 2f;
+        follower.movementSpeed = 3.5f;
 
         DialogueInteractable interactable = npc.GetComponent<DialogueInteractable>();
         if (interactable != null) interactable.enabled = false;
