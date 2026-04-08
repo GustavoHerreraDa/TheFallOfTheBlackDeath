@@ -89,8 +89,13 @@ public class PlayerUI : MonoBehaviour
 
     private void UpdateSkillUI()
     {
+        if (skillsUI == null) return;
+
         for (int i = 0; i < skillsUI.Length; i++)
         {
+            // Comprobación de nulidad robusta para SkillUI
+            if (skillsUI[i] == null) continue;
+
             skillsUI[i].player = fighter.gameObject;
             skillsUI[i].skill = null;
             skillsUI[i].UpdateUI();
@@ -117,10 +122,10 @@ public class PlayerUI : MonoBehaviour
         CharacterSwitcher.updateMainCharacterUI -= UpdatePlayerStats;
         CharacterSwitcher.updateSecondaryCharacterUI -= UpdatePlayerStats;
         
-        /*if (GameManager.Instance != null)
+        if (GameManager.Instance != null)
         {
             GameManager.Instance.OnPlayerStatsUpdated -= UpdatePlayerStats;
-        }*/
+        }
     }
 
 

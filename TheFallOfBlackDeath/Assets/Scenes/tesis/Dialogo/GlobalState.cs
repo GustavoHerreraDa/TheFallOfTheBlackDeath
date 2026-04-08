@@ -20,10 +20,28 @@ public class GlobalState : MonoBehaviour
     public void AddFlag(string flag)
     {
         flags.Add(flag);
+        // Persistir flags importantes como el reclutamiento
+        if (flag.StartsWith("Reclutado_"))
+        {
+            PlayerPrefs.SetInt("Flag_" + flag, 1);
+            PlayerPrefs.Save();
+        }
     }
 
     public void RemoveFlag(string flag)
     {
         flags.Remove(flag);
+        if (flag.StartsWith("Reclutado_"))
+        {
+            PlayerPrefs.DeleteKey("Flag_" + flag);
+            PlayerPrefs.Save();
+        }
+    }
+
+    public void ClearPersistentFlags()
+    {
+        // Una forma de resetear todo (útil para pruebas)
+        PlayerPrefs.DeleteAll(); 
+        flags.Clear();
     }
 }

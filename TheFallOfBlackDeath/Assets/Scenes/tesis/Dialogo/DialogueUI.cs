@@ -136,6 +136,13 @@ public class DialogueUI : MonoBehaviour
 
         foreach (DialogueChoice choice in choices)
         {
+            // VERIFICACIÓN DE FLAGS
+            if (!string.IsNullOrEmpty(choice.requiredFlag) && !GlobalState.Instance.HasFlag(choice.requiredFlag))
+                continue; // Salta esta opción si no tiene el flag requerido
+
+            if (!string.IsNullOrEmpty(choice.forbiddenFlag) && GlobalState.Instance.HasFlag(choice.forbiddenFlag))
+                continue; // Salta esta opción si tiene el flag prohibido
+
             GameObject btnObj = Instantiate(choiceButtonPrefab, choicesPanel.transform);
             btnObj.GetComponentInChildren<TextMeshProUGUI>().text = choice.playerText;
 

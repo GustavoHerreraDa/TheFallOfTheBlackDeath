@@ -74,6 +74,19 @@ public class DialogueManager : MonoBehaviour
     {
         DialogueLine line = currentDialogue.lines[currentLineIndex];
 
+        // VERIFICACIÓN DE FLAGS PARA LA LÍNEA
+        if (!string.IsNullOrEmpty(line.requiredFlag) && !GlobalState.Instance.HasFlag(line.requiredFlag))
+        {
+            SkipLine();
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(line.forbiddenFlag) && GlobalState.Instance.HasFlag(line.forbiddenFlag))
+        {
+            SkipLine();
+            return;
+        }
+
         ui.HideChoices();
         ui.DisplayLine(line);
         ui.onTypingFinished = () =>
@@ -81,6 +94,15 @@ public class DialogueManager : MonoBehaviour
             if (line.hasChoices)
                 ui.ShowChoices(line.choices);
         };
+    }
+
+    private void SkipLine()
+    {
+        currentLineIndex++;
+        if (currentLineIndex < currentDialogue.lines.Length)
+            ShowLine();
+        else
+            EndDialogue();
     }
 
 
@@ -120,7 +142,14 @@ public class DialogueManager : MonoBehaviour
             Debug.Log($"Dialogo: Regalando item ID {choice.itemID}");
             OnGiveItem?.Invoke(choice.itemID, choice.itemAmount, choice.itemType);
             
-            // Cerramos el diálogo inmediatamente después
+            // Si hay un diálogo siguiente, vamos a él en lugar de cerrar
+            if (choice.nextDialogue != null)
+            {
+                StartDialogue(choice.nextDialogue, currentNPC);
+                return;
+            }
+
+            // Si no hay siguiente diálogo, cerramos
             EndDialogueWithAction(choice.action);
             return;
         }

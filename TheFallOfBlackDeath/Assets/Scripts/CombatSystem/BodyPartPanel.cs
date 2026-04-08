@@ -33,6 +33,14 @@ public class BodyPartPanel : MonoBehaviour
         target = targetFighter;
         skill = currentSkill;
 
+        if (playerFighter.uiAnchor != null)
+        {
+            Vector3 targetPosition = playerFighter.uiAnchor.position;
+            targetPosition.y = this.transform.position.y;
+            this.transform.position = targetPosition;
+            this.transform.rotation = playerFighter.uiAnchor.rotation;
+        }
+
         // 1. Limpieza de botones anteriores para evitar duplicados
         foreach (var btn in buttons) if(btn != null) Destroy(btn.gameObject);
         buttons.Clear();

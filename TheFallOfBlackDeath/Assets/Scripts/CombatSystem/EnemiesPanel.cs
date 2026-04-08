@@ -35,6 +35,14 @@ public class EnemiesPanel : MonoBehaviour
         targetFighter = playerFighter;
         targets.Clear();
 
+        if (playerFighter.uiAnchor != null)
+        {
+            Vector3 targetPosition = playerFighter.uiAnchor.position;
+            targetPosition.y = this.transform.position.y;
+            this.transform.position = targetPosition;
+            this.transform.rotation = playerFighter.uiAnchor.rotation;
+        }
+
         int index = 0;
 
         foreach (var enemy in enemyTargets)

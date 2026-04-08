@@ -102,6 +102,9 @@ public class CameraManager : MonoBehaviour
 
     private void Update()
     {
+        // Solo proceder si el combate está activo y listo
+        if (combatManager == null || !combatManager.isCombatActive) return;
+
         FighterIndex = combatManager.fighterIndex;
 
         if (currentCameraIndex != combatManager.fighterIndex)
@@ -333,10 +336,14 @@ public class CameraManager : MonoBehaviour
     
     private void ApplyBreathingEffect()
     {
-        if (combatManager == null || combatManager.fighters == null || FighterIndex < 0 || FighterIndex >= combatManager.fighters.Length) return;
+        // Verificación robusta de combatManager y el array de fighters
+        if (combatManager == null || combatManager.fighters == null || 
+            FighterIndex < 0 || FighterIndex >= combatManager.fighters.Length) return;
 
         var currentFighter = combatManager.fighters[FighterIndex];
-        if (currentFighter == null || !currentFighter.isAlive) return;
+        
+        // Verificación adicional: ¿El luchador tiene estadísticas asignadas?
+        if (currentFighter == null || currentFighter.stats == null || !currentFighter.isAlive) return;
         
         float currentHp = currentFighter.GetCurrentStats().health;
         float maxHp = currentFighter.GetCurrentStats().maxHealth;

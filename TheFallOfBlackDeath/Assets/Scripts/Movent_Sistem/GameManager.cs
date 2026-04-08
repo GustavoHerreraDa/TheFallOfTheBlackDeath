@@ -211,6 +211,22 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // 1. Limpiar estado de la DB al iniciar para evitar persistencia del ScriptableObject
+        if (globalGlobalDatabase != null)
+        {
+            for (int i = 0; i < globalGlobalDatabase.EnemyDB.Count; i++)
+            {
+                // Solo limpiamos si NO es el protagonista.
+                if (!globalGlobalDatabase.EnemyDB[i].isMainCharacter)
+                {
+                    globalGlobalDatabase.SetSecondaryCharacter(i, false);
+                }
+            }
+        }
+
+        // 2. Restaurar estado desde Flags persistentes
+        RestoreRecruitmentFromFlags();
+
         // Resolver referencias de personajes a partir de la base de datos y de la escena,
         // evitando dependencia circular con CharacterSwitcher y evitando asignaciones externas.
         UpdateCharactersFromDatabase();
@@ -276,8 +292,28 @@ public class GameManager : MonoBehaviour
         DialogueManager.OnRecruitCharacter -= HandleRecruitment;
     }
 
+    private void RestoreRecruitmentFromFlags()
+    {
+        if (globalGlobalDatabase == null) return;
+
+        for (int i = 0; i < globalGlobalDatabase.EnemyDB.Count; i++)
+        {
+            string flag = "Reclutado_" + i;
+            if (PlayerPrefs.GetInt("Flag_" + flag, 0) == 1)
+            {
+                Debug.Log($"Restaurando reclutamiento para index {i} desde Flags");
+                globalGlobalDatabase.SetSecondaryCharacter(i, true);
+                if (GlobalState.Instance != null) GlobalState.Instance.AddFlag(flag);
+                this.hasRecruitedSecondary = true;
+            }
+        }
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // Asegurar que los NPCs reclutados no aparezcan como interactuables en la nueva escena
+        StartCoroutine(HideRecruitedNPCs());
+
         if (scene.buildIndex == 1)
         {
             print ("level " + scene);
@@ -545,6 +581,51 @@ public class GameManager : MonoBehaviour
         lastPos = Vector3.zero;
     }
 
+    private IEnumerator HideRecruitedNPCs()
+    {
+        // Esperar un frame para que los NPCs se inicialicen
+        yield return null;
+
+        var allFighters = FindObjectsOfType<PlayerFighter>();
+        foreach (var pf in allFighters)
+        {
+            // Si este NPC ya está reclutado en la base de datos
+            if (globalGlobalDatabase != null && pf.figherIndex < globalGlobalDatabase.EnemyDB.Count)
+            {
+                var dbData = globalGlobalDatabase.EnemyDB[pf.figherIndex];
+                if (dbData.isSecondaryCharacter && !dbData.isMainCharacter)
+                {
+                    // Si ya es character2 (compañero activo), configurarlo como seguidor
+                    if (character2 != null && character2.figherIndex == pf.figherIndex)
+                    {
+                        SetupFollower(pf.gameObject);
+                    }
+                    else
+                    {
+                        // Si está marcado como reclutado pero no es el activo (por alguna razón)
+                        // o para asegurar que no se pueda hablar con él
+                        var interactable = pf.GetComponent<DialogueInteractable>();
+                        if (interactable != null) interactable.enabled = false;
+                    }
+                }
+            }
+        }
+    }
+
+    private void SetupFollower(GameObject npc)
+    {
+        FollowPlayer follower = npc.GetComponent<FollowPlayer>();
+        if (follower == null) follower = npc.AddComponent<FollowPlayer>();
+        
+        follower.player = character1.transform;
+        follower.currentState = FollowPlayer.EnemyState.Chase; 
+        follower.chaseEnterDistance = 2f;
+        follower.chaseExitDistance = 100f;
+
+        DialogueInteractable interactable = npc.GetComponent<DialogueInteractable>();
+        if (interactable != null) interactable.enabled = false;
+    }
+
     private void HandleRecruitment(GameObject npc, int index) // <--- Recibe el int
     {
         Debug.Log($"GameManager: Reclutando personaje ID {index} ({npc.name})");
@@ -554,6 +635,12 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning("¡Party llena! No se puede reclutar.");
             return; 
+        }
+
+        // PASO CRÍTICO: Añadir flag persistente
+        if (GlobalState.Instance != null)
+        {
+            GlobalState.Instance.AddFlag("Reclutado_" + index);
         }
 
         // PASO CRÍTICO: Actualizar la Base de Datos
@@ -579,8 +666,8 @@ public class GameManager : MonoBehaviour
             // Guardar estado inicial
             SavePlayerState(newAlly);
 
-            // Opcional: Aquí se podria agregar el script de partyfollower para que siga al protagonista
-            // npc.AddComponent<PartyFollower>();
+            // Hacer que el NPC empiece a seguir al jugador
+            SetupFollower(npc);
         
             Debug.Log("Reclutamiento completado y guardado en DB.");
         }

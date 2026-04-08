@@ -4,6 +4,11 @@ using UnityEngine;
 public class DialogueChoice
 {
     public string playerText;
+
+    [Header("Condiciones de Aparición")]
+    public string requiredFlag; // La opción solo aparece si el jugador tiene este flag
+    public string forbiddenFlag; // La opción desaparece si el jugador tiene este flag
+
     public DialogueEvent.DialogueEndAction action = DialogueEvent.DialogueEndAction.None;
     public Dialogue nextDialogue;
 

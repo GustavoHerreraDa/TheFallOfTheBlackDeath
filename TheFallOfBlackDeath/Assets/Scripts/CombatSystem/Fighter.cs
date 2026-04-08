@@ -51,6 +51,8 @@ public abstract class Fighter : MonoBehaviour
     public Skill[] skills;
     public StatusCondition statusCondition;
 
+    public Transform uiAnchor;
+
     [SerializeField]
     public Transform CameraPivot;
 
@@ -64,7 +66,8 @@ public abstract class Fighter : MonoBehaviour
 
     public bool isAlive
     {
-        get => this.stats.health > 0;
+        // Verifica que stats no sea nulo antes de acceder a health
+        get => this.stats != null && this.stats.health > 0;
     }
 
     protected virtual void Start()

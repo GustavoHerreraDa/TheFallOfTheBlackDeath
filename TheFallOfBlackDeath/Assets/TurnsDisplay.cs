@@ -20,16 +20,29 @@ public class TurnsDisplay : MonoBehaviour
 
     public void SetText(Fighter[] fighters)
     {
-        int i = 0;
-        foreach (Fighter oFighter in fighters)
+        if (textComponents == null) return;
+
+        int numFighters = fighters != null ? fighters.Length : 0;
+        int numTextSlots = textComponents.Length;
+
+        // Limpiar todos los textos primero y desactivarlos
+        foreach (var otext in textComponents)
         {
-            textComponents[i].text = fighters[i].idName;
-            i++;
-        }
-        foreach (TextMeshProUGUI otext in textComponents)
-        {
-            if (otext.text == string.Empty)
+            if (otext != null)
+            {
+                otext.text = string.Empty;
                 otext.gameObject.SetActive(false);
+            }
+        }
+
+        // Asignar nombres hasta el límite de slots o de luchadores
+        for (int i = 0; i < Mathf.Min(numFighters, numTextSlots); i++)
+        {
+            if (fighters[i] != null && textComponents[i] != null)
+            {
+                textComponents[i].text = fighters[i].idName;
+                textComponents[i].gameObject.SetActive(true);
+            }
         }
     }
 

@@ -49,13 +49,16 @@ public class SkillUI : MonoBehaviour
 
     public void UpdateUI()
     {
+        // Si el objeto ha sido destruido, no hacemos nada
+        if (this == null || gameObject == null) return;
+        
         //Debug.Log("Se actuliza UI" + gameObject.name);
         
 
         if (skill == null)
             GetSkill();
 
-        if (statusMod == null && healthModSkill == null && applySCSkill == null)
+        if (skill == null || (statusMod == null && healthModSkill == null && applySCSkill == null))
         {
             //this.gameObject.SetActive(false);
             return;
@@ -67,8 +70,8 @@ public class SkillUI : MonoBehaviour
         if (!skill.HasItemInInventory && skill.ItemsNeeded.Count > 0)
             return;
 
-        skillname.text = skill.skillName;
-        shortDescripcion.text = skill.SkillDesc;
+        if (skillname != null) skillname.text = skill.skillName;
+        if (shortDescripcion != null) shortDescripcion.text = skill.SkillDesc;
 
         //if (statusMod != null)
         //    skillPower.text = statusMod.amount.ToString();
@@ -76,27 +79,35 @@ public class SkillUI : MonoBehaviour
         //if (healthModSkill != null)
         //    skillPower.text = healthModSkill.amount.ToString();
 
-        skillIcon.sprite = skill.iconUI;
-        skillIcon.color = Color.white;
+        if (skillIcon != null)
+        {
+            skillIcon.sprite = skill.iconUI;
+            skillIcon.color = Color.white;
+        }
     }
 
     private void GetSkill()
     {
         if (player == null)
-            Debug.Log("PLAYER ES NULL EN SkillUI!!!", this);
+        {
+            // Debug.Log("PLAYER ES NULL EN SkillUI!!!", this);
+            return;
+        }
 
         var skills = player.GetComponentsInChildren<Skill>(true);
         if (skills == null || skillIndex < 0 || skillIndex >= skills.Length)
         {
-            Debug.LogWarning($"[SkillUI.GetSkill] Invalid index {skillIndex} (skillsCount={(skills!=null?skills.Length:0)}) on {gameObject.name}", this);
+            // Debug.LogWarning($"[SkillUI.GetSkill] Invalid index {skillIndex} (skillsCount={(skills!=null?skills.Length:0)}) on {gameObject.name}", this);
             return;
         }
 
         skill = skills[skillIndex];
+        
+        if (skill == null) return;
 
-        healthModSkill = skills[skillIndex].gameObject.GetComponent<HealthModSkill>();
-        statusMod = skills[skillIndex].gameObject.GetComponent<StatusMod>();
-        applySCSkill = skills[skillIndex].gameObject.GetComponent<ApplySCSkill>();
+        healthModSkill = skill.gameObject.GetComponent<HealthModSkill>();
+        statusMod = skill.gameObject.GetComponent<StatusMod>();
+        applySCSkill = skill.gameObject.GetComponent<ApplySCSkill>();
 
     }
 

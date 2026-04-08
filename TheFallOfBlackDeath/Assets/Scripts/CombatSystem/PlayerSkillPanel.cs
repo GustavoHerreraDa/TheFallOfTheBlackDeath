@@ -144,6 +144,14 @@ public class PlayerSkillPanel : MonoBehaviour
 
         this.targetFigther = newTarget;
 
+        if (newTarget.uiAnchor != null)
+        {
+            Vector3 targetPosition = newTarget.uiAnchor.position;
+            targetPosition.y = this.transform.position.y;
+            this.transform.position = targetPosition;
+            this.transform.rotation = newTarget.uiAnchor.rotation;
+        }
+
         // Prepare buttons dynamically based on available skills
         int skillsCount = (targetFigther != null && targetFigther.skills != null) ? targetFigther.skills.Length : 0;
         Debug.Log($"[PlayerSkillPanel.ShowForPlayer] skillsCount={skillsCount}");
