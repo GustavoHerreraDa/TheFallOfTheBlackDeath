@@ -278,8 +278,6 @@ protected override void OnRun(Fighter receiver)
                 {
                     baseDmg *= 1.5f; // Multiplicador de Combustión
                 }
-                
-                // (Si en el futuro agregas más sinergias, como daño x2 si está Electrified, las agregas aquí también)
             }
         }
 

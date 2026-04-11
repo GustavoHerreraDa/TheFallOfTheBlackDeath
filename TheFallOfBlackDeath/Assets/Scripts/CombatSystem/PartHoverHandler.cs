@@ -9,7 +9,7 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
     [SerializeField]
     private Material[] originalMaterials; 
 
-    // --- NEW VARIABLES FOR DAMAGE PREVIEW ---
+ 
     private Skill currentSkill;
     private Fighter targetFighter;
     private BodyPart targetPart;

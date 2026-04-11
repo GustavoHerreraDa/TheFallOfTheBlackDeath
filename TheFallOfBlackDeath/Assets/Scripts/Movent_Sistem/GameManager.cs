@@ -623,7 +623,6 @@ public class GameManager : MonoBehaviour
         
         follower.target = character1.transform;
         follower.stoppingDistance = 2f;
-        follower.movementSpeed = 3.5f;
 
         DialogueInteractable interactable = npc.GetComponent<DialogueInteractable>();
         if (interactable != null) interactable.enabled = false;

@@ -10,8 +10,8 @@ public class PlayerControl : MonoBehaviour
     public Fighter fighter;
 
     [Header("Estadisticas Normales")]
-    [SerializeField] private float velocidad;
-    [SerializeField] private float velCorriendo;
+    public float velocidad;
+    public float velCorriendo;
     [SerializeField] private float alturaDeSalto;
     [SerializeField] private float tiempoAlGirar;
 

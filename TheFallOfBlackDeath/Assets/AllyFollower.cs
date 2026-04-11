@@ -7,10 +7,11 @@ public class AllyFollower : MonoBehaviour
     public NavMeshAgent agent;
     public Animator anim;
     public Transform target;
+    private PlayerControl playerControl;
 
     [Header("Configuración de Seguimiento")]
     public float stoppingDistance = 2f;
-    public float movementSpeed = 3.5f;
+    public float sprintDistance = 6f; // Distancia a la que empieza a correr para alcanzar al player
 
     void Start()
     {
@@ -20,7 +21,21 @@ public class AllyFollower : MonoBehaviour
         if (agent != null)
         {
             agent.stoppingDistance = stoppingDistance;
-            agent.speed = movementSpeed;
+        }
+
+        // Intentar encontrar el PlayerControl si no tenemos target o para sincronizar velocidad
+        if (target != null)
+        {
+            playerControl = target.GetComponent<PlayerControl>();
+        }
+        
+        if (playerControl == null)
+        {
+            playerControl = FindObjectOfType<PlayerControl>();
+            if (playerControl != null && target == null)
+            {
+                target = playerControl.transform;
+            }
         }
     }
 
@@ -34,27 +49,47 @@ public class AllyFollower : MonoBehaviour
         {
             agent.isStopped = false;
             agent.SetDestination(target.position);
+            AdaptSpeed(distance);
         }
         else
         {
             agent.isStopped = true;
+            agent.velocity = Vector3.zero;
         }
 
         UpdateAnimations();
+    }
+
+    void AdaptSpeed(float distance)
+    {
+        if (playerControl == null) return;
+
+        // Si el jugador está corriendo o el aliado está muy lejos, corre también
+        bool shouldChase = Input.GetKey(KeyCode.LeftShift) || distance > sprintDistance;
+        
+        // Obtenemos las velocidades del player script para adaptarnos
+        // Usamos una pequeña compensación (1.1f) para que el aliado pueda alcanzar al player si este se mueve
+        float targetSpeed = shouldChase ? playerControl.velCorriendo : playerControl.velocidad;
+        agent.speed = targetSpeed * 1.1f;
     }
 
     void UpdateAnimations()
     {
         if (anim == null) return;
 
-        // Suponiendo que el animador tiene un parámetro "Speed" o "IsWalking"
-        // Si usa los mismos que FollowPlayer (Idle, Patrol, Chase, Death), los adaptamos.
-        // Dado que es un aliado, simplificamos a Caminar/Idle.
+        float speed = agent.velocity.magnitude;
+        bool isMoving = !agent.isStopped && speed > 0.1f;
         
-        bool isMoving = !agent.isStopped && agent.velocity.magnitude > 0.1f;
-        
-        // Intentamos usar parámetros comunes, o los de FollowPlayer si el animator es compartido
+        // El seguidor corre si su velocidad actual es alta (cercana a velCorriendo)
+        bool isChasing = false;
+        if (isMoving && playerControl != null)
+        {
+            // Si la velocidad es mayor que la de caminar, consideramos que está en "Chase" (corriendo)
+            isChasing = speed > (playerControl.velocidad + 0.5f);
+        }
+
         anim.SetBool("Idle", !isMoving);
-        anim.SetBool("Chase", isMoving); // Usamos "Chase" como "Moving" para ser compatible con animators existentes
+        anim.SetBool("Walk", isMoving && !isChasing);
+        anim.SetBool("Chase", isMoving && isChasing);
     }
 }
