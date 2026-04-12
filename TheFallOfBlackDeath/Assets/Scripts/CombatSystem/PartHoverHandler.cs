@@ -73,6 +73,32 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 // Restore the previous target just in case
                 healthSkill.BodyPartTarget = previousTarget;
             }
+            else if (currentSkill != null && currentSkill is ApplySCSkill statusSkill && targetFighter != null)
+            {
+                BodyPart previousTarget = statusSkill.BodyPartTarget;
+                statusSkill.BodyPartTarget = targetPart;
+
+                string extraInfo = string.Empty;
+                var existing = targetFighter.GetCurrentBodyPartStatusCondition(typeof(PoisonCondition), targetPart);
+                if (existing == null)
+                    existing = targetFighter.GetCurrentBodyPartStatusCondition(typeof(BleedingCondition), targetPart);
+
+                if (existing != null)
+                {
+                    extraInfo = $" <color=#66ffcc>[STACK {existing.Stacks + 1}]</color>";
+                }
+                else if (statusSkill.damageAmount > 0f)
+                {
+                    extraInfo = $" <color=#cc66ff>[-{(int)statusSkill.damageAmount}]</color>";
+                }
+                else
+                {
+                    extraInfo = " <color=#66ffcc>[STATUS]</color>";
+                }
+
+                buttonLabel.text = $"{originalText}{extraInfo}";
+                statusSkill.BodyPartTarget = previousTarget;
+            }
     }
 
     public void OnPointerExit(PointerEventData eventData) => ResetToOriginal();

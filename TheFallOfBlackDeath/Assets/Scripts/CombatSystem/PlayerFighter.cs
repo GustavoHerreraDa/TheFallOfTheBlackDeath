@@ -254,7 +254,7 @@ public class PlayerFighter : Fighter
         if (enemyBtn != null)
             enemyBtn.ForceReset();
 
-        if (this.skillToBeExecuted is HealthModSkill)
+        if (this.skillToBeExecuted is BodyPartTargetSkill)
         {
             enemiesPanel.Hide();
             bodyPartPanel.Show(this, enemyFighter, this.skillToBeExecuted);

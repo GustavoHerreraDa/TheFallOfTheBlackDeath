@@ -336,6 +336,23 @@ public class CombatManager : MonoBehaviour
                 case CombatStatus.CHECK_FIGHTER_STATUS_CONDITION:
                     var currentFighter = this.fighters[this.fighterIndex];
 
+                    foreach (var bodyPartCondition in currentFighter.GetCurrentBodyPartStatusConditions().ToArray())
+                    {
+                        bodyPartCondition.Apply();
+
+                        while (true)
+                        {
+                            string nextBodyPartMessage = bodyPartCondition.GetNextMessage();
+                            if (nextBodyPartMessage == null)
+                            {
+                                break;
+                            }
+
+                            LogPanel.Write(nextBodyPartMessage);
+                            yield return new WaitForSeconds(2f);
+                        }
+                    }
+
                     var statusCondition = currentFighter.GetCurrentStatusCondition();
 
                     if (statusCondition != null)

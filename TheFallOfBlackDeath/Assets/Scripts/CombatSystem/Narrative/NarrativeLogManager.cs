@@ -102,10 +102,8 @@ public class NarrativeLogManager : MonoBehaviour
 
     private bool IsPlayerBleeding(PlayerFighter p)
     {
-        // If there's a live StatusCondition of bleeding type, we could inspect type name.
-        // But to avoid coupling, also check any body part with PartStatus.Bleeding.
         if (p == null) return false;
-        if (p.statusCondition is BleedingCondition) return true;
+        if (p.GetCurrentBodyPartStatusConditions().Any(c => c is BleedingCondition)) return true;
         if (p.bodyParts != null)
         {
             foreach (var bp in p.bodyParts)

@@ -50,6 +50,7 @@ public abstract class Fighter : MonoBehaviour
     public Stats modedStats;
     public Skill[] skills;
     public StatusCondition statusCondition;
+    private List<BodyPartStatusCondition> bodyPartStatusConditions;
 
     public Transform uiAnchor;
 
@@ -78,8 +79,7 @@ public abstract class Fighter : MonoBehaviour
         this.skills = this.GetComponentsInChildren<Skill>();
         this.modedStats = stats;
         this.statusMods = new List<StatusMod>();
-
-
+        this.bodyPartStatusConditions = new List<BodyPartStatusCondition>();
 
     }
 
@@ -248,6 +248,56 @@ public abstract class Fighter : MonoBehaviour
         }
 
         return this.statusCondition;
+    }
+
+    public void AddBodyPartStatusCondition(BodyPartStatusCondition condition)
+    {
+        if (condition == null)
+            return;
+
+        if (this.bodyPartStatusConditions == null)
+            this.bodyPartStatusConditions = new List<BodyPartStatusCondition>();
+
+        this.bodyPartStatusConditions.Add(condition);
+    }
+
+    public BodyPartStatusCondition GetCurrentBodyPartStatusCondition(System.Type conditionType, BodyPart part)
+    {
+        foreach (BodyPartStatusCondition condition in this.GetCurrentBodyPartStatusConditions())
+        {
+            if (condition != null && condition.Matches(conditionType, part))
+                return condition;
+        }
+
+        return null;
+    }
+
+    public List<BodyPartStatusCondition> GetCurrentBodyPartStatusConditions()
+    {
+        if (this.bodyPartStatusConditions == null)
+            this.bodyPartStatusConditions = new List<BodyPartStatusCondition>();
+
+        for (int i = this.bodyPartStatusConditions.Count - 1; i >= 0; i--)
+        {
+            BodyPartStatusCondition condition = this.bodyPartStatusConditions[i];
+            bool expired = condition == null || condition.hasExpired;
+
+            if (!expired)
+            {
+                BodyPartData partData = this.GetBodyPart(condition.TargetPart);
+                expired = partData == null || partData.IsDestroyed;
+            }
+
+            if (expired)
+            {
+                if (condition != null)
+                    Destroy(condition.gameObject);
+
+                this.bodyPartStatusConditions.RemoveAt(i);
+            }
+        }
+
+        return this.bodyPartStatusConditions;
     }
 
     public void SetModStats(Stats stats)

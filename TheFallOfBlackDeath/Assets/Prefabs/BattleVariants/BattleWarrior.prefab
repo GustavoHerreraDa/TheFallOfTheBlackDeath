@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &949948427771283411
+--- !u!1 &742385614144931137
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,64 +8,62 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1553664931794207670}
-  - component: {fileID: 7921790884137585063}
+  - component: {fileID: 4577333386984978507}
+  - component: {fileID: 6067692303253210058}
   m_Layer: 6
-  m_Name: Whirlwind
+  m_Name: Toxic Punch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1553664931794207670
+--- !u!4 &4577333386984978507
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 949948427771283411}
+  m_GameObject: {fileID: 742385614144931137}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.68048424, z: -0, w: 0.7327628}
-  m_LocalPosition: {x: 7.220004, y: 1.41, z: -0.7098782}
+  m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
+  m_LocalPosition: {x: 7, y: 1.41, z: 2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1262443021808767252}
   m_Father: {fileID: 4022697377997856663}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7921790884137585063
+--- !u!114 &6067692303253210058
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 949948427771283411}
+  m_GameObject: {fileID: 742385614144931137}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Whirlwind
+  m_EditorClassIdentifier: Assembly-CSharp::ApplySCSkill
+  skillName: Toxic Punch
+  rarity: 1
   animationDuration: 1
-  targeting: 2
+  targeting: 4
   BodyPartTarget: 0
-  effectPrfb: {fileID: 1134129239631916, guid: 7e48ba6b1b968764490bbc70b66e3fe1, type: 3}
-  SkillDesc: Deal true damage to all enemies for 35, with a 20% chance of landing
-    a critical hit for additional impact
+  effectPrfb: {fileID: 5627696518775099638, guid: 4567f1a4893865a4e99367437ee729af, type: 3}
+  SkillDesc: Envenena
   skillType: 0
-  iconUI: {fileID: 21300000, guid: c27bdd2f3ad83394aa03794d816a34d5, type: 3}
-  animationName: Whirlwind
+  iconUI: {fileID: 0}
+  animationName: Tackle
   HasItemInInventory: 0
   ItemsNeeded: []
   activationSound: {fileID: 0}
   customImpactSound: {fileID: 0}
   sanityCost: 0
-  requiredParts: 
-  damageType: 0
-  statusToApply: 0
-  amount: -20
-  modType: 1
-  critChance: 0.2
-  missChance: 0
+  requiredParts: 02000000
+  damageAmount: 10
+  initialDamageColor: {r: 0.6, g: 0.2, b: 0.8, a: 1}
+  initialHitShake: 0.4
 --- !u!1 &1856910305259842664
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,6 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Colossal Impact
+  rarity: 0
   animationDuration: 1.5
   targeting: 4
   BodyPartTarget: 0
@@ -354,7 +353,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4022697377997856663}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &9173237862744359980
+--- !u!1 &7309886730032895877
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -362,73 +361,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7319068044631253766}
-  - component: {fileID: 821244293868357548}
-  - component: {fileID: 6335672851427365334}
+  - component: {fileID: 1262443021808767252}
+  - component: {fileID: 3635810873203116173}
   m_Layer: 6
-  m_Name: Inspiration
+  m_Name: Tackle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7319068044631253766
+--- !u!4 &1262443021808767252
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9173237862744359980}
+  m_GameObject: {fileID: 7309886730032895877}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
-  m_LocalPosition: {x: 3.9359665, y: 1.54, z: 1.936184}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4022697377997856663}
+  m_Father: {fileID: 4577333386984978507}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &821244293868357548
+--- !u!114 &3635810873203116173
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9173237862744359980}
+  m_GameObject: {fileID: 7309886730032895877}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Script: {fileID: 11500000, guid: efe1f47b41486ae4895dd07e74545cb7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  type: 1
-  amount: -30
---- !u!114 &6335672851427365334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9173237862744359980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Fear
+  m_EditorClassIdentifier: Assembly-CSharp::PoisonCondition
+  effectPrfb: {fileID: 5627696518775099638, guid: 4567f1a4893865a4e99367437ee729af, type: 3}
   animationDuration: 2
-  targeting: 2
-  BodyPartTarget: 0
-  effectPrfb: {fileID: 299570413518567310, guid: e83d7fa16ae549944888e3639c44101b, type: 3}
-  SkillDesc: Reduce enemy defense power by 30.
-  skillType: 0
-  iconUI: {fileID: 21300000, guid: 0830d0fd1e66cc84285bc0b6215ab743, type: 3}
-  animationName: Inspiration
-  HasItemInInventory: 0
-  ItemsNeeded: []
-  activationSound: {fileID: 0}
-  customImpactSound: {fileID: 0}
-  sanityCost: 0
-  requiredParts: 
-  message: '{receiver} enemy lose 30 deffense!'
+  receptionMessage: enveno la parte del cuerpo
+  applyMessage: "sufrio da\xF1o de envenenamiento"
+  expireMessage: ya no esta mas envenenado
+  turnDuration: 1
+  poisonDamage: 20
 --- !u!1001 &2703193069426616174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -493,14 +468,6 @@ PrefabInstance:
       propertyPath: 'skills.Array.data[0]'
       value: 
       objectReference: {fileID: 2920774458030321471}
-    - target: {fileID: 450989877, guid: e3be3b195764333428080e393481162c, type: 3}
-      propertyPath: 'skills.Array.data[1]'
-      value: 
-      objectReference: {fileID: 7921790884137585063}
-    - target: {fileID: 450989877, guid: e3be3b195764333428080e393481162c, type: 3}
-      propertyPath: 'skills.Array.data[2]'
-      value: 
-      objectReference: {fileID: 6335672851427365334}
     - target: {fileID: 450989877, guid: e3be3b195764333428080e393481162c, type: 3}
       propertyPath: bodyParts.Array.data[0].part
       value: 1
@@ -753,10 +720,7 @@ PrefabInstance:
       addedObject: {fileID: 516316868990639398}
     - targetCorrespondingSourceObject: {fileID: 1319790218102814969, guid: e3be3b195764333428080e393481162c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1553664931794207670}
-    - targetCorrespondingSourceObject: {fileID: 1319790218102814969, guid: e3be3b195764333428080e393481162c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7319068044631253766}
+      addedObject: {fileID: 4577333386984978507}
     - targetCorrespondingSourceObject: {fileID: 1319790218102814969, guid: e3be3b195764333428080e393481162c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4524496475526064897}

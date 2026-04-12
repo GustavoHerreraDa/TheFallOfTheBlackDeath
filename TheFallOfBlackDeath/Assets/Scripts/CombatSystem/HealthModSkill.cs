@@ -5,7 +5,7 @@ public enum HealthModType
     STAT_BASED, FIXED, PERCENTAGE
 }
 
-public class HealthModSkill : Skill
+public class HealthModSkill : BodyPartTargetSkill
 {
     [Header("Synergy Settings")]
     public DamageType damageType;
@@ -102,23 +102,18 @@ protected override void OnRun(Fighter receiver)
             this.messages.Enqueue($"Hit for {(int)totalAreaDmg} to {receiver.idName} (AoE)");
             FloatingTextManager.Instance.ShowText($"-{(int)totalAreaDmg}", textPos, isCrit ? Color.yellow : Color.red, isCrit);
         }
-        else if (this.BodyPartTarget != BodyPart.None)
+        else if (this.TryGetTargetBodyPart(receiver, out Fighter.BodyPartData targetPart))
         {
-            Fighter.BodyPartData targetPart = receiver.GetBodyPart(this.BodyPartTarget);
-            if (targetPart != null && !targetPart.IsDestroyed)
-            {
-                float finalDmg = ApplySynergy(targetPart, baseDmg);
-                receiver.ModifyBodyPartHealth(this.BodyPartTarget, finalDmg);
-                
-                this.messages.Enqueue($"{emitter.idName} hit {receiver.idName}'s {this.BodyPartTarget} for {(int)finalDmg}");
-                FloatingTextManager.Instance.ShowText($"-{(int)finalDmg}", textPos, isCrit ? Color.yellow : Color.red, isCrit);
-            }
+            float finalDmg = ApplySynergy(targetPart, baseDmg);
+            receiver.ModifyBodyPartHealth(this.BodyPartTarget, finalDmg);
+            
+            this.messages.Enqueue($"{emitter.idName} hit {receiver.idName}'s {this.BodyPartTarget} for {(int)finalDmg}");
+            FloatingTextManager.Instance.ShowText($"-{(int)finalDmg}", textPos, isCrit ? Color.yellow : Color.red, isCrit);
         }
         
         else
         
         {
-            Debug.Log("Global damage disabled. Skill requires a body part target.");
             return;
         }
     }
