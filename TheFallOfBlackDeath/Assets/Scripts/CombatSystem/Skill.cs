@@ -19,10 +19,20 @@ public enum BodyPart
     RightArm,
     RightLeg
 }
+public enum SkillRarity
+{
+    Common,
+    Rare,
+    Epic
+}
 public abstract class Skill : MonoBehaviour
 {
     [Header("Base Skill")]
     public string skillName;
+
+    [Header("Rarity")]
+    public SkillRarity rarity;
+
     public float animationDuration;
 
     public SkillTargeting targeting;

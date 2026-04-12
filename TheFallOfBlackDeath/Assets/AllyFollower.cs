@@ -41,7 +41,11 @@ public class AllyFollower : MonoBehaviour
 
     void Update()
     {
-        if (target == null) return;
+        if (target == null || agent == null || !agent.isActiveAndEnabled || !agent.isOnNavMesh) 
+        {
+            UpdateAnimations();
+            return;
+        }
 
         float distance = Vector3.Distance(transform.position, target.position);
 
@@ -62,7 +66,7 @@ public class AllyFollower : MonoBehaviour
 
     void AdaptSpeed(float distance)
     {
-        if (playerControl == null) return;
+        if (playerControl == null || agent == null || !agent.isActiveAndEnabled) return;
 
         // Si el jugador está corriendo o el aliado está muy lejos, corre también
         bool shouldChase = Input.GetKey(KeyCode.LeftShift) || distance > sprintDistance;
@@ -77,15 +81,27 @@ public class AllyFollower : MonoBehaviour
     {
         if (anim == null) return;
 
-        float speed = agent.velocity.magnitude;
-        bool isMoving = !agent.isStopped && speed > 0.1f;
-        
-        // El seguidor corre si su velocidad actual es alta (cercana a velCorriendo)
+        bool isMoving = false;
         bool isChasing = false;
-        if (isMoving && playerControl != null)
+
+        // Solo consultamos el agente si está activo y en el NavMesh
+        if (agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
         {
-            // Si la velocidad es mayor que la de caminar, consideramos que está en "Chase" (corriendo)
-            isChasing = speed > (playerControl.velocidad + 0.5f);
+            float speed = agent.velocity.magnitude;
+            isMoving = !agent.isStopped && speed > 0.1f;
+            
+            if (isMoving && playerControl != null)
+            {
+                // Si la velocidad es mayor que la de caminar, consideramos que está en "Chase" (corriendo)
+                isChasing = speed > (playerControl.velocidad + 0.5f);
+            }
+        }
+        else if (agent != null)
+        {
+            // Fallback si no está en NavMesh: usar la velocidad del Rigidbody o transform si existiera, 
+            // pero para un NavMeshAgent desconectado, lo más seguro es guiarle a Idle o usar su velocity actual si no es cero.
+            float speed = agent.velocity.magnitude;
+            isMoving = speed > 0.1f;
         }
 
         anim.SetBool("Idle", !isMoving);

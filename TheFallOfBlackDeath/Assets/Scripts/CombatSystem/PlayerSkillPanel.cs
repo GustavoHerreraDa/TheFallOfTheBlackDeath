@@ -11,7 +11,12 @@ public class PlayerSkillPanel : MonoBehaviour
 
     [Header("Synergy Feedback")]
     public Color synergyColor = Color.yellow;
-    public Color normalColor = Color.green;
+    public Color normalColor = Color.chartreuse;
+
+    [Header("Rarity Colors")]
+    public Color commonColor = Color.white;
+    public Color rareColor = Color.chartreuse;
+    public Color epicColor = new Color(0.6f, 0f, 1f);
 
     private PlayerFighter targetFigther;
 
@@ -66,7 +71,15 @@ public class PlayerSkillPanel : MonoBehaviour
             var image = button.GetComponent<Image>();
             if (image != null)
             {
-                image.color = synergyAvailable ? synergyColor : normalColor;
+                Color rarityColor = GetRarityColor(skill.rarity);
+                if (synergyAvailable)
+                {
+                    image.color = synergyColor;
+                }
+                else
+                {
+                    image.color = rarityColor;
+                }
             }
         }
         this.skillButtonLabels[index].text = skillName;
@@ -121,7 +134,15 @@ public class PlayerSkillPanel : MonoBehaviour
             var image = button.GetComponent<Image>();
             if (image != null)
             {
-                image.color = synergyAvailable ? synergyColor : normalColor;
+                Color rarityColor = GetRarityColor(skill.rarity);
+                if (synergyAvailable)
+                {
+                    image.color = synergyColor;
+                }
+                else
+                {
+                    image.color = rarityColor;
+                }
             }
         }
         this.skillButtonLabels[index].text = skillName;
@@ -136,6 +157,21 @@ public class PlayerSkillPanel : MonoBehaviour
             return;
         }
         targetFigther.ExecuteSkill(index);
+    }
+
+    private Color GetRarityColor(SkillRarity rarity)
+    {
+        switch (rarity)
+        {
+            case SkillRarity.Common:
+                return commonColor;
+            case SkillRarity.Rare:
+                return rareColor;
+            case SkillRarity.Epic:
+                return epicColor;
+            default:
+                return normalColor;
+        }
     }
 
     public void ShowForPlayer(PlayerFighter newTarget)
