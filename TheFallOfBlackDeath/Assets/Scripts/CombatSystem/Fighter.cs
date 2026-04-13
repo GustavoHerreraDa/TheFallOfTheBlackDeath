@@ -326,7 +326,7 @@ public abstract class Fighter : MonoBehaviour
             playerFighter.SaveBodyPartState(part.part);
         }
         
-        CameraManager.Instance.TriggerHitStop(0.25f); // Hit stop 
+        CameraManager.Instance.TriggerHitStop(1); // Hit stop 
         CameraManager.Instance.TriggerShake(1.4f);    // Camera Shake
         CameraManager.Instance.TriggerDamageGlitch(); // Aberración cromática
         

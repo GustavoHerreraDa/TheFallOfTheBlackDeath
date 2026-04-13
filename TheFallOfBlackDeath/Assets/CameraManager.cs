@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -248,15 +248,15 @@ public class CameraManager : MonoBehaviour
     }
     
     public void TriggerDamageGlitch()
-    {/*if (chromaticAberration == null) return;
+    { if (chromaticAberration == null) return;
 
         // Si ya hay un glitch ocurriendo, lo reiniciamos
         if (glitchCoroutine != null) StopCoroutine(glitchCoroutine);
         glitchCoroutine = StartCoroutine(GlitchRoutine());
-        */
+        
     }
 
-    /*IEnumerator GlitchRoutine()
+        IEnumerator GlitchRoutine()
     {
         // 1. Subida brusca (Impacto)
         float t = 0;
@@ -278,7 +278,7 @@ public class CameraManager : MonoBehaviour
 
         chromaticAberration.intensity.value = 0;
     }
-    */
+    
     
 // --- NUEVA LÓGICA DE SCREEN SHAKE CON CINEMACHINE ---
     public void TriggerShake(float force)
@@ -322,16 +322,31 @@ public class CameraManager : MonoBehaviour
         StartCoroutine(HitStopRoutine(duration));
     }
 
+    // Modifica este método en CameraManager.cs
     private IEnumerator HitStopRoutine(float duration)
     {
-        // 1. Ralentizamos el tiempo al 5% (casi congelado)
-        Time.timeScale = 0.05f; 
+        float elapsed = 0f;
+        // Bajamos la velocidad drásticamente al inicio para marcar el impacto
+        float targetTimeScale = 0.1f; 
+    
+        Time.timeScale = targetTimeScale;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+
+        // Mientras dure el efecto, vamos devolviendo el tiempo a la normalidad
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime; // Importante usar unscaled aquí
         
-        // 2. Esperamos en TIEMPO REAL (independiente del timeScale)
-        yield return new WaitForSecondsRealtime(duration); 
+            // Curva de recuperación: va de 0.1f a 1f
+            Time.timeScale = Mathf.Lerp(targetTimeScale, 1f, elapsed / duration);
+            Time.fixedDeltaTime = 0.02f * Time.timeScale;
         
-        // 3. Restauramos la velocidad normal del juego
+            yield return null;
+        }
+
+        // Aseguramos el estado final
         Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
     }
     
     private void ApplyBreathingEffect()
