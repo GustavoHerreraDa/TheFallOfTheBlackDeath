@@ -284,7 +284,7 @@ public class CombatManager : MonoBehaviour
 
                         Debug.Log("Guardando enemigo derrotado REAL: " + realName);
                         Debug.Log("se encontraron esto grupos" + groupEnemyName);
-                        yield return new WaitForSeconds(1.5f);
+                        yield return new WaitForSeconds(2);
                         SceneManager.LoadScene(1);
 
                     }
