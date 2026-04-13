@@ -23,6 +23,9 @@ public class Gate : MonoBehaviour
     public delegate void GateOpenedEventHandler();
     public static event GateOpenedEventHandler GateOpened;
     public string gateMessage = "Press E to open gate.";
+    public Renderer sensorRenderer;
+    public Color lockedColor = Color.red;
+    public Color unlockedColor = Color.green;
 
     void Start()
     {
@@ -88,5 +91,14 @@ public class Gate : MonoBehaviour
     private void OnDestroy()
     {
         GateOpened = null;
+    }
+    
+    void Update()
+    {
+        if (!IsNeedKey || sensorRenderer == null) return;
+
+        bool hasKeyNow = InventoryManager.instance.HasItemInIventory(GetKey(), 1);
+
+        sensorRenderer.material.color = hasKeyNow ? unlockedColor : lockedColor;
     }
 }
