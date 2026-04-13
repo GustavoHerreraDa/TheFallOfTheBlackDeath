@@ -179,4 +179,17 @@ public class FollowPlayer : MonoBehaviour
         anim.SetBool("Chase", currentState == EnemyState.Chase);
         anim.SetBool("Death", currentState == EnemyState.Death);
     }
+    
+    public void StopEnemyForTransition()
+    {
+        if (agent != null)
+        {
+            agent.isStopped = true; // Frena el NavMesh
+            agent.velocity = Vector3.zero; // Elimina la inercia
+        }
+        
+    
+        // Desactivamos el script para que no intente volver a Chase en el Update
+        this.enabled = false; 
+    }
 }

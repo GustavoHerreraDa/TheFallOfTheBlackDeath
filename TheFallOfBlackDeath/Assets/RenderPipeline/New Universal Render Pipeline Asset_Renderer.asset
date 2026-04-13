@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7586599787997495278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d97da06d1b4e6e64e837fe2d4f512162, type: 3}
+  m_Name: DigitalGlitchFeature
+  m_EditorClassIdentifier: URPGlitch::URPGlitch.DigitalGlitchFeature
+  m_Active: 1
+  shader: {fileID: 0}
+  compatShader: {fileID: 0}
+  renderPassEvent: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27,7 +43,9 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: 489342030544111390}
   - {fileID: 4488807751817803052}
-  m_RendererFeatureMap: 1e0740f0fb7dca062cb51e18de724b3e
+  - {fileID: 260411554091665215}
+  - {fileID: -7586599787997495278}
+  m_RendererFeatureMap: 1e0740f0fb7dca062cb51e18de724b3e3f870ac1ed2a9d0312005b37b0fbb696
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -56,6 +74,21 @@ MonoBehaviour:
   m_DepthTextureFormat: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
+--- !u!114 &260411554091665215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b51d34ff9fa60499f5f35735de5c90, type: 3}
+  m_Name: AnalogGlitchRenderFeature
+  m_EditorClassIdentifier: URPGlitch::URPGlitch.AnalogGlitchRenderFeature
+  m_Active: 1
+  anaglogGlitchShader: {fileID: 0}
+  renderPassEvent: 550
 --- !u!114 &489342030544111390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
   m_Name: RenderObjects
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     passTag: RenderObjects
     Event: 600
