@@ -8,7 +8,7 @@ public class Scene_Change : MonoBehaviour
 {
     [SerializeField] private int fightSceneIndex;
     [SerializeField] private Volume postProcessVolume; 
-    [SerializeField] private float glitchDuration = 0.5f;
+    [SerializeField] private float glitchDuration = 0.2f;
 
     private AnalogGlitchVolume analogGlitch;
     private DigitalGlitchVolume digitalGlitch;
@@ -50,7 +50,7 @@ public class Scene_Change : MonoBehaviour
 
 
             analogGlitch.scanLineJitter.Override(0.2f);
-            analogGlitch.colorDrift.Override(0.8f);
+            analogGlitch.colorDrift.Override(0.4f);
             analogGlitch.horizontalShake.Override(0.2f);
             digitalGlitch.intensity.Override(0.2f); 
         }
