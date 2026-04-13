@@ -196,7 +196,7 @@ public class CombatManager : MonoBehaviour
                     if (nextMessage != null)
                     {
                         LogPanel.Write(nextMessage);
-                        yield return new WaitForSeconds(0.8f);
+                        yield return new WaitForSeconds(1.5f);
                     }
                     else
                     {
@@ -284,7 +284,7 @@ public class CombatManager : MonoBehaviour
 
                         Debug.Log("Guardando enemigo derrotado REAL: " + realName);
                         Debug.Log("se encontraron esto grupos" + groupEnemyName);
-                        yield return new WaitForSeconds(2f);
+                        yield return new WaitForSeconds(1.5f);
                         SceneManager.LoadScene(1);
 
                     }
@@ -318,7 +318,7 @@ public class CombatManager : MonoBehaviour
                     break;
                 case CombatStatus.NEXT_TURN:
                     SortFightersBySpeed();
-                    yield return new WaitForSeconds(0.2f);
+                    yield return new WaitForSeconds(1.5f);
 
                     Fighter current = null;
 
@@ -349,7 +349,7 @@ public class CombatManager : MonoBehaviour
                             }
 
                             LogPanel.Write(nextBodyPartMessage);
-                            yield return new WaitForSeconds(2f);
+                            yield return new WaitForSeconds(1.5f);
                         }
                     }
 
