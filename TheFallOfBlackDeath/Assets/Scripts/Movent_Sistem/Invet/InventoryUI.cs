@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/// <summary>
+/// Supports inventory and interaction flow by handling inventory ui.
+/// </summary>
 public class InventoryUI : MonoBehaviour
 {
     public PlayerFighter character1;
@@ -29,6 +32,9 @@ public class InventoryUI : MonoBehaviour
     public Color equippedColor = Color.green;
     public Color unequippedColor = Color.red;
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -40,16 +46,26 @@ public class InventoryUI : MonoBehaviour
         originalColor = buttonSprite != null ? buttonSprite.color : Color.white;
     }
 
+    /// <summary>
+    /// Registers runtime listeners when the component becomes active.
+    /// </summary>
     private void OnEnable()
     {
         InventoryManager.OnCharacterChanged += OnCharacterChanged;
     }
 
+    /// <summary>
+    /// Unregisters runtime listeners when the component becomes inactive.
+    /// </summary>
     private void OnDisable()
     {
         InventoryManager.OnCharacterChanged -= OnCharacterChanged;
     }
 
+    /// <summary>
+    /// Executes the on character changed workflow.
+    /// </summary>
+    /// <param name="fighter">The fighter.</param>
     private void OnCharacterChanged(PlayerFighter fighter)
     {
         if (GameManager.Instance != null)
@@ -59,6 +75,9 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the character1 btn workflow.
+    /// </summary>
     public void Character1BTN()
     {
         
@@ -88,6 +107,9 @@ public class InventoryUI : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Executes the character2 btn workflow.
+    /// </summary>
     public void Character2BTN()
     {
         if (_isCharacter1Equipped)

@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 // TP2 AUGUSTO NANINI / FACUNDO FERREIRO
+/// <summary>
+/// Supports the combat system by handling enemies panel.
+/// </summary>
 public class EnemiesPanel : MonoBehaviour
 {
     public GameObject sampleButton;
@@ -16,6 +19,9 @@ public class EnemiesPanel : MonoBehaviour
     private float baseHeight;
     private RectTransform rectTransform;
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -27,6 +33,11 @@ public class EnemiesPanel : MonoBehaviour
         Hide();
     }
 
+    /// <summary>
+    /// Shows the value.
+    /// </summary>
+    /// <param name="playerFighter">The player fighter.</param>
+    /// <param name="enemyTargets">The enemy targets.</param>
     public void Show(PlayerFighter playerFighter, Fighter[] enemyTargets)
     {
         gameObject.SetActive(true);
@@ -61,6 +72,9 @@ public class EnemiesPanel : MonoBehaviour
         );
     }
 
+    /// <summary>
+    /// Hides the value.
+    /// </summary>
     public void Hide()
     {
         sampleButton.SetActive(false);
@@ -76,6 +90,10 @@ public class EnemiesPanel : MonoBehaviour
 
     // ================= BUTTON CLICK =================
 
+    /// <summary>
+    /// Executes the on target button click workflow.
+    /// </summary>
+    /// <param name="index">The index.</param>
     public void OnTargetButtonClick(int index)
     {
         if (index < 0 || index >= targets.Count) return;
@@ -92,6 +110,11 @@ public class EnemiesPanel : MonoBehaviour
 
     // ================= INTERNAL =================
 
+    /// <summary>
+    /// Executes the activate next button workflow.
+    /// </summary>
+    /// <param name="index">The index.</param>
+    /// <returns>The resulting value.</returns>
     private EnemyButtonUI ActivateNextButton(int index)
     {
         foreach (var btn in buttons)
@@ -111,6 +134,12 @@ public class EnemiesPanel : MonoBehaviour
         return btnNew;
     }
 
+    /// <summary>
+    /// Executes the insert new button workflow.
+    /// </summary>
+    /// <param name="btnGO">The btn go.</param>
+    /// <param name="index">The index.</param>
+    /// <returns>The resulting value.</returns>
     private EnemyButtonUI InsertNewButton(GameObject btnGO, int index)
     {
         EnemyButtonUI btn = btnGO.GetComponent<EnemyButtonUI>();
@@ -126,6 +155,11 @@ public class EnemiesPanel : MonoBehaviour
         return btn;
     }
     
+    /// <summary>
+    /// Gets the button for.
+    /// </summary>
+    /// <param name="fighter">The fighter.</param>
+    /// <returns>The resulting value.</returns>
     public EnemyButtonUI GetButtonFor(Fighter fighter)
     {
         foreach (var btn in buttons)

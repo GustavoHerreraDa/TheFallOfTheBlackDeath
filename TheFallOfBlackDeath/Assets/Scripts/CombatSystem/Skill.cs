@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 //TP2 GUSTAVO TORRES/FACUNDO FERREIRO
+/// <summary>
+/// Defines the named values used by skill type.
+/// </summary>
 public enum SkillType
 {
     AttackSimple,
@@ -9,6 +12,9 @@ public enum SkillType
     Heal,
     BossHability
 }
+/// <summary>
+/// Defines the named values used by body part.
+/// </summary>
 public enum BodyPart
 {
     None,
@@ -19,12 +25,18 @@ public enum BodyPart
     RightArm,
     RightLeg
 }
+/// <summary>
+/// Defines the named values used by skill rarity.
+/// </summary>
 public enum SkillRarity
 {
     Common,
     Rare,
     Epic
 }
+/// <summary>
+/// Defines the base behavior for combat skills, including targeting, messaging, animation, item requirements, and execution flow.
+/// </summary>
 public abstract class Skill : MonoBehaviour
 {
     [Header("Base Skill")]
@@ -79,12 +91,19 @@ public abstract class Skill : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     void Awake()
     {
         this.messages = new Queue<string>();
         this.receivers = new List<Fighter>();
     }
 
+    /// <summary>
+    /// Executes the animate workflow.
+    /// </summary>
+    /// <param name="receiver">The receiver.</param>
     private void Animate(Fighter receiver)
     {
 
@@ -94,6 +113,9 @@ public abstract class Skill : MonoBehaviour
       
     }
 
+    /// <summary>
+    /// Executes the run workflow.
+    /// </summary>
     public void Run()
     {
         if (!CanUseSkill(emitter))
@@ -116,17 +138,29 @@ public abstract class Skill : MonoBehaviour
         this.receivers.Clear();
     }
 
+    /// <summary>
+    /// Sets the emitter.
+    /// </summary>
+    /// <param name="_emitter">The emitter.</param>
     public void SetEmitter(Fighter _emitter)
     {
         this.emitter = _emitter;
     }
 
+    /// <summary>
+    /// Adds the receiver.
+    /// </summary>
+    /// <param name="_receiver">The receiver.</param>
     public void AddReceiver(Fighter _receiver)
     {
         this.receivers.Add(_receiver);
         emitter.animator.Play(animationName);
     }
 
+    /// <summary>
+    /// Gets the next message.
+    /// </summary>
+    /// <returns>The resulting value.</returns>
     public string GetNextMessage()
     {
         if (this.messages.Count != 0)
@@ -135,12 +169,20 @@ public abstract class Skill : MonoBehaviour
             return null;
     }
 
+    /// <summary>
+    /// Determines whether the component has items in inventory.
+    /// </summary>
     public void HasItemsInInventory()
     {
         var hasItems = InventoryManager.instance == null ? true : InventoryManager.instance.HasItemInIventory(ItemsNeeded);
         HasItemInInventory = hasItems;
     }
 
+    /// <summary>
+    /// Determines whether the component can use skill.
+    /// </summary>
+    /// <param name="fighter">The fighter.</param>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     protected bool CanUseSkill(Fighter fighter)
     {
         if (requiredParts == null || requiredParts.Count == 0)
@@ -158,6 +200,11 @@ public abstract class Skill : MonoBehaviour
 
         return true;
     }
+    /// <summary>
+    /// Determines whether the component is usable.
+    /// </summary>
+    /// <param name="fighter">The fighter.</param>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     public bool IsUsable(Fighter fighter)
     {
         if (requiredParts == null || requiredParts.Count == 0)
@@ -174,6 +221,12 @@ public abstract class Skill : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Determines whether the component can trigger synergy.
+    /// </summary>
+    /// <param name="target">The target.</param>
+    /// <param name="part">The part.</param>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     public virtual bool CanTriggerSynergy(Fighter target, BodyPart part = BodyPart.None)
     {
         return false;

@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Supports exploration and world-state flow by handling camera main.
+/// </summary>
 public class Camera_Main : MonoBehaviour
 {
     private Vector2 angle = new Vector2(0 * Mathf.Deg2Rad, 0);
@@ -16,11 +19,17 @@ public class Camera_Main : MonoBehaviour
     [SerializeField] private float cameraRadius = 0.3f;
     [SerializeField] private float minDistance = 1f;
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     void Update()
     {
         float Horizontal = Input.GetAxis("Mouse X");
@@ -39,6 +48,9 @@ public class Camera_Main : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Applies late-frame adjustments after the main update loop has completed.
+    /// </summary>
     void LateUpdate()
     {
         Vector3 orbit = new Vector3(

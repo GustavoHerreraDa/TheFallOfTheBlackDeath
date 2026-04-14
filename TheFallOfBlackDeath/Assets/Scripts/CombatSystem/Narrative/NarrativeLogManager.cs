@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Linq;
 
 // Attach this to a combat scene GameObject. Set the database and player reference via Inspector.
 // It will produce atmospheric combat log messages routed through LogPanel.Write().
+/// <summary>
+/// Selects contextual combat narration and routes it to the combat log based on enemy identity and player condition.
+/// </summary>
 public class NarrativeLogManager : MonoBehaviour
 {
     [Header("Database")]
@@ -15,6 +18,9 @@ public class NarrativeLogManager : MonoBehaviour
     [Header("Context Thresholds")] 
     [Range(0.05f, 0.75f)] public float lowHealthThreshold = 0.3f;
     
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     void Awake()
     {
         if (player == null)
@@ -32,6 +38,10 @@ public class NarrativeLogManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the enemy encounter workflow.
+    /// </summary>
+    /// <param name="enemy">The enemy.</param>
     public void EnemyEncounter(EnemyFighter enemy)
     {
         var entry = GetEntry(enemy);
@@ -40,6 +50,10 @@ public class NarrativeLogManager : MonoBehaviour
             LogPanel.Write(msg);
     }
 
+    /// <summary>
+    /// Executes the enemy turn workflow.
+    /// </summary>
+    /// <param name="enemy">The enemy.</param>
     public void EnemyTurn(EnemyFighter enemy)
     {
         string msg = GetContextualMessage(enemy);
@@ -52,6 +66,10 @@ public class NarrativeLogManager : MonoBehaviour
             LogPanel.Write(msg);
     }
 
+    /// <summary>
+    /// Executes the enemy preparing workflow.
+    /// </summary>
+    /// <param name="enemy">The enemy.</param>
     public void EnemyPreparing(EnemyFighter enemy)
     {
         var entry = GetEntry(enemy);
@@ -60,6 +78,11 @@ public class NarrativeLogManager : MonoBehaviour
             LogPanel.Write(msg);
     }
 
+    /// <summary>
+    /// Gets the entry.
+    /// </summary>
+    /// <param name="enemy">The enemy.</param>
+    /// <returns>The resulting value.</returns>
     private EnemyNarrativeEntry GetEntry(EnemyFighter enemy)
     {
         if (enemy == null) return null;
@@ -68,6 +91,11 @@ public class NarrativeLogManager : MonoBehaviour
         return database.GetById(enemy.idName);
     }
 
+    /// <summary>
+    /// Gets the contextual message.
+    /// </summary>
+    /// <param name="enemy">The enemy.</param>
+    /// <returns>The resulting value.</returns>
     private string GetContextualMessage(EnemyFighter enemy)
     {
         if (player == null) return null;
@@ -100,6 +128,11 @@ public class NarrativeLogManager : MonoBehaviour
         return null; // fall back to default messages
     }
 
+    /// <summary>
+    /// Determines whether the component is player bleeding.
+    /// </summary>
+    /// <param name="p">The p.</param>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     private bool IsPlayerBleeding(PlayerFighter p)
     {
         if (p == null) return false;
@@ -113,6 +146,11 @@ public class NarrativeLogManager : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Determines whether the component is arm injured.
+    /// </summary>
+    /// <param name="p">The p.</param>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     private bool IsArmInjured(PlayerFighter p)
     {
         if (p == null || p.bodyParts == null) return false;

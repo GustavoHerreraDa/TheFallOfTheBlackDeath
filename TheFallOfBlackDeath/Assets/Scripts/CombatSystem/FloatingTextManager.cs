@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Supports the combat system by handling floating text manager.
+/// </summary>
 public class FloatingTextManager : MonoBehaviour
 {
     public static FloatingTextManager Instance;
     
-    [Header("Configuración")]
+    [Header("ConfiguraciÃ³n")]
     public GameObject floatingTextPrefab;
     public Transform container;
     public int initialPoolSize = 20;
@@ -13,12 +16,18 @@ public class FloatingTextManager : MonoBehaviour
     
     private Stack<FloatingText> textPool = new Stack<FloatingText>();
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     void Awake()
     {
         Instance = this;
         InitializePool();
     }
 
+    /// <summary>
+    /// Initializes the ialize pool.
+    /// </summary>
     void InitializePool()
     {
         for (int i = 0; i < initialPoolSize; i++)
@@ -27,6 +36,10 @@ public class FloatingTextManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Creates the new text.
+    /// </summary>
+    /// <returns>The resulting value.</returns>
     private FloatingText CreateNewText()
     {
         
@@ -40,6 +53,13 @@ public class FloatingTextManager : MonoBehaviour
     }
 
     
+    /// <summary>
+    /// Shows the text.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    /// <param name="position">The position.</param>
+    /// <param name="color">The color.</param>
+    /// <param name="isCritical">The is critical.</param>
     public void ShowText(string message, Vector3 position, Color color, bool isCritical = false)
     {
         FloatingText txt;
@@ -63,6 +83,10 @@ public class FloatingTextManager : MonoBehaviour
     }
 
     
+    /// <summary>
+    /// Executes the return to pool workflow.
+    /// </summary>
+    /// <param name="txt">The txt.</param>
     public void ReturnToPool(FloatingText txt)
     {
         txt.gameObject.SetActive(false);

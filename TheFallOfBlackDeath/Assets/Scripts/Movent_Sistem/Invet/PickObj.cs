@@ -3,16 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Supports inventory and interaction flow by handling pick obj.
+/// </summary>
 public class PickObj : Interactable, IInteratable
 {
     public AudioSource pickSound;
     public const string PickObjMessage = "You pick up a #objectName. Press key I to checkout.";
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     private void Start()
     {
         base.Start();
         message = "Press E to pick up item.";
         responseMessage = PickObjMessage;
     }
+    /// <summary>
+    /// Executes the interact workflow.
+    /// </summary>
     public override void Interact()
     {
         

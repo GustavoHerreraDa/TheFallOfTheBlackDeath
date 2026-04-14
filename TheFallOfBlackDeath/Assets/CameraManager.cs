@@ -1,9 +1,12 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using Cinemachine; // ADD THIS
 
+/// <summary>
+/// Handles camera manager for the current project workflow.
+/// </summary>
 public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance;
@@ -72,6 +75,9 @@ public class CameraManager : MonoBehaviour
     [Header("Screen Shake (Cinemachine)")]
     [SerializeField] private CinemachineImpulseSource impulseSource; // ADD THIS
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -80,6 +86,9 @@ public class CameraManager : MonoBehaviour
         combatManager = FindObjectOfType<CombatManager>();
     }
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     void Start()
     {
         currentCameraIndex = combatManager.fighterIndex;
@@ -100,6 +109,9 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     private void Update()
     {
         // Solo proceder si el combate está activo y listo
@@ -146,17 +158,30 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the fov.
+    /// </summary>
+    /// <param name="fov">The fov.</param>
     private void UpdateFOV(float fov)
     {
         if (mainCamera != null) mainCamera.fieldOfView = fov;
         if (shaderCamera != null) shaderCamera.fieldOfView = fov;
     }
 
+    /// <summary>
+    /// Sets the selection zoom.
+    /// </summary>
+    /// <param name="active">The active.</param>
     public void SetSelectionZoom(bool active)
     {
         isHoveringEnemy = active;
     }
 
+    /// <summary>
+    /// Executes the play hit camera effect workflow.
+    /// </summary>
+    /// <param name="attacker">The attacker.</param>
+    /// <param name="defender">The defender.</param>
     public void PlayHitCameraEffect(Transform attacker, Transform defender)
     {
         if (hitCoroutine != null)
@@ -165,6 +190,12 @@ public class CameraManager : MonoBehaviour
         hitCoroutine = StartCoroutine(HitCameraEffect(attacker, defender));
     }
 
+    /// <summary>
+    /// Executes the hit camera effect workflow.
+    /// </summary>
+    /// <param name="attacker">The attacker.</param>
+    /// <param name="defender">The defender.</param>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator HitCameraEffect(Transform attacker, Transform defender)
     {
         isHitActive = true;
@@ -226,6 +257,9 @@ public class CameraManager : MonoBehaviour
         isHitActive = false;
     }
 
+    /// <summary>
+    /// Changes the camera position to current fighter.
+    /// </summary>
     private void ChangeCameraPositionToCurrentFighter()
     {
         
@@ -234,6 +268,15 @@ public class CameraManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Executes the move camera smoothly workflow.
+    /// </summary>
+    /// <param name="startPos">The start pos.</param>
+    /// <param name="endPos">The end pos.</param>
+    /// <param name="startRot">The start rot.</param>
+    /// <param name="endRot">The end rot.</param>
+    /// <param name="speed">The speed.</param>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator MoveCameraSmoothly(Vector3 startPos, Vector3 endPos, Quaternion startRot, Quaternion endRot, float speed)
     {
         float t = 0;
@@ -247,6 +290,9 @@ public class CameraManager : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Executes the trigger damage glitch workflow.
+    /// </summary>
     public void TriggerDamageGlitch()
     { if (chromaticAberration == null) return;
 
@@ -256,6 +302,10 @@ public class CameraManager : MonoBehaviour
         
     }
 
+        /// <summary>
+        /// Executes the glitch routine workflow.
+        /// </summary>
+        /// <returns>An enumerator that drives the coroutine sequence.</returns>
         IEnumerator GlitchRoutine()
     {
         // 1. Subida brusca (Impacto)
@@ -281,6 +331,10 @@ public class CameraManager : MonoBehaviour
     
     
 // --- NUEVA LÓGICA DE SCREEN SHAKE CON CINEMACHINE ---
+    /// <summary>
+    /// Executes the trigger shake workflow.
+    /// </summary>
+    /// <param name="force">The force.</param>
     public void TriggerShake(float force)
     {
         if (impulseSource != null)
@@ -293,6 +347,12 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the shake routine workflow.
+    /// </summary>
+    /// <param name="duration">The duration.</param>
+    /// <param name="magnitude">The magnitude.</param>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     private IEnumerator ShakeRoutine(float duration, float magnitude)
     {
         Vector3 originalLocalPos = mainCamera.transform.localPosition;
@@ -316,6 +376,10 @@ public class CameraManager : MonoBehaviour
     }
 
     // --- LÓGICA DE HIT STOP (Pausa de Impacto) ---
+    /// <summary>
+    /// Executes the trigger hit stop workflow.
+    /// </summary>
+    /// <param name="duration">The duration.</param>
     public void TriggerHitStop(float duration = -1f)
     {
         if (duration < 0) duration = defaultHitStopDuration;
@@ -323,6 +387,11 @@ public class CameraManager : MonoBehaviour
     }
 
     // Modifica este método en CameraManager.cs
+    /// <summary>
+    /// Executes the hit stop routine workflow.
+    /// </summary>
+    /// <param name="duration">The duration.</param>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     private IEnumerator HitStopRoutine(float duration)
     {
         float elapsed = 0f;
@@ -349,6 +418,9 @@ public class CameraManager : MonoBehaviour
         Time.fixedDeltaTime = 0.02f;
     }
     
+    /// <summary>
+    /// Applies the breathing effect.
+    /// </summary>
     private void ApplyBreathingEffect()
     {
         // Verificación robusta de combatManager y el array de fighters

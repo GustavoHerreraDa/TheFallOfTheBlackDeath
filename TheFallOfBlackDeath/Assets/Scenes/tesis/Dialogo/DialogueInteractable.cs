@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 
+/// <summary>
+/// Supports branching dialogue flow by handling dialogue interactable.
+/// </summary>
 public class DialogueInteractable : MonoBehaviour
 {
     public Dialogue dialogue;
@@ -7,6 +10,10 @@ public class DialogueInteractable : MonoBehaviour
     private bool canTalk;
     [SerializeField]
     private bool _canMove;
+    /// <summary>
+    /// Responds to the corresponding Unity trigger callback for this component.
+    /// </summary>
+    /// <param name="other">The other.</param>
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Charecter"))
@@ -17,6 +24,10 @@ public class DialogueInteractable : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Responds to the corresponding Unity trigger callback for this component.
+    /// </summary>
+    /// <param name="other">The other.</param>
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Charecter"))
@@ -26,6 +37,9 @@ public class DialogueInteractable : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     private void Update()
     {
         if (canTalk && Input.GetKeyDown(KeyCode.E))
@@ -49,6 +63,9 @@ public class DialogueInteractable : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Executes the look at player workflow.
+    /// </summary>
     private void LookAtPlayer()
     {
         Vector3 direction = playerTransform.position - transform.position;

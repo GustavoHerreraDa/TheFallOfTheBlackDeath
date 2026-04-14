@@ -1,18 +1,28 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 
+/// <summary>
+/// Supports enemy decision-making by handling heal enemy state.
+/// </summary>
 public class HealEnemyState : IState
 {
     FSM<IAEnemyState> _fsm;
 
     float _ticksToPatrol;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="HealEnemyState"/> class.
+    /// </summary>
+    /// <param name="fsm">The fsm.</param>
     public HealEnemyState(FSM<IAEnemyState> fsm)
     {
         _fsm = fsm;
     }
 
+    /// <summary>
+    /// Executes the on enter workflow.
+    /// </summary>
     public void OnEnter()
     {
         _ticksToPatrol = 0;
@@ -20,6 +30,9 @@ public class HealEnemyState : IState
         Debug.Log("Entre a Idle");
     }
 
+    /// <summary>
+    /// Executes the on update workflow.
+    /// </summary>
     public void OnUpdate()
     {
         //_ticksToPatrol += Time.deltaTime;
@@ -30,10 +43,16 @@ public class HealEnemyState : IState
         //}
     }
 
+    /// <summary>
+    /// Executes the on fixed update workflow.
+    /// </summary>
     public void OnFixedUpdate()
     {
     }
 
+    /// <summary>
+    /// Executes the on exit workflow.
+    /// </summary>
     public void OnExit()
     {
         Debug.Log("Sali del Idle");

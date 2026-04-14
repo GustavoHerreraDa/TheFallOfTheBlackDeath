@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 
 using TMPro.EditorUtilities;
 using TMPro;
 
 
+/// <summary>
+/// Handles tmp sdf shader gui glitch for the current project workflow.
+/// </summary>
 public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
 {
     static ShaderFeature s_OutlineFeature, s_UnderlayFeature, s_BevelFeature, s_GlowFeature, s_MaskFeature;
@@ -16,6 +19,10 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
         s_FaceUvSpeedNames = { "_FaceUVSpeedX", "_FaceUVSpeedY" },
         s_OutlineUvSpeedNames = { "_OutlineUVSpeedX", "_OutlineUVSpeedY" };
 
+    /// <summary>
+    /// Executes the tmp sdf shader gui glitch workflow.
+    /// </summary>
+    /// <returns>The resulting value.</returns>
     static TMP_SDFShaderGUIGlitch()
     {
         s_OutlineFeature = new ShaderFeature()
@@ -31,6 +38,13 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
             label = new GUIContent("Underlay Type"),
             keywordLabels = new[]
             {
+        /// <summary>
+        /// Executes the gui content workflow.
+        /// </summary>
+        /// <param name=""None")">The "none").</param>
+        /// <param name="GUIContent("Normal")">The gui content("normal").</param>
+        /// <param name="GUIContent("Inner"">The gui content("inner".</param>
+        /// <returns>The resulting value.</returns>
                     new GUIContent("None"), new GUIContent("Normal"), new GUIContent("Inner")
                 }
         };
@@ -54,11 +68,21 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
             label = new GUIContent("Mask"),
             keywordLabels = new[]
             {
+        /// <summary>
+        /// Executes the gui content workflow.
+        /// </summary>
+        /// <param name="Off")">The off").</param>
+        /// <param name="Hard")">The hard").</param>
+        /// <param name="Soft"">The soft".</param>
+        /// <returns>The resulting value.</returns>
                     new GUIContent("Mask Off"), new GUIContent("Mask Hard"), new GUIContent("Mask Soft")
                 }
         };
     }
 
+    /// <summary>
+    /// Executes the do gui workflow.
+    /// </summary>
     protected override void DoGUI()
     {
         s_Face = BeginPanel("Glitch", s_Face);
@@ -146,6 +170,11 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
 
             EndPanel();
         }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="m_Material.HasProperty("_SpecColor")">The m material.has property(" spec color").</param>
+        /// <returns>The resulting value.</returns>
         else if (m_Material.HasProperty("_SpecColor"))
         {
             s_Bevel = BeginPanel("Bevel", s_Bevel);
@@ -201,6 +230,9 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
         EndPanel();
     }
 
+    /// <summary>
+    /// Executes the do glitch panel workflow.
+    /// </summary>
     void DoGlitchPanel()
     {
         EditorGUI.indentLevel += 1;
@@ -219,6 +251,9 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
         EditorGUILayout.Space();
     }
 
+    /// <summary>
+    /// Executes the do face panel workflow.
+    /// </summary>
     void DoFacePanel()
     {
         EditorGUI.indentLevel += 1;
@@ -231,6 +266,11 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
             {
                 DoTexture2D("_FaceTex", "Texture", true, s_FaceUvSpeedNames);
             }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="m_Material.HasProperty("_FaceUVSpeed")">The m material.has property(" face uv speed").</param>
+        /// <returns>The resulting value.</returns>
             else if (m_Material.HasProperty("_FaceUVSpeed"))
             {
                 DoTexture2D("_FaceTex", "Texture", true, s_FaceUVSpeedName);
@@ -264,6 +304,9 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
         EditorGUILayout.Space();
     }
 
+    /// <summary>
+    /// Executes the do outline panel workflow.
+    /// </summary>
     void DoOutlinePanel()
     {
         EditorGUI.indentLevel += 1;
@@ -290,6 +333,9 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
         EditorGUILayout.Space();
     }
 
+    /// <summary>
+    /// Executes the do outline2 panel workflow.
+    /// </summary>
     void DoOutline2Panel()
     {
         EditorGUI.indentLevel += 1;
@@ -316,6 +362,9 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
         EditorGUILayout.Space();
     }
 
+    /// <summary>
+    /// Executes the do underlay panel workflow.
+    /// </summary>
     void DoUnderlayPanel()
     {
         EditorGUI.indentLevel += 1;
@@ -332,9 +381,17 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
     static GUIContent[] s_BevelTypeLabels =
     {
             new GUIContent("Outer Bevel"),
+        /// <summary>
+        /// Executes the gui content workflow.
+        /// </summary>
+        /// <param name="Bevel"">The bevel".</param>
+        /// <returns>The resulting value.</returns>
             new GUIContent("Inner Bevel")
         };
 
+    /// <summary>
+    /// Executes the do bevel panel workflow.
+    /// </summary>
     void DoBevelPanel()
     {
         EditorGUI.indentLevel += 1;
@@ -348,6 +405,9 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
         EditorGUILayout.Space();
     }
 
+    /// <summary>
+    /// Executes the do local lighting panel workflow.
+    /// </summary>
     void DoLocalLightingPanel()
     {
         EditorGUI.indentLevel += 1;
@@ -361,6 +421,9 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
         EditorGUILayout.Space();
     }
 
+    /// <summary>
+    /// Executes the do surface lighting panel workflow.
+    /// </summary>
     void DoSurfaceLightingPanel()
     {
         EditorGUI.indentLevel += 1;
@@ -369,6 +432,9 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
         EditorGUILayout.Space();
     }
 
+    /// <summary>
+    /// Executes the do bump map panel workflow.
+    /// </summary>
     void DoBumpMapPanel()
     {
         EditorGUI.indentLevel += 1;
@@ -379,6 +445,9 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
         EditorGUILayout.Space();
     }
 
+    /// <summary>
+    /// Executes the do env map panel workflow.
+    /// </summary>
     void DoEnvMapPanel()
     {
         EditorGUI.indentLevel += 1;
@@ -390,6 +459,9 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
         EditorGUILayout.Space();
     }
 
+    /// <summary>
+    /// Executes the do glow panel workflow.
+    /// </summary>
     void DoGlowPanel()
     {
         EditorGUI.indentLevel += 1;
@@ -402,6 +474,9 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
         EditorGUILayout.Space();
     }
 
+    /// <summary>
+    /// Executes the do debug panel workflow.
+    /// </summary>
     void DoDebugPanel()
     {
         EditorGUI.indentLevel += 1;
@@ -434,10 +509,20 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
             EditorGUILayout.Space();
             DoVector("_ClipRect", "Clip Rect", s_LbrtVectorLabels);
         }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="m_Material.HasProperty("_MaskTex")">The m material.has property(" mask tex").</param>
+        /// <returns>The resulting value.</returns>
         else if (m_Material.HasProperty("_MaskTex"))
         {
             DoMaskTexSubgroup();
         }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="m_Material.HasProperty(ShaderUtilities.ID_MaskSoftnessX)">The m material.has property(shader utilities.id mask softness x).</param>
+        /// <returns>The resulting value.</returns>
         else if (m_Material.HasProperty(ShaderUtilities.ID_MaskSoftnessX))
         {
             EditorGUILayout.Space();
@@ -487,6 +572,9 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
         EditorGUILayout.Space();
     }
 
+    /// <summary>
+    /// Executes the do mask subgroup workflow.
+    /// </summary>
     void DoMaskSubgroup()
     {
         DoVector("_MaskCoord", "Mask Bounds", s_XywhVectorLabels);
@@ -517,6 +605,9 @@ public class TMP_SDFShaderGUIGlitch : TMP_BaseShaderGUI
         }
     }
 
+    /// <summary>
+    /// Executes the do mask tex subgroup workflow.
+    /// </summary>
     void DoMaskTexSubgroup()
     {
         EditorGUILayout.Space();

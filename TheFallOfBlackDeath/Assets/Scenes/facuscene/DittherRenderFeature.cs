@@ -1,10 +1,16 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
+/// <summary>
+/// Handles dither features for the current project workflow.
+/// </summary>
 public class DitherFeatures : ScriptableRendererFeature
 {
     [System.Serializable]
+    /// <summary>
+    /// Handles dither settings for the current project workflow.
+    /// </summary>
     public class DitherSettings
     {
         public bool enabled = true;
@@ -18,12 +24,19 @@ public class DitherFeatures : ScriptableRendererFeature
     public DitherSettings settings = new DitherSettings();
     DitherPass pass;
 
+    /// <summary>
+    /// Handles dither pass for the current project workflow.
+    /// </summary>
     class DitherPass : ScriptableRenderPass
     {
         private Material material;
         private DitherSettings settings;
         private RTHandle tempTextureHandle; // EL NUEVO SISTEMA
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DitherPass"/> class.
+        /// </summary>
+        /// <param name="settings">The settings.</param>
         public DitherPass(DitherSettings settings)
         {
             this.settings = settings;
@@ -31,6 +44,11 @@ public class DitherFeatures : ScriptableRendererFeature
         }
 
         // Se llama cuando la cámara se configura (antes de renderizar)
+        /// <summary>
+        /// Executes the on camera setup workflow.
+        /// </summary>
+        /// <param name="cmd">The cmd.</param>
+        /// <param name="renderingData">The rendering data.</param>
         public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
         {
             var desc = renderingData.cameraData.cameraTargetDescriptor;
@@ -40,6 +58,11 @@ public class DitherFeatures : ScriptableRendererFeature
             RenderingUtils.ReAllocateIfNeeded(ref tempTextureHandle, desc, FilterMode.Point, TextureWrapMode.Clamp, name: "_TempDitherTex");
         }
 
+        /// <summary>
+        /// Executes the value workflow.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="renderingData">The rendering data.</param>
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
             if (!settings.enabled || material == null) return;
@@ -65,12 +88,18 @@ public class DitherFeatures : ScriptableRendererFeature
             CommandBufferPool.Release(cmd);
         }
 
+        /// <summary>
+        /// Executes the dispose workflow.
+        /// </summary>
         public void Dispose()
         {
             tempTextureHandle?.Release();
         }
     }
 
+    /// <summary>
+    /// Creates the value.
+    /// </summary>
     public override void Create()
     {
         pass = new DitherPass(settings)
@@ -79,12 +108,21 @@ public class DitherFeatures : ScriptableRendererFeature
         };
     }
 
+    /// <summary>
+    /// Adds the render passes.
+    /// </summary>
+    /// <param name="renderer">The renderer.</param>
+    /// <param name="renderingData">The rendering data.</param>
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
         if (renderingData.cameraData.renderType == CameraRenderType.Overlay) return;
         renderer.EnqueuePass(pass);
     }
 
+    /// <summary>
+    /// Executes the dispose workflow.
+    /// </summary>
+    /// <param name="disposing">The disposing.</param>
     protected override void Dispose(bool disposing)
     {
         pass?.Dispose();

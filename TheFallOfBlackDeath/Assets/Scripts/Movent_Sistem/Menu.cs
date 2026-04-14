@@ -4,6 +4,9 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 //TP2 AUGUSTO NANINI
+/// <summary>
+/// Supports exploration and world-state flow by handling menu.
+/// </summary>
 public class Menu : MonoBehaviour
 {
     public GameObject Pausemenu;
@@ -26,6 +29,9 @@ public class Menu : MonoBehaviour
 
 
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     private void Start()
     {
 
@@ -38,6 +44,9 @@ public class Menu : MonoBehaviour
         StatsMenu.SetActive(false);
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -109,6 +118,9 @@ public class Menu : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Executes the inventorytrue workflow.
+    /// </summary>
     private void Inventorytrue()
     {
 
@@ -119,6 +131,9 @@ public class Menu : MonoBehaviour
         playerControl.enabled = true;
         playerControl.stop = false;
     }
+    /// <summary>
+    /// Executes the inventoryfalse workflow.
+    /// </summary>
     private void Inventoryfalse()
     {
             inventorySound.Play();
@@ -133,6 +148,9 @@ public class Menu : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Executes the stats true workflow.
+    /// </summary>
     private void StatsTrue()
     {
         //Cursor.lockState = CursorLockMode.Locked;
@@ -141,6 +159,9 @@ public class Menu : MonoBehaviour
 
 
     }
+    /// <summary>
+    /// Executes the statsfalse workflow.
+    /// </summary>
     private void Statsfalse()
     {
         //Cursor.lockState = CursorLockMode.None;
@@ -151,6 +172,9 @@ public class Menu : MonoBehaviour
 
 
 
+    /// <summary>
+    /// Executes the pause game workflow.
+    /// </summary>
     public void PauseGame()
     {
         pauseSound.Play();
@@ -163,6 +187,9 @@ public class Menu : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Executes the resumegame workflow.
+    /// </summary>
     public void Resumegame()
     {
 

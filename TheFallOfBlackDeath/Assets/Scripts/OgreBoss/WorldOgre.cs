@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 
+/// <summary>
+/// Handles world ogre for the current project workflow.
+/// </summary>
 public class WorldOgre : MonoBehaviour
 {
     private NavMeshAgent _navMeshAgent;
@@ -11,6 +14,9 @@ public class WorldOgre : MonoBehaviour
 
     public float RaycastDistance;
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     void Start()
     {
         _sj = GetComponent<FollowPlayer>();
@@ -18,6 +24,9 @@ public class WorldOgre : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     void Update()
     {
         if(Physics.Raycast(transform.position, Vector3.down, RaycastDistance))

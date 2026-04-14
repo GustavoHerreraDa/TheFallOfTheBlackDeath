@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 
+/// <summary>
+/// Supports the combat system by handling combat status ui controller.
+/// </summary>
 public class CombatStatusUIController : MonoBehaviour
 {
     [Header("Settings")]
@@ -10,12 +13,18 @@ public class CombatStatusUIController : MonoBehaviour
 
     private List<PlayerFighter> playerFighters = new List<PlayerFighter>();
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     private void Start()
     {
         // Asegurar que todos los paneles arranquen apagados
         SetStatusPanelsActive(false);
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     private void Update()
     {
         if (Input.GetKeyDown(toggleKey))
@@ -31,6 +40,9 @@ public class CombatStatusUIController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the toggle status panels workflow.
+    /// </summary>
     private void ToggleStatusPanels()
     {
         isStatusPanelOpen = !isStatusPanelOpen;
@@ -43,6 +55,10 @@ public class CombatStatusUIController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the status panels active.
+    /// </summary>
+    /// <param name="active">The active.</param>
     private void SetStatusPanelsActive(bool active)
     {
         foreach (var pf in playerFighters)
@@ -54,6 +70,9 @@ public class CombatStatusUIController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Refreshes the status panels.
+    /// </summary>
     private void RefreshStatusPanels()
     {
         foreach (var pf in playerFighters)
@@ -66,6 +85,9 @@ public class CombatStatusUIController : MonoBehaviour
     }
 
     // Por si querés refrescar desde otro sistema (ej: después de curar)
+    /// <summary>
+    /// Executes the force refresh workflow.
+    /// </summary>
     public void ForceRefresh()
     {
         if (isStatusPanelOpen)
@@ -74,11 +96,19 @@ public class CombatStatusUIController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Determines whether the component is open.
+    /// </summary>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     public bool IsOpen()
     {
         return isStatusPanelOpen;
     }
     
+    /// <summary>
+    /// Executes the register player workflow.
+    /// </summary>
+    /// <param name="pf">The pf.</param>
     public void RegisterPlayer(PlayerFighter pf)
     {
         if (!playerFighters.Contains(pf))

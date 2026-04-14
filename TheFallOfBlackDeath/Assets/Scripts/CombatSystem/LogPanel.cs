@@ -5,6 +5,9 @@ using UnityEngine.UI;
 using TMPro;
 //TP2 FACUNDO FERREIRO
 [RequireComponent(typeof(CanvasGroup))]
+/// <summary>
+/// Supports the combat system by handling log panel.
+/// </summary>
 public class LogPanel : MonoBehaviour
 {
     //Referencia estatica al panel actual
@@ -20,6 +23,9 @@ public class LogPanel : MonoBehaviour
     private CanvasGroup canvasGroup;
     private Coroutine fadeRoutine;
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     private void Awake()
     {
         current = this;
@@ -30,6 +36,10 @@ public class LogPanel : MonoBehaviour
     }
 
     //Funcion estatica write para escribir un mensaje
+    /// <summary>
+    /// Executes the write workflow.
+    /// </summary>
+    /// <param name="message">The message.</param>
     public static void Write(string message)
     {
         if (current == null)
@@ -43,6 +53,10 @@ public class LogPanel : MonoBehaviour
         current.fadeRoutine = current.StartCoroutine(current.ShowMessageRoutine());
     }
 
+    /// <summary>
+    /// Shows the message routine.
+    /// </summary>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     private IEnumerator ShowMessageRoutine()
     {
         // Fade In
@@ -59,6 +73,12 @@ public class LogPanel : MonoBehaviour
         fadeRoutine = null;
     }
 
+    /// <summary>
+    /// Executes the fade to workflow.
+    /// </summary>
+    /// <param name="target">The target.</param>
+    /// <param name="duration">The duration.</param>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     private IEnumerator FadeTo(float target, float duration)
     {
         float start = canvasGroup.alpha;
@@ -78,6 +98,11 @@ public class LogPanel : MonoBehaviour
         canvasGroup.alpha = target;
     }
 
+    /// <summary>
+    /// Executes the write workflow.
+    /// </summary>
+    /// <param name="idName">The id name.</param>
+    /// <param name="v">The v.</param>
     internal static void Write(string idName, string v)
     {
         throw new NotImplementedException();

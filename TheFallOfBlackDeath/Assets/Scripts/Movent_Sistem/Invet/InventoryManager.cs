@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 //chumba
+/// <summary>
+/// Defines the named values used by item inventory id.
+/// </summary>
 public enum ItemInventoryId
 {
     Potion,
@@ -16,11 +19,18 @@ public enum ItemInventoryId
     Key,
     StrengthPotion
 }
+/// <summary>
+/// Maintains the runtime inventory, equipped items, and inventory-driven UI refreshes for the current play session.
+/// </summary>
 public class InventoryManager : MonoBehaviour
 {
     // Observer events for decoupled UI updates
     public static event Action OnInventoryChanged;
     public static event Action<PlayerFighter> OnCharacterChanged;
+    /// <summary>
+    /// Executes the notify character changed workflow.
+    /// </summary>
+    /// <param name="fighter">The fighter.</param>
     public static void NotifyCharacterChanged(PlayerFighter fighter)
     {
         OnCharacterChanged?.Invoke(fighter);
@@ -38,16 +48,25 @@ public class InventoryManager : MonoBehaviour
     private Dictionary<int, InventoryDateBase.Object> _itemCache;
 
     
+    /// <summary>
+    /// Registers runtime listeners when the component becomes active.
+    /// </summary>
     void OnEnable()
     {
         DialogueManager.OnGiveItem += HandleGiveItem;
     }
 
+    /// <summary>
+    /// Unregisters runtime listeners when the component becomes inactive.
+    /// </summary>
     void OnDisable()
     {
         DialogueManager.OnGiveItem -= HandleGiveItem;
     }
     
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     void Awake()
     {
         if (InventoryManager.instance == null)
@@ -73,12 +92,21 @@ public class InventoryManager : MonoBehaviour
 
 
     [System.Serializable]
+    /// <summary>
+    /// Represents an inventory entry that tracks an item identifier, amount, and usage category.
+    /// </summary>
     public struct InventoryObjectID
     {
         public int id;
         public int amount;
         public InventoryDateBase.Uso uso;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InventoryObjectID"/> class.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="amount">The amount.</param>
+        /// <param name="uso">The uso.</param>
         public InventoryObjectID(int id, int amount, InventoryDateBase.Uso uso)
         {
             this.id = id;
@@ -86,6 +114,12 @@ public class InventoryManager : MonoBehaviour
             this.uso = uso;
         }
     }
+    /// <summary>
+    /// Adds the item.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="amount">The amount.</param>
+    /// <param name="uso">The uso.</param>
     public void AddItem(int id, int amount, InventoryDateBase.Uso uso)
     {
         Debug.Log("Add Item");
@@ -112,6 +146,12 @@ public class InventoryManager : MonoBehaviour
         updateUI(objetsUI, InventoryDateBase.Uso.Consumable);
         OnInventoryChanged?.Invoke();
     }
+    /// <summary>
+    /// Executes the destroy item workflow.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="amount">The amount.</param>
+    /// <param name="uso">The uso.</param>
     public void DestroyItem(int id, int amount, InventoryDateBase.Uso uso)
     {
         if (inventory == null) return;
@@ -133,6 +173,9 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     public void Start()
     {
         Debug.Log("Start Item Manager");
@@ -156,6 +199,11 @@ public class InventoryManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Updates the ui.
+    /// </summary>
+    /// <param name="_ui">The ui.</param>
+    /// <param name="uso">The uso.</param>
     public void updateUI(Transform _ui, InventoryDateBase.Uso uso)
     {
         if (_ui == null || prefab == null || datebase == null)
@@ -212,6 +260,9 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Creates the ui.
+    /// </summary>
     public void CreateUI()
     {
         var _ui = equipmentUI;
@@ -248,6 +299,11 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Determines whether the component has item in iventory.
+    /// </summary>
+    /// <param name="itemsNeeded">The items needed.</param>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     public bool HasItemInIventory(List<InventoryObjectID> itemsNeeded)
     {
 
@@ -267,6 +323,12 @@ public class InventoryManager : MonoBehaviour
         return hasItemInIventory;
     }
 
+    /// <summary>
+    /// Determines whether the component has item in iventory.
+    /// </summary>
+    /// <param name="_id">The id.</param>
+    /// <param name="_amount">The amount.</param>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     public bool HasItemInIventory(int _id, int _amount)
     {
 
@@ -283,6 +345,11 @@ public class InventoryManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Executes the obtener equipo equipado workflow.
+    /// </summary>
+    /// <param name="jugador">The jugador.</param>
+    /// <returns>The resulting collection.</returns>
     public List<InventoryObjectID> ObtenerEquipoEquipado(PlayerFighter jugador)
     {
         if (playerEquipped.TryGetValue(jugador, out List<InventoryObjectID> equipo))
@@ -296,6 +363,11 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the agregar equipo equipado workflow.
+    /// </summary>
+    /// <param name="jugador">The jugador.</param>
+    /// <param name="objeto">The objeto.</param>
     public void AgregarEquipoEquipado(PlayerFighter jugador, InventoryObjectID objeto)
     {
         if (playerEquipped.ContainsKey(jugador))
@@ -308,6 +380,12 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Attempts to get the item data.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="data">The data.</param>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     public bool TryGetItemData(int id, out InventoryDateBase.Object data)
     {
         data = default;
@@ -321,6 +399,11 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Gets the item information.
+    /// </summary>
+    /// <param name="_id">The id.</param>
+    /// <returns>The resulting value.</returns>
     public InventoryDateBase.Object GetItemInformation(int _id)
     {
         if (TryGetItemData(_id, out var data))
@@ -329,6 +412,12 @@ public class InventoryManager : MonoBehaviour
         return default;
     }
     
+    /// <summary>
+    /// Handles the give item.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    /// <param name="amount">The amount.</param>
+    /// <param name="uso">The uso.</param>
     private void HandleGiveItem(int id, int amount, InventoryDateBase.Uso uso)
     {
         Debug.Log($"InventoryManager: Recibido item {id} x{amount}");

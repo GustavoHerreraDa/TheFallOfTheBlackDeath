@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 //TP2 GUSTAVO TORRES/FACUNDO FERREIRO
+/// <summary>
+/// Supports the combat system by handling status condition.
+/// </summary>
 public abstract class StatusCondition : MonoBehaviour
 {
     [Header("Base Status Condition")]
@@ -18,22 +21,35 @@ public abstract class StatusCondition : MonoBehaviour
     protected Queue<string> messages;
     protected Fighter receiver;
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     public void Awake()
     {
         this.messages = new Queue<string>();
     }
 
+    /// <summary>
+    /// Sets the receiver.
+    /// </summary>
+    /// <param name="recv">The recv.</param>
     public void SetReceiver(Fighter recv)
     {
         this.receiver = recv;
     }
 
+    /// <summary>
+    /// Executes the animate workflow.
+    /// </summary>
     private void Animate()
     {
         var go = Instantiate(this.effectPrfb, this.receiver.transform.position, Quaternion.identity);
         Destroy(go, this.animationDuration);
     }
 
+    /// <summary>
+    /// Applies the value.
+    /// </summary>
     public void Apply()
     {
         if (this.receiver == null)
@@ -54,6 +70,10 @@ public abstract class StatusCondition : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets the next message.
+    /// </summary>
+    /// <returns>The resulting value.</returns>
     public string GetNextMessage()
     {
         if (this.messages.Count != 0)
@@ -62,6 +82,10 @@ public abstract class StatusCondition : MonoBehaviour
             return null;
     }
 
+    /// <summary>
+    /// Gets the reception message.
+    /// </summary>
+    /// <returns>The resulting value.</returns>
     public string GetReceptionMessage()
     {
         return this.receptionMessage.Replace("(receiver)", this.receiver.idName);

@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
+/// <summary>
+/// Supports menu and scene loading flow by handling dither toggle ui.
+/// </summary>
 public class DitherToggleUI : MonoBehaviour
 {
     [Header("Renderer Data")]
@@ -13,6 +16,9 @@ public class DitherToggleUI : MonoBehaviour
 
     public DitherFeature ditherFeature;
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     void Start()
     {
         // Buscar el feature
@@ -31,6 +37,9 @@ public class DitherToggleUI : MonoBehaviour
         UpdateButtonLabel();
     }
 
+    /// <summary>
+    /// Executes the toggle dither workflow.
+    /// </summary>
     public void ToggleDither()
     {
         if (ditherFeature == null) return;
@@ -40,6 +49,9 @@ public class DitherToggleUI : MonoBehaviour
         UpdateButtonLabel();
     }
 
+    /// <summary>
+    /// Updates the button label.
+    /// </summary>
     private void UpdateButtonLabel()
     {
         if (buttonText != null)

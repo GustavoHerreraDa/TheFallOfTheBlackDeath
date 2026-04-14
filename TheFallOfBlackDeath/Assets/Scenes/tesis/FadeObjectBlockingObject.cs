@@ -1,7 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles fade object blocking object for the current project workflow.
+/// </summary>
 public class FadeObjectBlockingObject : MonoBehaviour
 {
     [SerializeField]
@@ -27,11 +30,18 @@ public class FadeObjectBlockingObject : MonoBehaviour
 
     private RaycastHit[] Hits = new RaycastHit[10];
 
+    /// <summary>
+    /// Registers runtime listeners when the component becomes active.
+    /// </summary>
     private void OnEnable()
     {
         StartCoroutine(CheckForObjects());
     }
 
+    /// <summary>
+    /// Executes the check for objects workflow.
+    /// </summary>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     private IEnumerator CheckForObjects()
     {
         while (true)
@@ -76,6 +86,9 @@ public class FadeObjectBlockingObject : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the fade objects no longer being hit workflow.
+    /// </summary>
     private void FadeObjectsNoLongerBeingHit()
     {
         List<FadingObject> objectsToRemove = new List<FadingObject>(ObjectsBlockingView.Count);
@@ -115,6 +128,11 @@ public class FadeObjectBlockingObject : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the fade object out workflow.
+    /// </summary>
+    /// <param name="FadingObject">The fading object.</param>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     private IEnumerator FadeObjectOut(FadingObject FadingObject)
     {
         foreach (Material material in FadingObject.Materials)
@@ -163,6 +181,11 @@ public class FadeObjectBlockingObject : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the fade object in workflow.
+    /// </summary>
+    /// <param name="FadingObject">The fading object.</param>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     private IEnumerator FadeObjectIn(FadingObject FadingObject)
     {
         float time = 0;
@@ -211,11 +234,19 @@ public class FadeObjectBlockingObject : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the clear hits workflow.
+    /// </summary>
     private void ClearHits()
     {
         System.Array.Clear(Hits, 0, Hits.Length);
     }
 
+    /// <summary>
+    /// Gets the fading object from hit.
+    /// </summary>
+    /// <param name="Hit">The hit.</param>
+    /// <returns>The resulting value.</returns>
     private FadingObject GetFadingObjectFromHit(RaycastHit Hit)
     {
         return Hit.collider != null ? Hit.collider.GetComponent<FadingObject>() : null;

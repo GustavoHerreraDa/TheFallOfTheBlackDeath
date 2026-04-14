@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using TMPro;
 using System.Linq;
 
+/// <summary>
+/// Supports inventory and interaction flow by handling body status ui.
+/// </summary>
 public class BodyStatusUI : MonoBehaviour
 {
     public TextMeshProUGUI headTxt;
@@ -15,6 +18,9 @@ public class BodyStatusUI : MonoBehaviour
     private GameManager gm;
     private PlayerFighter fighter;
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     void Awake()
     {
         if (gm == null)
@@ -24,11 +30,17 @@ public class BodyStatusUI : MonoBehaviour
             fighter = FindObjectOfType<PlayerFighter>();
     }
 
+    /// <summary>
+    /// Registers runtime listeners when the component becomes active.
+    /// </summary>
     private void OnEnable()
     {
         Refresh();
     }
 
+    /// <summary>
+    /// Refreshes the value.
+    /// </summary>
     public void Refresh()
     {
         if (gm == null || fighter == null)

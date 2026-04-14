@@ -4,9 +4,15 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "EnemyDB", menuName = "Enemy/List", order = 1)]
+/// <summary>
+/// Stores fighter and enemy definitions used to spawn party members and combatants and to keep character selection flags.
+/// </summary>
 public class globalDataBase : ScriptableObject
 {
     [System.Serializable]
+    /// <summary>
+    /// Stores the serialized stats and selection flags associated with a fighter or enemy entry in the global database.
+    /// </summary>
     public struct EnemyStats
     {
         public bool isMainCharacter;
@@ -31,6 +37,12 @@ public class globalDataBase : ScriptableObject
         public float currentHealth;
     }
 
+    /// <summary>
+    /// Updates the fighter stats.
+    /// </summary>
+    /// <param name="index">The index.</param>
+    /// <param name="amountAffected">The amount affected.</param>
+    /// <param name="statAffected">The stat affected.</param>
     public void UpdateFighterStats(int index, float amountAffected, string statAffected)
     {
         switch (statAffected)
@@ -89,6 +101,11 @@ public class globalDataBase : ScriptableObject
         }
     }
 
+    /// <summary>
+    /// Sets the main character.
+    /// </summary>
+    /// <param name="index">The index.</param>
+    /// <param name="isCharacter">The is character.</param>
     public void SetMainCharacter(int index, bool isCharacter)
     {
         EnemyStats newCharacterStats = new EnemyStats
@@ -115,6 +132,11 @@ public class globalDataBase : ScriptableObject
         EnemyDB[index] = newCharacterStats;
     }
 
+    /// <summary>
+    /// Sets the secondary character.
+    /// </summary>
+    /// <param name="index">The index.</param>
+    /// <param name="isCharacter">The is character.</param>
     public void SetSecondaryCharacter(int index, bool isCharacter)
     {
         EnemyStats newCharacterStats = new EnemyStats

@@ -1,8 +1,14 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Handles follow player for the current project workflow.
+/// </summary>
 public class FollowPlayer : MonoBehaviour
 {
+    /// <summary>
+    /// Defines the named values used by enemy state.
+    /// </summary>
     public enum EnemyState { Idle, Patrol, Chase, Death }
 
 
@@ -29,6 +35,9 @@ public class FollowPlayer : MonoBehaviour
 
     private bool sonidoReproducido = false;
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     void Start()
     {
         // Validaciones
@@ -50,6 +59,9 @@ public class FollowPlayer : MonoBehaviour
         SetAnimationBooleans();
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     void Update()
     {
         CheckTransitions();
@@ -65,11 +77,17 @@ public class FollowPlayer : MonoBehaviour
 
     // ===================== ESTADOS =======================
 
+    /// <summary>
+    /// Executes the idle tick workflow.
+    /// </summary>
     void IdleTick()
     {
         agent.isStopped = true;
     }
 
+    /// <summary>
+    /// Executes the patrol tick workflow.
+    /// </summary>
     void PatrolTick()
     {
         agent.isStopped = false;
@@ -81,6 +99,9 @@ public class FollowPlayer : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the chase tick workflow.
+    /// </summary>
     void ChaseTick()
     {
         agent.isStopped = false;
@@ -101,6 +122,9 @@ public class FollowPlayer : MonoBehaviour
 
     // ===================== TRANSICIONES =======================
 
+    /// <summary>
+    /// Executes the check transitions workflow.
+    /// </summary>
     void CheckTransitions()
     {
         // Death siempre cancela las transiciones
@@ -129,6 +153,10 @@ public class FollowPlayer : MonoBehaviour
 
     // ===================== CAMBIAR ESTADO =======================
 
+    /// <summary>
+    /// Changes the state.
+    /// </summary>
+    /// <param name="newState">The new state.</param>
     void ChangeState(EnemyState newState)
     {
         if (currentState == newState) return;
@@ -172,6 +200,9 @@ public class FollowPlayer : MonoBehaviour
         SetAnimationBooleans();
     }
 
+    /// <summary>
+    /// Sets the animation booleans.
+    /// </summary>
     void SetAnimationBooleans()
     {
         anim.SetBool("Idle", currentState == EnemyState.Idle);
@@ -180,6 +211,9 @@ public class FollowPlayer : MonoBehaviour
         anim.SetBool("Death", currentState == EnemyState.Death);
     }
     
+    /// <summary>
+    /// Executes the stop enemy for transition workflow.
+    /// </summary>
     public void StopEnemyForTransition()
     {
         if (agent != null)

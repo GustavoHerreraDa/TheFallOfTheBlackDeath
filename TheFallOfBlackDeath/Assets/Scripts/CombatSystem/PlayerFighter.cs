@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 //TP2 FACUNDO FERREIRO/GUSTAVO TORRES
+/// <summary>
+/// Implements a controllable combatant that can execute skills, receive inventory upgrades, gain experience, and persist combat state between scenes.
+/// </summary>
 public class PlayerFighter : Fighter
 {
     [Header("UI")]
@@ -23,6 +26,9 @@ public class PlayerFighter : Fighter
     private bool hasSavedDataForThisFighter = false;
     private bool appliedSavedDataThisScene = false;
  
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     void Awake()
     {
         // Detect existing saved data first to avoid overwriting restored state
@@ -100,6 +106,9 @@ public class PlayerFighter : Fighter
         }
     }
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     private void Start()
     {
         // Ensure saved data is applied after all initializations in the scene
@@ -112,6 +121,10 @@ public class PlayerFighter : Fighter
         LoadBodyState();
     }
 
+    /// <summary>
+    /// Executes the deferred apply saved status workflow.
+    /// </summary>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     private System.Collections.IEnumerator DeferredApplySavedStatus()
     {
         // Wait one frame to allow other Awake/Start methods to run
@@ -133,6 +146,9 @@ public class PlayerFighter : Fighter
         Debug.Log($"[PlayerFighter.Start] skills count after restore: {count}");
     }
 
+    /// <summary>
+    /// Initializes the turn.
+    /// </summary>
     public override void InitTurn()
     {
         int count = (this.skills != null) ? this.skills.Length : 0;
@@ -142,6 +158,10 @@ public class PlayerFighter : Fighter
         statusPanel?.gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// Changes the ally.
+    /// </summary>
+    /// <param name="newIndex">The new index.</param>
     public void ChangeAlly(int newIndex)
     {
         if (newIndex < 0 || newIndex >= allies.Count)
@@ -159,6 +179,10 @@ public class PlayerFighter : Fighter
         // Realizar cualquier otra l gica necesaria al cambiar de aliado
     }
 
+    /// <summary>
+    /// Starts the execution flow for the selected player skill, including manual targeting when required.
+    /// </summary>
+    /// <param name="index">The index.</param>
     public void ExecuteSkill(int index)
     {
         int count = (this.skills != null) ? this.skills.Length : 0;
@@ -197,6 +221,11 @@ public class PlayerFighter : Fighter
         }
     }
 
+    /// <summary>
+    /// Updates the stats.
+    /// </summary>
+    /// <param name="statAffected">The stat affected.</param>
+    /// <param name="amountAffected">The amount affected.</param>
     public void UpdateStats(string statAffected, float amountAffected)
     {
         Debug.Log($"[PlayerFighter.UpdateStats] id={idName} idx={figherIndex} stat={statAffected} delta={amountAffected}");
@@ -229,7 +258,7 @@ public class PlayerFighter : Fighter
                 break;
 
             default:
-                Debug.LogWarning("Stat no válido: " + statAffected);
+                Debug.LogWarning("Stat no vÃ¡lido: " + statAffected);
                 break;
         }
 
@@ -248,6 +277,10 @@ public class PlayerFighter : Fighter
     }
 
 
+    /// <summary>
+    /// Finalizes the current player skill target and dispatches the action to the combat manager.
+    /// </summary>
+    /// <param name="enemyFighter">The enemy fighter.</param>
     public void SetTargetAndAttack(Fighter enemyFighter)
     {
         EnemyButtonUI enemyBtn = enemiesPanel.GetButtonFor(enemyFighter);
@@ -269,12 +302,18 @@ public class PlayerFighter : Fighter
         }
     }
 
+    /// <summary>
+    /// Executes the return workflow.
+    /// </summary>
     public void Return()
     {
         this.skillPanel.Show();
         this.enemiesPanel.Hide();
     }
 
+    /// <summary>
+    /// Adds the allies to team.
+    /// </summary>
     private void AddAlliesToTeam()
     {
         allies.Clear();
@@ -283,6 +322,9 @@ public class PlayerFighter : Fighter
         // Agrega aqu  el resto de los aliados a la lista allies
     }
 
+    /// <summary>
+    /// Switches the active ally.
+    /// </summary>
     private void SwitchActiveAlly()
     {
         activeAllyIndex++;
@@ -295,6 +337,14 @@ public class PlayerFighter : Fighter
         // Realizar las acciones necesarias con el aliado activo
     }
 
+    /// <summary>
+    /// Gets the skill panel.
+    /// </summary>
+    /// <param name="newSkillPanel">The new skill panel.</param>
+    /// <param name="newStatusPanel">The new status panel.</param>
+    /// <param name="newEnemiesPanel">The new enemies panel.</param>
+    /// <param name="newBodyPartPanel">The new body part panel.</param>
+    /// <returns>The resulting value.</returns>
     public PlayerFighter GetSkillPanel(PlayerSkillPanel newSkillPanel, StatusPanel newStatusPanel, EnemiesPanel newEnemiesPanel, BodyPartPanel newBodyPartPanel)
     {
         skillPanel = newSkillPanel;
@@ -304,6 +354,11 @@ public class PlayerFighter : Fighter
         return this;
     }
 
+    /// <summary>
+    /// Applies an inventory-driven stat adjustment to the player fighter and persists the result.
+    /// </summary>
+    /// <param name="stat">The stat.</param>
+    /// <param name="amount">The amount.</param>
     public void ApplyStatUpgrade(InventoryDateBase.StatsUpgrade stat, float amount)
     {
         Debug.Log($"[{idName}] +{amount} en {stat}");
@@ -334,6 +389,10 @@ public class PlayerFighter : Fighter
         }
     }
 
+    /// <summary>
+    /// Adds experience to the fighter, performs level-ups when thresholds are reached, and persists the result.
+    /// </summary>
+    /// <param name="amount">The amount.</param>
     public void AddExperience(int amount)
     {
         Debug.Log($"{idName} gana {amount} XP");
@@ -357,6 +416,9 @@ public class PlayerFighter : Fighter
             GameManager.Instance.SavePlayerState(this);
         }
     }
+    /// <summary>
+    /// Executes the level up workflow.
+    /// </summary>
     private void LevelUp()
     {
         stats.level++;
@@ -371,20 +433,34 @@ public class PlayerFighter : Fighter
 
         stats.health = stats.maxHealth;
 
-        Debug.Log($"{idName} subió al nivel {stats.level}!");
+        Debug.Log($"{idName} subiÃ³ al nivel {stats.level}!");
     }
 
+    /// <summary>
+    /// Executes the calculate exp needed workflow.
+    /// </summary>
+    /// <param name="level">The level.</param>
+    /// <returns>The resulting value.</returns>
     private int CalculateExpNeeded(int level)
     {
         
         return Mathf.FloorToInt(50f * Mathf.Pow(level, 1.4f));
     }
+    /// <summary>
+    /// Removes the stat upgrade.
+    /// </summary>
+    /// <param name="stat">The stat.</param>
+    /// <param name="amount">The amount.</param>
     public void RemoveStatUpgrade(InventoryDateBase.StatsUpgrade stat, float amount)
     {
 
         ApplyStatUpgrade(stat, -amount);
     }
 
+    /// <summary>
+    /// Saves the body part state.
+    /// </summary>
+    /// <param name="part">The part.</param>
     public void SaveBodyPartState(BodyPart part)
     {
         if (fightersDateBase == null || figherIndex < 0 || figherIndex >= fightersDateBase.EnemyDB.Count)
@@ -406,6 +482,9 @@ public class PlayerFighter : Fighter
         Debug.Log($"[PlayerFighter.SaveBodyPartState] Saved destroyed part {part}, hp={stats.health} for figherIndex={figherIndex}");
     }
 
+    /// <summary>
+    /// Loads the body state.
+    /// </summary>
     public void LoadBodyState()
     {
         if (fightersDateBase == null || figherIndex < 0 || figherIndex >= fightersDateBase.EnemyDB.Count)

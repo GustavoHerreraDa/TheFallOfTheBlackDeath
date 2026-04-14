@@ -1,11 +1,17 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts.Movent_Sistem.Invet
 {
+    /// <summary>
+    /// Supports inventory and interaction flow by handling open object.
+    /// </summary>
     public class OpenObject : Interactable
     {
         //Animator animator;
+        /// <summary>
+        /// Initializes the component once the scene dependencies are ready.
+        /// </summary>
         private void Start()
         {
             base.Start();
@@ -14,6 +20,9 @@ namespace Assets.Scripts.Movent_Sistem.Invet
         }
 
 
+        /// <summary>
+        /// Executes the interact workflow.
+        /// </summary>
         public override void Interact()
         {
             //animator.SetBool("IsOpen", true);
@@ -39,6 +48,10 @@ namespace Assets.Scripts.Movent_Sistem.Invet
 
         }
 
+        /// <summary>
+        /// Responds to the corresponding Unity trigger callback for this component.
+        /// </summary>
+        /// <param name="other">The other.</param>
         private void OnTriggerEnter(Collider other)
         {
             //Debug.Log("Open Object Enter");

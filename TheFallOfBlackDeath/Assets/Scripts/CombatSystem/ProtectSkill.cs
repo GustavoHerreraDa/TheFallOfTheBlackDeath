@@ -1,16 +1,23 @@
 using UnityEngine;
 
 // TP2 FACUNDO FERREIRO
+/// <summary>
+/// Supports the combat system by handling protect skill.
+/// </summary>
 public class ProtectSkill : Skill
 {
     private bool usedLastTurn = false;
-    public float successRate = 0.8f; // Ajustar este valor según lo necesario
+    public float successRate = 0.8f; // Ajustar este valor segÃºn lo necesario
 
+    /// <summary>
+    /// Executes the on run workflow.
+    /// </summary>
+    /// <param name="receiver">The receiver.</param>
     protected override void OnRun(Fighter receiver)
     {
         if (!usedLastTurn)
         {
-            // Protección tiene su éxito normal si no se usó en el turno anterior
+            // ProtecciÃ³n tiene su Ã©xito normal si no se usÃ³ en el turno anterior
             if (Random.value <= successRate)
             {
                 ApplyProtection(emitter);
@@ -23,31 +30,35 @@ public class ProtectSkill : Skill
         }
         else
         {
-            // Reducir el éxito en un 50% si se usó en el turno anterior
+            // Reducir el Ã©xito en un 50% si se usÃ³ en el turno anterior
             float reducedSuccessRate = successRate * 0.5f;
             if (Random.value <= reducedSuccessRate)
             {
-                // Protección falló este turno
+                // ProtecciÃ³n fallÃ³ este turno
                 messages.Enqueue(emitter.idName + "'s Protect failed!");
             }
             else
             {
-                // Protección tuvo éxito este turno
+                // ProtecciÃ³n tuvo Ã©xito este turno
                 ApplyProtection(emitter);
                 messages.Enqueue(emitter.idName + " uses Protect! They are protected from attacks this turn.");
             }
 
-            // Actualizar el estado para el próximo turno
+            // Actualizar el estado para el prÃ³ximo turno
             usedLastTurn = false;
         }
 
-        // Reproducir animación de habilidad
+        // Reproducir animaciÃ³n de habilidad
         emitter.animator.Play(animationName);
     }
 
+    /// <summary>
+    /// Applies the protection.
+    /// </summary>
+    /// <param name="emitter">The emitter.</param>
     private void ApplyProtection(Fighter emitter)
     {
-        // Crear un nuevo objeto StatusMod para el efecto de protección
+        // Crear un nuevo objeto StatusMod para el efecto de protecciÃ³n
         StatusMod protectionEffect = gameObject.AddComponent<StatusMod>();
         protectionEffect.type = StatusModType.DEFFENSE_MOD;
         protectionEffect.amount = 999; // Aumenta temporalmente la defensa a un valor muy alto

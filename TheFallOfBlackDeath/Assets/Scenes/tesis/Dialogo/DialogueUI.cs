@@ -3,6 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Supports branching dialogue flow by handling dialogue ui.
+/// </summary>
 public class DialogueUI : MonoBehaviour
 {
     [Header("Referencias UI")]
@@ -29,16 +32,27 @@ public class DialogueUI : MonoBehaviour
     public System.Action onTypingFinished;
     private bool isTyping;
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     private void Start()
     {
         ShowUI(false);
     }
 
+    /// <summary>
+    /// Shows the ui.
+    /// </summary>
+    /// <param name="show">The show.</param>
     public void ShowUI(bool show)
     {
         dialoguePanel.SetActive(show);
     }
 
+    /// <summary>
+    /// Executes the display line workflow.
+    /// </summary>
+    /// <param name="line">The line.</param>
     public void DisplayLine(DialogueLine line)
     {
         nameText.text = line.speakerName;
@@ -51,6 +65,11 @@ public class DialogueUI : MonoBehaviour
         typingCoroutine = StartCoroutine(TypeText(currentSentence));
     }
 
+    /// <summary>
+    /// Executes the type text workflow.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator TypeText(string text)
     {
         isTyping = true;
@@ -73,6 +92,9 @@ public class DialogueUI : MonoBehaviour
         onTypingFinished?.Invoke();
     }
 
+    /// <summary>
+    /// Executes the enable keyboard navigation workflow.
+    /// </summary>
     public void EnableKeyboardNavigation()
     {
         currentButtons = choicesPanel.GetComponentsInChildren<Button>();
@@ -84,6 +106,10 @@ public class DialogueUI : MonoBehaviour
         HighlightButton(selectedIndex);
     }
 
+    /// <summary>
+    /// Executes the highlight button workflow.
+    /// </summary>
+    /// <param name="index">The index.</param>
     private void HighlightButton(int index)
     {
         if (currentButtons == null || currentButtons.Length == 0)
@@ -99,6 +125,9 @@ public class DialogueUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     private void Update()
     {
         if (!choicesPanel.activeSelf)
@@ -112,11 +141,21 @@ public class DialogueUI : MonoBehaviour
             selectedIndex = (selectedIndex - 1 + currentButtons.Length) % currentButtons.Length;
             HighlightButton(selectedIndex);
         }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="Input.GetKeyDown(KeyCode.DownArrow)">The input.get key down(key code.down arrow).</param>
+        /// <returns>The resulting value.</returns>
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             selectedIndex = (selectedIndex + 1) % currentButtons.Length;
             HighlightButton(selectedIndex);
         }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="Input.GetKeyDown(KeyCode.Return)">The input.get key down(key code.return).</param>
+        /// <returns>The resulting value.</returns>
         else if (Input.GetKeyDown(KeyCode.Return))
         {
             if (currentButtons[selectedIndex] != null)
@@ -124,6 +163,10 @@ public class DialogueUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Shows the choices.
+    /// </summary>
+    /// <param name="choices">The choices.</param>
     public void ShowChoices(DialogueChoice[] choices)
     {
         dialoguePanel.SetActive(false);
@@ -136,12 +179,12 @@ public class DialogueUI : MonoBehaviour
 
         foreach (DialogueChoice choice in choices)
         {
-            // VERIFICACIÓN DE FLAGS
+            // VERIFICACIÃ“N DE FLAGS
             if (!string.IsNullOrEmpty(choice.requiredFlag) && !GlobalState.Instance.HasFlag(choice.requiredFlag))
-                continue; // Salta esta opción si no tiene el flag requerido
+                continue; // Salta esta opciÃ³n si no tiene el flag requerido
 
             if (!string.IsNullOrEmpty(choice.forbiddenFlag) && GlobalState.Instance.HasFlag(choice.forbiddenFlag))
-                continue; // Salta esta opción si tiene el flag prohibido
+                continue; // Salta esta opciÃ³n si tiene el flag prohibido
 
             GameObject btnObj = Instantiate(choiceButtonPrefab, choicesPanel.transform);
             btnObj.GetComponentInChildren<TextMeshProUGUI>().text = choice.playerText;
@@ -154,6 +197,9 @@ public class DialogueUI : MonoBehaviour
         EnableKeyboardNavigation();
     }
 
+    /// <summary>
+    /// Hides the choices.
+    /// </summary>
     public void HideChoices()
     {
         choicesPanel.SetActive(false);
@@ -161,6 +207,9 @@ public class DialogueUI : MonoBehaviour
         currentButtons = null; 
     }
 
+    /// <summary>
+    /// Executes the skip typing workflow.
+    /// </summary>
     public void SkipTyping()
     {
         if (typingCoroutine != null)

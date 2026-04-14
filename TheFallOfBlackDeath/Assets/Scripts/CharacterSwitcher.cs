@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Synchronizes the selected main and secondary party members between scene objects, UI, and the fighter database.
+/// </summary>
 public class CharacterSwitcher : MonoBehaviour
 {
     public List<GameObject> characters;
@@ -14,6 +17,9 @@ public class CharacterSwitcher : MonoBehaviour
     public delegate void UpdateSecondaryCharacterUI();
     public static event UpdateSecondaryCharacterUI updateSecondaryCharacterUI;
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     void Start()
     {
         SetIndex();
@@ -22,10 +28,20 @@ public class CharacterSwitcher : MonoBehaviour
 
         if (characters == null)
             Debug.LogError("characters es null");
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="characters.Count">The characters.count.</param>
+        /// <returns>The resulting value.</returns>
         else if (characters.Count == 0)
             Debug.LogError("characters est  vac o!");
     }
 
+    /// <summary>
+    /// Changes the main party selection in the fighter database and notifies dependent UI.
+    /// </summary>
+    /// <param name="characterIndex">The character index.</param>
+    /// <param name="isFirstTime">The is first time.</param>
     public void SwitchMainCharacter(int characterIndex, bool isFirstTime)
     {
         if (fightersDateBase == null || characters == null || characterIndex < 0 || characterIndex >= characters.Count)
@@ -51,6 +67,11 @@ public class CharacterSwitcher : MonoBehaviour
         updateMainCharacterUI?.Invoke();
     }
 
+    /// <summary>
+    /// Changes the secondary party selection in the fighter database and notifies dependent UI.
+    /// </summary>
+    /// <param name="characterIndex">The character index.</param>
+    /// <param name="isFirstTime">The is first time.</param>
     public void SwitchSecondaryCharacter(int characterIndex, bool isFirstTime)
     {
         if (fightersDateBase == null || characters == null || characterIndex < 0 || characterIndex >= characters.Count)
@@ -76,6 +97,9 @@ public class CharacterSwitcher : MonoBehaviour
         updateSecondaryCharacterUI?.Invoke();
     }
 
+    /// <summary>
+    /// Sets the index.
+    /// </summary>
     private void SetIndex()
     {
         for (int i = 0; i < fightersDateBase.EnemyDB.Count; i++)

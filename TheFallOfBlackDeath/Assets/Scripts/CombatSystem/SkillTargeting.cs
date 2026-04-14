@@ -1,3 +1,6 @@
+/// <summary>
+/// Defines the named values used by skill targeting.
+/// </summary>
 public enum SkillTargeting
 //TP2 FACUNDO FERREIRO
 {

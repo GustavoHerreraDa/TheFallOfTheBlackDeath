@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,11 +7,17 @@ using UnityEngine;
 
 namespace Assets.Scripts.IA
 {
+    /// <summary>
+    /// Supports enemy decision-making by handling ia enemy fsm.
+    /// </summary>
     public class IAEnemyFSM : MonoBehaviour
     {
         private IAEnemyState currentState;
         FSM<IAEnemyState> _FSM;
 
+        /// <summary>
+        /// Initializes cached references and runtime state before the component starts running.
+        /// </summary>
         void Awake()
         {
             _FSM = new FSM<IAEnemyState>();
@@ -25,6 +31,9 @@ namespace Assets.Scripts.IA
             _FSM.ChangeState(IAEnemyState.Idle);
         }
 
+        /// <summary>
+        /// Updates the component each frame while it is active.
+        /// </summary>
         void Update()
         {
             _FSM.Update();

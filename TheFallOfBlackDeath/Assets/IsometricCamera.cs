@@ -1,32 +1,41 @@
 using UnityEngine;
 
+/// <summary>
+/// Handles isometric camera for the current project workflow.
+/// </summary>
 public class IsometricCamera : MonoBehaviour
 {
     [Header("Target")]
     public Transform target; // El jugador u objeto a seguir
 
     [Header("Offsets")]
-    public Vector3 offset = new Vector3(0, 10, -10); // PosiciÛn respecto al jugador
-    public float rotationAngle = 45f; // ¡ngulo isomÈtrico (45∞ tÌpico)
+    public Vector3 offset = new Vector3(0, 10, -10); // Posici√≥n respecto al jugador
+    public float rotationAngle = 45f; // √Ångulo isom√©trico (45¬∞ t√≠pico)
 
     [Header("Movimiento")]
     public float followSpeed = 5f;
 
-    [Header("RotaciÛn manual (opcional)")]
+    [Header("Rotaci√≥n manual (opcional)")]
     public bool allowRotation = false;
     public float rotationSpeed = 70f;
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     private void Start()
     {
-        // Inclinamos la c·mara para vista isomÈtrica
+        // Inclinamos la c√°mara para vista isom√©trica
         transform.rotation = Quaternion.Euler(45f, rotationAngle, 0f);
     }
 
+    /// <summary>
+    /// Applies late-frame adjustments after the main update loop has completed.
+    /// </summary>
     private void LateUpdate()
     {
         if (target == null) return;
 
-        // Permitir rotar la c·mara con el mouse
+        // Permitir rotar la c√°mara con el mouse
         if (allowRotation)
         {
             float horizontal = Input.GetAxis("Mouse X");

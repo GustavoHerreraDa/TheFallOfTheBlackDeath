@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
+/// <summary>
+/// Supports exploration and world-state flow by handling player control.
+/// </summary>
 public class PlayerControl : MonoBehaviour
 {
     private CharacterController controller;
@@ -29,6 +32,9 @@ public class PlayerControl : MonoBehaviour
 
     public Animator anim;
     Rigidbody playerRB;
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     private void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -37,6 +43,9 @@ public class PlayerControl : MonoBehaviour
         playerRB = GetComponentInChildren<Rigidbody>();
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     private void Update()
     {
         
@@ -122,6 +131,9 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the continue player workflow.
+    /// </summary>
     public void ContinuePlayer()
     {
         stop = false;
@@ -131,6 +143,10 @@ public class PlayerControl : MonoBehaviour
             GameManager.Instance.isWalking = isWalking;
     }
 
+    /// <summary>
+    /// Executes the stop player workflow.
+    /// </summary>
+    /// <param name="seconds">The seconds.</param>
     public void StopPlayer(float seconds)
     {
         anim.SetFloat("Movent", 0f);
@@ -139,12 +155,20 @@ public class PlayerControl : MonoBehaviour
         StartCoroutine(WaitSeconds(seconds));
     }
 
+    /// <summary>
+    /// Applies late-frame adjustments after the main update loop has completed.
+    /// </summary>
     private void LateUpdate()
     {
         if (!stop)
             playerRB.isKinematic = false;
     }
 
+    /// <summary>
+    /// Executes the wait seconds workflow.
+    /// </summary>
+    /// <param name="seconds">The seconds.</param>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator WaitSeconds(float seconds)
     {
         yield return new WaitForSeconds(seconds);
@@ -152,6 +176,10 @@ public class PlayerControl : MonoBehaviour
         this.ContinuePlayer();
     }
 
+    /// <summary>
+    /// Responds to the corresponding Unity trigger callback for this component.
+    /// </summary>
+    /// <param name="other">The other.</param>
     private void OnTriggerStay(Collider other)
     {
 
@@ -163,6 +191,10 @@ public class PlayerControl : MonoBehaviour
             Debug.Log("Se produjo un encuentro");
         }
     }
+    /// <summary>
+    /// Responds to the corresponding Unity trigger callback for this component.
+    /// </summary>
+    /// <param name="other">The other.</param>
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "region2")
@@ -182,6 +214,10 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the teleport player workflow.
+    /// </summary>
+    /// <param name="destinoPosition">The destino position.</param>
     public void TeleportPlayer(Vector3 destinoPosition)
     {
 

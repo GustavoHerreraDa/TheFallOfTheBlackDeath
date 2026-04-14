@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 // Simple component responsible for spawning and cleaning up a status visual for a single body part.
 // It parents spawned VFX to the body's hit point and applies an optional tint to the relevant meshes.
+/// <summary>
+/// Owns the spawned visual effect attached to a fighter body part while a status remains active.
+/// </summary>
 public class StatusVisualEffect : MonoBehaviour
 {
     private Fighter fighter;
@@ -16,6 +19,12 @@ public class StatusVisualEffect : MonoBehaviour
     private readonly Dictionary<Renderer, Color> originalColors = new Dictionary<Renderer, Color>();
     private static readonly int ColorProp = Shader.PropertyToID("_Color");
 
+    /// <summary>
+    /// Initializes the ialize.
+    /// </summary>
+    /// <param name="f">The f.</param>
+    /// <param name="part">The part.</param>
+    /// <param name="dbEntry">The db entry.</param>
     public void Initialize(Fighter f, BodyPart part, StatusVisualDatabase.Entry dbEntry)
     {
         fighter = f;
@@ -40,6 +49,9 @@ public class StatusVisualEffect : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the cleanup workflow.
+    /// </summary>
     public void Cleanup()
     {
         // Destroy spawned VFX
@@ -53,12 +65,20 @@ public class StatusVisualEffect : MonoBehaviour
         ClearTint();
     }
 
+    /// <summary>
+    /// Executes the on destroy workflow.
+    /// </summary>
     private void OnDestroy()
     {
         // Safety: ensure cleanup when destroyed externally
         Cleanup();
     }
 
+    /// <summary>
+    /// Applies the tint.
+    /// </summary>
+    /// <param name="tint">The tint.</param>
+    /// <param name="strength">The strength.</param>
     private void ApplyTint(Color tint, float strength)
     {
         if (fighter == null) return;
@@ -93,6 +113,9 @@ public class StatusVisualEffect : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the clear tint workflow.
+    /// </summary>
     private void ClearTint()
     {
         if (originalColors.Count == 0) return;

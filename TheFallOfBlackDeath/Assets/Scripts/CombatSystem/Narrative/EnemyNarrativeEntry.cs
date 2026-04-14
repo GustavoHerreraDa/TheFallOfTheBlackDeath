@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "EnemyNarrativeEntry", menuName = "Narrative/Enemy Narrative Entry", order = 0)]
+/// <summary>
+/// Stores the reusable narrative lines associated with a specific enemy identity.
+/// </summary>
 public class EnemyNarrativeEntry : ScriptableObject
 {
     [Header("Identity")]
@@ -21,6 +24,11 @@ public class EnemyNarrativeEntry : ScriptableObject
     [Tooltip("Used when one of the player's arms is destroyed or severely injured.")]
     [TextArea] public string[] playerInjuredArmMessages;
 
+    /// <summary>
+    /// Gets the random.
+    /// </summary>
+    /// <param name="pool">The pool.</param>
+    /// <returns>The resulting value.</returns>
     public string GetRandom(string[] pool)
     {
         if (pool == null || pool.Length == 0) return null;

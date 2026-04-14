@@ -1,12 +1,18 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 // Simple, inspector-driven mapping from PartStatus -> visual prefab/tint
 // Create an asset via: Create > Status Visuals > Status Visual Database
 [CreateAssetMenu(menuName = "Status Visuals/Status Visual Database", fileName = "StatusVisualDatabase")]
+/// <summary>
+/// Stores the visual mappings used to convert gameplay status values into spawned effects.
+/// </summary>
 public class StatusVisualDatabase : ScriptableObject
 {
     [System.Serializable]
+    /// <summary>
+    /// Supports status-effect presentation by handling entry.
+    /// </summary>
     public class Entry
     {
         [Tooltip("Status this visual represents")] public PartStatus status = PartStatus.None;
@@ -22,6 +28,11 @@ public class StatusVisualDatabase : ScriptableObject
 
     private Dictionary<PartStatus, Entry> _map;
 
+    /// <summary>
+    /// Gets the entry.
+    /// </summary>
+    /// <param name="status">The status.</param>
+    /// <returns>The resulting value.</returns>
     public Entry GetEntry(PartStatus status)
     {
         if (status == PartStatus.None) return null;

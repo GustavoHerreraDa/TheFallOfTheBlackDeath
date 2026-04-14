@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Supports the combat system by handling status panel controller.
+/// </summary>
 public class StatusPanelController : MonoBehaviour
 {
     [Header("Input")]
@@ -13,12 +16,18 @@ public class StatusPanelController : MonoBehaviour
     private StatusPanel mainStatusPanel;
     private StatusPanel secondaryStatusPanel;
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     private void Start()
     {
         FindFightersAndPanels();
         SetPanelsActive(false);
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     private void Update()
     {
         if (Input.GetKeyDown(toggleKey))
@@ -27,6 +36,9 @@ public class StatusPanelController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Finds the fighters and panels.
+    /// </summary>
     private void FindFightersAndPanels()
     {
         if (GameManager.Instance == null) return;
@@ -45,6 +57,9 @@ public class StatusPanelController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the toggle status panel workflow.
+    /// </summary>
     public void ToggleStatusPanel()
     {
         isOpen = !isOpen;
@@ -57,6 +72,10 @@ public class StatusPanelController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the panels active.
+    /// </summary>
+    /// <param name="value">The value.</param>
     private void SetPanelsActive(bool value)
     {
         if (mainStatusPanel != null)
@@ -66,6 +85,9 @@ public class StatusPanelController : MonoBehaviour
             secondaryStatusPanel.gameObject.SetActive(value);
     }
 
+    /// <summary>
+    /// Refreshes the all ui.
+    /// </summary>
     private void RefreshAllUI()
     {
         if (GameManager.Instance != null)

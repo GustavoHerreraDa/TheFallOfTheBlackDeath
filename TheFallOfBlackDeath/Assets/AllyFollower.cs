@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Handles ally follower for the current project workflow.
+/// </summary>
 public class AllyFollower : MonoBehaviour
 {
     [Header("Componentes")]
@@ -13,6 +16,9 @@ public class AllyFollower : MonoBehaviour
     public float stoppingDistance = 2f;
     public float sprintDistance = 6f; // Distancia a la que empieza a correr para alcanzar al player
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     void Start()
     {
         if (!agent) agent = GetComponent<NavMeshAgent>();
@@ -39,6 +45,9 @@ public class AllyFollower : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     void Update()
     {
         if (target == null || agent == null || !agent.isActiveAndEnabled || !agent.isOnNavMesh) 
@@ -64,6 +73,10 @@ public class AllyFollower : MonoBehaviour
         UpdateAnimations();
     }
 
+    /// <summary>
+    /// Executes the adapt speed workflow.
+    /// </summary>
+    /// <param name="distance">The distance.</param>
     void AdaptSpeed(float distance)
     {
         if (playerControl == null || agent == null || !agent.isActiveAndEnabled) return;
@@ -77,6 +90,9 @@ public class AllyFollower : MonoBehaviour
         agent.speed = targetSpeed * 1.1f;
     }
 
+    /// <summary>
+    /// Updates the animations.
+    /// </summary>
     void UpdateAnimations()
     {
         if (anim == null) return;
@@ -96,6 +112,11 @@ public class AllyFollower : MonoBehaviour
                 isChasing = speed > (playerControl.velocidad + 0.5f);
             }
         }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="!">The !.</param>
+        /// <returns>The resulting value.</returns>
         else if (agent != null)
         {
             // Fallback si no está en NavMesh: usar la velocidad del Rigidbody o transform si existiera, 

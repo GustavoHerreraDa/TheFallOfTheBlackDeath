@@ -1,9 +1,12 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
+/// <summary>
+/// Supports the combat system by handling enemy button ui.
+/// </summary>
 public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public Button button;
@@ -19,6 +22,9 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     
     private GameObject enemyCanvas;
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     private void Awake()
     {
         if (button == null) button = GetComponent<Button>();
@@ -30,6 +36,10 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void Show() => button.gameObject.SetActive(true);
     public void Hide() => button.gameObject.SetActive(false);
 
+    /// <summary>
+    /// Executes the on pointer enter workflow.
+    /// </summary>
+    /// <param name="eventData">The event data.</param>
     public void OnPointerEnter(PointerEventData eventData)
     {
         // === COMUNICACIÓN CON CAMERAMANAGER ===
@@ -75,6 +85,9 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnPointerExit(PointerEventData eventData) => HideCanvasAndReset();
     public void OnPointerClick(PointerEventData eventData) => HideCanvasAndReset();
 
+    /// <summary>
+    /// Hides the canvas and reset.
+    /// </summary>
     private void HideCanvasAndReset()
     {
         // === RESETEAR ZOOM ===
@@ -99,6 +112,9 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (effectPrfb != null) effectPrfb.SetActive(false);
     }
     
+    /// <summary>
+    /// Executes the reset highlight workflow.
+    /// </summary>
     public void ResetHighlight()
     {
         if (CameraManager.Instance != null)
@@ -120,6 +136,9 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (effectPrfb != null) effectPrfb.SetActive(false);
     }
     
+    /// <summary>
+    /// Executes the force reset workflow.
+    /// </summary>
     public void ForceReset()
     {
         HideCanvasAndReset();

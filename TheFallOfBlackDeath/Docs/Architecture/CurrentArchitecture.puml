@@ -1,0 +1,270 @@
+@startuml
+title The Fall Of Black Death - Current Runtime Architecture
+
+skinparam backgroundColor #FBF8F2
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam packageStyle rectangle
+skinparam componentStyle rectangle
+skinparam ArrowColor #5C4D3D
+skinparam PackageBorderColor #7A6753
+skinparam PackageBackgroundColor #F4EBDD
+skinparam ComponentBorderColor #7A6753
+skinparam ComponentBackgroundColor #FFFDF8
+skinparam ClassBorderColor #7A6753
+skinparam ClassBackgroundColor #FFFDF8
+skinparam NoteBackgroundColor #FFF3CD
+skinparam NoteBorderColor #B88A3B
+
+legend right
+Current code-focused view.
+Imported/demo packages are intentionally omitted.
+Persistent managers and ScriptableObjects are emphasized over scene-only helpers.
+endlegend
+
+package "Scenes & Entry Flow" {
+  component "Menu.unity" as SceneMenu
+  component "MainScene.unity" as SceneMain
+  component "LoadingScene.unity" as SceneLoading
+  component "Battle Scenes\n(BattleScene, DialogueBattle1,\nPELEA_2, PELEA_3, etc.)" as SceneBattle
+  component "Victory.unity" as SceneVictory
+  component "Defeat.unity" as SceneDefeat
+
+  class "MainMenu" as MainMenu
+  class "SceneLoadManager" as SceneLoadManager
+  class "IntroSkip" as IntroSkip
+  class "LoadingM" as LoadingM
+}
+
+package "Persistent Runtime State" {
+  class "GameManager" as GameManager
+  class "CharacterSwitcher" as CharacterSwitcher
+  class "ListEnemyDefeat" as ListEnemyDefeat
+  class "GlobalState" as GlobalState
+}
+
+package "Exploration Runtime" {
+  class "PlayerControl" as PlayerControl
+  class "Movent" as Movent
+  class "EnemiesGroup" as EnemiesGroup
+  class "SafeZoneTrigger" as SafeZoneTrigger
+  class "Scene_Change" as SceneChange
+  class "SanitySystem" as SanitySystem
+  class "InventoryManager" as InventoryManager
+  class "InventoryUI" as InventoryUI
+  class "Interactable" as Interactable
+  class "PickObj" as PickObj
+  class "OpenObject" as OpenObject
+  class "Portal" as Portal
+  class "Gate" as Gate
+  class "OgreTrigger" as OgreTrigger
+  class "WorldOgre" as WorldOgre
+}
+
+package "Dialogue & Quest Flow" {
+  class "DialogueManager" as DialogueManager
+  class "DialogueUI" as DialogueUI
+  class "DialogueTrigger" as DialogueTrigger
+  class "DialogueInteractable" as DialogueInteractable
+  class "DialogueEvent" as DialogueEvent
+  class "Dialogue" as Dialogue
+  class "DialogueLine" as DialogueLine
+  class "DialogueChoice" as DialogueChoice
+}
+
+package "Combat Scene Orchestration" {
+  class "CombatManager" as CombatManager
+  class "CombatStatusUIController" as CombatStatusUIController
+  class "PlayerSkillPanel" as PlayerSkillPanel
+  class "EnemiesPanel" as EnemiesPanel
+  class "BodyPartPanel" as BodyPartPanel
+  class "StatusPanel" as StatusPanel
+  class "StatsManager" as StatsManager
+  class "TurnsDisplay" as TurnsDisplay
+  class "LogPanel" as LogPanel
+  class "NarrativeLogManager" as NarrativeLogManager
+}
+
+package "Combat Domain" {
+  abstract class "Fighter" as Fighter
+  class "PlayerFighter" as PlayerFighter
+  class "EnemyFighter" as EnemyFighter
+  class "Stats" as Stats
+
+  abstract class "Skill" as Skill
+  abstract class "BodyPartTargetSkill" as BodyPartTargetSkill
+  class "HealthModSkill" as HealthModSkill
+  class "StatusModSkill" as StatusModSkill
+  class "ApplySCSkill" as ApplySCSkill
+  class "OverloadSkill" as OverloadSkill
+  class "HealingAndBuffSkill" as HealingAndBuffSkill
+  class "DamageAndAttackBuffSkill" as DamageAndAttackBuffSkill
+  class "LifeStealSkill" as LifeStealSkill
+  class "ProtectSkill" as ProtectSkill
+
+  abstract class "StatusCondition" as StatusCondition
+  abstract class "BodyPartStatusCondition" as BodyPartStatusCondition
+  class "BleedingCondition" as BleedingCondition
+  class "PoisonCondition" as PoisonCondition
+  class "TurnBlockStatusCondition" as TurnBlockStatusCondition
+  class "HealthModStatusCondition" as HealthModStatusCondition
+  class "StatusMod" as StatusMod
+}
+
+package "Enemy AI" {
+  class "IAEnemySimple" as IAEnemySimple
+  class "IAEnemyFSM" as IAEnemyFSM
+  class "FSM<T>" as FSM
+  interface "IState" as IState
+}
+
+package "Presentation & Feedback" {
+  class "CameraManager" as CameraManager
+  class "AudioManager" as AudioManager
+  class "BloomManager" as BloomManager
+  class "FloatingTextManager" as FloatingTextManager
+  class "StatusVisualController" as StatusVisualController
+  class "StatusVisualEffect" as StatusVisualEffect
+}
+
+package "Project Data Assets" {
+  class "globalDataBase" as GlobalDatabase <<ScriptableObject>>
+  class "InventoryDateBase" as InventoryDatabase <<ScriptableObject>>
+  class "NarrativeLogDatabase" as NarrativeLogDatabase <<ScriptableObject>>
+  class "EnemyNarrativeEntry" as EnemyNarrativeEntry <<ScriptableObject>>
+  class "StatusVisualDatabase" as StatusVisualDatabase <<ScriptableObject>>
+}
+
+SceneMenu --> MainMenu
+SceneMenu --> SceneLoadManager
+SceneLoading --> LoadingM
+MainMenu --> SceneLoadManager : starts scenes
+SceneLoadManager --> SceneMain
+SceneLoadManager --> SceneBattle
+
+SceneMain --> GameManager
+SceneMain --> PlayerControl
+SceneMain --> DialogueManager
+SceneMain --> InventoryManager
+SceneBattle --> CombatManager
+CombatManager --> SceneVictory : on victory flow
+CombatManager --> SceneDefeat : on defeat flow
+CombatManager --> SceneMain : return to exploration
+
+GameManager --> GlobalDatabase : party + enemy roster
+GameManager --> CharacterSwitcher : resolve selected characters
+GameManager --> InventoryManager : world pickups / equipment state
+GameManager --> DialogueManager : recruitment event subscription
+GameManager --> GlobalState : recruitment flags
+GameManager --> ListEnemyDefeat : defeated groups / picked items
+GameManager --> PlayerControl : world character tracking
+GameManager --> EnemiesGroup : scene cleanup
+
+PlayerControl --> GameManager : movement / region state
+SafeZoneTrigger --> GameManager : safe-zone transitions
+SceneChange --> GameManager : save position before loading
+InventoryManager --> InventoryDatabase
+InventoryUI --> InventoryManager
+PickObj --|> Interactable
+OpenObject --|> Interactable
+Gate --> InventoryManager
+Portal --> SceneChange
+OgreTrigger --> WorldOgre
+
+DialogueTrigger --> DialogueManager
+DialogueInteractable --> DialogueManager
+DialogueManager --> DialogueUI
+DialogueManager --> Dialogue
+Dialogue --> DialogueLine
+DialogueLine --> DialogueChoice
+DialogueManager --> GlobalState : required / forbidden flags
+DialogueManager --> InventoryManager : OnGiveItem event
+DialogueManager --> GameManager : OnRecruitCharacter event
+DialogueEvent --> GlobalState : add / remove flags
+
+CombatManager --> GameManager : load / save party state
+CombatManager --> GlobalDatabase : instantiate selected party
+CombatManager --> PlayerFighter
+CombatManager --> EnemyFighter
+CombatManager --> CombatStatusUIController
+CombatManager --> PlayerSkillPanel
+CombatManager --> EnemiesPanel
+CombatManager --> BodyPartPanel
+CombatManager --> StatsManager
+CombatManager --> TurnsDisplay
+CombatManager --> NarrativeLogManager
+CombatManager --> LogPanel
+
+PlayerFighter --|> Fighter
+EnemyFighter --|> Fighter
+Fighter --> Stats
+Fighter --> StatusPanel
+Fighter --> CombatManager
+Fighter --> StatusCondition
+Fighter --> BodyPartStatusCondition
+Fighter --> StatusMod
+Fighter --> CameraManager
+Fighter --> AudioManager
+Fighter --> FloatingTextManager
+
+Skill --> Fighter : emitter / receivers
+BodyPartTargetSkill --|> Skill
+HealthModSkill --|> BodyPartTargetSkill
+OverloadSkill --|> HealthModSkill
+ApplySCSkill --|> BodyPartTargetSkill
+StatusModSkill --|> Skill
+HealingAndBuffSkill --|> Skill
+DamageAndAttackBuffSkill --|> Skill
+LifeStealSkill --|> Skill
+ProtectSkill --|> Skill
+
+BodyPartStatusCondition --|> StatusCondition
+BleedingCondition --|> BodyPartStatusCondition
+PoisonCondition --|> BodyPartStatusCondition
+TurnBlockStatusCondition --|> StatusCondition
+HealthModStatusCondition --|> StatusCondition
+
+PlayerSkillPanel --> PlayerFighter
+EnemiesPanel --> EnemyFighter
+BodyPartPanel --> Fighter
+CombatStatusUIController --> PlayerFighter
+StatsManager --> Fighter
+NarrativeLogManager --> NarrativeLogDatabase
+NarrativeLogManager --> EnemyNarrativeEntry
+NarrativeLogManager --> LogPanel
+
+EnemyFighter --> IAEnemySimple
+IAEnemyFSM --> FSM
+FSM --> IState
+IAEnemySimple --> Skill : chooses skill
+IAEnemySimple --> Fighter : chooses target part
+
+StatusVisualController --> Fighter
+StatusVisualController --> StatusVisualDatabase
+StatusVisualController --> StatusVisualEffect
+
+PlayerFighter --> GlobalDatabase : load/save fighter slot
+EnemyFighter --> GlobalDatabase : base enemy stats
+CharacterSwitcher --> GlobalDatabase
+
+note bottom of GameManager
+Acts as the persistent hub:
+- survives scene loads
+- tracks recruited party members
+- restores player position and stats
+- bridges exploration and battle scenes
+end note
+
+note bottom of CombatManager
+Battle scenes are assembled at runtime from ScriptableObject data.
+The manager then drives a turn loop over Fighter instances and Skill objects.
+end note
+
+note bottom of DialogueManager
+Dialogue is event-driven:
+- items are granted through OnGiveItem
+- recruitment is broadcast through OnRecruitCharacter
+- flags live in GlobalState
+end note
+
+@enduml

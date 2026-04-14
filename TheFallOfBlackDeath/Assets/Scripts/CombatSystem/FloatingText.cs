@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using TMPro;
 
+/// <summary>
+/// Supports the combat system by handling floating text.
+/// </summary>
 public class FloatingText : MonoBehaviour
 {
     public TextMeshProUGUI textMesh;
@@ -30,11 +33,20 @@ public class FloatingText : MonoBehaviour
     private Transform mainCamera;
     private bool isCrit;
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     void Awake()
     {
         if (Camera.main != null) mainCamera = Camera.main.transform;
     }
 
+    /// <summary>
+    /// Initializes the ialize.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    /// <param name="color">The color.</param>
+    /// <param name="isCritical">The is critical.</param>
     public void Initialize(string message, Color color, bool isCritical)
     {
         textMesh.text = message;
@@ -54,6 +66,9 @@ public class FloatingText : MonoBehaviour
         transform.localScale = Vector3.zero; 
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     void Update()
     {
         // Mirar a cámara (Billboard)

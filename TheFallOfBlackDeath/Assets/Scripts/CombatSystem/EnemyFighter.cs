@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Serialization;
 
 //TP2 FACUNDO FERREIRO
+/// <summary>
+/// Implements an AI-driven combatant that selects skills and targets through the enemy decision systems during battle.
+/// </summary>
 public class EnemyFighter : Fighter
 {
     [Header("Narrative")]
@@ -16,6 +19,9 @@ public class EnemyFighter : Fighter
     public int EnemyIndex;
     public IAEnemySimple _IAEnemySimple;
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     void Awake()
     {
         // Initialize enemy stats safely, falling back if DB is invalid
@@ -41,6 +47,9 @@ public class EnemyFighter : Fighter
         this.stats.health = Mathf.Clamp(this.stats.health, 1, this.stats.maxHealth);
     }
 
+    /// <summary>
+    /// Starts the enemy decision flow for the current combat turn.
+    /// </summary>
     public override void InitTurn()
     {
         StartCoroutine(IA());
@@ -48,6 +57,10 @@ public class EnemyFighter : Fighter
             _IAEnemySimple.SetSkills(this.skills);
     }
 
+    /// <summary>
+    /// Executes the ia workflow.
+    /// </summary>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator IA()
     {
         // Wait a small delay and also ensure combatManager and teams are ready

@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 // TP2 AUGUSTO NANINI / FACUNDO FERREIRO
+/// <summary>
+/// Supports the combat system by handling body part panel.
+/// </summary>
 public class BodyPartPanel : MonoBehaviour
 {
     [Header("UI")]
@@ -20,12 +23,21 @@ public class BodyPartPanel : MonoBehaviour
     private List<Button> buttons = new List<Button>();
     private List<BodyPart> parts = new List<BodyPart>();
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     void Awake()
     {
         if(sampleButton != null) sampleButton.SetActive(false);
         Hide();
     }
 
+    /// <summary>
+    /// Shows the value.
+    /// </summary>
+    /// <param name="playerFighter">The player fighter.</param>
+    /// <param name="targetFighter">The target fighter.</param>
+    /// <param name="currentSkill">The current skill.</param>
     public void Show(PlayerFighter playerFighter, Fighter targetFighter, Skill currentSkill)
     {
         gameObject.SetActive(true);
@@ -61,6 +73,12 @@ public class BodyPartPanel : MonoBehaviour
         target.OnBodyPartDestroyedEvent += OnBodyPartDestroyed;
     }
 
+    /// <summary>
+    /// Creates the button.
+    /// </summary>
+    /// <param name="part">The part.</param>
+    /// <param name="index">The index.</param>
+    /// <returns>The resulting value.</returns>
     private Button CreateButton(BodyPart part, int index)
     {
         GameObject btnGO = Instantiate(sampleButton, buttonContainer);
@@ -103,6 +121,11 @@ public class BodyPartPanel : MonoBehaviour
         return btn;
     }
     
+    /// <summary>
+    /// Finds the part renderer.
+    /// </summary>
+    /// <param name="part">The part.</param>
+    /// <returns>The resulting value.</returns>
     private Renderer FindPartRenderer(BodyPart part)
     {
         string partName = part.ToString();
@@ -117,6 +140,10 @@ public class BodyPartPanel : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// Executes the on body part click workflow.
+    /// </summary>
+    /// <param name="part">The part.</param>
     private void OnBodyPartClick(BodyPart part)
     {
         // LIMPIEZA TOTAL: Antes de cerrar, forzamos a todas las mallas a volver a su color
@@ -135,6 +162,10 @@ public class BodyPartPanel : MonoBehaviour
         Hide();
     }
 
+    /// <summary>
+    /// Executes the on body part destroyed workflow.
+    /// </summary>
+    /// <param name="destroyedPart">The destroyed part.</param>
     private void OnBodyPartDestroyed(BodyPart destroyedPart)
     {
         int idx = parts.IndexOf(destroyedPart);
@@ -148,6 +179,9 @@ public class BodyPartPanel : MonoBehaviour
         if (buttons.Count == 0) Hide();
     }
 
+    /// <summary>
+    /// Hides the value.
+    /// </summary>
     public void Hide()
     {
         if (target != null)

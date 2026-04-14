@@ -4,6 +4,9 @@ using UnityEngine.Rendering;
 using System.Collections;
 using URPGlitch; 
 
+/// <summary>
+/// Supports exploration and world-state flow by handling scene change.
+/// </summary>
 public class Scene_Change : MonoBehaviour
 {
     [SerializeField] private int fightSceneIndex;
@@ -13,6 +16,9 @@ public class Scene_Change : MonoBehaviour
     private AnalogGlitchVolume analogGlitch;
     private DigitalGlitchVolume digitalGlitch;
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     private void Start()
     {
         if (postProcessVolume != null && postProcessVolume.profile != null)
@@ -22,6 +28,10 @@ public class Scene_Change : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Responds to the corresponding Unity trigger callback for this component.
+    /// </summary>
+    /// <param name="other">The other.</param>
     private void OnTriggerEnter(Collider other)
     {
 
@@ -38,6 +48,11 @@ public class Scene_Change : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the direct glitch transition workflow.
+    /// </summary>
+    /// <param name="playerPos">The player pos.</param>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     private IEnumerator DirectGlitchTransition(Vector3 playerPos)
     {
         Time.timeScale = 0.1f; 

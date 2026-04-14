@@ -1,7 +1,7 @@
 using UnityEngine;
 //TP2 FACUNDO FERREIRO
 /// <summary>
-/// Apply Body Part Status Condition Skill
+/// Supports the combat system by handling apply sc skill.
 /// </summary>
 public class ApplySCSkill : BodyPartTargetSkill
 {
@@ -12,6 +12,10 @@ public class ApplySCSkill : BodyPartTargetSkill
 
     private BodyPartStatusCondition condition;
 
+    /// <summary>
+    /// Executes the on run workflow.
+    /// </summary>
+    /// <param name="receiver">The receiver.</param>
     protected override void OnRun(Fighter receiver)
     {
         if (this.condition == null)

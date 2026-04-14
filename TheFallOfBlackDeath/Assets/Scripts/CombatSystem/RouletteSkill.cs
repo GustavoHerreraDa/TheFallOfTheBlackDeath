@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //TP2 GUSTAVO TORRES
+/// <summary>
+/// Supports the combat system by handling roulette skill.
+/// </summary>
 public class RouletteSkill : MonoBehaviour
 {
     Dictionary<Skill, int> _dic = new Dictionary<Skill, int>();
@@ -13,6 +16,9 @@ public class RouletteSkill : MonoBehaviour
     public Skill electricity;
 
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     private void Start()
     {
         _dic.Add(attack, 50);
@@ -21,6 +27,10 @@ public class RouletteSkill : MonoBehaviour
         _dic.Add(electricity, 10);
     }
 
+    /// <summary>
+    /// Executes the value workflow.
+    /// </summary>
+    /// <returns>The resulting value.</returns>
     public Skill Execute()
     {
         int totalWeight = 0;

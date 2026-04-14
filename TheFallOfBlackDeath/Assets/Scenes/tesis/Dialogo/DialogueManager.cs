@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 
+/// <summary>
+/// Controls dialogue progression, player input locking, branching choices, and gameplay events triggered from conversations.
+/// </summary>
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance;
@@ -16,12 +19,20 @@ public class DialogueManager : MonoBehaviour
     public delegate void RecruitEventHandler(GameObject npc, int fighterIndex);
     public static event RecruitEventHandler OnRecruitCharacter;
     public bool IsDialogueActive => currentDialogue != null;
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     private void Awake()
     {
         if (Instance == null) Instance = this;
         ui = FindObjectOfType<DialogueUI>();
     }
 
+    /// <summary>
+    /// Starts a dialogue sequence, shows the dialogue UI, and temporarily disables player control.
+    /// </summary>
+    /// <param name="dialogue">The dialogue.</param>
+    /// <param name="npc">The npc.</param>
     public void StartDialogue(Dialogue dialogue, GameObject npc = null)
     {
         currentDialogue = dialogue;
@@ -49,6 +60,9 @@ public class DialogueManager : MonoBehaviour
         ShowLine();
     }
 
+    /// <summary>
+    /// Advances the current dialogue, or skips the typing effect if the active line is still animating.
+    /// </summary>
     public void NextLine()
     {
         Debug.Log("NEXT LINE CALLED");
@@ -70,6 +84,9 @@ public class DialogueManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Shows the line.
+    /// </summary>
     private void ShowLine()
     {
         DialogueLine line = currentDialogue.lines[currentLineIndex];
@@ -96,6 +113,9 @@ public class DialogueManager : MonoBehaviour
         };
     }
 
+    /// <summary>
+    /// Executes the skip line workflow.
+    /// </summary>
     private void SkipLine()
     {
         currentLineIndex++;
@@ -106,6 +126,9 @@ public class DialogueManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Ends the dialogue.
+    /// </summary>
     private void EndDialogue()
     {
         ui.ShowUI(false);
@@ -125,6 +148,10 @@ public class DialogueManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Resolves the selected dialogue choice, including flags, items, recruitment, and dialogue branching.
+    /// </summary>
+    /// <param name="choice">The choice.</param>
     public void SelectChoice(DialogueChoice choice)
     {
         ui.HideChoices();
@@ -170,6 +197,10 @@ public class DialogueManager : MonoBehaviour
         NextLine();
     }
 
+    /// <summary>
+    /// Closes the dialogue UI and executes the gameplay action associated with the final dialogue choice.
+    /// </summary>
+    /// <param name="action">The action.</param>
     private void EndDialogueWithAction(DialogueEvent.DialogueEndAction action)
     {
         ui.ShowUI(false);

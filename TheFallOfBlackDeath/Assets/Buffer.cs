@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles buffer for the current project workflow.
+/// </summary>
 public class Buffer : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -12,6 +15,9 @@ public class Buffer : MonoBehaviour
     private Color color;
     public Material[] materiales;
     Renderer rendererFighter;
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     void Start()
     {
         fighter = gameObject.GetComponent<Fighter>();
@@ -20,6 +26,9 @@ public class Buffer : MonoBehaviour
     }
 
     // Update is called once per frame
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     void Update()
     {
         if (rendererFighter == null)

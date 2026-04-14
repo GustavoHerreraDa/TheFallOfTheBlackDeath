@@ -4,6 +4,9 @@ using UnityEngine.UI;
 using static InventoryManager;
 using TMPro;
 //TP2 GUSTAVO TORRES/FACUNDO FERREIRO
+/// <summary>
+/// Supports the combat system by handling player skill panel.
+/// </summary>
 public class PlayerSkillPanel : MonoBehaviour
 {
     public GameObject[] skillButtons;
@@ -20,11 +23,19 @@ public class PlayerSkillPanel : MonoBehaviour
 
     private PlayerFighter targetFigther;
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     void Awake()
     {
         this.Hide();
     }
 
+    /// <summary>
+    /// Executes the configure button workflow.
+    /// </summary>
+    /// <param name="index">The index.</param>
+    /// <param name="skillName">The skill name.</param>
     public void ConfigureButton(int index, string skillName)
     {
         if (targetFigther == null || targetFigther.skills == null)
@@ -53,7 +64,7 @@ public class PlayerSkillPanel : MonoBehaviour
         {
             button.interactable = isUsable;
 
-            // Detección de sinergia
+            // DetecciÃ³n de sinergia
             bool synergyAvailable = false;
             if (targetFigther != null && targetFigther.combatManager != null && targetFigther.combatManager.enemyTeam != null)
             {
@@ -85,6 +96,12 @@ public class PlayerSkillPanel : MonoBehaviour
         this.skillButtonLabels[index].text = skillName;
     }
 
+    /// <summary>
+    /// Executes the configure button workflow.
+    /// </summary>
+    /// <param name="index">The index.</param>
+    /// <param name="skillName">The skill name.</param>
+    /// <param name="itemsNeeded">The items needed.</param>
     public void ConfigureButton(int index, string skillName, List<InventoryObjectID> itemsNeeded)
     {
         if (targetFigther == null || targetFigther.skills == null)
@@ -116,7 +133,7 @@ public class PlayerSkillPanel : MonoBehaviour
         {
             button.interactable = interactable;
 
-            // Detección de sinergia
+            // DetecciÃ³n de sinergia
             bool synergyAvailable = false;
             if (targetFigther != null && targetFigther.combatManager != null && targetFigther.combatManager.enemyTeam != null)
             {
@@ -148,6 +165,10 @@ public class PlayerSkillPanel : MonoBehaviour
         this.skillButtonLabels[index].text = skillName;
     }
 
+    /// <summary>
+    /// Executes the on skill button click workflow.
+    /// </summary>
+    /// <param name="index">The index.</param>
     public void OnSkillButtonClick(int index)
     {
         Debug.Log($"[PlayerSkillPanel.OnSkillButtonClick] index={index}");
@@ -159,6 +180,11 @@ public class PlayerSkillPanel : MonoBehaviour
         targetFigther.ExecuteSkill(index);
     }
 
+    /// <summary>
+    /// Gets the rarity color.
+    /// </summary>
+    /// <param name="rarity">The rarity.</param>
+    /// <returns>The resulting value.</returns>
     private Color GetRarityColor(SkillRarity rarity)
     {
         switch (rarity)
@@ -174,6 +200,10 @@ public class PlayerSkillPanel : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Shows the for player.
+    /// </summary>
+    /// <param name="newTarget">The new target.</param>
     public void ShowForPlayer(PlayerFighter newTarget)
     {
         this.gameObject.SetActive(true);
@@ -229,6 +259,9 @@ public class PlayerSkillPanel : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Hides the value.
+    /// </summary>
     public void Hide()
     {
         this.gameObject.SetActive(false);
@@ -239,6 +272,9 @@ public class PlayerSkillPanel : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Shows the value.
+    /// </summary>
     public void Show()
     {
         // Only show the panel; buttons are managed by ShowForPlayer

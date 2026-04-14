@@ -7,12 +7,18 @@ using TMPro;
 using UnityEngine.Serialization;
 
 
+/// <summary>
+/// Coordinates persistent world state, party persistence, recruitment, and scene transitions across exploration and battle scenes.
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     static public GameManager _instance;
 
     //CLASS RANDOM MONSTER
     [System.Serializable]
+    /// <summary>
+    /// Stores the encounter configuration used to map exploration regions to possible battle scenes and enemy groups.
+    /// </summary>
     public class RegionData
     {
         public string BattleScene;
@@ -22,6 +28,9 @@ public class GameManager : MonoBehaviour
     }
 
     [System.Serializable]
+    /// <summary>
+    /// Stores the runtime stats and body-part health snapshot persisted for each recruited player fighter.
+    /// </summary>
     public class PlayerStatusData
     {
         public float currentHealth;
@@ -61,6 +70,9 @@ public class GameManager : MonoBehaviour
 
     public SanitySystem sanity;
     //ENUM
+    /// <summary>
+    /// Defines the named values used by game states.
+    /// </summary>
     public enum GameStates
     {
         TOWN_STATE,
@@ -70,6 +82,9 @@ public class GameManager : MonoBehaviour
 
     }
     
+    /// <summary>
+    /// Refreshes the ui.
+    /// </summary>
     public void RefreshUI()
     {
         // El ?.Invoke() significa: "Si hay alguien escuchando, avísale".
@@ -93,6 +108,10 @@ public class GameManager : MonoBehaviour
     }
     */
 
+    /// <summary>
+    /// Sets the game state.
+    /// </summary>
+    /// <param name="newState">The new state.</param>
     public void SetGameState(GameStates newState)
     {
         gameState = newState;
@@ -122,6 +141,10 @@ public class GameManager : MonoBehaviour
     }
 
     // Assign safe references to main/secondary characters without exposing direct field writes
+    /// <summary>
+    /// Sets the main character.
+    /// </summary>
+    /// <param name="pf">The pf.</param>
     public void SetMainCharacter(PlayerFighter pf)
     {
         if (pf == null) return;
@@ -129,6 +152,10 @@ public class GameManager : MonoBehaviour
         RefreshUI();
     }
 
+    /// <summary>
+    /// Sets the secondary character.
+    /// </summary>
+    /// <param name="pf">The pf.</param>
     public void SetSecondaryCharacter(PlayerFighter pf)
     {
         if (pf == null) return;
@@ -138,6 +165,9 @@ public class GameManager : MonoBehaviour
     }
 
     // Resolve characters based on DB and scene content to avoid circular deps with CharacterSwitcher
+    /// <summary>
+    /// Updates the characters from database.
+    /// </summary>
     private void UpdateCharactersFromDatabase()
     {
         // Prefer the global DB, else try to use one referenced by any PlayerFighter in scene
@@ -159,6 +189,11 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        /// <summary>
+        /// Executes the try find by switcher index workflow.
+        /// </summary>
+        /// <param name="idx">The idx.</param>
+        /// <returns>The resulting value.</returns>
         PlayerFighter TryFindBySwitcherIndex(int idx)
         {
             if (idx < 0) return null;
@@ -188,6 +223,9 @@ public class GameManager : MonoBehaviour
         if (secPf != null) SetSecondaryCharacter(secPf);
     }
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     void Awake()
     {
         //enemies = FindObjectsOfType<EnemiesGroup>();
@@ -196,6 +234,11 @@ public class GameManager : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="!">The !.</param>
+        /// <returns>The resulting value.</returns>
         else if (_instance != this)
         {
             Destroy(gameObject);
@@ -209,6 +252,9 @@ public class GameManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     private void Start()
     {
         // 1. Limpiar estado de la DB al iniciar para evitar persistencia del ScriptableObject
@@ -253,6 +299,9 @@ public class GameManager : MonoBehaviour
 
 
 
+    /// <summary>
+    /// Finds the player.
+    /// </summary>
     public void FindPlayer()
     {
         var playerControl = FindObjectOfType<PlayerControl>();
@@ -267,6 +316,9 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("PlayerControl no encontrado en la escena");
         }
     }
+      /// <summary>
+      /// Finds the enemies and objets.
+      /// </summary>
       public void FindEnemiesAndObjets()
     {
         Debug.Log("Buscando enemigos");
@@ -280,18 +332,27 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(_FindEnemiesAndObjects());
     }*/
+    /// <summary>
+    /// Registers runtime listeners when the component becomes active.
+    /// </summary>
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
         DialogueManager.OnRecruitCharacter += HandleRecruitment;
     }
 
+    /// <summary>
+    /// Unregisters runtime listeners when the component becomes inactive.
+    /// </summary>
     void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         DialogueManager.OnRecruitCharacter -= HandleRecruitment;
     }
 
+    /// <summary>
+    /// Restores the recruitment from flags.
+    /// </summary>
     private void RestoreRecruitmentFromFlags()
     {
         if (globalGlobalDatabase == null) return;
@@ -309,6 +370,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Restores scene-specific runtime state after a new scene has been loaded.
+    /// </summary>
+    /// <param name="scene">The scene.</param>
+    /// <param name="mode">The mode.</param>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // Asegurar que los NPCs reclutados no aparezcan como interactuables en la nueva escena
@@ -397,6 +463,11 @@ public class GameManager : MonoBehaviour
     }
 */
 
+    /// <summary>
+    /// Saves the player state.
+    /// </summary>
+    /// <param name="fighter">The fighter.</param>
+    /// <returns>The resulting value.</returns>
     public Stats SavePlayerState(PlayerFighter fighter)
     {
         if (fighter == null || fighter.stats == null)
@@ -434,6 +505,9 @@ public class GameManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Restores the player state.
+    /// </summary>
     public void RestorePlayerState()
     {
         ApplySavedStatusToFighter(character1);
@@ -441,6 +515,10 @@ public class GameManager : MonoBehaviour
         RefreshUI();
     }
 
+    /// <summary>
+    /// Applies the saved status to fighter.
+    /// </summary>
+    /// <param name="fighter">The fighter.</param>
     public void ApplySavedStatusToFighter(PlayerFighter fighter)
     {
         if (fighter == null) return;
@@ -482,6 +560,10 @@ public class GameManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Executes the wait for player workflow.
+    /// </summary>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator WaitForPlayer()
     {
         while (character1 == null)
@@ -491,6 +573,10 @@ public class GameManager : MonoBehaviour
     }
     
     // Nuevo método para restaurar posición de forma segura
+    /// <summary>
+    /// Restores the player position safely.
+    /// </summary>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     private IEnumerator RestorePlayerPositionSafely()
     {
         // Esperar un frame para que la escena termine de cargar
@@ -523,6 +609,11 @@ public class GameManager : MonoBehaviour
                     character.transform.position = lastPos;
                     Debug.Log($"Posición restaurada: {lastPos}");
                 }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="!">The !.</param>
+        /// <returns>The resulting value.</returns>
                 else if (startPost != null)
                 {
                     character.transform.position = startPost.position;
@@ -540,6 +631,11 @@ public class GameManager : MonoBehaviour
                 {
                     character.transform.position = lastPos;
                 }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="!">The !.</param>
+        /// <returns>The resulting value.</returns>
                 else if (startPost != null)
                 {
                     character.transform.position = startPost.position;
@@ -558,6 +654,9 @@ public class GameManager : MonoBehaviour
     
     
     // Métodos públicos para manejar posición desde otros scripts
+    /// <summary>
+    /// Saves the current position.
+    /// </summary>
     public void SaveCurrentPosition()
     {
         if (character != null)
@@ -568,6 +667,10 @@ public class GameManager : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Saves the current position.
+    /// </summary>
+    /// <param name="position">The position.</param>
     public void SaveCurrentPosition(Vector3 position)
     {
         lastPos = position;
@@ -575,12 +678,19 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Posición guardada manualmente: {lastPos}");
     }
     
+    /// <summary>
+    /// Executes the clear saved position workflow.
+    /// </summary>
     public void ClearSavedPosition()
     {
         hasValidLastPos = false;
         lastPos = Vector3.zero;
     }
 
+    /// <summary>
+    /// Hides the recruited np cs.
+    /// </summary>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     private IEnumerator HideRecruitedNPCs()
     {
         // Esperar un frame para que los NPCs se inicialicen
@@ -612,6 +722,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the up follower.
+    /// </summary>
+    /// <param name="npc">The npc.</param>
     private void SetupFollower(GameObject npc)
     {
         AllyFollower follower = npc.GetComponent<AllyFollower>();
@@ -628,6 +742,11 @@ public class GameManager : MonoBehaviour
         if (interactable != null) interactable.enabled = false;
     }
 
+    /// <summary>
+    /// Handles the r ec ru it me nt.
+    /// </summary>
+    /// <param name="npc">The n pc.</param>
+    /// <param name="index">The i nd ex.</param>
     private void HandleRecruitment(GameObject npc, int index) // <--- Recibe el int
     {
         Debug.Log($"GameManager: Reclutando personaje ID {index} ({npc.name})");

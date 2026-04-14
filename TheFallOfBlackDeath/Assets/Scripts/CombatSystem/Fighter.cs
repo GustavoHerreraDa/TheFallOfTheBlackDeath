@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 //TP2 AUGUSTO NANINI/FACUNDO FERREIRO
 
+/// <summary>
+/// Defines the shared combatant model used by players and enemies, including stats, body-part damage, status conditions, and turn behavior.
+/// </summary>
 public abstract class Fighter : MonoBehaviour
 {
     [System.Serializable]
+    /// <summary>
+    /// Stores the health, hit point, and destruction penalties associated with an individual body part.
+    /// </summary>
     public class BodyPartData
     {
         public BodyPart part;
@@ -17,6 +23,11 @@ public abstract class Fighter : MonoBehaviour
         [Header("Penalizaciones al destruirse")]
         public List<StatusMod> destructionPenalties = new List<StatusMod>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BodyPartData"/> class.
+        /// </summary>
+        /// <param name="part">The part.</param>
+        /// <param name="health">The health.</param>
         public BodyPartData(BodyPart part, float health)
         {
             this.part = part;
@@ -60,6 +71,11 @@ public abstract class Fighter : MonoBehaviour
     [SerializeField]
     public Transform DamagePivot;
 
+    /// <summary>
+    /// Gets the body part.
+    /// </summary>
+    /// <param name="part">The part.</param>
+    /// <returns>The resulting value.</returns>
     public BodyPartData GetBodyPart(BodyPart part)
     {
         return bodyParts.Find(p => p.part == part);
@@ -71,6 +87,9 @@ public abstract class Fighter : MonoBehaviour
         get => this.stats != null && this.stats.health > 0;
     }
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     protected virtual void Start()
     {
         if (this.statusPanel != null)
@@ -83,6 +102,10 @@ public abstract class Fighter : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Executes the auto configure skill targeting workflow.
+    /// </summary>
+    /// <param name="skill">The skill.</param>
     protected void AutoConfigureSkillTargeting(Skill skill)
     {
         skill.SetEmitter(this);
@@ -116,6 +139,11 @@ public abstract class Fighter : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets the skill targets.
+    /// </summary>
+    /// <param name="skill">The skill.</param>
+    /// <returns>The resulting collection.</returns>
     protected Fighter[] GetSkillTargets(Skill skill)
     {
         switch (skill.targeting)
@@ -141,12 +169,19 @@ public abstract class Fighter : MonoBehaviour
         throw new System.InvalidOperationException("Fighter::GetSkillTargets. Unreachable!");
     }
 
+    /// <summary>
+    /// Executes the die workflow.
+    /// </summary>
     protected void Die()
     {
         this.statusPanel.gameObject.SetActive(false);
         this.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Executes the modify health workflow.
+    /// </summary>
+    /// <param name="amount">The amount.</param>
     public void ModifyHealth(float amount)
     {
         float previousHealth = this.stats.health;
@@ -167,6 +202,11 @@ public abstract class Fighter : MonoBehaviour
         {
             animator.Play("Miss");
         }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="0f">The 0f.</param>
+        /// <returns>The resulting value.</returns>
         else if (amount > 0f)
         {
             animator.Play("Heal");
@@ -190,6 +230,11 @@ public abstract class Fighter : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the modify body part health workflow.
+    /// </summary>
+    /// <param name="part">The part.</param>
+    /// <param name="amount">The amount.</param>
     public void ModifyBodyPartHealth(BodyPart part, float amount)
     {
         BodyPartData target = bodyParts.Find(p => p.part == part);
@@ -205,7 +250,7 @@ public abstract class Fighter : MonoBehaviour
         float prev = target.currentHealth;
         target.currentHealth = Mathf.Clamp(target.currentHealth + amount, 0, target.maxHealth);
 
-        Debug.Log($"{part} recibió {amount}. Salud actual: {target.currentHealth}");
+        Debug.Log($"{part} recibiÃ³ {amount}. Salud actual: {target.currentHealth}");
 
         PlayDamageAnimation(part);
         
@@ -226,6 +271,10 @@ public abstract class Fighter : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Gets the current stats.
+    /// </summary>
+    /// <returns>The resulting value.</returns>
     public Stats GetCurrentStats()
     {
         Stats modedStats = this.stats.Clone();
@@ -239,6 +288,10 @@ public abstract class Fighter : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Gets the current status condition.
+    /// </summary>
+    /// <returns>The resulting value.</returns>
     public StatusCondition GetCurrentStatusCondition()
     {
         if (this.statusCondition != null && this.statusCondition.hasExpired)
@@ -250,6 +303,10 @@ public abstract class Fighter : MonoBehaviour
         return this.statusCondition;
     }
 
+    /// <summary>
+    /// Adds the body part status condition.
+    /// </summary>
+    /// <param name="condition">The condition.</param>
     public void AddBodyPartStatusCondition(BodyPartStatusCondition condition)
     {
         if (condition == null)
@@ -261,6 +318,12 @@ public abstract class Fighter : MonoBehaviour
         this.bodyPartStatusConditions.Add(condition);
     }
 
+    /// <summary>
+    /// Gets the current body part status condition.
+    /// </summary>
+    /// <param name="conditionType">The condition type.</param>
+    /// <param name="part">The part.</param>
+    /// <returns>The resulting value.</returns>
     public BodyPartStatusCondition GetCurrentBodyPartStatusCondition(System.Type conditionType, BodyPart part)
     {
         foreach (BodyPartStatusCondition condition in this.GetCurrentBodyPartStatusConditions())
@@ -272,6 +335,10 @@ public abstract class Fighter : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// Gets the current body part status conditions.
+    /// </summary>
+    /// <returns>The resulting collection.</returns>
     public List<BodyPartStatusCondition> GetCurrentBodyPartStatusConditions()
     {
         if (this.bodyPartStatusConditions == null)
@@ -300,11 +367,19 @@ public abstract class Fighter : MonoBehaviour
         return this.bodyPartStatusConditions;
     }
 
+    /// <summary>
+    /// Sets the mod stats.
+    /// </summary>
+    /// <param name="stats">The stats.</param>
     public void SetModStats(Stats stats)
     {
         modedStats = stats;
     }
 
+    /// <summary>
+    /// Executes the on body part destroyed workflow.
+    /// </summary>
+    /// <param name="part">The part.</param>
     private void OnBodyPartDestroyed(BodyPartData part)
     {
         //  Notificar al evento
@@ -328,7 +403,7 @@ public abstract class Fighter : MonoBehaviour
         
         CameraManager.Instance.TriggerHitStop(1); // Hit stop 
         CameraManager.Instance.TriggerShake(1.4f);    // Camera Shake
-        CameraManager.Instance.TriggerDamageGlitch(); // Aberración cromática
+        CameraManager.Instance.TriggerDamageGlitch(); // AberraciÃ³n cromÃ¡tica
         
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX(AudioManager.Instance.armorBreakSound, 1f);
@@ -339,25 +414,30 @@ public abstract class Fighter : MonoBehaviour
             if (penalty != null)
             {
                 this.statusMods.Add(penalty);
-                Debug.Log($"{idName} sufrió una penalización de {penalty.amount} en {penalty.type} por perder {part.part}");
+                Debug.Log($"{idName} sufriÃ³ una penalizaciÃ³n de {penalty.amount} en {penalty.type} por perder {part.part}");
             }
         }
 
-        // 4. Lógica de reglas "Duras" (Cosas que no son solo restas de stats)
+        // 4. LÃ³gica de reglas "Duras" (Cosas que no son solo restas de stats)
         switch (part.part)
         {
             case BodyPart.Head:
             case BodyPart.Torso:
-                Debug.Log($"{part.part} destruido → muerte instantánea");
+                Debug.Log($"{part.part} destruido â†’ muerte instantÃ¡nea");
                 ModifyHealth(-stats.health);
                 break;
             case BodyPart.LeftLeg:
             case BodyPart.RightLeg:
-                Debug.Log("Pierna destruida → el jugador no podrá correr");
+                Debug.Log("Pierna destruida â†’ el jugador no podrÃ¡ correr");
                 break;
         }
     }
 
+    /// <summary>
+    /// Gets the hit point.
+    /// </summary>
+    /// <param name="part">The part.</param>
+    /// <returns>The resulting value.</returns>
     public Transform GetHitPoint(BodyPart part)
     {
         if (part == BodyPart.None)
@@ -373,6 +453,10 @@ public abstract class Fighter : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Executes the play damage animation workflow.
+    /// </summary>
+    /// <param name="part">The part.</param>
     protected void PlayDamageAnimation(BodyPart part)
     {
         if (animator == null) return;
@@ -409,6 +493,9 @@ public abstract class Fighter : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Executes the sync body part visuals workflow.
+    /// </summary>
     public void SyncBodyPartVisuals()
     {
         if (bodyParts == null) return;
@@ -419,6 +506,10 @@ public abstract class Fighter : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Hides the part mesh.
+    /// </summary>
+    /// <param name="part">The part.</param>
     protected void HidePartMesh(BodyPart part)
     {
         string partName = part.ToString();
@@ -439,13 +530,19 @@ public abstract class Fighter : MonoBehaviour
     }
     public abstract void InitTurn();
     
+    /// <summary>
+    /// Executes the damage flicker effect workflow.
+    /// </summary>
+    /// <param name="part">The part.</param>
+    /// <param name="duration">The duration.</param>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     private System.Collections.IEnumerator DamageFlickerEffect(BodyPart part, float duration)
     {
         string partName = part.ToString();
         Renderer[] allRenderers = GetComponentsInChildren<Renderer>(true);
         List<Renderer> partRenderers = new List<Renderer>();
 
-        // Filtrar renderers de la parte específica (mismo criterio que HidePartMesh)
+        // Filtrar renderers de la parte especÃ­fica (mismo criterio que HidePartMesh)
         foreach (Renderer r in allRenderers)
         {
             if (r.name.Equals(partName, System.StringComparison.OrdinalIgnoreCase) || r.name.Contains(partName))
@@ -455,7 +552,7 @@ public abstract class Fighter : MonoBehaviour
         float elapsed = 0;
         while (elapsed < duration)
         {
-            // Si la parte se destruyó durante el efecto, detenemos el parpadeo
+            // Si la parte se destruyÃ³ durante el efecto, detenemos el parpadeo
             if (GetBodyPart(part).IsDestroyed) break;
 
             foreach (var r in partRenderers) r.enabled = !r.enabled;
@@ -465,7 +562,7 @@ public abstract class Fighter : MonoBehaviour
             elapsed += interval;
         }
 
-        // Asegurar que queden encendidos si NO están destruidos
+        // Asegurar que queden encendidos si NO estÃ¡n destruidos
         if (!GetBodyPart(part).IsDestroyed)
         {
             foreach (var r in partRenderers) r.enabled = true;

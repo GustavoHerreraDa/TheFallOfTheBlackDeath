@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro; // Needed to update the button text
 
+/// <summary>
+/// Supports the combat system by handling part hover handler.
+/// </summary>
 public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     private Renderer targetRenderer;
@@ -17,6 +20,15 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private string originalText;
 
     // Updated Init method to receive the necessary data
+    /// <summary>
+    /// Initializes the value.
+    /// </summary>
+    /// <param name="rend">The rend.</param>
+    /// <param name="highMat">The high mat.</param>
+    /// <param name="skill">The skill.</param>
+    /// <param name="target">The target.</param>
+    /// <param name="part">The part.</param>
+    /// <param name="label">The label.</param>
     public void Init(Renderer rend, Material highMat, Skill skill, Fighter target, BodyPart part, TextMeshProUGUI label)
     {
         targetRenderer = rend;
@@ -36,6 +48,10 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
         }
     }
     
+    /// <summary>
+    /// Executes the on pointer enter workflow.
+    /// </summary>
+    /// <param name="eventData">The event data.</param>
     public void OnPointerEnter(PointerEventData eventData)
     {
         
@@ -73,6 +89,11 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 // Restore the previous target just in case
                 healthSkill.BodyPartTarget = previousTarget;
             }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="!">The !.</param>
+        /// <returns>The resulting value.</returns>
             else if (currentSkill != null && currentSkill is ApplySCSkill statusSkill && targetFighter != null)
             {
                 BodyPart previousTarget = statusSkill.BodyPartTarget;
@@ -87,6 +108,11 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
                 {
                     extraInfo = $" <color=#66ffcc>[STACK {existing.Stacks + 1}]</color>";
                 }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="0f">The 0f.</param>
+        /// <returns>The resulting value.</returns>
                 else if (statusSkill.damageAmount > 0f)
                 {
                     extraInfo = $" <color=#cc66ff>[-{(int)statusSkill.damageAmount}]</color>";
@@ -105,6 +131,9 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void OnPointerClick(PointerEventData eventData) => ResetToOriginal();
 
+    /// <summary>
+    /// Executes the reset to original workflow.
+    /// </summary>
     public void ResetToOriginal()
     {
         // 1. Reset Visuals

@@ -4,21 +4,35 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Supports menu and scene loading flow by handling scene load manager.
+/// </summary>
 public class SceneLoadManager : MonoBehaviour
 {
     [SerializeField] private Slider loadbar;
     public GameObject loadPanel;
     [SerializeField] private GameObject introCanvas;
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     public void Start()
     {
         SceneLoad(1);
     }
+    /// <summary>
+    /// Executes the scene load workflow.
+    /// </summary>
+    /// <param name="sceneIndex">The scene index.</param>
     public void SceneLoad(int sceneIndex)
     {
         StartCoroutine(ActivateLoadPanel());
         StartCoroutine(LoadAsync(sceneIndex));
     }
+    /// <summary>
+    /// Executes the activate load panel workflow.
+    /// </summary>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator ActivateLoadPanel()
     {
         if (introCanvas != null) { 
@@ -32,6 +46,11 @@ public class SceneLoadManager : MonoBehaviour
         yield return 0.5f;
     }
 
+    /// <summary>
+    /// Loads the async.
+    /// </summary>
+    /// <param name="sceneIndex">The scene index.</param>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator LoadAsync(int sceneIndex)
     {
         PlayerPrefs.SetString("GrupoEnemigo", string.Empty);

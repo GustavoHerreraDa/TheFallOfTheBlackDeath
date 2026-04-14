@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
+/// <summary>
+/// Defines the named values used by combat status.
+/// </summary>
 public enum CombatStatus
 {
     WAITING_FOR_FIGHTER,
@@ -15,6 +18,9 @@ public enum CombatStatus
     CHECK_FIGHTER_STATUS_CONDITION
 }
 
+/// <summary>
+/// Orchestrates the turn-based combat loop, team creation, skill execution, and victory or defeat resolution for battle scenes.
+/// </summary>
 public class CombatManager : MonoBehaviour
 {
     [Header("Narrative (Optional)")]
@@ -53,6 +59,9 @@ public class CombatManager : MonoBehaviour
     public AudioSource sonidoDeDerrota;
 
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     void Start()
     {
 
@@ -64,7 +73,7 @@ public class CombatManager : MonoBehaviour
             EncuentrosAleatorios();
         }
 
-        //Acá instanciaría los player?
+        //AcÃ¡ instanciarÃ­a los player?
         InstantiatePlayerFighters();
         
 
@@ -98,6 +107,9 @@ public class CombatManager : MonoBehaviour
         StartCoroutine(this.CombatLoop());
     }
 
+    /// <summary>
+    /// Executes the encuentros aleatorios workflow.
+    /// </summary>
     public void EncuentrosAleatorios()
     {
         Cursor.lockState = CursorLockMode.None; 
@@ -113,6 +125,9 @@ public class CombatManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Executes the sort fighters by speed workflow.
+    /// </summary>
     private void SortFightersBySpeed()
     {
         bool sorted = false;
@@ -142,6 +157,9 @@ public class CombatManager : MonoBehaviour
             turnsDisplay.SetText(this.fighters);
     }
 
+    /// <summary>
+    /// Executes the make teams workflow.
+    /// </summary>
     private void MakeTeams()
     {
         List<Fighter> playersBuffer = new List<Fighter>();
@@ -153,6 +171,11 @@ public class CombatManager : MonoBehaviour
             {
                 playersBuffer.Add(fgtr);
             }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="fgtr.team">The fgtr.team.</param>
+        /// <returns>The resulting value.</returns>
             else if (fgtr.team == Team.ENEMIES)
             {
                 enemiesBuffer.Add(fgtr);
@@ -165,6 +188,10 @@ public class CombatManager : MonoBehaviour
         this.enemyTeam = enemiesBuffer.ToArray();
     }
 
+    /// <summary>
+    /// Executes the combat loop workflow.
+    /// </summary>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator CombatLoop()
     {
         while (this.isCombatActive)
@@ -242,6 +269,11 @@ public class CombatManager : MonoBehaviour
 
                             if (enemyLevel > playerLevel)
                                 exp = Mathf.FloorToInt(exp * 2);
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="playerLevel">The player level.</param>
+        /// <returns>The resulting value.</returns>
                             else if (enemyLevel < playerLevel)
                                 exp = Mathf.FloorToInt(exp * 0.6f);
 
@@ -271,7 +303,7 @@ public class CombatManager : MonoBehaviour
                         Animator[] playerAnimators = player.GetComponentsInChildren<Animator>();
                         foreach (Animator animator in playerAnimators)
                         {
-                            Debug.Log("Reproduciendo animaci�n en: " + animator.gameObject.name);
+                            Debug.Log("Reproduciendo animaciï¿½n en: " + animator.gameObject.name);
                             animator.Play("Victory");
                         }
                         LogPanel.Write("Victory!");
@@ -413,6 +445,11 @@ public class CombatManager : MonoBehaviour
 
         return this.returnBuffer.ToArray();
     }*/
+    /// <summary>
+    /// Returns only the fighters that are currently alive from the provided team.
+    /// </summary>
+    /// <param name="team">The team.</param>
+    /// <returns>The resulting collection.</returns>
     public Fighter[] FilterJustAlive(Fighter[] team)
     {
         this.returnBuffer.Clear();
@@ -428,6 +465,10 @@ public class CombatManager : MonoBehaviour
         return this.returnBuffer.ToArray();
     }
 
+    /// <summary>
+    /// Returns the living opponents for the fighter whose turn is currently active.
+    /// </summary>
+    /// <returns>The resulting collection.</returns>
     public Fighter[] GetOpposingTeam()
     {
         Fighter currentFighter = this.fighters[this.fighterIndex];
@@ -437,6 +478,11 @@ public class CombatManager : MonoBehaviour
         {
             team = this.enemyTeam;
         }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="currentFighter.team">The current fighter.team.</param>
+        /// <returns>The resulting value.</returns>
         else if (currentFighter.team == Team.ENEMIES)
         {
             team = this.playerTeam;
@@ -445,6 +491,10 @@ public class CombatManager : MonoBehaviour
         return this.FilterJustAlive(team);
     }
 
+    /// <summary>
+    /// Returns the living allies for the fighter whose turn is currently active.
+    /// </summary>
+    /// <returns>The resulting collection.</returns>
     public Fighter[] GetAllyTeam()
     {
         Fighter currentFighter = this.fighters[this.fighterIndex];
@@ -462,12 +512,19 @@ public class CombatManager : MonoBehaviour
         return this.FilterJustAlive(team);
     }
 
+    /// <summary>
+    /// Queues the selected skill as the next combat action to execute in the battle loop.
+    /// </summary>
+    /// <param name="skill">The skill.</param>
     public void OnFighterSkill(Skill skill)
     {
         this.currentFighterSkill = skill;
         this.combatStatus = CombatStatus.FIGHTER_ACTION;
     }
 
+    /// <summary>
+    /// Executes the define stats manager workflow.
+    /// </summary>
     private void DefineStatsManager()
     {
         foreach(Fighter fighter in fighters)
@@ -476,6 +533,9 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Refreshes every registered combat stats panel after gameplay state changes.
+    /// </summary>
     public void UpdateStatsUI()
     {
         for (int i = 0; i < statsManagers.Count; i++)
@@ -487,6 +547,9 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spawns the selected party members for the battle scene and wires their UI references.
+    /// </summary>
     private void InstantiatePlayerFighters()
     {
         for (int i = 0; i < globalDataBase.EnemyDB.Count; i++)
@@ -515,6 +578,11 @@ public class CombatManager : MonoBehaviour
                 FindObjectOfType<CombatStatusUIController>()
                     .RegisterPlayer(playerFighter);
             }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="GameManager.Instance.hasRecruitedSecondary">The game manager.instance.has recruited secondary.</param>
+        /// <returns>The resulting value.</returns>
             else if (globalDataBase.EnemyDB[i].isSecondaryCharacter && GameManager.Instance.hasRecruitedSecondary)
             {
                 GameObject secondaryCharacter = Instantiate(

@@ -1,13 +1,16 @@
 using UnityEngine;
 using UnityEngine.Rendering; // Necesario para el Volume
-using UnityEngine.Rendering.Universal; // Necesario si usas URP (si no usas URP, avísame)
+using UnityEngine.Rendering.Universal; // Necesario si usas URP (si no usas URP, avÃ­same)
 
+/// <summary>
+/// Supports the combat system by handling bloom manager.
+/// </summary>
 public class BloomManager: MonoBehaviour
 {
     public static BloomManager Instance;
 
     [Header("Settings")]
-    public Volume globalVolume; // Arrastra tu Global Volume aquí
+    public Volume globalVolume; // Arrastra tu Global Volume aquÃ­
     public Color combatTint = Color.green; // El color verde que quieres
     public float transitionSpeed = 5f;
 
@@ -15,9 +18,12 @@ public class BloomManager: MonoBehaviour
     private Color _originalColor;
     private bool _isHoveringEnemy;
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     private void Awake()
     {
-        // Singleton básico
+        // Singleton bÃ¡sico
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
@@ -28,6 +34,9 @@ public class BloomManager: MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     private void Update()
     {
         if (_bloom == null) return;
@@ -39,6 +48,10 @@ public class BloomManager: MonoBehaviour
         _bloom.tint.value = Color.Lerp(_bloom.tint.value, targetColor, Time.deltaTime * transitionSpeed);
     }
 
+    /// <summary>
+    /// Sets the enemy highlight.
+    /// </summary>
+    /// <param name="active">The active.</param>
     public void SetEnemyHighlight(bool active)
     {
         _isHoveringEnemy = active;

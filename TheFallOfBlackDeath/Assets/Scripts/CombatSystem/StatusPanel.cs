@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 //TP2 FACUNDO FERREIRO
 
+/// <summary>
+/// Supports the combat system by handling status panel.
+/// </summary>
 public class StatusPanel : MonoBehaviour
 {
     public TextMeshProUGUI nameLabel;
@@ -15,6 +18,11 @@ public class StatusPanel : MonoBehaviour
     public TextMeshProUGUI healthLabelPro;
     public TextMeshProUGUI nameTextLabel;
 
+    /// <summary>
+    /// Sets the stats.
+    /// </summary>
+    /// <param name="name">The name.</param>
+    /// <param name="stats">The stats.</param>
     public void SetStats(string name, Stats stats)
     {
         if (nameLabel != null)
@@ -41,6 +49,11 @@ public class StatusPanel : MonoBehaviour
 
     }
     
+    /// <summary>
+    /// Sets the health.
+    /// </summary>
+    /// <param name="health">The health.</param>
+    /// <param name="maxHealth">The max health.</param>
     public void SetHealth(float health, float maxHealth)
     {
         if (healthLabelPro != null)

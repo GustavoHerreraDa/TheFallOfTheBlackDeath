@@ -4,11 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/// <summary>
+/// Handles turns display for the current project workflow.
+/// </summary>
 public class TurnsDisplay : MonoBehaviour
 {
     // Start is called before the first frame update
     public CombatManager CombatManager;
     TextMeshProUGUI[] textComponents;
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     void Awake()
     {
         // Obtener todos los componentes Text en los hijos del objeto actual
@@ -18,6 +24,10 @@ public class TurnsDisplay : MonoBehaviour
        
     }
 
+    /// <summary>
+    /// Sets the text.
+    /// </summary>
+    /// <param name="fighters">The fighters.</param>
     public void SetText(Fighter[] fighters)
     {
         if (textComponents == null) return;
@@ -35,7 +45,7 @@ public class TurnsDisplay : MonoBehaviour
             }
         }
 
-        // Asignar nombres hasta el límite de slots o de luchadores
+        // Asignar nombres hasta el lÃ­mite de slots o de luchadores
         for (int i = 0; i < Mathf.Min(numFighters, numTextSlots); i++)
         {
             if (fighters[i] != null && textComponents[i] != null)
@@ -47,6 +57,9 @@ public class TurnsDisplay : MonoBehaviour
     }
 
     // Update is called once per frame
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     void Update()
     {
         

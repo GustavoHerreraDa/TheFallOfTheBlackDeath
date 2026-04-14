@@ -2,8 +2,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
+/// <summary>
+/// Supports branching dialogue flow by handling dialogue event.
+/// </summary>
 public class DialogueEvent : MonoBehaviour
 {
+    /// <summary>
+    /// Defines the named values used by dialogue end action.
+    /// </summary>
     public enum DialogueEndAction
     {
         None,
@@ -13,7 +19,7 @@ public class DialogueEvent : MonoBehaviour
         GiveItem
     }
 
-    [Header("Configuraci�n de evento")]
+    [Header("Configuraciï¿½n de evento")]
     public DialogueEndAction onDialogueEnd = DialogueEndAction.None;
     public string battleSceneName = "BattleScene";
 
@@ -29,6 +35,9 @@ public class DialogueEvent : MonoBehaviour
     private bool eventTriggered = false;
     private Material npcMaterialInstance;
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     private void Start()
     {
        /* if (npcRenderer != null)
@@ -36,6 +45,9 @@ public class DialogueEvent : MonoBehaviour
        */
     }
 
+    /// <summary>
+    /// Executes the trigger event workflow.
+    /// </summary>
     public void TriggerEvent()
     {
         if (eventTriggered) return;
@@ -57,6 +69,10 @@ public class DialogueEvent : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the fade and load scene workflow.
+    /// </summary>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator FadeAndLoadScene()
     {
         yield return StartCoroutine(Fade(1));
@@ -66,6 +82,10 @@ public class DialogueEvent : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Executes the fade and disappear safe workflow.
+    /// </summary>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator FadeAndDisappearSafe()
     {
         
@@ -96,6 +116,11 @@ public class DialogueEvent : MonoBehaviour
         Destroy(fadeRunner);
     }
 
+    /// <summary>
+    /// Executes the fade workflow.
+    /// </summary>
+    /// <param name="targetAlpha">The target alpha.</param>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator Fade(float targetAlpha)
     {
         if (fadeCanvas == null)
@@ -114,6 +139,10 @@ public class DialogueEvent : MonoBehaviour
         fadeCanvas.alpha = targetAlpha;
     }
 
+    /// <summary>
+    /// Executes the dissolve npc workflow.
+    /// </summary>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator DissolveNPC()
     {
         float dissolveValue = 0f;
@@ -126,6 +155,9 @@ public class DialogueEvent : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the recruit workflow.
+    /// </summary>
     private void Recruit()
     {
         Debug.Log("NPC Recruitado: " + name);

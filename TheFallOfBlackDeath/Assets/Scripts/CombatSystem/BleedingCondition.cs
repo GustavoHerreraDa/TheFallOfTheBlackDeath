@@ -1,10 +1,17 @@
 using UnityEngine;
 
+/// <summary>
+/// Supports the combat system by handling bleeding condition.
+/// </summary>
 public class BleedingCondition : BodyPartStatusCondition
 {
     [Header("Bleeding Settings")]
     public float damagePerTurn = 15f;
 
+    /// <summary>
+    /// Executes the on apply workflow.
+    /// </summary>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     public override bool OnApply()
     {
         if (receiver == null)

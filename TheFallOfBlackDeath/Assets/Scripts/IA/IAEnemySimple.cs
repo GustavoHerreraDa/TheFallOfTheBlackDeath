@@ -1,8 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 //ferreiro
+/// <summary>
+/// Defines the named values used by enemy state simple.
+/// </summary>
 public enum EnemyStateSimple
 {
     Attack,
@@ -10,6 +13,9 @@ public enum EnemyStateSimple
     Heal,
 }
 
+/// <summary>
+/// Defines the named values used by ai attack preference.
+/// </summary>
 public enum AIAttackPreference
 {
     HeadFocused,
@@ -21,6 +27,9 @@ public enum AIAttackPreference
     Random
 }
 
+/// <summary>
+/// Chooses enemy combat skills and target body parts using a lightweight state-based decision strategy.
+/// </summary>
 public class IAEnemySimple : MonoBehaviour
 {
     private EnemyStateSimple currentState;
@@ -34,12 +43,20 @@ public class IAEnemySimple : MonoBehaviour
     private int phisicalAttacks;
     public List<Skill> _skills;
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     void Start()
     {
         if (MaxPhisicalAttacks == 0) MaxPhisicalAttacks = 2;
         Enemy = gameObject.GetComponent<EnemyFighter>();
     }
 
+    /// <summary>
+    /// Determines whether the component can use skill.
+    /// </summary>
+    /// <param name="skill">The skill.</param>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     private bool CanUseSkill(Skill skill)
     {
         if (skill == null || Enemy == null)
@@ -61,6 +78,10 @@ public class IAEnemySimple : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Executes the state workflow.
+    /// </summary>
+    /// <returns>The resulting value.</returns>
     public Skill ExecuteState()
     {
         Skill execute_Skill = null;
@@ -75,6 +96,11 @@ public class IAEnemySimple : MonoBehaviour
                     currentState = EnemyStateSimple.UseAbility;
                     execute_Skill = UseAbilityState();
                 }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="0.5f">The 0.5f.</param>
+        /// <returns>The resulting value.</returns>
                 else if (Enemy.GetCurrentStats().health < Enemy.GetCurrentStats().maxHealth * 0.5f)
                 {
                     currentState = EnemyStateSimple.Heal;
@@ -108,6 +134,10 @@ public class IAEnemySimple : MonoBehaviour
         return execute_Skill;
     }
 
+    /// <summary>
+    /// Executes the attack state workflow.
+    /// </summary>
+    /// <returns>The resulting value.</returns>
     private Skill AttackState()
     {
         phisicalAttacks += 1;
@@ -122,6 +152,10 @@ public class IAEnemySimple : MonoBehaviour
         return attackSkills[Random.Range(0, attackSkills.Count)];
     }
 
+    /// <summary>
+    /// Executes the use ability state workflow.
+    /// </summary>
+    /// <returns>The resulting value.</returns>
     private Skill UseAbilityState()
     {
         var specialSkills = _skills.Where(x => x.skillType == SkillType.SpecialHability && CanUseSkill(x)).ToList();
@@ -135,6 +169,10 @@ public class IAEnemySimple : MonoBehaviour
         return specialSkills[Random.Range(0, specialSkills.Count)];
     }
 
+    /// <summary>
+    /// Executes the heal state workflow.
+    /// </summary>
+    /// <returns>The resulting value.</returns>
     private Skill HealState()
     {
         var healSkills = _skills.Where(x => x.skillType == SkillType.Heal && CanUseSkill(x)).ToList();
@@ -148,12 +186,22 @@ public class IAEnemySimple : MonoBehaviour
         return healSkills[Random.Range(0, healSkills.Count)];
     }
 
+    /// <summary>
+    /// Sets the skills.
+    /// </summary>
+    /// <param name="skills">The skills.</param>
     public void SetSkills(Skill[] skills)
     {
         List<Skill> lista = new List<Skill>(skills);
         _skills = lista;
     }
 
+    /// <summary>
+    /// Executes the choose targetable body part workflow.
+    /// </summary>
+    /// <param name="target">The target.</param>
+    /// <param name="pref">The pref.</param>
+    /// <returns>The resulting value.</returns>
     public BodyPart ChooseTargetableBodyPart(Fighter target, AIAttackPreference pref)
     {
         if (target == null || target.bodyParts == null || target.bodyParts.Count == 0)

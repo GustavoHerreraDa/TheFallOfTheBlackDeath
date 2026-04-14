@@ -1,11 +1,18 @@
 
 using UnityEngine;
 //TP2 FACUNDO FERREIRO
+/// <summary>
+/// Supports the combat system by handling health mod status condition.
+/// </summary>
 public class HealthModStatusCondition : StatusCondition
 {
     [Header("Health mod")]
     public float percentage;
 
+    /// <summary>
+    /// Executes the on apply workflow.
+    /// </summary>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     public override bool OnApply()
     {
         Stats rStats = receiver.GetCurrentStats();

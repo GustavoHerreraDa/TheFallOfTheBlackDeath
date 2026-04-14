@@ -1,10 +1,16 @@
-﻿using UnityEngine;
+using UnityEngine;
 //TP2 FACUNDO FERREIRO
+/// <summary>
+/// Defines the named values used by health mod type.
+/// </summary>
 public enum HealthModType
 {
     STAT_BASED, FIXED, PERCENTAGE
 }
 
+/// <summary>
+/// Supports the combat system by handling health mod skill.
+/// </summary>
 public class HealthModSkill : BodyPartTargetSkill
 {
     [Header("Synergy Settings")]
@@ -22,6 +28,10 @@ public class HealthModSkill : BodyPartTargetSkill
     bool missedAttack = false;
 
     // Calculates final crit chance with emitter stats and Desperation passive
+    /// <summary>
+    /// Gets the adjusted crit chance.
+    /// </summary>
+    /// <returns>The resulting value.</returns>
     protected virtual float GetAdjustedCritChance()
     {
         float adjusted = Mathf.Clamp01(this.critChance);
@@ -43,6 +53,10 @@ public class HealthModSkill : BodyPartTargetSkill
         return Mathf.Clamp01(adjusted);
     }
 
+/// <summary>
+/// Executes the on run workflow.
+/// </summary>
+/// <param name="receiver">The receiver.</param>
 protected override void OnRun(Fighter receiver)
     {
         float baseDmg = this.GetModification(receiver);
@@ -102,6 +116,12 @@ protected override void OnRun(Fighter receiver)
             this.messages.Enqueue($"Hit for {(int)totalAreaDmg} to {receiver.idName} (AoE)");
             FloatingTextManager.Instance.ShowText($"-{(int)totalAreaDmg}", textPos, isCrit ? Color.yellow : Color.red, isCrit);
         }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="this.TryGetTargetBodyPart(receiver">The this.try get target body part(receiver.</param>
+        /// <param name="targetPart)">The target part).</param>
+        /// <returns>The resulting value.</returns>
         else if (this.TryGetTargetBodyPart(receiver, out Fighter.BodyPartData targetPart))
         {
             float finalDmg = ApplySynergy(targetPart, baseDmg);
@@ -118,6 +138,12 @@ protected override void OnRun(Fighter receiver)
         }
     }
 
+    /// <summary>
+    /// Determines whether the component can trigger synergy.
+    /// </summary>
+    /// <param name="target">The target.</param>
+    /// <param name="part">The part.</param>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     public override bool CanTriggerSynergy(Fighter target, BodyPart part = BodyPart.None)
     {
         if (target == null) return false;
@@ -140,6 +166,11 @@ protected override void OnRun(Fighter receiver)
         return false;
     }
 
+    /// <summary>
+    /// Determines whether the component is synergy possible.
+    /// </summary>
+    /// <param name="targetPart">The target part.</param>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     private bool IsSynergyPossible(Fighter.BodyPartData targetPart)
     {
         if (targetPart == null || targetPart.IsDestroyed) return false;
@@ -156,6 +187,12 @@ protected override void OnRun(Fighter receiver)
 
     // --- FUNCIÓN AUXILIAR PARA LAS SINERGIAS ---
     // Mantiene tu OnRun limpio y se asegura de que la matemática sea igual para todos
+    /// <summary>
+    /// Applies the synergy.
+    /// </summary>
+    /// <param name="targetPart">The target part.</param>
+    /// <param name="dmg">The dmg.</param>
+    /// <returns>The resulting value.</returns>
     private float ApplySynergy(Fighter.BodyPartData targetPart, float dmg)
     {
         bool synergyTriggered = false;
@@ -167,6 +204,11 @@ protected override void OnRun(Fighter receiver)
             targetPart.currentStatus = PartStatus.Bleeding; 
             this.messages.Enqueue("¡EXTREME CRÍTIC!");
         }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="targetPart.currentStatus">The target part.current status.</param>
+        /// <returns>The resulting value.</returns>
         else if (targetPart.currentStatus == PartStatus.Corroded && this.damageType == DamageType.Thermal)
         {
             dmg *= 1.5f;
@@ -184,6 +226,11 @@ protected override void OnRun(Fighter receiver)
         return dmg;
     }
 
+    /// <summary>
+    /// Gets the adjusted miss chance.
+    /// </summary>
+    /// <param name="receiver">The receiver.</param>
+    /// <returns>The resulting value.</returns>
     private float GetAdjustedMissChance(Fighter receiver)
     {
         float adjusted = missChance;
@@ -204,6 +251,11 @@ protected override void OnRun(Fighter receiver)
         {
             adjusted -= 1;
         }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="rightLegDestroyed">The right leg destroyed.</param>
+        /// <returns>The resulting value.</returns>
         else if (leftLegDestroyed || rightLegDestroyed)
         {
             adjusted -= 0.5f;
@@ -216,6 +268,11 @@ protected override void OnRun(Fighter receiver)
     }
 
 
+    /// <summary>
+    /// Gets the modification.
+    /// </summary>
+    /// <param name="receiver">The receiver.</param>
+    /// <returns>The resulting value.</returns>
     public float GetModification(Fighter receiver)
     {
         switch (this.modType)
@@ -252,6 +309,12 @@ protected override void OnRun(Fighter receiver)
         throw new System.InvalidOperationException("HealthModSkill::GetDamage. Unreachable!");
     }
     
+    /// <summary>
+    /// Gets the estimated damage.
+    /// </summary>
+    /// <param name="receiver">The receiver.</param>
+    /// <param name="targetPartType">The target part type.</param>
+    /// <returns>The resulting value.</returns>
     public float GetEstimatedDamage(Fighter receiver, BodyPart targetPartType)
     {
         // 1. Calculamos el daño base
@@ -269,6 +332,11 @@ protected override void OnRun(Fighter receiver)
                 {
                     baseDmg *= 2.5f; // Multiplicador brutal
                 }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="targetPart.currentStatus">The target part.current status.</param>
+        /// <returns>The resulting value.</returns>
                 else if (targetPart.currentStatus == PartStatus.Corroded && this.damageType == DamageType.Thermal)
                 {
                     baseDmg *= 1.5f; // Multiplicador de Combustión

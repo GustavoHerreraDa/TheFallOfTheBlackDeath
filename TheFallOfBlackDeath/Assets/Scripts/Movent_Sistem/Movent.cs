@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// Supports exploration and world-state flow by handling movent.
+/// </summary>
 public class Movent : MonoBehaviour
 {
 
@@ -28,11 +31,17 @@ public class Movent : MonoBehaviour
     float movent = 0;
   
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     void Start()
     {
         Anim = GetComponentInChildren<Animator>();
     }
 
+    /// <summary>
+    /// Applies physics-related updates on the fixed timestep.
+    /// </summary>
     private void FixedUpdate()
     {
         float Horizontal = Input.GetAxis("Horizontal");

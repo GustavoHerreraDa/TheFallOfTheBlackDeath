@@ -1,9 +1,12 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/// <summary>
+/// Handles skill ui for the current project workflow.
+/// </summary>
 public class SkillUI : MonoBehaviour
 {
     public GameObject player;
@@ -17,18 +20,27 @@ public class SkillUI : MonoBehaviour
     public TextMeshProUGUI skillPower;
     public Image skillIcon;
 
+    /// <summary>
+    /// Registers runtime listeners when the component becomes active.
+    /// </summary>
     void OnEnable()
     {
         InventoryManager.OnInventoryChanged += UpdateUI;
         InventoryManager.OnCharacterChanged += OnCharacterChanged;
     }
 
+    /// <summary>
+    /// Unregisters runtime listeners when the component becomes inactive.
+    /// </summary>
     void OnDisable()
     {
         InventoryManager.OnInventoryChanged -= UpdateUI;
         InventoryManager.OnCharacterChanged -= OnCharacterChanged;
     }
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     public void Start()
     {
         if (skillIcon != null)
@@ -38,6 +50,10 @@ public class SkillUI : MonoBehaviour
         UpdateUI();
     }
 
+    /// <summary>
+    /// Executes the on character changed workflow.
+    /// </summary>
+    /// <param name="fighter">The fighter.</param>
     private void OnCharacterChanged(PlayerFighter fighter)
     {
         // If this UI is bound to the active player, refresh skills reference
@@ -47,6 +63,9 @@ public class SkillUI : MonoBehaviour
         UpdateUI();
     }
 
+    /// <summary>
+    /// Updates the ui.
+    /// </summary>
     public void UpdateUI()
     {
         // Si el objeto ha sido destruido, no hacemos nada
@@ -86,6 +105,9 @@ public class SkillUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets the skill.
+    /// </summary>
     private void GetSkill()
     {
         if (player == null)
@@ -112,6 +134,11 @@ public class SkillUI : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Sets the stats.
+    /// </summary>
+    /// <param name="skill">The skill.</param>
+    /// <param name="statusMod">The status mod.</param>
     public void SetStats(Skill skill, StatusMod statusMod)
     {
         if (skill == null)

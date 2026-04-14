@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Checks for random encounter triggers and starts battle prefabs when an encounter occurs.
+/// </summary>
 public class RandomEncounterController : MonoBehaviour
 {
     public float encounterRate = 0.1f;
@@ -9,6 +12,9 @@ public class RandomEncounterController : MonoBehaviour
     private bool isEncounterActive = false;
     private float timeSinceLastCheck = 0.0f;
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     private void Update()
     {
         timeSinceLastCheck += Time.deltaTime;
@@ -24,23 +30,29 @@ public class RandomEncounterController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the start random encounter workflow.
+    /// </summary>
     private void StartRandomEncounter()
     {
         // Pausar el control del jugador u otras acciones necesarias antes del combate
 
         isEncounterActive = true;
 
-        // Instanciar el prefab del combate en la posición deseada
+        // Instanciar el prefab del combate en la posiciÃ³n deseada
         GameObject battleInstance = Instantiate(battlePrefab, transform.position, Quaternion.identity);
 
         // Configurar los datos del combate en el prefab
-        // Puedes tener un script en el prefab para recibir esta información.
-        //battleInstance.GetComponent<CombatManager>().SetupBattle(/* Aquí pasas los datos necesarios */);
+        // Puedes tener un script en el prefab para recibir esta informaciÃ³n.
+        //battleInstance.GetComponent<CombatManager>().SetupBattle(/* AquÃ­ pasas los datos necesarios */);
     }
 
+    /// <summary>
+    /// Ends the encounter.
+    /// </summary>
     public void EndEncounter()
     {
-        // Resumir el control del jugador u otras acciones después del combate
+        // Resumir el control del jugador u otras acciones despuÃ©s del combate
 
         isEncounterActive = false;
     }

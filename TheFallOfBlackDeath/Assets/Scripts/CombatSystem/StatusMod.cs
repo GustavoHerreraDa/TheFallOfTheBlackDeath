@@ -1,18 +1,29 @@
 using UnityEngine;
 //TP2 GUSTAVO TORRES/FACUNDO FERREIRO
 
+/// <summary>
+/// Defines the named values used by status mod type.
+/// </summary>
 public enum StatusModType
 {
     ATTACK_MOD,
     DEFFENSE_MOD,
-    SPEED_MOD // <-- ¡NUEVO! Agregamos velocidad
+    SPEED_MOD // <-- Â¡NUEVO! Agregamos velocidad
 }
 
+/// <summary>
+/// Supports the combat system by handling status mod.
+/// </summary>
 public class StatusMod : MonoBehaviour
 {
     public StatusModType type;
     public float amount;
 
+    /// <summary>
+    /// Applies the value.
+    /// </summary>
+    /// <param name="stats">The stats.</param>
+    /// <returns>The resulting value.</returns>
     public Stats Apply(Stats stats)
     {
         Stats modedStats = stats.Clone();
@@ -31,10 +42,10 @@ public class StatusMod : MonoBehaviour
                 if (modedStats.deffense >= 40) modedStats.deffense = 40;
                 break;
 
-            // <-- ¡NUEVO! Lógica para afectar la velocidad
+            // <-- Â¡NUEVO! LÃ³gica para afectar la velocidad
             case StatusModType.SPEED_MOD:
                 modedStats.speed += this.amount;
-                if (modedStats.speed <= 5) modedStats.speed = 5; // Límite inferior de velocidad
+                if (modedStats.speed <= 5) modedStats.speed = 5; // LÃ­mite inferior de velocidad
                 break;
         }
 

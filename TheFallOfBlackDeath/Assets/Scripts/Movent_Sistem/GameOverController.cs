@@ -2,13 +2,22 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Supports exploration and world-state flow by handling game over controller.
+/// </summary>
 public class GameOverController : MonoBehaviour
 {
+    /// <summary>
+    /// Executes the return to main menu workflow.
+    /// </summary>
     public void ReturnToMainMenu()
     {
-        Debug.Log("Botón clickeado, intentando cargar la escena");
+        Debug.Log("Botï¿½n clickeado, intentando cargar la escena");
         SceneManager.LoadScene(0);
     }
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     private void Update()
     {
         if (Input.anyKeyDown)
@@ -17,6 +26,9 @@ public class GameOverController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executes the gobackmenu workflow.
+    /// </summary>
     public void gobackmenu()
     {
 

@@ -4,6 +4,9 @@ using UnityEngine;
 using TMPro;
 //TP2 GUSTAVO TORRES/FACUNDO FERREIRO
 
+/// <summary>
+/// Supports the combat system by handling stats manager.
+/// </summary>
 public class StatsManager : MonoBehaviour
 {
     [Header("Referencias")]
@@ -13,16 +16,19 @@ public class StatsManager : MonoBehaviour
     public TextMeshProUGUI actualDefense;
     public TextMeshProUGUI actualAttack;
 
+    /// <summary>
+    /// Initializes cached references and runtime state before the component starts running.
+    /// </summary>
     private void Awake()
     {
-        // Buscar elementos UI solo si no están asignados en el inspector
+        // Buscar elementos UI solo si no estÃ¡n asignados en el inspector
         if (actualAttack == null)
         {
             GameObject attackObj = GameObject.Find("Txt_Attack");
             if (attackObj != null)
                 actualAttack = attackObj.GetComponent<TextMeshProUGUI>();
             else
-                Debug.LogWarning("No se encontró el objeto 'Txt_Attack'");
+                Debug.LogWarning("No se encontrÃ³ el objeto 'Txt_Attack'");
         }
         if (actualDefense == null)
         {
@@ -30,10 +36,13 @@ public class StatsManager : MonoBehaviour
             if (defenseObj != null)
                 actualDefense = defenseObj.GetComponent<TextMeshProUGUI>();
             else
-                Debug.LogWarning("No se encontró el objeto 'Txt_Defense'");
+                Debug.LogWarning("No se encontrÃ³ el objeto 'Txt_Defense'");
         }
     }
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     private void Start()
     {
         // Validar que tenemos todas las referencias necesarias
@@ -43,30 +52,40 @@ public class StatsManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     void Update()
     {
-        // Descomenta si necesitas actualización constante
+        // Descomenta si necesitas actualizaciÃ³n constante
         // if (ValidateReferences())
         //     UpdateUI();
     }
 
+    /// <summary>
+    /// Executes the validate references workflow.
+    /// </summary>
+    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     private bool ValidateReferences()
     {
         if (fighter == null)
         {
-            Debug.LogError("Fighter no está asignado en StatsManager");
+            Debug.LogError("Fighter no estÃ¡ asignado en StatsManager");
             return false;
         }
 
         if (actualAttack == null || actualDefense == null)
         {
-            Debug.LogError("Referencias de UI no están completas en StatsManager");
+            Debug.LogError("Referencias de UI no estÃ¡n completas en StatsManager");
             return false;
         }
 
         return true;
     }
 
+    /// <summary>
+    /// Updates the ui.
+    /// </summary>
     public void UpdateUI()
     {
         if (!ValidateReferences())
@@ -78,14 +97,18 @@ public class StatsManager : MonoBehaviour
         {
             SetDefense(currentStats.deffense);
             SetAttack(currentStats.attack);
-            Debug.Log($"Estadísticas actualizadas para el jugador: {fighter.name}");
+            Debug.Log($"EstadÃ­sticas actualizadas para el jugador: {fighter.name}");
         }
         else
         {
-            Debug.LogError("No se pudieron obtener las estadísticas del fighter");
+            Debug.LogError("No se pudieron obtener las estadÃ­sticas del fighter");
         }
     }
 
+    /// <summary>
+    /// Sets the defense.
+    /// </summary>
+    /// <param name="deffense">The deffense.</param>
     public void SetDefense(float deffense)
     {
         if (actualDefense == null)
@@ -96,11 +119,16 @@ public class StatsManager : MonoBehaviour
         // Resetear color por defecto
         actualDefense.color = Color.white;
 
-        // Aplicar colores según el valor
+        // Aplicar colores segÃºn el valor
         if (deffense >= 80)
         {
             actualDefense.color = Color.yellow;
         }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="<">The <.</param>
+        /// <returns>The resulting value.</returns>
         else if (deffense <= 20)
         {
             actualDefense.color = Color.red;
@@ -111,6 +139,10 @@ public class StatsManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the attack.
+    /// </summary>
+    /// <param name="attack">The attack.</param>
     public void SetAttack(float attack)
     {
         if (actualAttack == null)
@@ -121,11 +153,16 @@ public class StatsManager : MonoBehaviour
         // Resetear color por defecto
         actualAttack.color = Color.white;
 
-        // Aplicar colores según el valor
+        // Aplicar colores segÃºn el valor
         if (attack >= 80)
         {
             actualAttack.color = Color.yellow;
         }
+        /// <summary>
+        /// Executes the if workflow.
+        /// </summary>
+        /// <param name="<">The <.</param>
+        /// <returns>The resulting value.</returns>
         else if (attack <= 20)
         {
             actualAttack.color = Color.red;
@@ -136,7 +173,10 @@ public class StatsManager : MonoBehaviour
         }
     }
 
-    // Método público para actualizar UI desde otros scripts
+    // MÃ©todo pÃºblico para actualizar UI desde otros scripts
+    /// <summary>
+    /// Refreshes the ui.
+    /// </summary>
     public void RefreshUI()
     {
         UpdateUI();

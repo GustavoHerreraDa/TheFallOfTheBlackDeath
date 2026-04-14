@@ -1,6 +1,9 @@
 
 using UnityEngine;
 //TP2 GUSTAVO TORRES
+/// <summary>
+/// Supports the combat system by handling status mod skill.
+/// </summary>
 public class StatusModSkill : Skill
 {
     [Header("Status mod skill")]
@@ -8,6 +11,10 @@ public class StatusModSkill : Skill
     protected StatusMod mod;
     
 
+    /// <summary>
+    /// Executes the on run workflow.
+    /// </summary>
+    /// <param name="receiver">The receiver.</param>
     protected override void OnRun(Fighter receiver)
     {
         if (this.mod == null)

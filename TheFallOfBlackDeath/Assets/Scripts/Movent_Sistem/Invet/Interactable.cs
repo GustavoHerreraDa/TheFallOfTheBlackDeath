@@ -1,9 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Collections;
 
+/// <summary>
+/// Supports inventory and interaction flow by handling interactable.
+/// </summary>
 public abstract class Interactable : MonoBehaviour
 {
     public Animator player_Animator;
@@ -20,12 +23,19 @@ public abstract class Interactable : MonoBehaviour
 
     public abstract void Interact();
 
+    /// <summary>
+    /// Initializes the component once the scene dependencies are ready.
+    /// </summary>
     public virtual void Start()
     {
         InteractMeessage.SetActive(false);
         ResponseMessage.SetActive(false);
     }
 
+    /// <summary>
+    /// Responds to the corresponding Unity trigger callback for this component.
+    /// </summary>
+    /// <param name="other">The other.</param>
     protected virtual void OnTriggerEnter(Collider other)
     {
         // OBJETO (pickup)
@@ -86,6 +96,10 @@ public abstract class Interactable : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Responds to the corresponding Unity trigger callback for this component.
+    /// </summary>
+    /// <param name="other">The other.</param>
     private void OnTriggerExit(Collider other)
     {
         InteractMeessage.SetActive(false);
@@ -93,6 +107,9 @@ public abstract class Interactable : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Updates the component each frame while it is active.
+    /// </summary>
     void Update()
     {
 
@@ -107,6 +124,9 @@ public abstract class Interactable : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Shows the response message.
+    /// </summary>
     public void ShowResponseMessage()
     {
         //Debug.Log("No se puede abrir cosa");
@@ -116,6 +136,10 @@ public abstract class Interactable : MonoBehaviour
         input_responseMessage.text = responseMessage;
         StartCoroutine(DissableResponseMessage());
     }
+    /// <summary>
+    /// Executes the dissable response message workflow.
+    /// </summary>
+    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator DissableResponseMessage()
     {
         yield return new WaitForSeconds(2f);
