@@ -1870,12 +1870,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 982232655}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.877, y: -0.314, z: -0.224}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1626512603}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1084656198 stripped
 Transform:
@@ -3336,7 +3336,8 @@ Transform:
   m_LocalPosition: {x: 10.03, y: 0.05, z: 5.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 982232656}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1691333297
@@ -3810,6 +3811,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 811e7f2130f0b8d43b4b2754cc59fdcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableMouseTracking: 1
+  maxRotationAngle: 2
+  trackingSmoothness: 5
   enableBreathing: 1
   normalBreathSpeed: 2
   normalBreathAmplitude: 0.5
@@ -5826,7 +5830,6 @@ SceneRoots:
   - {fileID: 590966265}
   - {fileID: 1439129847}
   - {fileID: 1626512603}
-  - {fileID: 982232656}
   - {fileID: 3416332367495777323}
   - {fileID: 904173911}
   - {fileID: 405849140}
