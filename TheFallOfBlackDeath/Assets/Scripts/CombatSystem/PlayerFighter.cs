@@ -40,7 +40,7 @@ public class PlayerFighter : Fighter
         }
 
         //Esto es por si el globaldatabase falla en algun momento
-        Stats safeDefaults = new Stats(21, 60, 60, 45, 20, 20, 20);
+        Stats safeDefaults = new Stats(21, 60, 60, 45, 4, 20, 20);
 
         // Only initialize from database when NO saved runtime data exists for this fighter
         if (!hasSavedDataForThisFighter)
