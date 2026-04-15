@@ -2132,6 +2132,7 @@ GameObject:
   - component: {fileID: 1039987410}
   - component: {fileID: 1039987409}
   - component: {fileID: 1039987412}
+  - component: {fileID: 1039987413}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2259,6 +2260,24 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1039987413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039987408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b912033f66fc7024292dd8248eeb8e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuCameraEffects
+  maxRotationAngle: 3
+  maxPositionOffset: 0.2
+  smoothing: 5
+  enableBreathing: 1
+  breathSpeed: 1.5
+  breathAmplitude: 0.3
 --- !u!4 &1043087595 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}

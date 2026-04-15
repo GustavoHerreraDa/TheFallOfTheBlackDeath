@@ -11,6 +11,11 @@ public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance;
     
+    [Header("Mouse Tracking (Menu Effect)")]
+    public bool enableMouseTracking = false; // Solo activar en menús o momentos tranquilos
+    public float maxRotationAngle = 2f;      // Qué tanto rotará la cámara
+    public float trackingSmoothness = 5f;    // Suavidad del movimiento
+    
     [Header("Breathing Effect (Health Based)")]
     public bool enableBreathing = true;
     public float normalBreathSpeed = 2f;
@@ -143,6 +148,12 @@ public class CameraManager : MonoBehaviour
                 float newFOV = Mathf.Lerp(mainCamera.fieldOfView, targetFOV, Time.deltaTime * selectionZoomSpeed);
                 UpdateFOV(newFOV);
             }
+            
+            if (enableMouseTracking) 
+            {
+                ApplyMouseTracking();
+            }
+            
         }
 
         // === LÓGICA DE DISTORSIÓN DE LENTE ===
@@ -462,5 +473,36 @@ public class CameraManager : MonoBehaviour
         
         float newFOV = Mathf.Lerp(mainCamera.fieldOfView, targetFOV, Time.deltaTime * selectionZoomSpeed);
         UpdateFOV(newFOV);
+    }
+    
+    private void ApplyMouseTracking()
+    {
+        // 1. Verificación de seguridad básica
+        if (!enableMouseTracking || isHitActive || combatManager == null) return;
+
+        // 2. CORRECCIÓN: Usar .Length en lugar de .Count para el Array de fighters
+        if (FighterIndex < 0 || FighterIndex >= combatManager.fighters.Length) return;
+
+        var targetFighter = combatManager.fighters[FighterIndex];
+
+        // 3. Verificar que el luchador y su pivot no sean nulos
+        if (targetFighter == null || targetFighter.CameraPivot == null) return;
+
+        // 4. Obtención de posición del mouse (-1 a 1)
+        float mouseX = (Input.mousePosition.x / Screen.width) * 2f - 1f;
+        float mouseY = (Input.mousePosition.y / Screen.height) * 2f - 1f;
+
+        // 5. Cálculo de rotación relativa
+        Quaternion mouseOffset = Quaternion.Euler(-mouseY * maxRotationAngle, mouseX * maxRotationAngle, 0f);
+    
+        // Usamos la rotación del pivot del luchador como base
+        Quaternion baseRotation = targetFighter.CameraPivot.rotation;
+
+        // 6. Aplicamos la rotación combinada de forma suave
+        mainCamera.transform.rotation = Quaternion.Slerp(
+            mainCamera.transform.rotation, 
+            baseRotation * mouseOffset, 
+            Time.deltaTime * trackingSmoothness
+        );
     }
 }
