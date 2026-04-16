@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 //TP2 GUSTAVO TORRES/FACUNDO FERREIRO
@@ -54,6 +54,7 @@ public abstract class Skill : MonoBehaviour
 
     protected Fighter emitter;
     protected List<Fighter> receivers;
+    [TextArea(3, 10)]
     public string SkillDesc;
     protected Queue<string> messages;
     public SkillType skillType;
