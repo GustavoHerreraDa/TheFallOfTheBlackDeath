@@ -363,70 +363,72 @@ public class CombatManager : MonoBehaviour
 
                     this.combatStatus = CombatStatus.CHECK_FIGHTER_STATUS_CONDITION;
 
-                    break;
+    var currentFighter = this.fighters[this.fighterIndex];
 
-                case CombatStatus.CHECK_FIGHTER_STATUS_CONDITION:
-                    var currentFighter = this.fighters[this.fighterIndex];
+    // 1. Aplicar condiciones de partes del cuerpo (ej: Sangrado)
+    foreach (var bodyPartCondition in currentFighter.GetCurrentBodyPartStatusConditions().ToArray())
+    {
+        bodyPartCondition.Apply();
 
-                    foreach (var bodyPartCondition in currentFighter.GetCurrentBodyPartStatusConditions().ToArray())
-                    {
-                        bodyPartCondition.Apply();
+        while (true)
+        {
+            string nextBodyPartMessage = bodyPartCondition.GetNextMessage();
+            if (nextBodyPartMessage == null) break;
 
-                        while (true)
-                        {
-                            string nextBodyPartMessage = bodyPartCondition.GetNextMessage();
-                            if (nextBodyPartMessage == null)
-                            {
-                                break;
-                            }
+            LogPanel.Write(nextBodyPartMessage);
+            yield return new WaitForSeconds(1.5f);
+        }
+    }
 
-                            LogPanel.Write(nextBodyPartMessage);
-                            yield return new WaitForSeconds(1.5f);
-                        }
-                    }
+    // 2. Aplicar condición de estado general (ej: Veneno)
+    var statusCondition = currentFighter.GetCurrentStatusCondition();
 
-                    var statusCondition = currentFighter.GetCurrentStatusCondition();
+    if (statusCondition != null)
+    {
+        statusCondition.Apply();
 
-                    if (statusCondition != null)
-                    {
-                        statusCondition.Apply();
+        while (true)
+        {
+            string nextSCMessage = statusCondition.GetNextMessage();
+            if (nextSCMessage == null) break;
 
-                        while (true)
-                        {
-                            string nextSCMessage = statusCondition.GetNextMessage();
-                            if (nextSCMessage == null)
-                            {
-                                break;
-                            }
+            LogPanel.Write(nextSCMessage);
+            yield return new WaitForSeconds(2f);
+        }
 
-                            LogPanel.Write(nextSCMessage);
-                            yield return new WaitForSeconds(2f);
-                        }
+        // --- CAMBIO CLAVE: Verificar si murió por el daño de estado ---
+        if (!currentFighter.isAlive)
+        {
+            this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
+            yield return new WaitForSeconds(1f); // Tiempo para ver la animación de muerte
+            break; 
+        }
+        // -------------------------------------------------------------
 
-                        if (statusCondition.BlocksTurn())
-                        {
-                            this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
-                            break;
-                        }
-                    }
+        if (statusCondition.BlocksTurn())
+        {
+            this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
+            break;
+        }
+    }
 
-                    LogPanel.Write($"{currentFighter.idName} has the turn.");
-                    // Narrative: contextual enemy turn line (optional)
-                    if (narrativeLogManager != null && currentFighter is EnemyFighter ef)
-                    {
-                        narrativeLogManager.EnemyTurn(ef);
-                    }
-                    if (currentFighter.gameObject.activeInHierarchy)
-                    {
-                        currentFighter.InitTurn();
-                        this.combatStatus = CombatStatus.WAITING_FOR_FIGHTER;
-                    }
-                    else
-                    {
-                        this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
-
-                    }
-                    break;
+    // 3. Solo iniciar turno si sigue con vida
+    if (currentFighter.isAlive && currentFighter.gameObject.activeInHierarchy)
+    {
+        LogPanel.Write($"{currentFighter.idName} has the turn.");
+        if (narrativeLogManager != null && currentFighter is EnemyFighter ef)
+        {
+            narrativeLogManager.EnemyTurn(ef);
+        }
+        
+        currentFighter.InitTurn();
+        this.combatStatus = CombatStatus.WAITING_FOR_FIGHTER;
+    }
+    else
+    {
+        this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
+    }
+    break;
             }
         }
     }

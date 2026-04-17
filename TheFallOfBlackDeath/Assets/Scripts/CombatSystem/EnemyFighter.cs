@@ -52,11 +52,18 @@ public class EnemyFighter : Fighter
     /// </summary>
     public override void InitTurn()
     {
-        StartCoroutine(IA());
+        if (!isAlive)
+        {
+            Debug.Log($"{idName} está muerto, no puede iniciar turno.");
+            combatManager.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
+            return;
+        }
+
         if (_IAEnemySimple != null)
             _IAEnemySimple.SetSkills(this.skills);
-    }
 
+        StartCoroutine(IA());
+    }
     /// <summary>
     /// Executes the ia workflow.
     /// </summary>
