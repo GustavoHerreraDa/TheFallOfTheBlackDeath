@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5688080274013555069
+--- !u!114 &-5025420595214783651
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OutLine 12
-  m_Shader: {fileID: -6465566751694194690, guid: d3cac325df07ba1418f9bca15bb9c7cc, type: 3}
+  m_Name: Buddha_Dot_Hologram 2
+  m_Shader: {fileID: -6465566751694194690, guid: e73f51e1edddf4353b1d00bf0cffe649, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -33,10 +33,14 @@ Material:
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
-  m_LockedProperties: _AlphaClip
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Hologram_Texture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -51,11 +55,27 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Displacement_Density: 0.5
+    - _Displacement_Noise_Scale: 0.75
+    - _Displacement_Offset: 0.1
+    - _Displacement_Speed: 2
+    - _Emission_Scale: 1000
+    - _Fresnel_Power: 1.16
+    - _Pattern_Boost: 10
+    - _Pattern_Density: 2000
+    - _Pattern_Edge_A: 10
+    - _Pattern_Edge_B: 10
+    - _Pattern_Noise_Scale: 10
+    - _Pattern_Speed_A: 2
+    - _Pattern_Speed_B: 4
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _fadeDistance: 10
-    - _thickness: 0.0005
     m_Colors:
-    - _outlinecolor: {r: 1, g: 1, b: 1, a: 0}
+    - _Displacement_Direction: {r: 1, g: 0, b: 0, a: 0}
+    - _Displacement_Noise_Direction: {r: 0, g: 1, b: 0, a: 0}
+    - _Hologram_Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Pattern_Direction_Horizontal: {r: 1, g: 0, b: 0, a: 0}
+    - _Pattern_Direction_Vertical: {r: 0, g: 1, b: 0, a: 0}
+    - _Texture_Tint_Color: {r: 0.22979447, g: 0.4811321, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
