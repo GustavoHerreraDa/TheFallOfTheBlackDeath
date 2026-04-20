@@ -37,7 +37,7 @@ public class RoomScript : MonoBehaviour
         if (isActivated) return;
 
         // Assuming standard player detection via tag.
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Charecter"))
         {
             ActivateRoom();
         }

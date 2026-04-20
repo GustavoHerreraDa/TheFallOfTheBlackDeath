@@ -45,9 +45,14 @@ public class FollowPlayer : MonoBehaviour
         if (!anim) anim = GetComponent<Animator>();
         if (!player)
         {
+            var playerfigther = FindObjectOfType<PlayerControl>();
+            if (playerfigther != null)
+            {
+                player = playerfigther.transform;
+            }
             Debug.LogError("FollowPlayer: No se asignó el jugador! (player)", this);
-            enabled = false;
-            return;
+            //enabled = false;
+            //return;
         }
 
         if (currentState == EnemyState.Patrol && puntoA != null)
