@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Supports branching dialogue flow by handling dialogue ui.
@@ -27,16 +28,21 @@ public class DialogueUI : MonoBehaviour
     [Header("Posibles Respuestas")]
     public GameObject choicesPanel;
     public GameObject choiceButtonPrefab;
-    private int selectedIndex = 0;
     private Button[] currentButtons;
     public System.Action onTypingFinished;
     private bool isTyping;
+    private bool hadStoredCursorState;
+    private bool previousCursorVisible;
+    private CursorLockMode previousCursorLockMode;
+    private CanvasGroup[] childCanvasGroups;
 
     /// <summary>
     /// Initializes the component once the scene dependencies are ready.
     /// </summary>
     private void Start()
     {
+        childCanvasGroups = GetComponentsInChildren<CanvasGroup>(true);
+        RefreshInvisibleRaycastBlockers();
         ShowUI(false);
     }
 
@@ -47,6 +53,7 @@ public class DialogueUI : MonoBehaviour
     public void ShowUI(bool show)
     {
         dialoguePanel.SetActive(show);
+        RefreshInvisibleRaycastBlockers();
     }
 
     /// <summary>
@@ -93,74 +100,47 @@ public class DialogueUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Executes the enable keyboard navigation workflow.
+    /// Stores the cursor state and enables mouse input while dialogue choices are visible.
     /// </summary>
-    public void EnableKeyboardNavigation()
+    private void EnableMouseChoiceInput()
     {
-        currentButtons = choicesPanel.GetComponentsInChildren<Button>();
+        if (!hadStoredCursorState)
+        {
+            previousCursorVisible = Cursor.visible;
+            previousCursorLockMode = Cursor.lockState;
+            hadStoredCursorState = true;
+        }
 
-        if (currentButtons == null || currentButtons.Length == 0)
-            return;
-
-        selectedIndex = 0;
-        HighlightButton(selectedIndex);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     /// <summary>
-    /// Executes the highlight button workflow.
+    /// Restores the cursor state that was active before the choice list was shown.
     /// </summary>
-    /// <param name="index">The index.</param>
-    private void HighlightButton(int index)
+    private void RestoreCursorState()
     {
-        if (currentButtons == null || currentButtons.Length == 0)
+        if (!hadStoredCursorState)
             return;
 
-        for (int i = 0; i < currentButtons.Length; i++)
-        {
-            if (currentButtons[i] == null) continue;
-
-            ColorBlock cb = currentButtons[i].colors;
-            cb.normalColor = (i == index) ? Color.yellow : Color.white;
-            currentButtons[i].colors = cb;
-        }
+        Cursor.visible = previousCursorVisible;
+        Cursor.lockState = previousCursorLockMode;
+        hadStoredCursorState = false;
     }
 
     /// <summary>
-    /// Updates the component each frame while it is active.
+    /// Configures a dialogue choice button to be selected with the mouse.
     /// </summary>
-    private void Update()
+    /// <param name="button">The button.</param>
+    /// <param name="choice">The choice.</param>
+    private void ConfigureChoiceButton(Button button, DialogueChoice choice)
     {
-        if (!choicesPanel.activeSelf)
+        if (button == null)
             return;
 
-        if (currentButtons == null || currentButtons.Length == 0)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            selectedIndex = (selectedIndex - 1 + currentButtons.Length) % currentButtons.Length;
-            HighlightButton(selectedIndex);
-        }
-        /// <summary>
-        /// Executes the if workflow.
-        /// </summary>
-        /// <param name="Input.GetKeyDown(KeyCode.DownArrow)">The input.get key down(key code.down arrow).</param>
-        /// <returns>The resulting value.</returns>
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            selectedIndex = (selectedIndex + 1) % currentButtons.Length;
-            HighlightButton(selectedIndex);
-        }
-        /// <summary>
-        /// Executes the if workflow.
-        /// </summary>
-        /// <param name="Input.GetKeyDown(KeyCode.Return)">The input.get key down(key code.return).</param>
-        /// <returns>The resulting value.</returns>
-        else if (Input.GetKeyDown(KeyCode.Return))
-        {
-            if (currentButtons[selectedIndex] != null)
-                currentButtons[selectedIndex].onClick.Invoke();
-        }
+        button.navigation = new Navigation { mode = Navigation.Mode.None };
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() => DialogueManager.Instance.SelectChoice(choice));
     }
 
     /// <summary>
@@ -176,6 +156,8 @@ public class DialogueUI : MonoBehaviour
             Destroy(child.gameObject);
 
         choicesPanel.SetActive(true);
+        EnableMouseChoiceInput();
+        RefreshInvisibleRaycastBlockers();
 
         foreach (DialogueChoice choice in choices)
         {
@@ -188,13 +170,15 @@ public class DialogueUI : MonoBehaviour
 
             GameObject btnObj = Instantiate(choiceButtonPrefab, choicesPanel.transform);
             btnObj.GetComponentInChildren<TextMeshProUGUI>().text = choice.playerText;
-
-            btnObj.GetComponent<Button>().onClick.AddListener(() => {
-                DialogueManager.Instance.SelectChoice(choice);
-            });
+            ConfigureChoiceButton(btnObj.GetComponent<Button>(), choice);
         }
 
-        EnableKeyboardNavigation();
+        currentButtons = choicesPanel.GetComponentsInChildren<Button>();
+
+        if (currentButtons != null && currentButtons.Length > 0 && EventSystem.current != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }
     }
 
     /// <summary>
@@ -204,7 +188,29 @@ public class DialogueUI : MonoBehaviour
     {
         choicesPanel.SetActive(false);
         dialoguePanel.SetActive(true);
-        currentButtons = null; 
+        currentButtons = null;
+        RestoreCursorState();
+        RefreshInvisibleRaycastBlockers();
+    }
+
+    /// <summary>
+    /// Disables raycast blocking on invisible canvas groups so hidden overlays do not eat mouse clicks.
+    /// </summary>
+    private void RefreshInvisibleRaycastBlockers()
+    {
+        if (childCanvasGroups == null || childCanvasGroups.Length == 0)
+            childCanvasGroups = GetComponentsInChildren<CanvasGroup>(true);
+
+        foreach (CanvasGroup canvasGroup in childCanvasGroups)
+        {
+            if (canvasGroup == null)
+                continue;
+
+            if (canvasGroup.alpha <= 0.001f)
+            {
+                canvasGroup.blocksRaycasts = false;
+            }
+        }
     }
 
     /// <summary>
