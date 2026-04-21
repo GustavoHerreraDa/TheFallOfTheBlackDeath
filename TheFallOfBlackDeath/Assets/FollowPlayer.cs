@@ -11,8 +11,6 @@ public class FollowPlayer : MonoBehaviour
     /// </summary>
     public enum EnemyState { Idle, Patrol, Chase, Death }
 
-
-
     [Header("Estado actual del enemigo")]
     public EnemyState currentState = EnemyState.Idle;
 
@@ -28,21 +26,29 @@ public class FollowPlayer : MonoBehaviour
     public float normalSpeed = 3.5f;
     public float chaseSpeed = 6f;
 
+    [Header("Vision")]
+    [Range(1f, 180f)]
+    public float fieldOfView = 100f;
+    public float eyeHeight = 1.6f;
+    public LayerMask visionMask = Physics.DefaultRaycastLayers;
+    public float lostSightGraceTime = 1f;
+
     [Header("Patrulla")]
     public Transform puntoA;
     public Transform puntoB;
     private Transform destinoActual;
 
     private bool sonidoReproducido = false;
+    private float lostSightTimer = 0f;
 
     /// <summary>
     /// Initializes the component once the scene dependencies are ready.
     /// </summary>
     void Start()
     {
-        // Validaciones
         if (!agent) agent = GetComponent<NavMeshAgent>();
         if (!anim) anim = GetComponent<Animator>();
+
         if (!player)
         {
             var playerfigther = FindObjectOfType<PlayerControl>();
@@ -50,9 +56,10 @@ public class FollowPlayer : MonoBehaviour
             {
                 player = playerfigther.transform;
             }
-            Debug.LogError("FollowPlayer: No se asignó el jugador! (player)", this);
-            //enabled = false;
-            //return;
+            else
+            {
+                Debug.LogError("FollowPlayer: No se asigno el jugador! (player)", this);
+            }
         }
 
         if (currentState == EnemyState.Patrol && puntoA != null)
@@ -80,19 +87,11 @@ public class FollowPlayer : MonoBehaviour
         }
     }
 
-    // ===================== ESTADOS =======================
-
-    /// <summary>
-    /// Executes the idle tick workflow.
-    /// </summary>
     void IdleTick()
     {
         agent.isStopped = true;
     }
 
-    /// <summary>
-    /// Executes the patrol tick workflow.
-    /// </summary>
     void PatrolTick()
     {
         agent.isStopped = false;
@@ -104,17 +103,11 @@ public class FollowPlayer : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Executes the chase tick workflow.
-    /// </summary>
     void ChaseTick()
     {
         agent.isStopped = false;
 
-        // cache de destino y playerPos para evitar llamar .position mil veces
         Vector3 playerPos = player.position;
-
-        // solo actualizar si cambió lo suficiente
         if ((playerPos - agent.destination).sqrMagnitude > 0.2f)
             agent.SetDestination(playerPos);
 
@@ -125,48 +118,74 @@ public class FollowPlayer : MonoBehaviour
         }
     }
 
-    // ===================== TRANSICIONES =======================
-
-    /// <summary>
-    /// Executes the check transitions workflow.
-    /// </summary>
     void CheckTransitions()
     {
-        // Death siempre cancela las transiciones
-        if (currentState == EnemyState.Death)
+        if (currentState == EnemyState.Death || player == null)
             return;
 
         float sqrDist = (transform.position - player.position).sqrMagnitude;
         float sqrEnter = chaseEnterDistance * chaseEnterDistance;
         float sqrExit = chaseExitDistance * chaseExitDistance;
+        bool hasLineOfSight = CanSeePlayer();
 
-        // Enter chase
-        if (sqrDist < sqrEnter)
+        if (sqrDist < sqrEnter && hasLineOfSight)
         {
             if (currentState != EnemyState.Chase)
                 ChangeState(EnemyState.Chase);
+
+            lostSightTimer = 0f;
             return;
         }
 
-        // Exit chase
-        if (currentState == EnemyState.Chase && sqrDist > sqrExit)
+        if (currentState == EnemyState.Chase)
         {
-            ChangeState(EnemyState.Patrol);
-            return;
+            if (hasLineOfSight && sqrDist <= sqrExit)
+            {
+                lostSightTimer = 0f;
+                return;
+            }
+
+            lostSightTimer += Time.deltaTime;
+
+            if (sqrDist > sqrExit || lostSightTimer >= lostSightGraceTime)
+            {
+                ChangeState(EnemyState.Patrol);
+                return;
+            }
         }
     }
 
-    // ===================== CAMBIAR ESTADO =======================
+    bool CanSeePlayer()
+    {
+        if (player == null)
+            return false;
 
-    /// <summary>
-    /// Changes the state.
-    /// </summary>
-    /// <param name="newState">The new state.</param>
+        Vector3 enemyEyePos = transform.position + Vector3.up * eyeHeight;
+        Vector3 playerAimPos = player.position + Vector3.up * eyeHeight;
+        Vector3 toPlayer = playerAimPos - enemyEyePos;
+
+        float sqrDistance = toPlayer.sqrMagnitude;
+        if (sqrDistance > chaseEnterDistance * chaseEnterDistance)
+            return false;
+
+        Vector3 directionToPlayer = toPlayer.normalized;
+        float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
+        if (angleToPlayer > fieldOfView * 0.5f)
+            return false;
+
+        if (Physics.Raycast(enemyEyePos, directionToPlayer, out RaycastHit hit, Mathf.Sqrt(sqrDistance), visionMask, QueryTriggerInteraction.Ignore))
+        {
+            return hit.transform == player || hit.transform.IsChildOf(player);
+        }
+
+        return false;
+    }
+
     void ChangeState(EnemyState newState)
     {
         if (currentState == newState) return;
 
-        Debug.Log("Cambio de estado: " + currentState + " → " + newState);
+        Debug.Log("Cambio de estado: " + currentState + " -> " + newState);
 
         currentState = newState;
         sonidoReproducido = false;
@@ -181,7 +200,6 @@ public class FollowPlayer : MonoBehaviour
             case EnemyState.Patrol:
                 agent.speed = normalSpeed;
 
-                // Elegir el punto más cercano al volver desde Chase
                 if (puntoA && puntoB)
                 {
                     destinoActual =
@@ -205,9 +223,6 @@ public class FollowPlayer : MonoBehaviour
         SetAnimationBooleans();
     }
 
-    /// <summary>
-    /// Sets the animation booleans.
-    /// </summary>
     void SetAnimationBooleans()
     {
         anim.SetBool("Idle", currentState == EnemyState.Idle);
@@ -215,20 +230,15 @@ public class FollowPlayer : MonoBehaviour
         anim.SetBool("Chase", currentState == EnemyState.Chase);
         anim.SetBool("Death", currentState == EnemyState.Death);
     }
-    
-    /// <summary>
-    /// Executes the stop enemy for transition workflow.
-    /// </summary>
+
     public void StopEnemyForTransition()
     {
         if (agent != null)
         {
-            agent.isStopped = true; // Frena el NavMesh
-            agent.velocity = Vector3.zero; // Elimina la inercia
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
         }
-        
-    
-        // Desactivamos el script para que no intente volver a Chase en el Update
-        this.enabled = false; 
+
+        this.enabled = false;
     }
 }
