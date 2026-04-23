@@ -46,7 +46,7 @@ public class CombatManager : MonoBehaviour
     public bool isRadomEncounter = false;
     public List<Transform> spawnPoints = new List<Transform>();
     public BodyPartPanel bodyPartPanel;
-
+    public LootPanel lootPanel;
     public bool IsReady { get; private set; }
 
     private List<Fighter> returnBuffer;
@@ -254,71 +254,93 @@ public class CombatManager : MonoBehaviour
 
                     if (victory)
                     {
+                        // ── 1. Experience ──────────────────────────────────────────────
                         int totalExp = 0;
-
-                        // Para cada enemigo derrotado
                         foreach (var enemy in enemyTeam)
                         {
                             if (enemy == null) continue;
-
-                            int enemyLevel = enemy.stats.level;
-                            int exp = enemyLevel * 20;
-
-                            // Diferencia de niveles
+                     
+                            int enemyLevel  = enemy.stats.level;
+                            int exp         = enemyLevel * 20;
                             int playerLevel = playerTeam[0].stats.level;
-
-                            if (enemyLevel > playerLevel)
-                                exp = Mathf.FloorToInt(exp * 2);
-        /// <summary>
-        /// Executes the if workflow.
-        /// </summary>
-        /// <param name="playerLevel">The player level.</param>
-        /// <returns>The resulting value.</returns>
-                            else if (enemyLevel < playerLevel)
-                                exp = Mathf.FloorToInt(exp * 0.6f);
-
+                     
+                            if      (enemyLevel > playerLevel) exp = Mathf.FloorToInt(exp * 2f);
+                            else if (enemyLevel < playerLevel) exp = Mathf.FloorToInt(exp * 0.6f);
+                     
                             totalExp += exp;
                         }
-
+                     
                         foreach (var fighter in playerTeam)
                         {
-                            if (fighter is PlayerFighter player)
-                            {
-                                player.AddExperience(totalExp);
-                            }
+                            if (fighter is PlayerFighter pf)
+                                pf.AddExperience(totalExp);
                         }
-
-                        // Save all player fighters' state
+                     
+                        // ── 2. Save player state ────────────────────────────────────────
                         if (playerTeam != null)
                         {
                             foreach (var f in playerTeam)
                             {
                                 if (f is PlayerFighter pf)
-                                {
                                     GameManager.Instance.SavePlayerState(pf);
-                                }
                             }
                         }
+                     
+                        // ── 3. Victory audio + animation ───────────────────────────────
                         audioSource.Play();
                         Animator[] playerAnimators = player.GetComponentsInChildren<Animator>();
-                        foreach (Animator animator in playerAnimators)
-                        {
-                            Debug.Log("Reproduciendo animaciï¿½n en: " + animator.gameObject.name);
-                            animator.Play("Victory");
-                        }
+                        foreach (Animator anim in playerAnimators)
+                            anim.Play("Victory");
+                     
                         LogPanel.Write("Victory!");
                         this.isCombatActive = false;
+                     
+                        // ── 4. Resolve body-part loot from every defeated enemy ─────────
+                        var allLoot = new System.Collections.Generic.List<BodyPartLootTable.LootEntry>();
+                        foreach (var enemy in enemyTeam)
+                        {
+                            if (enemy == null) continue;
+                            var resolver = enemy.GetComponent<LootResolver>();
+                            if (resolver == null) continue;
+                     
+                            var drops = resolver.Resolve(enemy);
+                            allLoot.AddRange(drops);
+                        }
+                     
+                        // ── 5. Grant items to inventory ────────────────────────────────
+                        if (InventoryManager.instance != null)
+                        {
+                            foreach (var entry in allLoot)
+                                InventoryManager.instance.AddItem(entry.itemId, entry.amount, entry.uso);
+                        }
+                     
+                        // ── 6. Show loot panel and WAIT for player input ────────────────
+                        bool playerContinued = false;
+                     
+                        if (lootPanel != null)
+                        {
+                            lootPanel.OnContinue = () => playerContinued = true;
+                            lootPanel.Show(allLoot);
+                     
+                            // Pause here until the player presses Continue
+                            yield return new WaitUntil(() => playerContinued);
+                        }
+                        else
+                        {
+                            // No panel assigned: fall back to a short delay
+                            yield return new WaitForSeconds(2f);
+                        }
+                     
+                        // ── 7. Post-loot cleanup and scene transition ───────────────────
                         GameManager.Instance.SetGameState(GameManager.GameStates.TOWN_STATE);
                         GameManager.Instance.enemyToBattle.Clear();
+                     
                         var realName = enemyTeam[0].GetComponent<EnemiesGroup>().GroupName;
                         ListEnemyDefeat.enemiesDefeat.Add(realName);
                         PlayerPrefs.SetString("GrupoEnemigo", realName);
-
+                     
                         Debug.Log("Guardando enemigo derrotado REAL: " + realName);
-                        Debug.Log("se encontraron esto grupos" + groupEnemyName);
-                        yield return new WaitForSeconds(2);
                         SceneManager.LoadScene(1);
-
                     }
 
                     if (defeat)
