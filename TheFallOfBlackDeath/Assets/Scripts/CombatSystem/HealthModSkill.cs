@@ -231,40 +231,32 @@ protected override void OnRun(Fighter receiver)
     /// </summary>
     /// <param name="receiver">The receiver.</param>
     /// <returns>The resulting value.</returns>
-    private float GetAdjustedMissChance(Fighter receiver)
+    public float GetAdjustedMissChance(Fighter receiver)
     {
         float adjusted = missChance;
 
-      
-        if (this.BodyPartTarget == BodyPart.Head)
-            adjusted += 0.9f;
 
-       
+        if (this.BodyPartTarget == BodyPart.Head)
+            adjusted += 0.5f;
+
+ 
         Fighter.BodyPartData rightLeg = receiver.GetBodyPart(BodyPart.RightLeg);
         Fighter.BodyPartData leftLeg = receiver.GetBodyPart(BodyPart.LeftLeg);
 
         bool rightLegDestroyed = rightLeg != null && rightLeg.IsDestroyed;
         bool leftLegDestroyed = leftLeg != null && leftLeg.IsDestroyed;
 
- 
-        if (leftLegDestroyed && rightLegDestroyed && this.BodyPartTarget == BodyPart.Head)
+    
+        if (leftLegDestroyed && rightLegDestroyed)
         {
-            adjusted -= 1;
+            adjusted -= 0.4f; // más fácil pegar en general
         }
-        /// <summary>
-        /// Executes the if workflow.
-        /// </summary>
-        /// <param name="rightLegDestroyed">The right leg destroyed.</param>
-        /// <returns>The resulting value.</returns>
         else if (leftLegDestroyed || rightLegDestroyed)
         {
-            adjusted -= 0.5f;
+            adjusted -= 0.2f;
         }
 
-        
-        adjusted = Mathf.Clamp01(adjusted);
-
-        return adjusted;
+        return Mathf.Clamp01(adjusted);
     }
 
 
@@ -346,5 +338,7 @@ protected override void OnRun(Fighter receiver)
 
         return baseDmg;
     }
+    
+    
 
 }

@@ -71,20 +71,32 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
             // 2. --- NEW: DAMAGE PREVIEW CALCULATION ---
             if (currentSkill != null && currentSkill is HealthModSkill healthSkill && targetFighter != null)
             {
-                // Temporarily set the skill's target part so GetAdjustedMissChance calculates correctly
+                // Temporarily set the skill's target part so calculations are correct
                 BodyPart previousTarget = healthSkill.BodyPartTarget;
                 healthSkill.BodyPartTarget = targetPart;
 
                 // Calculate potential damage
                 float estimatedDamage = healthSkill.GetEstimatedDamage(targetFighter, targetPart);
-                
+    
+                // Calculate miss chance
+                float missChance = healthSkill.GetAdjustedMissChance(targetFighter);
+                int missPercent = Mathf.RoundToInt(missChance * 100f);
+    
                 // Synergy Check
                 bool hasSynergy = healthSkill.CanTriggerSynergy(targetFighter, targetPart);
                 string damageColor = hasSynergy ? "#ffff00" : "#ff3333";
                 string synergyText = hasSynergy ? " <color=#ffff00>[COMBO!]</color>" : "";
 
-                // Format the text to look juicy (e.g., "RightArm <color=red>[-45]</color>")
-                buttonLabel.text = $"{originalText}{synergyText} <color={damageColor}>[-{(int)estimatedDamage}]</color>";
+                // Opcional: color dinámico para miss
+                string missColor =
+                    missPercent >= 50 ? "#ff4444" :
+                    missPercent >= 25 ? "#ffaa00" :
+                    "#888888";
+
+                // Final text
+                buttonLabel.text = $"{originalText}{synergyText} " +
+                                   $"<color={damageColor}>[-{(int)estimatedDamage}]</color> " +
+                                   $"<color={missColor}>(Miss {missPercent}%)</color>";
 
                 // Restore the previous target just in case
                 healthSkill.BodyPartTarget = previousTarget;
