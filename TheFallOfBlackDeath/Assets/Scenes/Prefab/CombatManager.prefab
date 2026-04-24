@@ -42,7 +42,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -1780621753267509775, guid: 248a8af626575fb4a845d8218a0af7f6, type: 2}
-  m_audioClip: {fileID: 8300000, guid: fa15de8fdbd7afa48ac4e780a430fd47, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: fa15de8fdbd7afa48ac4e780a430fd47, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
@@ -139,6 +140,7 @@ GameObject:
   - component: {fileID: 4688937874772146607}
   - component: {fileID: 4688937874772146640}
   - component: {fileID: 4688937874772146605}
+  - component: {fileID: 9107135541516691372}
   m_Layer: 0
   m_Name: CombatManager
   m_TagString: Untagged
@@ -174,14 +176,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 731acd710395647439901d48baab48c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  narrativeLogManager: {fileID: 0}
   enemiesPanel: {fileID: 0}
-  statusPanel1: {fileID: 0}
-  statusPanel2: {fileID: 0}
   skillPanel: {fileID: 0}
   mainCharacterPos: {fileID: 0}
   secondaryCharacterPos: {fileID: 0}
   playerParent: {fileID: 0}
-  enemyDataBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
+  globalDataBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
   enemyFighters: []
   groupEnemyName: Zombie
   playerTeam: []
@@ -200,6 +201,7 @@ MonoBehaviour:
   isRadomEncounter: 0
   spawnPoints: []
   bodyPartPanel: {fileID: 0}
+  lootPanel: {fileID: 0}
   turnsDisplay: {fileID: 0}
   statsManagers: []
   audioSource: {fileID: 0}
@@ -216,3 +218,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 293d308c8b3cdc543bf0f6ca45f2ce8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9107135541516691372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4688937874772146641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be7162fd7e5f4bf45874773410c9a83d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatScannerSystem
+  toggleKey: 102
+  worldOffset: {x: 0, y: 2.6, z: 0}
+  anchorOffset: {x: 7, y: 1, z: 0}
+  fontSize: 3
+  textColor: {r: 0.55, g: 1, b: 0.88, a: 1}
+  fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}

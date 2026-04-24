@@ -58,12 +58,19 @@ public class CombatManager : MonoBehaviour
     public AudioSource audioSource;
     public AudioSource sonidoDeDerrota;
 
+    public Fighter CurrentFighter =>
+        (fighters != null && fighterIndex >= 0 && fighterIndex < fighters.Length)
+            ? fighters[fighterIndex]
+            : null;
+
 
     /// <summary>
     /// Initializes the component once the scene dependencies are ready.
     /// </summary>
     void Start()
     {
+        if (GetComponent<CombatScannerSystem>() == null)
+            gameObject.AddComponent<CombatScannerSystem>();
 
         GameManager.Instance.SetGameState(GameManager.GameStates.BATTLE_STATE);
 

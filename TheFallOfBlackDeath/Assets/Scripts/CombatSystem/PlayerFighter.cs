@@ -11,6 +11,9 @@ public class PlayerFighter : Fighter
     public EnemiesPanel enemiesPanel;
     public BodyPartPanel bodyPartPanel;
 
+    [Header("Combat Scanner")]
+    public bool hasCombatScanner;
+
     public globalDataBase fightersDateBase;
     public int figherIndex;
     private int activeAllyIndex;

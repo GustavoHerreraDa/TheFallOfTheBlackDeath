@@ -1698,6 +1698,7 @@ Transform:
   - {fileID: 6736966204008527179}
   - {fileID: 529149971522100949}
   - {fileID: 6661930053333581850}
+  - {fileID: 106834721479942863}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8204355791406637776
@@ -1763,7 +1764,8 @@ MonoBehaviour:
   statusMods: []
   skills: []
   statusCondition: {fileID: 0}
-  uiAnchor: {fileID: 0}
+  uiAnchor: {fileID: 8736713319817051504}
+  scannerAnchor: {fileID: 106834721479942863}
   CameraPivot: {fileID: 3466180727041470565}
   DamagePivot: {fileID: 4473444854589287572}
   narrativeData: {fileID: 0}
@@ -1831,6 +1833,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LootResolver
   lootTable: {fileID: 11400000, guid: 1b4864e3d50a8ad49b53d7fa3f9dfda6, type: 2}
+--- !u!1 &8961525143929996263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 106834721479942863}
+  m_Layer: 0
+  m_Name: LifeScanner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &106834721479942863
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8961525143929996263}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.5076331, y: -0.49224862, z: -0.49224862, w: 0.5076331}
+  m_LocalPosition: {x: -1.94, y: -1.06, z: 4.71}
+  m_LocalScale: {x: 0.99999976, y: 0.99999976, z: 0.99999976}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8204355791575303952}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &62296563795818814
 PrefabInstance:
   m_ObjectHideFlags: 0

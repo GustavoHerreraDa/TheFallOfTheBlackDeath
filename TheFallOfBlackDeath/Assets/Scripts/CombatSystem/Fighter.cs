@@ -64,6 +64,7 @@ public abstract class Fighter : MonoBehaviour
     private List<BodyPartStatusCondition> bodyPartStatusConditions;
 
     public Transform uiAnchor;
+    public Transform scannerAnchor;
 
     [SerializeField]
     public Transform CameraPivot;
