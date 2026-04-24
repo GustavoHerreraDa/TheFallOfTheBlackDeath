@@ -162,6 +162,8 @@ public class PlayerFighter : Fighter
     /// Changes the ally.
     /// </summary>
     /// <param name="newIndex">The new index.</param>
+    ///
+    ///
     public void ChangeAlly(int newIndex)
     {
         if (newIndex < 0 || newIndex >= allies.Count)

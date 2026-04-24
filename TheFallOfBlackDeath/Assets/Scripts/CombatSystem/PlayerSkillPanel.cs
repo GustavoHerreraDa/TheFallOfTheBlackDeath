@@ -206,6 +206,7 @@ public class PlayerSkillPanel : MonoBehaviour
     /// <param name="newTarget">The new target.</param>
     public void ShowForPlayer(PlayerFighter newTarget)
     {
+        
         this.gameObject.SetActive(true);
 
         this.targetFigther = newTarget;
