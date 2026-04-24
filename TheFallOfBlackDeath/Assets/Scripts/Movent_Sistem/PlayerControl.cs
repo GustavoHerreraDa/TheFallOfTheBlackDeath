@@ -10,6 +10,7 @@ public class PlayerControl : MonoBehaviour
 {
     private CharacterController controller;
     private GameObject camara;
+    private Camera_Main cameraMain;
     public Fighter fighter;
 
     [Header("Estadisticas Normales")]
@@ -39,6 +40,8 @@ public class PlayerControl : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         camara = GameObject.FindGameObjectWithTag("MainCamera");
+        if (camara != null)
+            cameraMain = camara.GetComponent<Camera_Main>();
         anim = GetComponentInChildren<Animator>();
         playerRB = GetComponentInChildren<Rigidbody>();
     }
@@ -48,11 +51,12 @@ public class PlayerControl : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        bool isInspectingCharacter = cameraMain != null && cameraMain.IsInspectingCharacter;
         
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direccion = new Vector3(horizontal, 0, vertical).normalized;
-        isWalking = direccion.magnitude >= 0.1f;
+        isWalking = !isInspectingCharacter && direccion.magnitude >= 0.1f;
         
         if (GameManager.Instance != null)
             GameManager.Instance.canGetEncounter = isWalking;
@@ -80,6 +84,15 @@ public class PlayerControl : MonoBehaviour
 
         if (!stop)
         {
+            if (isInspectingCharacter)
+            {
+                anim.SetFloat("Movent", 0f);
+                if (GameManager.Instance != null)
+                    GameManager.Instance.isWalking = false;
+
+                return;
+            }
+
             float objetivoAngulo = Mathf.Atan2(direccion.x, direccion.z) * Mathf.Rad2Deg + camara.transform.eulerAngles.y;
             float angulo = Mathf.SmoothDampAngle(transform.eulerAngles.y, objetivoAngulo, ref velocidadGiro, tiempoAlGirar);
             transform.rotation = Quaternion.Euler(0, angulo, 0);

@@ -7,7 +7,10 @@ using UnityEngine;
 /// </summary>
 public class Camera_Main : MonoBehaviour
 {
-    private Vector2 angle = new Vector2(0 * Mathf.Deg2Rad, 0);
+    private Vector2 angle = new Vector2(0f, 0f);
+
+    public bool IsInspectingCharacter =>
+        Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
 
     [SerializeField] private Transform Follow;
     [SerializeField] private float Distance = 5f;
@@ -24,48 +27,36 @@ public class Camera_Main : MonoBehaviour
     [SerializeField] private float cameraRadius = 0.3f;
     [SerializeField] private float minDistance = 1f;
 
-    void Start()
+    private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    void Update()
+    private void Update()
     {
-        // --- Rotación con el Mouse ---
-        float Horizontal = Input.GetAxis("Mouse X");
-        if (Horizontal != 0)
+        float horizontal = Input.GetAxis("Mouse X");
+        if (horizontal != 0f)
         {
-            angle.x += Horizontal * Mathf.Deg2Rad;
+            angle.x += horizontal * Mathf.Deg2Rad;
         }
 
-        float Vertical = Input.GetAxis("Mouse Y");
-        if (Vertical != 0)
+        float vertical = Input.GetAxis("Mouse Y");
+        if (vertical != 0f)
         {
-            angle.y += Vertical * Mathf.Deg2Rad;
+            angle.y += vertical * Mathf.Deg2Rad;
             angle.y = Mathf.Clamp(angle.y, -CameraAngleYPOS * Mathf.Deg2Rad, CameraAngleYNEG * Mathf.Deg2Rad);
         }
 
-        // --- Lógica de Zoom ---
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (scroll != 0)
+        if (scroll != 0f)
         {
             Distance -= scroll * zoomSpeed;
             Distance = Mathf.Clamp(Distance, minZoomDist, maxZoomDist);
         }
-
-        // --- Cambio de frente (Giro 180°) ---
-        // Usamos LeftAlt o RightAlt para detectar la tecla
-        if (Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
-        {
-            // Sumamos PI (180 grados en radianes) para mirar al lado opuesto
-            angle.x += Mathf.PI;
-        }
     }
 
-    void LateUpdate()
+    private void LateUpdate()
     {
-        // El cálculo de la órbita se mantiene igual, 
-        // pero ahora angle.x puede haber cambiado por el Alt.
         Vector3 orbit = new Vector3(
             Mathf.Cos(angle.x) * Mathf.Cos(angle.y),
             -Mathf.Sin(angle.y),
@@ -75,7 +66,6 @@ public class Camera_Main : MonoBehaviour
         Vector3 desiredPosition = Follow.position + orbit * Distance;
 
         RaycastHit hit;
-        
         if (Physics.SphereCast(Follow.position, cameraRadius, orbit, out hit, Distance, collisionMask))
         {
             float adjustedDistance = Mathf.Clamp(hit.distance - 0.2f, minDistance, Distance);
