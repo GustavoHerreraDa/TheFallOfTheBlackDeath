@@ -44,6 +44,10 @@ public abstract class Fighter : MonoBehaviour
     [SerializeField] 
     private GameObject partDestroyedVFX;
 
+    [Header("Damage Glitch")]
+    [Tooltip("Material swapped onto the damaged body part during the hit reaction. Drag Glitch.mat here.")]
+    public Material damageGlitchMaterial;
+
     public event System.Action<BodyPart> OnBodyPartDestroyedEvent;
 
     public Team team;
@@ -244,7 +248,7 @@ public abstract class Fighter : MonoBehaviour
         
         if (amount < 0 && !target.IsDestroyed)
         {
-            StartCoroutine(DamageFlickerEffect(part, 1.2f)); // 1.2s de parpadeo
+            StartCoroutine(DamageGlowEffect(part, 1.2f));
         }
 
 
@@ -532,41 +536,61 @@ public abstract class Fighter : MonoBehaviour
     public abstract void InitTurn();
     
     /// <summary>
-    /// Executes the damage flicker effect workflow.
+    /// Pulses an emission glow on the damaged body part's renderers instead of
+    /// toggling their visibility. The glow ramps up quickly, then fades out over
+    /// <paramref name="duration"/> seconds. Renderers are never disabled so the
+    /// mesh stays visible throughout the hit reaction.
+    /// Swaps every material on the damaged body part's renderers to
+    /// <see cref="damageGlitchMaterial"/> for <paramref name="duration"/> seconds,
+    /// then restores the originals. The swap is per-slot so multi-material
+    /// renderers are handled correctly.
     /// </summary>
-    /// <param name="part">The part.</param>
-    /// <param name="duration">The duration.</param>
-    /// <returns>An enumerator that drives the coroutine sequence.</returns>
-    private System.Collections.IEnumerator DamageFlickerEffect(BodyPart part, float duration)
+    private System.Collections.IEnumerator DamageGlowEffect(BodyPart part, float duration)
     {
+        if (damageGlitchMaterial == null) yield break;
+
         string partName = part.ToString();
         Renderer[] allRenderers = GetComponentsInChildren<Renderer>(true);
-        List<Renderer> partRenderers = new List<Renderer>();
+        var partRenderers = new List<Renderer>();
 
-        // Filtrar renderers de la parte especÃ­fica (mismo criterio que HidePartMesh)
+        // Same filter as HidePartMesh
         foreach (Renderer r in allRenderers)
         {
-            if (r.name.Equals(partName, System.StringComparison.OrdinalIgnoreCase) || r.name.Contains(partName))
+            if (r.name.Equals(partName, System.StringComparison.OrdinalIgnoreCase) ||
+                r.name.Contains(partName))
                 partRenderers.Add(r);
         }
 
-        float elapsed = 0;
-        while (elapsed < duration)
-        {
-            // Si la parte se destruyÃ³ durante el efecto, detenemos el parpadeo
-            if (GetBodyPart(part).IsDestroyed) break;
+        if (partRenderers.Count == 0) yield break;
 
-            foreach (var r in partRenderers) r.enabled = !r.enabled;
-        
-            float interval = 0.1f;
-            yield return new WaitForSeconds(interval);
-            elapsed += interval;
+        // Cache original material arrays and swap in the glitch material
+        var originalMaterials = new Material[partRenderers.Count][];
+        for (int i = 0; i < partRenderers.Count; i++)
+        {
+            originalMaterials[i] = partRenderers[i].sharedMaterials;
+
+            // Build a new array filled entirely with the glitch material
+            var glitchSlots = new Material[originalMaterials[i].Length];
+            for (int s = 0; s < glitchSlots.Length; s++)
+                glitchSlots[s] = damageGlitchMaterial;
+
+            partRenderers[i].materials = glitchSlots;
         }
 
-        // Asegurar que queden encendidos si NO estÃ¡n destruidos
-        if (!GetBodyPart(part).IsDestroyed)
+        // Hold for duration (or until the part is destroyed)
+        float elapsed = 0f;
+        while (elapsed < duration)
         {
-            foreach (var r in partRenderers) r.enabled = true;
+            if (GetBodyPart(part) == null || GetBodyPart(part).IsDestroyed) break;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Restore original materials
+        for (int i = 0; i < partRenderers.Count; i++)
+        {
+            if (partRenderers[i] != null)
+                partRenderers[i].materials = originalMaterials[i];
         }
     }
     
