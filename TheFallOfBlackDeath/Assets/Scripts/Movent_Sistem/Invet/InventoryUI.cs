@@ -1,139 +1,115 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/// <summary>
-/// Supports inventory and interaction flow by handling inventory ui.
-/// </summary>
 public class InventoryUI : MonoBehaviour
 {
-    public PlayerFighter character1;
-    public PlayerFighter character2;
+    [Header("Datos del item (seteado por InventoryManager)")]
+    public int itemId = -1; // InventoryManager lo setea al popular el slot
+
+    [Header("UI")]
     public TMP_Text amount;
     public TMP_Text itemName;
     public TMP_Text itemDescripcion;
     public Image sprite;
-
     public Image buttonSprite;
 
+    [Header("Stats (seteado por InventoryManager)")]
     public string statAffected;
     public float amountAffected;
 
-    private bool _isCharacter1Equipped;
-    private bool _isCharacter2Equipped;
-
+    [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip equipSfx;
     public AudioClip unequipSfx;
 
-    private Color originalColor;
-    public Color equippedColor = Color.green;
-    public Color unequippedColor = Color.red;
+    [Header("Colores")]
+    public Color equippedColor   = Color.green;
+    public Color unequippedColor = Color.white;
 
-    /// <summary>
-    /// Initializes cached references and runtime state before the component starts running.
-    /// </summary>
+    private Color originalColor;
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Unity lifecycle
+    // ─────────────────────────────────────────────────────────────────────────
+
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
-        if (GameManager.Instance != null)
-        {
-            character1 = GameManager.Instance.character1;
-            character2 = GameManager.Instance.character2;
-        }
+        // QUITAMOS DontDestroyOnLoad — el pool lo maneja InventoryManager
         originalColor = buttonSprite != null ? buttonSprite.color : Color.white;
     }
 
-    /// <summary>
-    /// Registers runtime listeners when the component becomes active.
-    /// </summary>
     private void OnEnable()
     {
         InventoryManager.OnCharacterChanged += OnCharacterChanged;
+        InventoryManager.OnInventoryChanged += RefreshEquippedVisual;
     }
 
-    /// <summary>
-    /// Unregisters runtime listeners when the component becomes inactive.
-    /// </summary>
     private void OnDisable()
     {
         InventoryManager.OnCharacterChanged -= OnCharacterChanged;
+        InventoryManager.OnInventoryChanged -= RefreshEquippedVisual;
     }
 
-    /// <summary>
-    /// Executes the on character changed workflow.
-    /// </summary>
-    /// <param name="fighter">The fighter.</param>
     private void OnCharacterChanged(PlayerFighter fighter)
     {
-        if (GameManager.Instance != null)
-        {
-            character1 = GameManager.Instance.character1;
-            character2 = GameManager.Instance.character2;
-        }
+        // Cuando cambia el personaje activo, refrescar el visual de este slot
+        RefreshEquippedVisual();
     }
 
+    // ─────────────────────────────────────────────────────────────────────────
+    // Botones de equipamiento
+    // ─────────────────────────────────────────────────────────────────────────
+
     /// <summary>
-    /// Executes the character1 btn workflow.
+    /// Equipa o desequipa el item del personaje 1 (índice 0).
     /// </summary>
     public void Character1BTN()
     {
-        
-        if (_isCharacter2Equipped)
-        {
-            character2.UpdateStats(statAffected, -amountAffected);
-            _isCharacter2Equipped = false;
-
-            audioSource.PlayOneShot(unequipSfx);
-            GameManager.Instance.SavePlayerState(character2);
-
-            buttonSprite.color = originalColor;
-        }
-
-        
-        if (!_isCharacter1Equipped)
-        {
-
-            character1.UpdateStats(statAffected, amountAffected);
-            _isCharacter1Equipped = true;
-            GameManager.Instance.SavePlayerState(character1);
-            audioSource.PlayOneShot(equipSfx);
-
-            buttonSprite.color = equippedColor;
-            Debug.Log("Equipamos al character 1");
-        }
+        HandleEquipToggle(0);
     }
 
-
     /// <summary>
-    /// Executes the character2 btn workflow.
+    /// Equipa o desequipa el item del personaje 2 (índice 1).
     /// </summary>
     public void Character2BTN()
     {
-        if (_isCharacter1Equipped)
-        {
-            character1.UpdateStats(statAffected, -amountAffected);
-            _isCharacter1Equipped = false;
-
-            audioSource.PlayOneShot(unequipSfx);
-            GameManager.Instance.SavePlayerState(character1);
-
-            buttonSprite.color = originalColor; // Normal
-        }
-
-        if (!_isCharacter2Equipped)
-        {
-            character2.UpdateStats(statAffected, amountAffected);
-            _isCharacter2Equipped = true;
-
-            audioSource.PlayOneShot(equipSfx);
-            GameManager.Instance.SavePlayerState(character1);
-
-            buttonSprite.color = equippedColor; // Verde
-            Debug.Log("Equipamos al character 2");
-        }
+        HandleEquipToggle(1);
     }
 
+    private void HandleEquipToggle(int characterIndex)
+    {
+        if (itemId < 0 || InventoryManager.instance == null) return;
+
+        if (InventoryManager.instance.IsEquippedByCharacter(itemId, characterIndex))
+        {
+            // Ya está equipado → desequipar
+            InventoryManager.instance.Unequip(itemId, characterIndex, statAffected, amountAffected);
+            audioSource?.PlayOneShot(unequipSfx);
+        }
+        else
+        {
+            // No está equipado → equipar (Equip() maneja el desequipado del otro personaje)
+            InventoryManager.instance.Equip(itemId, characterIndex, statAffected, amountAffected);
+            audioSource?.PlayOneShot(equipSfx);
+        }
+
+        RefreshEquippedVisual();
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Visual
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Actualiza el color del botón consultando el estado persistido en InventoryManager.
+    /// Llamado por InventoryManager al popular el slot y por los eventos de cambio.
+    /// </summary>
+    public void RefreshEquippedVisual()
+    {
+        if (buttonSprite == null || InventoryManager.instance == null) return;
+
+        bool equippedByAny = InventoryManager.instance.equippedByCharacter.ContainsKey(itemId);
+        buttonSprite.color = equippedByAny ? equippedColor : originalColor;
+    }
 }

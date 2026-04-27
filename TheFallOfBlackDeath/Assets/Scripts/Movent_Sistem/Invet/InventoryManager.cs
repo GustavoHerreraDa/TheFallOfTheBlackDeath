@@ -3,10 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-//chumba
-/// <summary>
-/// Defines the named values used by item inventory id.
-/// </summary>
+
 public enum ItemInventoryId
 {
     Potion,
@@ -19,110 +16,155 @@ public enum ItemInventoryId
     Key,
     StrengthPotion
 }
-/// <summary>
-/// Maintains the runtime inventory, equipped items, and inventory-driven UI refreshes for the current play session.
-/// </summary>
+
 public class InventoryManager : MonoBehaviour
 {
-    // Observer events for decoupled UI updates
+    // ── Eventos ──────────────────────────────────────────────────────────────
     public static event Action OnInventoryChanged;
     public static event Action<PlayerFighter> OnCharacterChanged;
-    /// <summary>
-    /// Executes the notify character changed workflow.
-    /// </summary>
-    /// <param name="fighter">The fighter.</param>
+
     public static void NotifyCharacterChanged(PlayerFighter fighter)
     {
         OnCharacterChanged?.Invoke(fighter);
     }
+
+    // ── Singleton ─────────────────────────────────────────────────────────────
     public static InventoryManager instance;
+
+    // ── Datos ─────────────────────────────────────────────────────────────────
     public InventoryDateBase datebase;
-    public List<InventoryObjectID> inventory;
+    public List<InventoryObjectID> inventory = new List<InventoryObjectID>();
+
+    // ── UI ────────────────────────────────────────────────────────────────────
     public InventoryUI prefab;
     public Transform equipmentUI;
     public Transform objetsUI;
-    public List<InventoryUI> pool = new List<InventoryUI>();
-    public Dictionary<PlayerFighter, List<InventoryObjectID>> playerEquipped;
 
-    // Cache for item data to avoid repeated array indexing and string allocations
+    // Pool separado por tipo para no mezclar equipables con usables
+    private List<InventoryUI> equipmentPool = new List<InventoryUI>();
+    private List<InventoryUI> objectsPool   = new List<InventoryUI>();
+
+    // ── Equipamiento persistente ──────────────────────────────────────────────
+    // itemId → índice del personaje que lo tiene equipado (0 = char1, 1 = char2)
+    // Es la ÚNICA fuente de verdad sobre qué está equipado.
+    public Dictionary<int, int> equippedByCharacter = new Dictionary<int, int>();
+
+    // ── Cache de datos ────────────────────────────────────────────────────────
     private Dictionary<int, InventoryDateBase.Object> _itemCache;
 
-    
-    /// <summary>
-    /// Registers runtime listeners when the component becomes active.
-    /// </summary>
+    // ─────────────────────────────────────────────────────────────────────────
+    // Unity lifecycle
+    // ─────────────────────────────────────────────────────────────────────────
+
     void OnEnable()
     {
         DialogueManager.OnGiveItem += HandleGiveItem;
     }
 
-    /// <summary>
-    /// Unregisters runtime listeners when the component becomes inactive.
-    /// </summary>
     void OnDisable()
     {
         DialogueManager.OnGiveItem -= HandleGiveItem;
     }
-    
-    /// <summary>
-    /// Initializes cached references and runtime state before the component starts running.
-    /// </summary>
+
     void Awake()
     {
-        if (InventoryManager.instance == null)
+        if (instance == null)
         {
-            InventoryManager.instance = this;
+            instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
         {
-            InventoryManager.instance.pool = new List<InventoryUI>();
+            // Ya existe una instancia persistente: limpiar pools porque los
+            // GameObjects de UI de la escena anterior ya no existen.
+            instance.equipmentPool.Clear();
+            instance.objectsPool.Clear();
+            Destroy(gameObject);
+            return;
         }
 
-
-        _itemCache = new Dictionary<int, InventoryDateBase.Object>();
-        if (datebase != null && datebase.DateBase != null)
-        {
-            for (int i = 0; i < datebase.DateBase.Length; i++)
-            {
-                _itemCache[i] = datebase.DateBase[i];
-            }
-        }
+        BuildItemCache();
     }
 
-
-    [System.Serializable]
-    /// <summary>
-    /// Represents an inventory entry that tracks an item identifier, amount, and usage category.
-    /// </summary>
-    public struct InventoryObjectID
+    void Start()
     {
-        public int id;
-        public int amount;
-        public InventoryDateBase.Uso uso;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InventoryObjectID"/> class.
-        /// </summary>
-        /// <param name="id">The id.</param>
-        /// <param name="amount">The amount.</param>
-        /// <param name="uso">The uso.</param>
-        public InventoryObjectID(int id, int amount, InventoryDateBase.Uso uso)
-        {
-            this.id = id;
-            this.amount = amount;
-            this.uso = uso;
-        }
+        Debug.Log("[InventoryManager] Start");
+        RefreshAllUI();
     }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Equipamiento — fuente única de verdad
+    // ─────────────────────────────────────────────────────────────────────────
+
     /// <summary>
-    /// Adds the item.
+    /// Devuelve true si el item está equipado por ese personaje.
     /// </summary>
-    /// <param name="id">The id.</param>
-    /// <param name="amount">The amount.</param>
-    /// <param name="uso">The uso.</param>
+    public bool IsEquippedByCharacter(int itemId, int characterIndex)
+    {
+        return equippedByCharacter.TryGetValue(itemId, out int idx) && idx == characterIndex;
+    }
+
+    /// <summary>
+    /// Equipa el item al personaje indicado y aplica el stat.
+    /// Desequipa automáticamente al otro personaje si lo tenía.
+    /// </summary>
+    public void Equip(int itemId, int characterIndex, string statAffected, float amountAffected)
+    {
+        PlayerFighter char1 = GameManager.Instance?.character1;
+        PlayerFighter char2 = GameManager.Instance?.character2;
+
+        // Si el otro personaje lo tiene equipado, se lo quitamos primero
+        int otherIndex = characterIndex == 0 ? 1 : 0;
+        if (IsEquippedByCharacter(itemId, otherIndex))
+        {
+            PlayerFighter other = otherIndex == 0 ? char1 : char2;
+            other?.UpdateStats(statAffected, -amountAffected);
+            equippedByCharacter.Remove(itemId);
+        }
+
+        // Si ya lo tiene este personaje, no hacer nada (toggle lo maneja InventoryUI)
+        if (IsEquippedByCharacter(itemId, characterIndex))
+            return;
+
+        // Equipar
+        PlayerFighter target = characterIndex == 0 ? char1 : char2;
+        target?.UpdateStats(statAffected, amountAffected);
+        equippedByCharacter[itemId] = characterIndex;
+
+        if (target != null)
+            GameManager.Instance?.SavePlayerState(target);
+
+        OnInventoryChanged?.Invoke();
+    }
+
+    /// <summary>
+    /// Desequipa el item del personaje indicado y revierte el stat.
+    /// </summary>
+    public void Unequip(int itemId, int characterIndex, string statAffected, float amountAffected)
+    {
+        if (!IsEquippedByCharacter(itemId, characterIndex))
+            return;
+
+        PlayerFighter char1 = GameManager.Instance?.character1;
+        PlayerFighter char2 = GameManager.Instance?.character2;
+        PlayerFighter target = characterIndex == 0 ? char1 : char2;
+
+        target?.UpdateStats(statAffected, -amountAffected);
+        equippedByCharacter.Remove(itemId);
+
+        if (target != null)
+            GameManager.Instance?.SavePlayerState(target);
+
+        OnInventoryChanged?.Invoke();
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Inventario
+    // ─────────────────────────────────────────────────────────────────────────
+
     public void AddItem(int id, int amount, InventoryDateBase.Uso uso)
     {
-        Debug.Log("Add Item");
+        Debug.Log($"[InventoryManager] AddItem id={id} amount={amount}");
         if (inventory == null)
             inventory = new List<InventoryObjectID>();
 
@@ -131,266 +173,158 @@ public class InventoryManager : MonoBehaviour
             if (inventory[i].id == id)
             {
                 inventory[i] = new InventoryObjectID(inventory[i].id, inventory[i].amount + amount, uso);
-                updateUI(equipmentUI, InventoryDateBase.Uso.Equipable);
-                updateUI(objetsUI, InventoryDateBase.Uso.Usable);
-                updateUI(objetsUI, InventoryDateBase.Uso.SkillNeed);
-                updateUI(objetsUI, InventoryDateBase.Uso.Consumable);
+                RefreshAllUI();
                 OnInventoryChanged?.Invoke();
                 return;
             }
         }
+
         inventory.Add(new InventoryObjectID(id, amount, uso));
-        updateUI(equipmentUI, InventoryDateBase.Uso.Equipable);
-        updateUI(objetsUI, InventoryDateBase.Uso.Usable);
-        updateUI(objetsUI, InventoryDateBase.Uso.SkillNeed);
-        updateUI(objetsUI, InventoryDateBase.Uso.Consumable);
+        RefreshAllUI();
         OnInventoryChanged?.Invoke();
     }
-    /// <summary>
-    /// Executes the destroy item workflow.
-    /// </summary>
-    /// <param name="id">The id.</param>
-    /// <param name="amount">The amount.</param>
-    /// <param name="uso">The uso.</param>
+
     public void DestroyItem(int id, int amount, InventoryDateBase.Uso uso)
     {
         if (inventory == null) return;
+
         for (int i = 0; i < inventory.Count; i++)
         {
             if (inventory[i].id == id)
             {
-                inventory[i] = new InventoryObjectID(inventory[i].id, inventory[i].amount - amount, uso);
-                if (inventory[i].amount <= 0)
+                int newAmount = inventory[i].amount - amount;
+                if (newAmount <= 0)
                 {
-                    inventory.Remove(inventory[i]);
+                    // Si estaba equipado, desequipar antes de eliminarlo
+                    if (equippedByCharacter.ContainsKey(id))
+                    {
+                        int charIdx = equippedByCharacter[id];
+                        var item = GetItemInformation(id);
+                        Unequip(id, charIdx, item.statsAffected.ToString(), item.amountAffected);
+                    }
+                    inventory.RemoveAt(i);
                 }
-                updateUI(equipmentUI, InventoryDateBase.Uso.Equipable);
-                updateUI(objetsUI, InventoryDateBase.Uso.Usable);
-                updateUI(objetsUI, InventoryDateBase.Uso.SkillNeed);
-                updateUI(objetsUI, InventoryDateBase.Uso.Consumable);
+                else
+                {
+                    inventory[i] = new InventoryObjectID(id, newAmount, uso);
+                }
+
+                RefreshAllUI();
                 OnInventoryChanged?.Invoke();
                 return;
             }
         }
     }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // UI
+    // ─────────────────────────────────────────────────────────────────────────
+
     /// <summary>
-    /// Initializes the component once the scene dependencies are ready.
+    /// Refresca los dos paneles de UI. Llama esto en lugar de los 4 updateUI separados.
     /// </summary>
-    public void Start()
+    public void RefreshAllUI()
     {
-        Debug.Log("Start Item Manager");
-        pool = new List<InventoryUI>();
-        playerEquipped = new Dictionary<PlayerFighter, List<InventoryObjectID>>();
+        UpdatePanel(equipmentUI, equipmentPool, InventoryDateBase.Uso.Equipable);
 
-        updateUI(equipmentUI, InventoryDateBase.Uso.Equipable);
-        updateUI(objetsUI, InventoryDateBase.Uso.Usable);
-        updateUI(objetsUI, InventoryDateBase.Uso.SkillNeed);
-        updateUI(objetsUI, InventoryDateBase.Uso.Consumable);
+        // Usable, SkillNeed y Consumable van todos al mismo panel de objetos
+        var objectItems = inventory
+            .Where(o => o.uso == InventoryDateBase.Uso.Usable
+                     || o.uso == InventoryDateBase.Uso.SkillNeed
+                     || o.uso == InventoryDateBase.Uso.Consumable)
+            .ToList();
 
-        var fighters = GameObject.FindObjectsOfType<PlayerFighter>();
-
-        for (int i = 0; i < fighters.Length; i++)
-        {
-            playerEquipped.Add(fighters[i], new List<InventoryObjectID>());
-        }
-
-        //AgregarEquipoEquipado(fighters[0], inventory[0]);
-        //AgregarEquipoEquipado(fighters[1], inventory[1]);
-
+        UpdatePanelWithList(objetsUI, objectsPool, objectItems);
     }
 
-    /// <summary>
-    /// Updates the ui.
-    /// </summary>
-    /// <param name="_ui">The ui.</param>
-    /// <param name="uso">The uso.</param>
-    public void updateUI(Transform _ui, InventoryDateBase.Uso uso)
+    private void UpdatePanel(Transform ui, List<InventoryUI> pool, InventoryDateBase.Uso uso)
     {
-        if (_ui == null || prefab == null || datebase == null)
-            return;
+        if (ui == null || prefab == null || datebase == null) return;
 
-        //Debug.Log("updateinventory funciono");
-        for (int i = 0; i < pool.Count; i++)
+        var filtered = inventory.Where(o => o.uso == uso).ToList();
+        UpdatePanelWithList(ui, pool, filtered);
+    }
+
+    private void UpdatePanelWithList(Transform ui, List<InventoryUI> pool, List<InventoryObjectID> items)
+    {
+        if (ui == null || prefab == null || datebase == null) return;
+
+        // Actualizar slots existentes
+        for (int i = 0; i < items.Count; i++)
         {
-            if (i < inventory.Count)
+            InventoryUI slot;
+            if (i < pool.Count)
             {
-                InventoryObjectID o = inventory[i];
-
-                //if (datebase.DateBase[o.id].uso != uso)
-                //    return;
-
-                pool[i].sprite.sprite = datebase.DateBase[o.id].sprite;
-                pool[i].amount.text = o.amount.ToString();
-                pool[i].itemName.text = datebase.DateBase[o.id].name;
-                pool[i].itemDescripcion.text = datebase.DateBase[o.id].characteristic;
-
-                //Tambien le paso las referencias de statAffected y amountAffected.
-                pool[i].statAffected = datebase.DateBase[o.id].statsAffected.ToString();
-                pool[i].amountAffected = datebase.DateBase[o.id].amountAffected;
-                if (pool[i].gameObject != null)
-                    pool[i].gameObject.SetActive(true);
+                slot = pool[i];
+                // Si el slot fue destruido (cambio de escena), recrearlo
+                if (slot == null)
+                {
+                    slot = Instantiate(prefab, ui);
+                    slot.transform.localScale = Vector3.one;
+                    pool[i] = slot;
+                }
             }
             else
             {
+                slot = Instantiate(prefab, ui);
+                slot.transform.localScale = Vector3.one;
+                pool.Add(slot);
+            }
+
+            PopulateSlot(slot, items[i]);
+            slot.gameObject.SetActive(true);
+        }
+
+        // Desactivar slots sobrantes
+        for (int i = items.Count; i < pool.Count; i++)
+        {
+            if (pool[i] != null)
                 pool[i].gameObject.SetActive(false);
-            }
-        }
-
-        if (inventory.Count > pool.Count)
-        {
-            for (int i = pool.Count; i < inventory.Count; i++)
-            {
-                if (inventory[i].uso != uso)
-                    return;
-
-                InventoryUI oi = Instantiate(prefab, _ui);
-                pool.Add(oi);
-
-                oi.transform.position = Vector3.zero;
-                oi.transform.localScale = Vector3.one;
-
-                InventoryObjectID o = inventory[i];
-                pool[i].sprite.sprite = datebase.DateBase[o.id].sprite;
-                pool[i].itemName.text = datebase.DateBase[o.id].name;
-                pool[i].itemDescripcion.text = datebase.DateBase[o.id].characteristic;
-                pool[i].amount.text = o.amount.ToString();
-
-                pool[i].gameObject.SetActive(true);
-            }
         }
     }
 
-    /// <summary>
-    /// Creates the ui.
-    /// </summary>
-    public void CreateUI()
+    private void PopulateSlot(InventoryUI slot, InventoryObjectID item)
     {
-        var _ui = equipmentUI;
+        if (!TryGetItemData(item.id, out var data)) return;
 
-        if (inventory.Count > pool.Count)
-        {
-            for (int i = pool.Count; i < inventory.Count; i++)
-            {
-                switch (inventory[i].uso)
-                {
-                    case InventoryDateBase.Uso.Equipable:
-                        _ui = equipmentUI;
-                        break;
-                    case InventoryDateBase.Uso.Usable:
-                    case InventoryDateBase.Uso.SkillNeed:
-                    case InventoryDateBase.Uso.Consumable:
-                        _ui = objetsUI;
-                        break;
-                }
+        slot.itemId           = item.id; // necesario para que InventoryUI consulte equippedByCharacter
+        slot.sprite.sprite    = data.sprite;
+        slot.amount.text      = item.amount.ToString();
+        slot.itemName.text    = data.name;
+        slot.itemDescripcion.text = data.characteristic;
+        slot.statAffected     = data.statsAffected.ToString();
+        slot.amountAffected   = data.amountAffected;
 
-                InventoryUI oi = Instantiate(prefab, _ui);
-                pool.Add(oi);
-
-                oi.transform.position = Vector3.zero;
-                oi.transform.localScale = Vector3.one;
-
-                InventoryObjectID o = inventory[i];
-                pool[i].sprite.sprite = datebase.DateBase[o.id].sprite;
-                pool[i].itemName.text = datebase.DateBase[o.id].name;
-                pool[i].itemDescripcion.text = datebase.DateBase[o.id].characteristic;
-                pool[i].amount.text = o.amount.ToString();
-
-                pool[i].gameObject.SetActive(true);
-            }
-        }
+        // Refrescar el color del botón según estado persistido
+        slot.RefreshEquippedVisual();
     }
-    /// <summary>
-    /// Determines whether the component has item in iventory.
-    /// </summary>
-    /// <param name="itemsNeeded">The items needed.</param>
-    /// <returns>True when the requested condition is met; otherwise, false.</returns>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Queries
+    // ─────────────────────────────────────────────────────────────────────────
+
     public bool HasItemInIventory(List<InventoryObjectID> itemsNeeded)
     {
-
-        if (itemsNeeded.Count == 0)
-            return true;
-
-        var hasItemInIventory = false;
+        if (itemsNeeded == null || itemsNeeded.Count == 0) return true;
 
         foreach (var itemNeed in itemsNeeded)
         {
-            var itemInventory = inventory.Where(x => x.id == itemNeed.id).FirstOrDefault();
-
-            if (itemInventory.amount >= itemNeed.amount)
-                hasItemInIventory = true;
+            var match = inventory.FirstOrDefault(x => x.id == itemNeed.id);
+            if (match.amount >= itemNeed.amount) return true;
         }
-
-        return hasItemInIventory;
+        return false;
     }
 
-    /// <summary>
-    /// Determines whether the component has item in iventory.
-    /// </summary>
-    /// <param name="_id">The id.</param>
-    /// <param name="_amount">The amount.</param>
-    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     public bool HasItemInIventory(int _id, int _amount)
     {
-
-        var hasItemInIventory = false;
-
-
-        var itemInventory = inventory.Where(x => x.id == _id).FirstOrDefault();
-
-        if (itemInventory.amount >= _amount)
-            hasItemInIventory = true;
-
-
-        return hasItemInIventory;
+        var match = inventory.FirstOrDefault(x => x.id == _id);
+        return match.amount >= _amount;
     }
 
-
-    /// <summary>
-    /// Executes the obtener equipo equipado workflow.
-    /// </summary>
-    /// <param name="jugador">The jugador.</param>
-    /// <returns>The resulting collection.</returns>
-    public List<InventoryObjectID> ObtenerEquipoEquipado(PlayerFighter jugador)
-    {
-        if (playerEquipped.TryGetValue(jugador, out List<InventoryObjectID> equipo))
-        {
-            return equipo;
-        }
-        else
-        {
-            // El jugador no tiene equipo equipado
-            return new List<InventoryObjectID>();
-        }
-    }
-
-    /// <summary>
-    /// Executes the agregar equipo equipado workflow.
-    /// </summary>
-    /// <param name="jugador">The jugador.</param>
-    /// <param name="objeto">The objeto.</param>
-    public void AgregarEquipoEquipado(PlayerFighter jugador, InventoryObjectID objeto)
-    {
-        if (playerEquipped.ContainsKey(jugador))
-        {
-            playerEquipped[jugador].Add(objeto);
-        }
-        else
-        {
-            playerEquipped[jugador] = new List<InventoryObjectID> { objeto };
-        }
-    }
-
-    /// <summary>
-    /// Attempts to get the item data.
-    /// </summary>
-    /// <param name="id">The id.</param>
-    /// <param name="data">The data.</param>
-    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     public bool TryGetItemData(int id, out InventoryDateBase.Object data)
     {
         data = default;
-        if (_itemCache != null && _itemCache.TryGetValue(id, out data))
-            return true;
+        if (_itemCache != null && _itemCache.TryGetValue(id, out data)) return true;
         if (datebase != null && datebase.DateBase != null && id >= 0 && id < datebase.DateBase.Length)
         {
             data = datebase.DateBase[id];
@@ -399,34 +333,45 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// Gets the item information.
-    /// </summary>
-    /// <param name="_id">The id.</param>
-    /// <returns>The resulting value.</returns>
     public InventoryDateBase.Object GetItemInformation(int _id)
     {
-        if (TryGetItemData(_id, out var data))
-            return data;
-        Debug.LogWarning($"GetItemInformation: invalid id {_id}");
+        if (TryGetItemData(_id, out var data)) return data;
+        Debug.LogWarning($"[InventoryManager] GetItemInformation: id inválido {_id}");
         return default;
     }
-    
-    /// <summary>
-    /// Handles the give item.
-    /// </summary>
-    /// <param name="id">The id.</param>
-    /// <param name="amount">The amount.</param>
-    /// <param name="uso">The uso.</param>
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Internos
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private void BuildItemCache()
+    {
+        _itemCache = new Dictionary<int, InventoryDateBase.Object>();
+        if (datebase != null && datebase.DateBase != null)
+        {
+            for (int i = 0; i < datebase.DateBase.Length; i++)
+                _itemCache[i] = datebase.DateBase[i];
+        }
+    }
+
     private void HandleGiveItem(int id, int amount, InventoryDateBase.Uso uso)
     {
-        Debug.Log($"InventoryManager: Recibido item {id} x{amount}");
-        
-        // Llamamos a tu método existente AddItem
-        
+        Debug.Log($"[InventoryManager] HandleGiveItem id={id} x{amount}");
         AddItem(id, amount, uso);
-        
-        // Opcional: Mostrar feedback visual en pantalla tipo "¡Has conseguido una Poción!"
     }
-    
+
+    [System.Serializable]
+    public struct InventoryObjectID
+    {
+        public int id;
+        public int amount;
+        public InventoryDateBase.Uso uso;
+
+        public InventoryObjectID(int id, int amount, InventoryDateBase.Uso uso)
+        {
+            this.id     = id;
+            this.amount = amount;
+            this.uso    = uso;
+        }
+    }
 }
