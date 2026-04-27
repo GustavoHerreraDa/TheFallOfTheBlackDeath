@@ -17,13 +17,20 @@ public class ObjectRoomLogic : RoomLogicBase
     {
         if (objectSpawnPoints == null || objectPrefabs == null) return;
 
+        // Create a copy of the available spawn points to randomly select from
+        List<Transform> availablePoints = new List<Transform>(objectSpawnPoints);
+        
         int count = Mathf.Min(objectSpawnPoints.Count, objectPrefabs.Count);
         for (int i = 0; i < count; i++)
         {
-            if (objectSpawnPoints[i] != null && objectPrefabs[i] != null)
+            int randomPointIndex = Random.Range(0, availablePoints.Count);
+            Transform selectedPoint = availablePoints[randomPointIndex];
+            availablePoints.RemoveAt(randomPointIndex); // Remove so it isn't picked twice
+            
+            if (selectedPoint != null && objectPrefabs[i] != null)
             {
-                GameObject spawnedObj = Instantiate(objectPrefabs[i], objectSpawnPoints[i].position, objectSpawnPoints[i].rotation);
-                Debug.Log($"[ObjectRoom] Spawned object '{spawnedObj.name}' at {objectSpawnPoints[i].position}.");
+                GameObject spawnedObj = Instantiate(objectPrefabs[i], selectedPoint.position, selectedPoint.rotation);
+                Debug.Log($"[ObjectRoom] Spawned object '{spawnedObj.name}' at {selectedPoint.position}.");
             }
         }
     }

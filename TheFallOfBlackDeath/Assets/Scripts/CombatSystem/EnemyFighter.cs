@@ -19,6 +19,11 @@ public class EnemyFighter : Fighter
     public int EnemyIndex;
     public IAEnemySimple _IAEnemySimple;
 
+    [Header("Instance Modifiers")]
+    [Tooltip("Modify this specific enemy's stats. Set to 0.5 to make it half as strong (e.g. for a tutorial).")]
+    public float healthMultiplier = 1f;
+    public float attackMultiplier = 1f;
+
     /// <summary>
     /// Initializes cached references and runtime state before the component starts running.
     /// </summary>
@@ -43,6 +48,12 @@ public class EnemyFighter : Fighter
             Debug.LogWarning($"[EnemyFighter.Awake] EnemyDateBase null or EnemyIndex out of range ({EnemyIndex}). Using safe defaults.");
             this.stats = safeDefaults;
         }
+
+        // Apply unique instance modifiers
+        this.stats.maxHealth = Mathf.Round(this.stats.maxHealth * healthMultiplier);
+        this.stats.health = this.stats.maxHealth;
+        this.stats.attack = Mathf.Round(this.stats.attack * attackMultiplier);
+
         // Ensure health is at least 1
         this.stats.health = Mathf.Clamp(this.stats.health, 1, this.stats.maxHealth);
     }

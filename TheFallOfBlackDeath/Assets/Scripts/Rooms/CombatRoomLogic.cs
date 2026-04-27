@@ -1,27 +1,32 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// Logic handler for COMBAT type rooms.
-/// Manages enemy spawn points and handles the spawning of enemies upon activation.
+/// Manages multiple enemy spawn points and randomly selects one for spawning enemies upon activation.
 /// </summary>
 public class CombatRoomLogic : RoomLogicBase
 {
-    [SerializeField] private Transform enemySpawnPoint;
+    [SerializeField] private List<Transform> enemySpawnPoints;
     [SerializeField] private GameObject enemyPrefab;
 
     /// <summary>
-    /// Spawns the assigned enemy prefab at the designated spawn point.
+    /// Spawns the assigned enemy prefab at a randomly selected spawn point.
     /// </summary>
     public override void ExecuteLogic()
     {
-        if (enemySpawnPoint != null && enemyPrefab != null)
+        if (enemySpawnPoints != null && enemySpawnPoints.Count > 0 && enemyPrefab != null)
         {
-            GameObject spawnedEnemy = Instantiate(enemyPrefab, enemySpawnPoint.position, enemySpawnPoint.rotation);
-            Debug.Log($"[CombatRoom] Enemy '{spawnedEnemy.name}' spawned at {enemySpawnPoint.position}.");
+            Transform selectedPoint = enemySpawnPoints[Random.Range(0, enemySpawnPoints.Count)];
+            if (selectedPoint != null)
+            {
+                GameObject spawnedEnemy = Instantiate(enemyPrefab, selectedPoint.position, selectedPoint.rotation);
+                Debug.Log($"[CombatRoom] Enemy '{spawnedEnemy.name}' spawned at {selectedPoint.position}.");
+            }
         }
         else
         {
-            Debug.LogWarning("[CombatRoom] Missing enemy prefab or spawn point reference.");
+            Debug.LogWarning("[CombatRoom] Missing enemy prefab or spawn points list is empty.");
         }
     }
 }

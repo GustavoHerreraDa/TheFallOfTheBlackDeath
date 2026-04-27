@@ -28,10 +28,7 @@ public class CharacterEventManager : MonoBehaviour
         }
         Instance = this;
 
-        if (currentStats == null)
-        {
-            currentStats = new CharacterStats();
-        }
+        currentStats ??= new CharacterStats();
     }
 
     /// <summary>

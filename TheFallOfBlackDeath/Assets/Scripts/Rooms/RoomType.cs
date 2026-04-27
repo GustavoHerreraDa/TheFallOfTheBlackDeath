@@ -6,5 +6,6 @@ public enum RoomType
     COMBAT,
     EVENT,
     OBJECT,
-    KEY_OBJECT
+    KEY_OBJECT,
+    TEAM_MATE
 }

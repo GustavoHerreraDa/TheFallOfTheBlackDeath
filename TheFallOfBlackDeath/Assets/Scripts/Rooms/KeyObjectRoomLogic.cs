@@ -1,27 +1,32 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// Logic handler for KEY_OBJECT type rooms.
-/// Handles the spawning and simulated collection of critical progression items.
+/// Handles the random spawning and simulated collection of critical progression items.
 /// </summary>
 public class KeyObjectRoomLogic : RoomLogicBase
 {
-    [SerializeField] private Transform keyObjectSpawnPoint;
+    [SerializeField] private List<Transform> keyObjectSpawnPoints;
     [SerializeField] private GameObject keyObjectPrefab;
 
     /// <summary>
-    /// Spawns the key item prefab at the designated key spawn point.
+    /// Spawns the key item prefab at a randomly selected spawn point.
     /// </summary>
     public override void ExecuteLogic()
     {
-        if (keyObjectSpawnPoint != null && keyObjectPrefab != null)
+        if (keyObjectSpawnPoints != null && keyObjectSpawnPoints.Count > 0 && keyObjectPrefab != null)
         {
-            GameObject keyItem = Instantiate(keyObjectPrefab, keyObjectSpawnPoint.position, keyObjectSpawnPoint.rotation);
-            Debug.Log($"[KeyObjectRoom] Key Object '{keyItem.name}' spawned at {keyObjectSpawnPoint.position}.");
+            Transform selectedPoint = keyObjectSpawnPoints[Random.Range(0, keyObjectSpawnPoints.Count)];
+            if (selectedPoint != null)
+            {
+                GameObject keyItem = Instantiate(keyObjectPrefab, selectedPoint.position, selectedPoint.rotation);
+                Debug.Log($"[KeyObjectRoom] Key Object '{keyItem.name}' spawned at {selectedPoint.position}.");
+            }
         }
         else
         {
-            Debug.LogWarning("[KeyObjectRoom] Missing key object prefab or spawn point reference.");
+            Debug.LogWarning("[KeyObjectRoom] Missing key object prefab or spawn points list is empty.");
         }
     }
 
