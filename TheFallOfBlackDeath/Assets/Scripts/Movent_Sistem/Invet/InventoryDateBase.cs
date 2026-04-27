@@ -38,7 +38,7 @@ public class InventoryDateBase : ScriptableObject
     /// <summary>
     /// Defines the named values used by uso.
     /// </summary>
-    public enum Uso { Equipable, Usable, Consumable, SkillNeed }
+    public enum Uso { Equipable, Usable, Consumable, SkillNeed, BodyPartHeal }
     /// <summary>
     /// Defines the named values used by stats upgrade.
     /// </summary>
