@@ -28,7 +28,7 @@ public class InventoryUI : MonoBehaviour
     public Color unequippedColor = Color.white;
 
     private Color originalColor;
-
+    public BodyPartHealItem healItem;
     // ─────────────────────────────────────────────────────────────────────────
     // Unity lifecycle
     // ─────────────────────────────────────────────────────────────────────────
@@ -111,5 +111,17 @@ public class InventoryUI : MonoBehaviour
 
         bool equippedByAny = InventoryManager.instance.equippedByCharacter.ContainsKey(itemId);
         buttonSprite.color = equippedByAny ? equippedColor : originalColor;
+    }
+    
+    public void UseBodyPartHealBTN()
+    {
+        if (healItem == null || InventoryManager.instance == null) return;
+
+        // Obtener el fighter activo
+        PlayerFighter target = GameManager.Instance?.character1;
+        if (target == null) return;
+
+        healItem.healAmount = amountAffected; // viene del InventoryManager al popular el slot
+        healItem.Use(target, itemId);
     }
 }
