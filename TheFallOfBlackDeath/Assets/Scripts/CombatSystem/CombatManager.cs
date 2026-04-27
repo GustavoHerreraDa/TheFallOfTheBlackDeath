@@ -230,7 +230,7 @@ public class CombatManager : MonoBehaviour
                     if (nextMessage != null)
                     {
                         LogPanel.Write(nextMessage);
-                        yield return new WaitForSeconds(1.5f);
+                        yield return new WaitForSeconds(1f);
                     }
                     else
                     {
@@ -366,7 +366,7 @@ public class CombatManager : MonoBehaviour
                         LogPanel.Write("Defeat!");
                         this.isCombatActive = false;
                         yield return new WaitForSeconds(2f);
-                        SceneManager.LoadSceneAsync(6);
+                        SceneManager.LoadSceneAsync(5);
                         sonidoDeDerrota.Play();
                     }
 
@@ -405,7 +405,7 @@ public class CombatManager : MonoBehaviour
             if (nextBodyPartMessage == null) break;
 
             LogPanel.Write(nextBodyPartMessage);
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -422,7 +422,7 @@ public class CombatManager : MonoBehaviour
             if (nextSCMessage == null) break;
 
             LogPanel.Write(nextSCMessage);
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
         }
 
         // --- CAMBIO CLAVE: Verificar si murió por el daño de estado ---
