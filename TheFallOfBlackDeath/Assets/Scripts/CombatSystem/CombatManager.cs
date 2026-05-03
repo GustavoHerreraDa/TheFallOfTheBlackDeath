@@ -230,7 +230,7 @@ public class CombatManager : MonoBehaviour
                     if (nextMessage != null)
                     {
                         LogPanel.Write(nextMessage);
-                        yield return new WaitForSeconds(1f);
+                        yield return new WaitForSeconds(0.1f);
                     }
                     else
                     {
@@ -379,7 +379,7 @@ public class CombatManager : MonoBehaviour
                     break;
                 case CombatStatus.NEXT_TURN:
                     SortFightersBySpeed();
-                    yield return new WaitForSeconds(0.2f);
+                    yield return new WaitForSeconds(0.1f);
 
                     Fighter current = null;
 
@@ -405,7 +405,7 @@ public class CombatManager : MonoBehaviour
             if (nextBodyPartMessage == null) break;
 
             LogPanel.Write(nextBodyPartMessage);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
@@ -422,7 +422,7 @@ public class CombatManager : MonoBehaviour
             if (nextSCMessage == null) break;
 
             LogPanel.Write(nextSCMessage);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.1f);
         }
 
         // --- CAMBIO CLAVE: Verificar si murió por el daño de estado ---
