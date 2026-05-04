@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -551,6 +552,15 @@ public class CombatManager : MonoBehaviour
     {
         this.currentFighterSkill = skill;
         this.combatStatus = CombatStatus.FIGHTER_ACTION;
+
+        // Limpiar el foco del EventSystem para evitar que los botones mantengan el estado de "highlighted" o "selected"
+        if (EventSystem.current != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+
+        // Ocultar la tooltip explícitamente al iniciar la acción
+        Tooltip.HideTooltip_static();
     }
 
     /// <summary>

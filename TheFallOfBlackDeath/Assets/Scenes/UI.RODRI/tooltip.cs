@@ -2,32 +2,33 @@ using UnityEngine.UI;
 using UnityEngine;
 using System.Collections;
 using TMPro;
+
 /// <summary>
 /// Handles tooltip for the current project workflow.
 /// </summary>
-public class tooltip : MonoBehaviour
-
+public class Tooltip : MonoBehaviour // Idealmente las clases en C# empiezan con mayúscula
 {
     public SkillManager skillManager;
-    private static tooltip instance;
+    private static Tooltip instance;
     public Image tool;
     public TextMeshProUGUI skillNameTxT;
-    public GameObject ActionsButtonsPanel;
-
+    public GameObject actionsButtonsPanel;
     public GameObject fondoUi;
-    // Start is called before the first frame update
+
+    void Awake()
+    {
+        // Inicializamos el Singleton temprano
+        instance = this;
+    }
+
     /// <summary>
     /// Initializes the component once the scene dependencies are ready.
     /// </summary>
     void Start()
     {
         skillManager = FindObjectOfType<SkillManager>();
-        tool.enabled = false;
-        skillNameTxT.enabled = false;
-        instance = this;
-        fondoUi.SetActive(false);
+        disableSkillTxT(); // Reutilizamos tu propio método para setear el estado inicial apagado
     }
-
 
     /// <summary>
     /// Executes the mouse over workflow.
@@ -37,72 +38,81 @@ public class tooltip : MonoBehaviour
     {
         tool.enabled = true;
         fondoUi.SetActive(true);
-        //var couritine = StartCoroutine("HideTooltipEnum"); 
         skillNameTxT.enabled = true;
-        skillNameTxT.GetComponent<TextMeshProUGUI>().text = skillManager.GetSkillDescription(SkillIndex);
+        
+        // Asignación directa, más óptima sin GetComponent
+        skillNameTxT.text = skillManager.GetSkillDescription(SkillIndex);
     }
+
     /// <summary>
     /// Executes the disable skill tx t workflow.
     /// </summary>
     public void disableSkillTxT()
     {
         tool.enabled = false;
-        fondoUi.SetActive(false);
+        if (fondoUi != null) fondoUi.SetActive(false);
         skillNameTxT.enabled = false;
+        skillNameTxT.text = string.Empty; // Limpiamos el texto para evitar basura visual
     }
 
-
-    // Update is called once per frame
     /// <summary>
     /// Updates the component each frame while it is active.
     /// </summary>
     void Update()
     {
-        if (ActionsButtonsPanel == null)
+        if (actionsButtonsPanel == null)
             return;
 
-        if (!ActionsButtonsPanel.activeSelf)
+        if (!actionsButtonsPanel.activeSelf)
             disableSkillTxT();
     }
+
     /// <summary>
-    /// Shows the tooltip.
+    /// Shows the tooltip with a specific string.
     /// </summary>
     /// <param name="tooltipString">The tooltip string.</param>
     private void ShowTooltip(string tooltipString)
     {
-        gameObject.SetActive(true);
+        // Ahora sí aplicamos el texto al mostrar el tooltip por string
+        skillNameTxT.text = tooltipString;
+        tool.enabled = true;
+        fondoUi.SetActive(true);
+        skillNameTxT.enabled = true;
     }
+
     /// <summary>
     /// Hides the tooltip.
     /// </summary>
     private void HideTooltip()
     {
-        gameObject.SetActive(false);
+        disableSkillTxT(); // Usamos tu método seguro en lugar de apagar el gameObject
     }
 
     /// <summary>
-    /// Hides the tooltip enum.
+    /// Hides the tooltip after a delay.
     /// </summary>
-    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator HideTooltipEnum()
     {
         yield return new WaitForSeconds(10f);
         disableSkillTxT();
     }
+
     /// <summary>
-    /// Shows the tooltip static.
+    /// Shows the tooltip statically.
     /// </summary>
     /// <param name="tooltipString">The tooltip string.</param>
     public static void ShowTooltip_static(string tooltipString)
     {
-        instance.ShowTooltip(tooltipString);
+        if (instance != null)
+            instance.ShowTooltip(tooltipString);
     }
 
     /// <summary>
-    /// Shows the tooltip static.
+    /// Hides the tooltip statically.
     /// </summary>
-    public static void ShowTooltip_static()
+    public static void HideTooltip_static() // Corregido el nombre para reflejar la acción real
     {
-        instance.HideTooltip();
+        if (instance != null)
+            instance.HideTooltip();
     }
 }

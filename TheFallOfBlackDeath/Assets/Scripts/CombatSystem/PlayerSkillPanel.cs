@@ -271,6 +271,8 @@ public class PlayerSkillPanel : MonoBehaviour
         {
             if (btn != null) btn.SetActive(false);
         }
+
+        Tooltip.HideTooltip_static();
     }
 
     /// <summary>

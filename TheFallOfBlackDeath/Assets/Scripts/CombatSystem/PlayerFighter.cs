@@ -158,7 +158,7 @@ public class PlayerFighter : Fighter
         Debug.Log($"[PlayerFighter.InitTurn] skills count={count} for {idName}");
 
         this.skillPanel.ShowForPlayer(this);
-        statusPanel?.gameObject.SetActive(true);
+        //statusPanel?.gameObject.SetActive(true);
     }
 
     /// <summary>

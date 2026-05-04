@@ -86,6 +86,7 @@ public class EnemiesPanel : MonoBehaviour
         }
 
         targets.Clear();
+        Tooltip.HideTooltip_static();
     }
 
     // ================= BUTTON CLICK =================
