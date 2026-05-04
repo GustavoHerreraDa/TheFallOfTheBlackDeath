@@ -8,6 +8,8 @@ using UnityEngine;
 /// </summary>
 public class CombatScannerSystem : MonoBehaviour
 {
+    public static CombatScannerSystem Instance { get; private set; }
+
     public Vector3 worldOffset = new Vector3(0f, 2.6f, 0f);
     public Vector3 anchorOffset = Vector3.zero;
     public float fontSize = 3f;
@@ -23,7 +25,16 @@ public class CombatScannerSystem : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         combatManager = GetComponent<CombatManager>();
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
 
     private void Update()
