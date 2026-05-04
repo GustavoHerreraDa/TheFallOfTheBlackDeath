@@ -15,9 +15,9 @@ public class SkillManager : MonoBehaviour
     public int SetSkill;
 
     [Header("UI")]
-    public PlayerSkillPanel skillPanel;
-    public EnemiesPanel enemySelection;
-    public BodyPartPanel bodyPartPanel;
+    [SerializeField] public PlayerSkillPanel skillPanel;
+    [SerializeField] public EnemiesPanel enemySelection;
+    [SerializeField] public BodyPartPanel bodyPartPanel;
 
 
     /// <summary>
@@ -25,11 +25,13 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        fighter = FindObjectOfType<PlayerFighter>();
-        combatManager = FindObjectOfType<CombatManager>();
-        enemySelection = FindObjectOfType<EnemiesPanel>();
-        skillPanel = FindObjectOfType<PlayerSkillPanel>();
-        bodyPartPanel = FindObjectOfType<BodyPartPanel>();
+        if (fighter == null) fighter = FindObjectOfType<PlayerFighter>();
+        if (combatManager == null) combatManager = FindObjectOfType<CombatManager>();
+        
+        // Prefer references already set in inspector. If null, try to find them (but warn if they might be inactive)
+        if (enemySelection == null) enemySelection = FindObjectOfType<EnemiesPanel>(true);
+        if (skillPanel == null) skillPanel = FindObjectOfType<PlayerSkillPanel>(true);
+        if (bodyPartPanel == null) bodyPartPanel = FindObjectOfType<BodyPartPanel>(true);
     }
     /// <summary>
     /// Initializes the component once the scene dependencies are ready.
@@ -74,11 +76,37 @@ public class SkillManager : MonoBehaviour
     /// <param name="Panel">The panel.</param>
     public void OpenPanel(GameObject Panel)
     {
+       
+        if (Panel != null)
+        {
+            Panel.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("[SkillManager.OpenPanel] Panel is null. Check Inspector references.");
+        }
 
-        Panel.SetActive(true);
-        enemySelection.Hide();
-        skillPanel.Show();
-        Debug.Log("fuiste para atras");
+        
+        if (enemySelection != null) enemySelection.Hide();
+
+        if (combatManager == null) combatManager = FindObjectOfType<CombatManager>();
+        if (combatManager == null)
+        {
+            Debug.LogError("[SkillManager.OpenPanel] CombatManager not found.");
+            return;
+        }
+
+        Fighter currentFighter = combatManager.CurrentFighter;
+    
+        if (currentFighter is PlayerFighter playerFighter)
+        {
+            playerFighter.Return();
+            Debug.Log("Panel de habilidades refrescado vía PlayerFighter.Return() para: " + playerFighter.idName);
+        }
+        else if (currentFighter == null)
+        {
+            Debug.LogWarning("[SkillManager.OpenPanel] CurrentFighter is null.");
+        }
     }
 
 

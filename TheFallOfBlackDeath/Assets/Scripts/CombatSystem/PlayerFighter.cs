@@ -312,8 +312,19 @@ public class PlayerFighter : Fighter
     /// </summary>
     public void Return()
     {
-        this.skillPanel.Show();
-        this.enemiesPanel.Hide();
+        if (this.skillPanel != null)
+        {
+            this.skillPanel.ShowForPlayer(this); 
+        }
+        else
+        {
+            Debug.LogWarning($"[PlayerFighter.Return] skillPanel is null on {idName}");
+        }
+
+        if (this.enemiesPanel != null)
+        {
+            this.enemiesPanel.Hide();
+        }
     }
 
     /// <summary>
