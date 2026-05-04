@@ -8,7 +8,6 @@ using UnityEngine;
 /// </summary>
 public class CombatScannerSystem : MonoBehaviour
 {
-    public KeyCode toggleKey = KeyCode.F;
     public Vector3 worldOffset = new Vector3(0f, 2.6f, 0f);
     public Vector3 anchorOffset = Vector3.zero;
     public float fontSize = 3f;
@@ -34,18 +33,11 @@ public class CombatScannerSystem : MonoBehaviour
 
         mainCamera = mainCamera != null ? mainCamera : Camera.main;
 
-        bool canUseScanner = CanCurrentFighterUseScanner();
-
-        if (!canUseScanner)
+        if (!CanCurrentFighterUseScanner())
         {
             scannerEnabled = false;
             HideAll();
             return;
-        }
-
-        if (Input.GetKeyDown(toggleKey))
-        {
-            scannerEnabled = !scannerEnabled;
         }
 
         if (!scannerEnabled)
@@ -55,6 +47,35 @@ public class CombatScannerSystem : MonoBehaviour
         }
 
         RefreshLabels();
+    }
+
+    /// <summary>
+    /// Toggles the scanner state. Called from UI Button.
+    /// </summary>
+    public void ToggleScanner()
+    {
+        if (!CanCurrentFighterUseScanner())
+        {
+            scannerEnabled = false;
+            HideAll();
+            return;
+        }
+
+        scannerEnabled = !scannerEnabled;
+
+        if (!scannerEnabled)
+        {
+            HideAll();
+        }
+    }
+
+    /// <summary>
+    /// Returns whether the current fighter can use the scanner. 
+    /// Useful for setting Button.interactable.
+    /// </summary>
+    public bool CanUseScannerUI()
+    {
+        return CanCurrentFighterUseScanner();
     }
 
     private bool CanCurrentFighterUseScanner()
