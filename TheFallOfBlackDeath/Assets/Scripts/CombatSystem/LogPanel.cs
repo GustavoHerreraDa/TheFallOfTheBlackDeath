@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -23,6 +24,8 @@ public class LogPanel : MonoBehaviour
     private CanvasGroup canvasGroup;
     private Coroutine fadeRoutine;
 
+    private Queue<string> messageQueue = new Queue<string>();
+
     /// <summary>
     /// Initializes cached references and runtime state before the component starts running.
     /// </summary>
@@ -35,6 +38,25 @@ public class LogPanel : MonoBehaviour
         canvasGroup.alpha = 0f;
     }
 
+    private void Start()
+    {
+        StartCoroutine(ProcessQueueRoutine());
+    }
+
+    private IEnumerator ProcessQueueRoutine()
+    {
+        while (true)
+        {
+            if (messageQueue.Count > 0 && fadeRoutine == null)
+            {
+                string nextMessage = messageQueue.Dequeue();
+                logLabel.text = nextMessage;
+                fadeRoutine = StartCoroutine(ShowMessageRoutine());
+            }
+            yield return null;
+        }
+    }
+
     //Funcion estatica write para escribir un mensaje
     /// <summary>
     /// Executes the write workflow.
@@ -44,13 +66,8 @@ public class LogPanel : MonoBehaviour
     {
         if (current == null)
             return;
-        if (current.fadeRoutine != null)
-        {
-            current.StopCoroutine(current.fadeRoutine);
-            current.fadeRoutine = null;
-        }
-        current.logLabel.text = message;
-        current.fadeRoutine = current.StartCoroutine(current.ShowMessageRoutine());
+        
+        current.messageQueue.Enqueue(message);
     }
 
     /// <summary>
@@ -98,13 +115,4 @@ public class LogPanel : MonoBehaviour
         canvasGroup.alpha = target;
     }
 
-    /// <summary>
-    /// Executes the write workflow.
-    /// </summary>
-    /// <param name="idName">The id name.</param>
-    /// <param name="v">The v.</param>
-    internal static void Write(string idName, string v)
-    {
-        throw new NotImplementedException();
-    }
 }

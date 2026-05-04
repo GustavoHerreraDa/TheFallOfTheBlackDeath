@@ -65,27 +65,47 @@ public class DitherFeatures : ScriptableRendererFeature
         /// <param name="renderingData">The rendering data.</param>
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
-            if (!settings.enabled || material == null) return;
+            // Filtro de Cámara Estricto
+            var cameraType = renderingData.cameraData.cameraType;
+            if (cameraType != CameraType.Game && cameraType != CameraType.SceneView) return;
+
+            // Validación de Recursos
+            if (settings == null || settings.ditherTex == null || !settings.enabled || material == null) return;
 
             var cmd = CommandBufferPool.Get("DitherPass");
-            
-            // En URP moderno, accedemos al source así:
-            var source = renderingData.cameraData.renderer.cameraColorTargetHandle;
-            var camera = renderingData.cameraData.camera;
+            try
+            {
+                // En URP moderno, accedemos al source así:
+                var source = renderingData.cameraData.renderer.cameraColorTargetHandle;
+                var camera = renderingData.cameraData.camera;
 
-            // --- LÓGICA DE OBRA DINN MEJORADA ---
-            // Enviamos la matriz inversa de vista para calcular la dirección del rayo en el shader
-            material.SetMatrix("_InverseView", camera.cameraToWorldMatrix);
-            material.SetTexture("_NoiseTex", settings.ditherTex);
-            material.SetTexture("_ColorRampTex", settings.rampTex);
-            material.SetFloat("_NoiseScale", settings.noiseScale);
-            
-            // Blit usando RTHandles (Source -> Temp -> Source)
-            Blitter.BlitCameraTexture(cmd, source, tempTextureHandle, material, 0);
-            Blitter.BlitCameraTexture(cmd, tempTextureHandle, source);
+                // Validación de RTHandles (URP Moderno)
+                if (source == null || source.rt == null || tempTextureHandle == null || tempTextureHandle.rt == null)
+                {
+                    return;
+                }
 
-            context.ExecuteCommandBuffer(cmd);
-            CommandBufferPool.Release(cmd);
+                // --- LÓGICA DE OBRA DINN MEJORADA ---
+                // Enviamos la matriz inversa de vista para calcular la dirección del rayo en el shader
+                material.SetMatrix("_InverseView", camera.cameraToWorldMatrix);
+                material.SetTexture("_NoiseTex", settings.ditherTex);
+                material.SetTexture("_ColorRampTex", settings.rampTex);
+                material.SetFloat("_NoiseScale", settings.noiseScale);
+
+                // Blit usando RTHandles (Source -> Temp -> Source)
+                if (material != null)
+                {
+                    Blitter.BlitCameraTexture(cmd, source, tempTextureHandle, material, 0);
+                    Blitter.BlitCameraTexture(cmd, tempTextureHandle, source);
+                }
+
+                context.ExecuteCommandBuffer(cmd);
+            }
+            finally
+            {
+                cmd.Clear();
+                CommandBufferPool.Release(cmd);
+            }
         }
 
         /// <summary>

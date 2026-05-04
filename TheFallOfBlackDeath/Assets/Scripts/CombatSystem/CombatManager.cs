@@ -210,6 +210,7 @@ public class CombatManager : MonoBehaviour
                     break;
 
                 case CombatStatus.FIGHTER_ACTION:
+                    // Anunciar el uso de la habilidad
                     LogPanel.Write($"{this.fighters[this.fighterIndex].idName} uses {currentFighterSkill.skillName}.");
 
                     yield return null;
@@ -225,19 +226,20 @@ public class CombatManager : MonoBehaviour
                     this.UpdateStatsUI();
                     break;
                 case CombatStatus.CHECK_ACTION_MESSAGES:
-                    string nextMessage = this.currentFighterSkill.GetNextMessage();
+                    // Filtro de Mensajes: Solo si la habilidad es de tipo StatusModSkill, debe procesar los mensajes
+                    if (this.currentFighterSkill is StatusModSkill)
+                    {
+                        while (true)
+                        {
+                            string nextMessage = this.currentFighterSkill.GetNextMessage();
+                            if (nextMessage == null) break;
+                            LogPanel.Write(nextMessage);
+                        }
+                    }
 
-                    if (nextMessage != null)
-                    {
-                        LogPanel.Write(nextMessage);
-                        yield return new WaitForSeconds(0.1f);
-                    }
-                    else
-                    {
-                        this.currentFighterSkill = null;
-                        this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
-                        yield return null;
-                    }
+                    this.currentFighterSkill = null;
+                    this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
+                    yield return null;
                     break;
 
                 case CombatStatus.CHECK_FOR_VICTORY:
@@ -405,7 +407,6 @@ public class CombatManager : MonoBehaviour
             if (nextBodyPartMessage == null) break;
 
             LogPanel.Write(nextBodyPartMessage);
-            yield return new WaitForSeconds(0.1f);
         }
     }
 
@@ -422,7 +423,6 @@ public class CombatManager : MonoBehaviour
             if (nextSCMessage == null) break;
 
             LogPanel.Write(nextSCMessage);
-            yield return new WaitForSeconds(0.1f);
         }
 
         // --- CAMBIO CLAVE: Verificar si murió por el daño de estado ---

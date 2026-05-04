@@ -81,31 +81,47 @@ public class DitherFeature : ScriptableRendererFeature
         /// <param name="renderingData">The rendering data.</param>
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
-            if (!settings.enabled || material == null) return;
+            // Filtro de Cámara Estricto
+            var cameraType = renderingData.cameraData.cameraType;
+            if (cameraType != CameraType.Game && cameraType != CameraType.SceneView) return;
+
+            // Validación de Recursos
+            if (settings == null || settings.blueNoiseTex == null || !settings.enabled || material == null) return;
 
             var cmd = CommandBufferPool.Get("DitherPass");
-            
-            // En URP moderno, accedemos al source así:
-            var source = renderingData.cameraData.renderer.cameraColorTargetHandle;
-            var camera = renderingData.cameraData.camera;
+            try
+            {
+                // En URP moderno, accedemos al source así:
+                var source = renderingData.cameraData.renderer.cameraColorTargetHandle;
 
-            // --- LÓGICA DE OBRA DINN MEJORADA ---
-            material.SetTexture("_BlueNoiseTex", settings.blueNoiseTex);
-            material.SetFloat("_NoiseScale", settings.noiseScale);
-            material.SetInt("_BitDepth", settings.bitDepth);
-            material.SetFloat("_Contrast", settings.contrast);
-            material.SetFloat("_Brightness", settings.brightness);
-            material.SetFloat("_Threshold", settings.threshold);
-            material.SetFloat("_EdgeStrength", settings.edgeStrength);
-            material.SetFloat("_EdgeThreshold", settings.edgeThreshold);
-            material.SetFloat("_DitherTime", settings.animatedNoise ? Time.time : 0.0f);
+                // Validación de RTHandles (URP Moderno)
+                if (source == null || source.rt == null || tempTextureHandle == null || tempTextureHandle.rt == null)
+                {
+                    return;
+                }
 
-            // Blit usando RTHandles (Source -> Temp -> Source)
-            Blitter.BlitCameraTexture(cmd, source, tempTextureHandle, material, 0);
-            Blitter.BlitCameraTexture(cmd, tempTextureHandle, source);
+                // --- LÓGICA DE OBRA DINN MEJORADA ---
+                material.SetTexture("_BlueNoiseTex", settings.blueNoiseTex);
+                material.SetFloat("_NoiseScale", settings.noiseScale);
+                material.SetInt("_BitDepth", settings.bitDepth);
+                material.SetFloat("_Contrast", settings.contrast);
+                material.SetFloat("_Brightness", settings.brightness);
+                material.SetFloat("_Threshold", settings.threshold);
+                material.SetFloat("_EdgeStrength", settings.edgeStrength);
+                material.SetFloat("_EdgeThreshold", settings.edgeThreshold);
+                material.SetFloat("_DitherTime", settings.animatedNoise ? Time.time : 0.0f);
 
-            context.ExecuteCommandBuffer(cmd);
-            CommandBufferPool.Release(cmd);
+                // Blit usando RTHandles (Source -> Temp -> Source)
+                Blitter.BlitCameraTexture(cmd, source, tempTextureHandle, material, 0);
+                Blitter.BlitCameraTexture(cmd, tempTextureHandle, source);
+
+                context.ExecuteCommandBuffer(cmd);
+            }
+            finally
+            {
+                cmd.Clear();
+                CommandBufferPool.Release(cmd);
+            }
         }
 
         /// <summary>

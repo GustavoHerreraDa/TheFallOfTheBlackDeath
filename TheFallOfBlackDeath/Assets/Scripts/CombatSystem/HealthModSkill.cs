@@ -67,7 +67,6 @@ protected override void OnRun(Fighter receiver)
         // 1. CHEQUEO DE FALLO
         if (missRoll < adjustedMissChance)
         {
-            this.messages.Enqueue($"{emitter.idName} missed on {receiver.idName}!");
             FloatingTextManager.Instance.ShowText("Miss!", textPos, Color.gray);
             receiver.ModifyHealth(0);                
             return;
@@ -82,7 +81,6 @@ protected override void OnRun(Fighter receiver)
         if (isCrit)
         {
             baseDmg *= 2f; // Duplicamos el daño base si es crítico
-            this.messages.Enqueue("Critical hit!");
             CameraManager.Instance.TriggerShake(1f);
             CameraManager.Instance.TriggerHitStop(0.15f);
             
@@ -113,7 +111,6 @@ protected override void OnRun(Fighter receiver)
                 }
             }
             
-            this.messages.Enqueue($"Hit for {(int)totalAreaDmg} to {receiver.idName} (AoE)");
             FloatingTextManager.Instance.ShowText($"-{(int)totalAreaDmg}", textPos, isCrit ? Color.yellow : Color.red, isCrit);
         }
         /// <summary>
@@ -127,7 +124,6 @@ protected override void OnRun(Fighter receiver)
             float finalDmg = ApplySynergy(targetPart, baseDmg);
             receiver.ModifyBodyPartHealth(this.BodyPartTarget, finalDmg);
             
-            this.messages.Enqueue($"{emitter.idName} hit {receiver.idName}'s {this.BodyPartTarget} for {(int)finalDmg}");
             FloatingTextManager.Instance.ShowText($"-{(int)finalDmg}", textPos, isCrit ? Color.yellow : Color.red, isCrit);
         }
         
