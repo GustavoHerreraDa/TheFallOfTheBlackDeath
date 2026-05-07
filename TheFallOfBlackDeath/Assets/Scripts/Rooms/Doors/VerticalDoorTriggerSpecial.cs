@@ -1,17 +1,81 @@
 using UnityEngine;
 
-/// Attach this to each door trigger/collider.
-/// Set index (0,1,2) matching the manager.
-/// This will ONLY open a door if no other has been opened before.
-public class VerticalDoorTriggerSpecial : MonoBehaviour
+/// Attach this to a trigger/collider.
+/// Shows a shared panel and allows opening the assigned door.
+public class PanelTrigger : MonoBehaviour
 {
+    public static PanelTrigger Current;
+
+    [Header("References")]
+    [SerializeField] private GameObject panel;
     [SerializeField] private VerticalDoorGroupController controller;
     [SerializeField] private int doorIndex;
+
+    private bool playerInside;
+
+    private void Awake()
+    {
+        if (panel != null)
+            panel.SetActive(false);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Charecter")) return;
 
-        controller.TryOpenDoor(doorIndex);
+        Current = this;
+        playerInside = true;
+
+        if (panel != null)
+            panel.SetActive(true);
+
+        ShowMouse();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Charecter")) return;
+
+        if (Current == this)
+            Current = null;
+
+        playerInside = false;
+
+        if (panel != null)
+            panel.SetActive(false);
+
+        HideMouse();
+    }
+
+    public void OpenDoor()
+    {
+        if (!playerInside) return;
+
+        controller?.TryOpenDoor(doorIndex);
+
+        if (panel != null)
+            panel.SetActive(false);
+
+        HideMouse();
+    }
+
+    public void DismissPanel()
+    {
+        if (panel != null)
+            panel.SetActive(false);
+
+        HideMouse();
+    }
+
+    private void ShowMouse()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    private void HideMouse()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 }
