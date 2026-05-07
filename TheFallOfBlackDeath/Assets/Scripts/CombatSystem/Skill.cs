@@ -10,7 +10,9 @@ public enum SkillType
     AttackSimple,
     SpecialHability,
     Heal,
-    BossHability
+    BossHability,
+    Melee,
+    Range
 }
 /// <summary>
 /// Defines the named values used by body part.

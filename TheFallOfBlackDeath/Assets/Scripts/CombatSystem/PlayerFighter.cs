@@ -210,6 +210,17 @@ public class PlayerFighter : Fighter
 
         if (this.skillToBeExecuted.needsManualTargeting)
         {
+            // Play specific animation depending on skill type
+            if (this.skillToBeExecuted.skillType == SkillType.Range)
+            {
+                animator.Play("SkillSelected_Range");
+            }
+            else
+            {
+                // Default to Melee if it's not explicitly Range and needs targeting
+                animator.Play("SkillSelected_Melee");
+            }
+
             Fighter[] receivers = this.GetSkillTargets(this.skillToBeExecuted);
             this.enemiesPanel.Show(this, receivers);
             this.skillPanel.Hide();
@@ -299,6 +310,9 @@ public class PlayerFighter : Fighter
         }
         else
         {
+            // Regresar a Idle o dejar que la animación de ataque tome el control
+            animator.Play("Idle");
+
             skillToBeExecuted.AddReceiver(enemyFighter);
             combatManager.OnFighterSkill(skillToBeExecuted);
             skillPanel.Hide();
@@ -312,6 +326,8 @@ public class PlayerFighter : Fighter
     /// </summary>
     public void Return()
     {
+        animator.Play("Idle");
+
         if (this.skillPanel != null)
         {
             this.skillPanel.ShowForPlayer(this); 

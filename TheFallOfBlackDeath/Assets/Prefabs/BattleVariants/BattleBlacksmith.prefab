@@ -51,7 +51,7 @@ MonoBehaviour:
   BodyPartTarget: 0
   effectPrfb: {fileID: 5627696518775099638, guid: 4567f1a4893865a4e99367437ee729af, type: 3}
   SkillDesc: <color=#FFCC00><Torso Required></color> 20 True Damage no miss chances
-  skillType: 0
+  skillType: 4
   iconUI: {fileID: 0}
   animationName: Left Punch
   HasItemInInventory: 0
@@ -97,6 +97,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7540624642153775675}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5868427918414867212
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2304583878685750069}
+  m_Layer: 6
+  m_Name: muzzleflash
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2304583878685750069
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5868427918414867212}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.50484467, y: 0.5048437, z: -0.49510896, w: -0.49510792}
+  m_LocalPosition: {x: 0.107, y: 0.146, z: 0.075}
+  m_LocalScale: {x: 0.71428573, y: 0.71428573, z: 0.7142858}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5139714298160928937}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &991934989853573161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -114,6 +145,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8103512874320582389}
     - target: {fileID: 1830900076, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: MuzzlePivot
+      value: 
+      objectReference: {fileID: 2304583878685750069}
+    - target: {fileID: 1830900076, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       propertyPath: enemiesPanel
       value: 
       objectReference: {fileID: 0}
@@ -130,6 +165,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8937124893714657078, guid: b8fbf5e4d26a8ac47ba82d8f0a9d8a3f, type: 3}
     - target: {fileID: 1830900076, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: skills.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1830900076, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       propertyPath: skillPanelInstance
       value: 
       objectReference: {fileID: 0}
@@ -137,6 +176,22 @@ PrefabInstance:
       propertyPath: damageGlitchMaterial
       value: 
       objectReference: {fileID: 2100000, guid: e442aaa0e916623439c4525751b1ec9a, type: 2}
+    - target: {fileID: 1830900076, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: 'skills.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4341515108149923973}
+    - target: {fileID: 1830900076, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: 'skills.Array.data[1]'
+      value: 
+      objectReference: {fileID: 5468292746451275521}
+    - target: {fileID: 1830900076, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: 'skills.Array.data[2]'
+      value: 
+      objectReference: {fileID: 3417031265067949875}
+    - target: {fileID: 1830900076, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: 'skills.Array.data[3]'
+      value: 
+      objectReference: {fileID: 4346218634815665189}
     - target: {fileID: 21202881084634731, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -270,6 +325,10 @@ PrefabInstance:
       value: <color=#FFCC00><Left Arm Required></color> 40 True Damage no miss chances
       objectReference: {fileID: 0}
     - target: {fileID: 2499414552199274266, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: skillType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2499414552199274266, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       propertyPath: damageType
       value: 3
       objectReference: {fileID: 0}
@@ -375,6 +434,10 @@ PrefabInstance:
         50%</color> critical chance)
       objectReference: {fileID: 0}
     - target: {fileID: 3568020111858356396, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: skillType
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3568020111858356396, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       propertyPath: effectPrfb
       value: 
       objectReference: {fileID: 1329845292236604, guid: 9bba9cf244c53c5439505dfc96fdd11c, type: 3}
@@ -383,9 +446,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3568020111858356396, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: skillRange
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3568020111858356396, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       propertyPath: BodyPartTarget
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3568020111858356396, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: muzzleEffectPrfb
+      value: 
+      objectReference: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
     - target: {fileID: 3568020111858356396, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       propertyPath: animationDuration
       value: 1
@@ -508,9 +579,21 @@ PrefabInstance:
         and deals  10 True Damage
       objectReference: {fileID: 0}
     - target: {fileID: 5055089207862759208, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: skillType
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5055089207862759208, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       propertyPath: effectPrfb
       value: 
       objectReference: {fileID: 1337198075554910, guid: 25c7aa9ad705fe143a4d71c1c8deb7d4, type: 3}
+    - target: {fileID: 5055089207862759208, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: skillRange
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5055089207862759208, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: muzzleEffectPrfb
+      value: 
+      objectReference: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
     - target: {fileID: 5055089207862759208, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       propertyPath: animationDuration
       value: 1
@@ -943,6 +1026,39 @@ MonoBehaviour:
   maxLookAngle: 20
   smoothSpeed: 8
   mouseSensitivity: 1
+--- !u!114 &3417031265067949875 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2499414552199274266, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+  m_PrefabInstance: {fileID: 991934989853573161}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd512efa830145a2a8f36d1adbcb72ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4341515108149923973 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3568020111858356396, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+  m_PrefabInstance: {fileID: 991934989853573161}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5468292746451275521 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5055089207862759208, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+  m_PrefabInstance: {fileID: 991934989853573161}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7540624642153775675 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7305297877295874578, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
@@ -1127,12 +1243,20 @@ PrefabInstance:
       objectReference: {fileID: 991934990476480837}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7355569551686814217, guid: b79cefb028e24bc43aadf56d547af90a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2304583878685750069}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b79cefb028e24bc43aadf56d547af90a, type: 3}
 --- !u!95 &1120507418876025584 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3371791952651716688, guid: b79cefb028e24bc43aadf56d547af90a, type: 3}
+  m_PrefabInstance: {fileID: 2398119956703613600}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5139714298160928937 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7355569551686814217, guid: b79cefb028e24bc43aadf56d547af90a, type: 3}
   m_PrefabInstance: {fileID: 2398119956703613600}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6443801535309037706 stripped

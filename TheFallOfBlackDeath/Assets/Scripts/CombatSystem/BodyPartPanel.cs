@@ -146,6 +146,12 @@ public class BodyPartPanel : MonoBehaviour
     /// <param name="part">The part.</param>
     private void OnBodyPartClick(BodyPart part)
     {
+        // Regresar a Idle o dejar que la animación de ataque tome el control
+        if (player != null && player.animator != null)
+        {
+            player.animator.Play("Idle");
+        }
+
         // LIMPIEZA TOTAL: Antes de cerrar, forzamos a todas las mallas a volver a su color
         foreach (var btn in buttons)
         {
