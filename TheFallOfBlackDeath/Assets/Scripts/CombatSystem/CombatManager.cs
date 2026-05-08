@@ -70,6 +70,9 @@ public class CombatManager : MonoBehaviour
     /// </summary>
     void Start()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         if (GetComponent<CombatScannerSystem>() == null)
             gameObject.AddComponent<CombatScannerSystem>();
 

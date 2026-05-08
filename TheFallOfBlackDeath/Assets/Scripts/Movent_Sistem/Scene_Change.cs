@@ -94,5 +94,6 @@ public class Scene_Change : MonoBehaviour
         SceneManager.LoadScene(fightSceneIndex);
         
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }
