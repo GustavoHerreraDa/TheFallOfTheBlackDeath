@@ -21,10 +21,21 @@ public class Scene_Change : MonoBehaviour
     /// </summary>
     private void Start()
     {
+        // 1. Intentar encontrar automáticamente cualquier Volume en la escena
+        if (postProcessVolume == null)
+        {
+            postProcessVolume = FindObjectOfType<Volume>();
+        }
+
+        // 2. Extraer los perfiles de glitch si el Volume existe
         if (postProcessVolume != null && postProcessVolume.profile != null)
         {
             postProcessVolume.profile.TryGet(out analogGlitch);
             postProcessVolume.profile.TryGet(out digitalGlitch);
+        }
+        else
+        {
+            Debug.LogWarning("Scene_Change: No se encontró un Global Volume en la escena.");
         }
     }
 
