@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 /// <summary>
 /// Supports the combat system by handling audio manager.
@@ -6,6 +7,10 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
+
+    [Header("Mixer Configuration")]
+    public AudioMixer mainMixer;         // Referencia al AudioMixer principal
+    public AudioMixerGroup sfxGroup;    // Grupo para efectos de sonido
 
     [Header("Sonidos de Combate")]
     public AudioClip shootSound;      // Disparo del arma
@@ -57,6 +62,12 @@ public class AudioManager : MonoBehaviour
         source.clip = clip;
         source.volume = volume;
 
+        // Asignamos el grupo del mixer si estÃ¡ configurado
+        if (sfxGroup != null)
+        {
+            source.outputAudioMixerGroup = sfxGroup;
+        }
+
         // 3. LA MAGIA: VariaciÃ³n dinÃ¡mica de Pitch para que no suene repetitivo
         if (useRandomPitch)
         {
@@ -68,5 +79,17 @@ public class AudioManager : MonoBehaviour
 
         // 5. Destruimos el objeto exactamente cuando el sonido termina
         Destroy(soundObj, clip.length);
+    }
+
+    /// <summary>
+    /// Cambia el volumen de un parÃ¡metro del mixer (en dB).
+    /// </summary>
+    public void SetMixerVolume(string parameterName, float sliderValue)
+    {
+        if (mainMixer == null) return;
+        
+        // ConversiÃ³n de valor de slider (0 a 1) a decibelios (-80 a 0)
+        float dB = sliderValue > 0.0001f ? Mathf.Log10(sliderValue) * 20f : -80f;
+        mainMixer.SetFloat(parameterName, dB);
     }
 }

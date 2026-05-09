@@ -300,7 +300,14 @@ public class CombatManager : MonoBehaviour
                         }
                      
                         // ── 3. Victory audio + animation ───────────────────────────────
-                        audioSource.Play();
+                        if (AudioManager.Instance != null && audioSource != null)
+                        {
+                            AudioManager.Instance.PlaySFX(audioSource.clip, audioSource.volume, false);
+                        }
+                        else if (audioSource != null)
+                        {
+                            audioSource.Play();
+                        }
                         Animator[] playerAnimators = player.GetComponentsInChildren<Animator>();
                         foreach (Animator anim in playerAnimators)
                             anim.Play("Victory");
@@ -373,7 +380,15 @@ public class CombatManager : MonoBehaviour
                         this.isCombatActive = false;
                         yield return new WaitForSeconds(2f);
                         SceneManager.LoadSceneAsync(5);
-                        sonidoDeDerrota.Play();
+                        
+                        if (AudioManager.Instance != null && sonidoDeDerrota != null)
+                        {
+                            AudioManager.Instance.PlaySFX(sonidoDeDerrota.clip, sonidoDeDerrota.volume, false);
+                        }
+                        else if (sonidoDeDerrota != null)
+                        {
+                            sonidoDeDerrota.Play();
+                        }
                     }
 
                     if (this.isCombatActive)
