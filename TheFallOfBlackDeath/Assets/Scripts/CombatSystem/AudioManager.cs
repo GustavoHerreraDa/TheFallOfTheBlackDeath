@@ -22,6 +22,13 @@ public class AudioManager : MonoBehaviour
     public AudioClip uiHoverSound;    // Pasar el ratÃ³n
     public AudioClip uiClickSound;    // Hacer clic
 
+    [Header("Sonidos de Ambiente / Puertas")]
+    public AudioClip doorOpenSound;   // Sonido al abrir puerta
+    public AudioClip doorCloseSound;  // Sonido al cerrar puerta
+
+    [Header("Sonidos de Pasos")]
+    public AudioClip[] footstepSounds; // Array de sonidos de pasos para variedad
+
     [Header("ConfiguraciÃ³n de Pitch")]
     [Range(0.1f, 0.5f)]
     public float pitchVariation = 0.15f; // CuÃ¡nto varÃ­a el tono aleatoriamente
@@ -35,7 +42,7 @@ public class AudioManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            // Opcional: DontDestroyOnLoad(gameObject); si quieres que persista entre escenas
+            DontDestroyOnLoad(gameObject); // Habilitado para que persista entre escenas
         }
         else
         {
@@ -91,5 +98,16 @@ public class AudioManager : MonoBehaviour
         // ConversiÃ³n de valor de slider (0 a 1) a decibelios (-80 a 0)
         float dB = sliderValue > 0.0001f ? Mathf.Log10(sliderValue) * 20f : -80f;
         mainMixer.SetFloat(parameterName, dB);
+    }
+
+    /// <summary>
+    /// Reproduce un sonido de paso aleatorio de la lista.
+    /// </summary>
+    public void PlayRandomFootstep(float volume = 0.4f)
+    {
+        if (footstepSounds == null || footstepSounds.Length == 0) return;
+
+        int index = Random.Range(0, footstepSounds.Length);
+        PlaySFX(footstepSounds[index], volume, true);
     }
 }

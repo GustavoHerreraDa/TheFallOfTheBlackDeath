@@ -12,6 +12,10 @@ public class VerticalSlidingDoor : MonoBehaviour
     [SerializeField] private float speed = 3f;
     [SerializeField] private bool open = false;
 
+    [Header("Audio (Optional Overrides)")]
+    [SerializeField] private AudioClip customOpenSound;
+    [SerializeField] private AudioClip customCloseSound;
+
     private Vector3 closedPos;
     private Vector3 openPos;
 
@@ -29,16 +33,39 @@ public class VerticalSlidingDoor : MonoBehaviour
 
     public void Toggle()
     {
-        open = !open;
+        if (open) Close();
+        else Open();
     }
 
     public void Open()
     {
+        if (open) return; // Evitar disparar sonido si ya estÃ¡ abierta
         open = true;
+        PlayDoorSound(true);
     }
 
     public void Close()
     {
+        if (!open) return; // Evitar disparar sonido si ya estÃ¡ cerrada
         open = false;
+        PlayDoorSound(false);
+    }
+
+    private void PlayDoorSound(bool isOpen)
+    {
+        if (AudioManager.Instance == null) return;
+
+        AudioClip clipToPlay = isOpen ? customOpenSound : customCloseSound;
+        
+        // Si no hay sonido personalizado, usar el del AudioManager
+        if (clipToPlay == null)
+        {
+            clipToPlay = isOpen ? AudioManager.Instance.doorOpenSound : AudioManager.Instance.doorCloseSound;
+        }
+
+        if (clipToPlay != null)
+        {
+            AudioManager.Instance.PlaySFX(clipToPlay);
+        }
     }
 }
