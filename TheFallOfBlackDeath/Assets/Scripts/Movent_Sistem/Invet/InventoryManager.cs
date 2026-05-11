@@ -45,9 +45,36 @@ public class InventoryManager : MonoBehaviour
     private List<InventoryUI> objectsPool   = new List<InventoryUI>();
 
     // ── Equipamiento persistente ──────────────────────────────────────────────
-    // itemId → índice del personaje que lo tiene equipado (0 = char1, 1 = char2)
-    // Es la ÚNICA fuente de verdad sobre qué está equipado.
-    public Dictionary<int, int> equippedByCharacter = new Dictionary<int, int>();
+    // Se ha movido a cada PlayerFighter (equippedItems).
+    // Este manager puede seguir ofreciendo helpers para consultar el estado global.
+
+    public int activeCharacterIndex = 0;
+
+    public void SetActiveCharacter(int index)
+    {
+        activeCharacterIndex = index;
+        PlayerFighter target = (index == 0) ? GameManager.Instance?.character1 : GameManager.Instance?.character2;
+        NotifyCharacterChanged(target);
+        RefreshAllUI();
+    }
+
+    public void SetActiveCharacter0() => SetActiveCharacter(0);
+    public void SetActiveCharacter1() => SetActiveCharacter(1);
+
+    public void ToggleInventoryPanel(GameObject panel)
+    {
+        if (panel != null)
+        {
+            panel.SetActive(!panel.activeSelf);
+            if (panel.activeSelf) RefreshAllUI();
+        }
+    }
+
+    public bool IsEquippedByCharacter(int itemId, int characterIndex)
+    {
+        PlayerFighter target = characterIndex == 0 ? GameManager.Instance?.character1 : GameManager.Instance?.character2;
+        return target != null && target.equippedItems.ContainsValue(itemId);
+    }
 
     // ── Cache de datos ────────────────────────────────────────────────────────
     private Dictionary<int, InventoryDateBase.Object> _itemCache;
@@ -79,8 +106,20 @@ public class InventoryManager : MonoBehaviour
             // GameObjects de UI de la escena anterior ya no existen.
             instance.equipmentPool.Clear();
             instance.objectsPool.Clear();
+            
+            // Intentar re-vincular UIs si este nuevo manager tiene referencias
+            if (instance.equipmentUI == null) instance.equipmentUI = equipmentUI;
+            if (instance.objetsUI == null) instance.objetsUI = objetsUI;
+
             Destroy(gameObject);
             return;
+        }
+
+        // Auto-asignar database si falta
+        if (datebase == null)
+        {
+            datebase = Resources.Load<InventoryDateBase>("InventoryDatabase");
+            // Si no está en Resources, se tendrá que asignar manualmente, pero esto ayuda.
         }
 
         BuildItemCache();
@@ -92,68 +131,71 @@ public class InventoryManager : MonoBehaviour
         RefreshAllUI();
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Equipamiento — fuente única de verdad
-    // ─────────────────────────────────────────────────────────────────────────
-
     /// <summary>
-    /// Devuelve true si el item está equipado por ese personaje.
+    /// Equipa el item al personaje indicado.
     /// </summary>
-    public bool IsEquippedByCharacter(int itemId, int characterIndex)
-    {
-        return equippedByCharacter.TryGetValue(itemId, out int idx) && idx == characterIndex;
-    }
-
-    /// <summary>
-    /// Equipa el item al personaje indicado y aplica el stat.
-    /// Desequipa automáticamente al otro personaje si lo tenía.
-    /// </summary>
-    public void Equip(int itemId, int characterIndex, string statAffected, float amountAffected)
+    public void Equip(int itemId, int characterIndex)
     {
         PlayerFighter char1 = GameManager.Instance?.character1;
         PlayerFighter char2 = GameManager.Instance?.character2;
 
-        // Si el otro personaje lo tiene equipado, se lo quitamos primero
-        int otherIndex = characterIndex == 0 ? 1 : 0;
-        if (IsEquippedByCharacter(itemId, otherIndex))
+        // Desequipar de cualquier otro personaje si lo tiene puesto (ítem único en este sentido)
+        // Nota: Si el diseño permite que varios tengan el mismo ítem (instancias), esto podría sobrar, 
+        // pero suele ser la norma en RPGs simples si el ID representa la instancia única en el inventario.
+        // Como el inventario maneja "amount", si amount > 1, no deberíamos quitarlo del otro.
+        
+        InventoryObjectID invItem = inventory.Find(x => x.id == itemId);
+        bool isShared = invItem.amount > 1;
+
+        if (!isShared)
         {
+            int otherIndex = characterIndex == 0 ? 1 : 0;
             PlayerFighter other = otherIndex == 0 ? char1 : char2;
-            other?.UpdateStats(statAffected, -amountAffected);
-            equippedByCharacter.Remove(itemId);
+            
+            if (other != null)
+            {
+                InventoryDateBase.EquipmentSlot? slotFound = null;
+                foreach(var kvp in other.equippedItems)
+                {
+                    if(kvp.Value == itemId)
+                    {
+                        slotFound = kvp.Key;
+                        break;
+                    }
+                }
+                if(slotFound.HasValue) other.UnequipItem(slotFound.Value);
+            }
         }
 
-        // Si ya lo tiene este personaje, no hacer nada (toggle lo maneja InventoryUI)
-        if (IsEquippedByCharacter(itemId, characterIndex))
-            return;
-
-        // Equipar
+        // Equipar al actual
         PlayerFighter target = characterIndex == 0 ? char1 : char2;
-        target?.UpdateStats(statAffected, amountAffected);
-        equippedByCharacter[itemId] = characterIndex;
-
-        if (target != null)
-            GameManager.Instance?.SavePlayerState(target);
+        target?.EquipItem(itemId);
 
         OnInventoryChanged?.Invoke();
     }
 
     /// <summary>
-    /// Desequipa el item del personaje indicado y revierte el stat.
+    /// Desequipa el item del personaje indicado.
     /// </summary>
-    public void Unequip(int itemId, int characterIndex, string statAffected, float amountAffected)
+    public void Unequip(int itemId, int characterIndex)
     {
-        if (!IsEquippedByCharacter(itemId, characterIndex))
-            return;
-
         PlayerFighter char1 = GameManager.Instance?.character1;
         PlayerFighter char2 = GameManager.Instance?.character2;
         PlayerFighter target = characterIndex == 0 ? char1 : char2;
 
-        target?.UpdateStats(statAffected, -amountAffected);
-        equippedByCharacter.Remove(itemId);
-
         if (target != null)
-            GameManager.Instance?.SavePlayerState(target);
+        {
+            InventoryDateBase.EquipmentSlot? slotFound = null;
+            foreach(var kvp in target.equippedItems)
+            {
+                if(kvp.Value == itemId)
+                {
+                    slotFound = kvp.Key;
+                    break;
+                }
+            }
+            if(slotFound.HasValue) target.UnequipItem(slotFound.Value);
+        }
 
         OnInventoryChanged?.Invoke();
     }
@@ -196,12 +238,8 @@ public class InventoryManager : MonoBehaviour
                 if (newAmount <= 0)
                 {
                     // Si estaba equipado, desequipar antes de eliminarlo
-                    if (equippedByCharacter.ContainsKey(id))
-                    {
-                        int charIdx = equippedByCharacter[id];
-                        var item = GetItemInformation(id);
-                        Unequip(id, charIdx, item.statsAffected.ToString(), item.amountAffected);
-                    }
+                    Unequip(id, 0);
+                    Unequip(id, 1);
                     inventory.RemoveAt(i);
                 }
                 else
@@ -292,8 +330,14 @@ public class InventoryManager : MonoBehaviour
         slot.amount.text      = item.amount.ToString();
         slot.itemName.text    = data.name;
         slot.itemDescripcion.text = data.characteristic;
-        slot.statAffected     = data.statsAffected.ToString();
-        slot.amountAffected   = data.amountAffected;
+        
+        // Ya no seteamos un solo statAffected sino que el slot podría mostrar varios o ninguno
+        // por ahora dejamos el primero si existe para no romper la UI actual totalmente
+        if (data.modifiers != null && data.modifiers.Count > 0)
+        {
+            slot.statAffected = data.modifiers[0].stat.ToString();
+            slot.amountAffected = data.modifiers[0].amount;
+        }
 
         // Refrescar el color del botón según estado persistido
         slot.RefreshEquippedVisual();
@@ -323,13 +367,22 @@ public class InventoryManager : MonoBehaviour
 
     public bool TryGetItemData(int id, out InventoryDateBase.Object data)
     {
-        data = default;
-        if (_itemCache != null && _itemCache.TryGetValue(id, out data)) return true;
-        if (datebase != null && datebase.DateBase != null && id >= 0 && id < datebase.DateBase.Length)
+        if (_itemCache == null) BuildItemCache();
+        
+        if (_itemCache.TryGetValue(id, out data))
         {
-            data = datebase.DateBase[id];
             return true;
         }
+
+        // Fallback al SO si no está en caché (por ejemplo si se añadió dinámicamente)
+        if (datebase != null && id >= 0 && id < datebase.DateBase.Length)
+        {
+            data = datebase.DateBase[id];
+            _itemCache[id] = data; // actualizar caché
+            return true;
+        }
+
+        data = default;
         return false;
     }
 

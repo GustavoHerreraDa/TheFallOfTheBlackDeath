@@ -28,6 +28,13 @@ public class GameManager : MonoBehaviour
     }
 
     [System.Serializable]
+    public struct EquippedSlotData
+    {
+        public InventoryDateBase.EquipmentSlot slot;
+        public int itemId;
+    }
+
+    [System.Serializable]
     /// <summary>
     /// Stores the runtime stats and body-part health snapshot persisted for each recruited player fighter.
     /// </summary>
@@ -45,6 +52,7 @@ public class GameManager : MonoBehaviour
         public float speed;
 
         public List<float> bodyPartsHealth = new List<float>();
+        public List<EquippedSlotData> equippedItemsList = new List<EquippedSlotData>();
     }
     
     public event System.Action OnPlayerStatsUpdated;
@@ -82,6 +90,11 @@ public class GameManager : MonoBehaviour
 
     }
     
+    public void NotifyPlayerStatsUpdated()
+    {
+        RefreshUI();
+    }
+
     /// <summary>
     /// Refreshes the ui.
     /// </summary>
@@ -494,6 +507,12 @@ public class GameManager : MonoBehaviour
         foreach (var part in fighter.bodyParts)
             data.bodyPartsHealth.Add(part.currentHealth);
 
+        data.equippedItemsList = new List<EquippedSlotData>();
+        foreach (var kvp in fighter.equippedItems)
+        {
+            data.equippedItemsList.Add(new EquippedSlotData { slot = kvp.Key, itemId = kvp.Value });
+        }
+
         // Persist per fighter index
         int key = fighter.figherIndex;
         if (savedPlayersStatus == null)
@@ -541,6 +560,16 @@ public class GameManager : MonoBehaviour
         {
             fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
         }
+
+        fighter.equippedItems = new Dictionary<InventoryDateBase.EquipmentSlot, int>();
+        foreach (var itemData in savedPlayerStatus.equippedItemsList)
+        {
+            fighter.equippedItems[itemData.slot] = itemData.itemId;
+        }
+
+        // Trigger recalculation of equipment stats in the fighter
+        // We'll need to make sure PlayerFighter has a way to refresh stats after loading
+        fighter.SendMessage("RecalculateEquipmentStats", SendMessageOptions.DontRequireReceiver);
 
         fighter.SyncBodyPartVisuals();
 

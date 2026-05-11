@@ -287,7 +287,7 @@ public abstract class Fighter : MonoBehaviour
     /// Gets the current stats.
     /// </summary>
     /// <returns>The resulting value.</returns>
-    public Stats GetCurrentStats()
+    public virtual Stats GetCurrentStats()
     {
         Stats modedStats = this.stats.Clone();
 
