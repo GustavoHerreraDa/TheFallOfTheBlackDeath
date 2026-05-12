@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using TMPro;
 using UnityEngine.Serialization;
+using InventoryNew;
 
 
 /// <summary>
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
         public List<GameObject> Enemys = new List<GameObject>();
     }
 
+    [System.Obsolete("Usar NewEquippedSlotData en su lugar")]
     [System.Serializable]
     public struct EquippedSlotData
     {
@@ -52,7 +54,16 @@ public class GameManager : MonoBehaviour
         public float speed;
 
         public List<float> bodyPartsHealth = new List<float>();
+        [System.Obsolete("Usar newEquippedItems en su lugar")]
         public List<EquippedSlotData> equippedItemsList = new List<EquippedSlotData>();
+
+        [System.Serializable]
+        public struct NewEquippedSlotData
+        {
+            public InventoryNew.EquipmentSlot slot;
+            public string itemId;
+        }
+        public List<NewEquippedSlotData> newEquippedItems = new List<NewEquippedSlotData>();
     }
     
     public event System.Action OnPlayerStatsUpdated;
@@ -513,6 +524,23 @@ public class GameManager : MonoBehaviour
             data.equippedItemsList.Add(new EquippedSlotData { slot = kvp.Key, itemId = kvp.Value });
         }
 
+        // Nuevo sistema de equipo
+        data.newEquippedItems = new List<PlayerStatusData.NewEquippedSlotData>();
+        if (fighter.equipmentHandler != null)
+        {
+            foreach (var kvp in fighter.equipmentHandler.GetAllEquipped())
+            {
+                if (kvp.Value != null)
+                {
+                    data.newEquippedItems.Add(new PlayerStatusData.NewEquippedSlotData 
+                    { 
+                        slot = kvp.Key, 
+                        itemId = kvp.Value.id 
+                    });
+                }
+            }
+        }
+
         // Persist per fighter index
         int key = fighter.figherIndex;
         if (savedPlayersStatus == null)
@@ -565,6 +593,19 @@ public class GameManager : MonoBehaviour
         foreach (var itemData in savedPlayerStatus.equippedItemsList)
         {
             fighter.equippedItems[itemData.slot] = itemData.itemId;
+        }
+
+        // Nuevo sistema de equipo
+        if (fighter.equipmentHandler != null && savedPlayerStatus.newEquippedItems != null && NewInventoryManager.Instance != null)
+        {
+            foreach (var itemData in savedPlayerStatus.newEquippedItems)
+            {
+                var equipment = NewInventoryManager.Instance.GetItemDataById(itemData.itemId) as NewEquipmentData;
+                if (equipment != null)
+                {
+                    fighter.equipmentHandler.Equip(equipment);
+                }
+            }
         }
 
         // Trigger recalculation of equipment stats in the fighter

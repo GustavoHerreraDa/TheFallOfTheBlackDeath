@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using InventoryNew;
 //TP2 AUGUSTO NANINI
 /// <summary>
 /// Supports exploration and world-state flow by handling menu.

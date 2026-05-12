@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using InventoryNew;
 //TP2 FACUNDO FERREIRO/GUSTAVO TORRES
 /// <summary>
 /// Implements a controllable combatant that can execute skills, receive inventory upgrades, gain experience, and persist combat state between scenes.
@@ -29,7 +30,12 @@ public class PlayerFighter : Fighter
     private bool hasSavedDataForThisFighter = false;
     private bool appliedSavedDataThisScene = false;
  
+    [Header("New Inventory System")]
+    public EquipmentHandler equipmentHandler;
+
+    [System.Obsolete("Usar equipmentHandler en su lugar")]
     public Dictionary<InventoryDateBase.EquipmentSlot, int> equippedItems = new Dictionary<InventoryDateBase.EquipmentSlot, int>();
+    [System.Obsolete("Usar equipmentHandler en su lugar")]
     public Stats equipmentStats;
 
     /// <summary>
@@ -260,13 +266,29 @@ public class PlayerFighter : Fighter
 
     public override Stats GetCurrentStats()
     {
+        float bonusMaxHealth = equipmentStats.maxHealth;
+        float bonusAttack = equipmentStats.attack;
+        float bonusDefense = equipmentStats.deffense;
+        float bonusSpirit = equipmentStats.spirit;
+        float bonusSpeed = equipmentStats.speed;
+
+        // Sumar bonos del nuevo sistema si existe
+        if (equipmentHandler != null)
+        {
+            bonusMaxHealth += equipmentHandler.GetTotalModifier(InventoryNew.StatType.MaxHealth);
+            bonusAttack += equipmentHandler.GetTotalModifier(InventoryNew.StatType.Attack);
+            bonusDefense += equipmentHandler.GetTotalModifier(InventoryNew.StatType.Defense);
+            bonusSpirit += equipmentHandler.GetTotalModifier(InventoryNew.StatType.Spirit);
+            bonusSpeed += equipmentHandler.GetTotalModifier(InventoryNew.StatType.Speed);
+        }
+
         Stats total = new Stats(stats.level,
-                                stats.maxHealth + equipmentStats.maxHealth,
+                                stats.maxHealth + bonusMaxHealth,
                                 stats.health,
-                                stats.attack + equipmentStats.attack,
-                                stats.deffense + equipmentStats.deffense,
-                                stats.spirit + equipmentStats.spirit,
-                                stats.speed + equipmentStats.speed,
+                                stats.attack + bonusAttack,
+                                stats.deffense + bonusDefense,
+                                stats.spirit + bonusSpirit,
+                                stats.speed + bonusSpeed,
                                 stats.experience,
                                 stats.experienceToNextLevel);
 
@@ -281,6 +303,21 @@ public class PlayerFighter : Fighter
         return total;
     }
 
+    public float GetNewTotalStat(InventoryNew.StatType type)
+    {
+        float bonus = equipmentHandler != null ? equipmentHandler.GetTotalModifier(type) : 0;
+        switch (type)
+        {
+            case InventoryNew.StatType.Attack: return stats.attack + bonus;
+            case InventoryNew.StatType.Defense: return stats.deffense + bonus;
+            case InventoryNew.StatType.Speed: return stats.speed + bonus;
+            case InventoryNew.StatType.Spirit: return stats.spirit + bonus;
+            case InventoryNew.StatType.MaxHealth: return stats.maxHealth + bonus;
+            default: return 0;
+        }
+    }
+
+    [System.Obsolete("Usar GetNewTotalStat en su lugar")]
     public float GetTotalStat(InventoryDateBase.StatType type)
     {
         switch (type)
@@ -295,6 +332,7 @@ public class PlayerFighter : Fighter
         }
     }
 
+    [System.Obsolete("Usar equipmentHandler.Equip en su lugar")]
     public void EquipItem(int itemId)
     {
         if (InventoryManager.instance == null) return;
@@ -318,6 +356,7 @@ public class PlayerFighter : Fighter
         }
     }
 
+    [System.Obsolete("Usar equipmentHandler.Unequip en su lugar")]
     public void UnequipItem(InventoryDateBase.EquipmentSlot slot)
     {
         if (equippedItems.ContainsKey(slot))
@@ -333,6 +372,7 @@ public class PlayerFighter : Fighter
         }
     }
 
+    [System.Obsolete("No necesario con el nuevo sistema")]
     private void RecalculateEquipmentStats()
     {
         equipmentStats = new Stats(0, 0, 0, 0, 0, 0, 0, 0, 0);
