@@ -328,10 +328,21 @@ public class CombatManager : MonoBehaviour
                         }
                      
                         // ── 5. Grant items to inventory ────────────────────────────────
-                        if (InventoryManager.instance != null)
+                        if (InventoryManager.instance != null || InventoryNew.NewInventoryManager.Instance != null)
                         {
                             foreach (var entry in allLoot)
-                                InventoryManager.instance.AddItem(entry.itemId, entry.amount, entry.uso);
+                            {
+                                // Handle New System
+                                if (entry.newItemData != null && InventoryNew.NewInventoryManager.Instance != null)
+                                {
+                                    InventoryNew.NewInventoryManager.Instance.AddItem(entry.newItemData, entry.amount);
+                                }
+                                // Handle Legacy System (fallback)
+                                else if (InventoryManager.instance != null)
+                                {
+                                    InventoryManager.instance.AddItem(entry.itemId, entry.amount, entry.uso);
+                                }
+                            }
                         }
                      
                         // ── 6. Show loot panel and WAIT for player input ────────────────
