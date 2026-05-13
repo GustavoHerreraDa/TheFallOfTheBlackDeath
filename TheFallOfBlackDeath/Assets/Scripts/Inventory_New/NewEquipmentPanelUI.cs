@@ -21,13 +21,37 @@ namespace InventoryNew
         private PlayerFighter activeFighter;
         private EquipmentSlot pendingSlot;
 
+        private void OnEnable()
+        {
+            if (activeFighter == null && GameManager.Instance != null)
+            {
+                Setup(GameManager.Instance.character1);
+            }
+            else if (activeFighter != null)
+            {
+                RefreshUI();
+            }
+        }
+
         public void Setup(PlayerFighter fighter)
         {
+            if (fighter == null) return;
+            
+            // Limpiar suscripciones previas si las hubiera para evitar duplicados
+            foreach (var slotUI in slotUIs)
+            {
+                if (slotUI == null) continue;
+                slotUI.OnSlotClicked -= HandleSlotClick;
+                slotUI.OnSlotHover -= ShowStats;
+                slotUI.OnSlotHoverExit -= HideStats;
+            }
+
             activeFighter = fighter;
             RefreshUI();
 
             foreach (var slotUI in slotUIs)
             {
+                if (slotUI == null) continue;
                 slotUI.OnSlotClicked += HandleSlotClick;
                 slotUI.OnSlotHover += ShowStats;
                 slotUI.OnSlotHoverExit += HideStats;
@@ -47,12 +71,14 @@ namespace InventoryNew
 
         private void HandleSlotClick(EquipmentSlot slot)
         {
+            Debug.Log($"[NewEquipmentPanelUI] HandleSlotClick llamado para: {slot}");
             pendingSlot = slot;
             ShowSelection(slot);
         }
 
         private void ShowSelection(EquipmentSlot slot)
         {
+            Debug.Log($"[NewEquipmentPanelUI] ShowSelection para: {slot}");
             selectionPanel.SetActive(true);
             
             // Clear previous items

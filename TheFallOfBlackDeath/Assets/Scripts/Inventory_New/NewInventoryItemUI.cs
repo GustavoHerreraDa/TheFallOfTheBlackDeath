@@ -21,8 +21,11 @@ namespace InventoryNew
         public void Setup(NewItemData itemData, int amount = -1)
         {
             data = itemData;
-            icon.sprite = itemData.icon;
-            nameText.text = itemData.itemName;
+            if (itemData != null)
+            {
+                if (icon != null) icon.sprite = itemData.icon;
+                if (nameText != null) nameText.text = itemData.itemName;
+            }
             
             if (amountText != null)
             {

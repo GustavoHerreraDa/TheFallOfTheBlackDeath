@@ -34,6 +34,7 @@ namespace InventoryNew
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            Debug.Log($"[EquipmentSlotUI] Click en slot: {slot}");
             OnSlotClicked?.Invoke(slot);
         }
 

@@ -32,6 +32,8 @@ namespace InventoryNew
 
         public void AddItem(NewItemData itemData, int amount = 1)
         {
+            if (itemData == null) return;
+            
             var existingItem = items.FirstOrDefault(i => i.data.id == itemData.id);
 
             if (existingItem != null)
@@ -44,6 +46,12 @@ namespace InventoryNew
             }
 
             OnInventoryChanged?.Invoke();
+            
+            // Opcional: Sonido de recogida si el AudioManager existe
+            if (AudioManager.Instance != null && AudioManager.Instance.uiClickSound != null)
+            {
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.uiClickSound, 0.7f);
+            }
         }
 
         public void RemoveItem(string itemId, int amount = 1)
@@ -68,11 +76,16 @@ namespace InventoryNew
 
         public List<NewEquipmentData> GetEquippableForSlot(EquipmentSlot slot)
         {
-            return items
+            var list = items
                 .Where(i => i.data is NewEquipmentData)
                 .Select(i => i.data as NewEquipmentData)
                 .Where(e => e.slot == slot)
                 .ToList();
+            
+            Debug.Log($"[NewInventoryManager] Buscando ítems para slot {slot}. Encontrados: {list.Count}");
+            foreach(var item in list) Debug.Log($"- Item: {item.itemName} (ID: {item.id})");
+            
+            return list;
         }
 
         public int GetItemCount(string itemId)
