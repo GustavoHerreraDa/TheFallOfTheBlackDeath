@@ -75,6 +75,7 @@ public class PanelTrigger : MonoBehaviour
 
     private void HideMouse()
     {
+        Debug.Log("[VERTICAL DOOR TRIGGER] CURSOR INVISIBLE");
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
