@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class InventoryUI : MonoBehaviour
+public class InventoryUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Datos del item (seteado por InventoryManager)")]
     public int itemId = -1; // InventoryManager lo setea al popular el slot
@@ -62,6 +63,15 @@ public class InventoryUI : MonoBehaviour
     // ─────────────────────────────────────────────────────────────────────────
 
     /// <summary>
+    /// Equipa o desequipa el item del personaje actualmente seleccionado en el InventoryManager.
+    /// </summary>
+    public void EquipToActiveCharacterBTN()
+    {
+        if (InventoryManager.instance == null) return;
+        HandleEquipToggle(InventoryManager.instance.activeCharacterIndex);
+    }
+
+    /// <summary>
     /// Equipa o desequipa el item del personaje 1 (índice 0).
     /// </summary>
     public void Character1BTN()
@@ -84,13 +94,13 @@ public class InventoryUI : MonoBehaviour
         if (InventoryManager.instance.IsEquippedByCharacter(itemId, characterIndex))
         {
             // Ya está equipado → desequipar
-            InventoryManager.instance.Unequip(itemId, characterIndex, statAffected, amountAffected);
+            InventoryManager.instance.Unequip(itemId, characterIndex);
             audioSource?.PlayOneShot(unequipSfx);
         }
         else
         {
             // No está equipado → equipar (Equip() maneja el desequipado del otro personaje)
-            InventoryManager.instance.Equip(itemId, characterIndex, statAffected, amountAffected);
+            InventoryManager.instance.Equip(itemId, characterIndex);
             audioSource?.PlayOneShot(equipSfx);
         }
 
@@ -109,7 +119,8 @@ public class InventoryUI : MonoBehaviour
     {
         if (buttonSprite == null || InventoryManager.instance == null) return;
 
-        bool equippedByAny = InventoryManager.instance.equippedByCharacter.ContainsKey(itemId);
+        bool equippedByAny = InventoryManager.instance.IsEquippedByCharacter(itemId, 0) || 
+                             InventoryManager.instance.IsEquippedByCharacter(itemId, 1);
         buttonSprite.color = equippedByAny ? equippedColor : originalColor;
     }
     
@@ -123,5 +134,16 @@ public class InventoryUI : MonoBehaviour
 
         healItem.healAmount = amountAffected; // viene del InventoryManager al popular el slot
         healItem.Use(target, itemId);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (itemId < 0) return;
+        CharacterSwitcher.NotifyStatsPreview(true, itemId);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        CharacterSwitcher.NotifyStatsPreview(false, -1);
     }
 }

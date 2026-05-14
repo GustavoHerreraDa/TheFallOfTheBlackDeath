@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using InventoryNew;
 
 // Attach this ScriptableObject to EnemyFighter prefabs via the Inspector.
 // Each entry says: "give item X if these body parts are NOT destroyed."
@@ -10,13 +11,19 @@ public class BodyPartLootTable : ScriptableObject
     [System.Serializable]
     public class LootEntry
     {
-        [Header("Item to Grant")]
+        [Header("Legacy Item (Old System)")]
         [Tooltip("ID matching InventoryDateBase.DateBase index")]
         public int itemId;
-        public int amount = 1;
         public InventoryDateBase.Uso uso = InventoryDateBase.Uso.Equipable;
 
-        [Header("Display")]
+        [Header("New Item (Fear & Hunger System)")]
+        [Tooltip("Assign the new NewItemData asset here")]
+        public NewItemData newItemData;
+
+        [Header("Common Settings")]
+        public int amount = 1;
+
+        [Header("Display Override (Used if newItemData is null)")]
         public string itemDisplayName = "Item";
         public Sprite itemSprite;
 

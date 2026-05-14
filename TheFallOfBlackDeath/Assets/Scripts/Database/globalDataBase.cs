@@ -43,62 +43,33 @@ public class globalDataBase : ScriptableObject
     /// <param name="index">The index.</param>
     /// <param name="amountAffected">The amount affected.</param>
     /// <param name="statAffected">The stat affected.</param>
-    public void UpdateFighterStats(int index, float amountAffected, string statAffected)
+    public void UpdateFighterStats(int index, float amountAffected, InventoryDateBase.StatType statAffected)
     {
+        if (index < 0 || index >= EnemyDB.Count) return;
+        
+        EnemyStats stats = EnemyDB[index];
         switch (statAffected)
         {
-            case "Attack":
-
-                EnemyStats newAttackStats = new EnemyStats
-                {
-                    isMainCharacter = EnemyDB[index].isMainCharacter,
-                    isSecondaryCharacter = EnemyDB[index].isSecondaryCharacter,
-                    enemyPrefab = EnemyDB[index].enemyPrefab,
-                    prefabIndex = EnemyDB[index].prefabIndex,
-                    maxHealth = EnemyDB[index].maxHealth, 
-                    hp = EnemyDB[index].hp,
-                    level = EnemyDB[index].level, 
-                    attack = EnemyDB[index].attack + amountAffected, 
-                    deffense = EnemyDB[index].deffense, 
-                    spirit = EnemyDB[index].spirit, 
-                    speed = EnemyDB[index].speed, 
-                    experience = EnemyDB[index].experience,
-                    experienceToNextLevel = EnemyDB[index].experienceToNextLevel,
-                    Description = EnemyDB[index].Description, 
-                    LargeDescription = EnemyDB[index].LargeDescription, 
-                    Name = EnemyDB[index].Name,
-                    CharacterSwitcherIndex = EnemyDB[index].CharacterSwitcherIndex,
-                    characterImage = EnemyDB[index].characterImage
-                };
-                EnemyDB[index] = newAttackStats;
+            case InventoryDateBase.StatType.Attack:
+                stats.attack += amountAffected;
                 break;
-
-            case "Defense":
-
-                EnemyStats newDefenseStats = new EnemyStats
-                {
-                    isMainCharacter = EnemyDB[index].isMainCharacter,
-                    isSecondaryCharacter = EnemyDB[index].isSecondaryCharacter,
-                    enemyPrefab = EnemyDB[index].enemyPrefab,
-                    prefabIndex = EnemyDB[index].prefabIndex,
-                    maxHealth = EnemyDB[index].maxHealth, 
-                    hp = EnemyDB[index].hp,
-                    level = EnemyDB[index].level, 
-                    attack = EnemyDB[index].attack, 
-                    deffense = EnemyDB[index].deffense + amountAffected, 
-                    spirit = EnemyDB[index].spirit, 
-                    speed = EnemyDB[index].speed,
-                    experience = EnemyDB[index].experience,
-                    experienceToNextLevel = EnemyDB[index].experienceToNextLevel,
-                    Description = EnemyDB[index].Description, 
-                    LargeDescription = EnemyDB[index].LargeDescription, 
-                    Name = EnemyDB[index].Name,
-                    CharacterSwitcherIndex = EnemyDB[index].CharacterSwitcherIndex,
-                    characterImage = EnemyDB[index].characterImage
-                };
-                EnemyDB[index] = newDefenseStats;
+            case InventoryDateBase.StatType.Defense:
+                stats.deffense += amountAffected;
+                break;
+            case InventoryDateBase.StatType.MaxHealth:
+                stats.maxHealth += amountAffected;
+                break;
+            case InventoryDateBase.StatType.Health:
+                stats.hp = Mathf.Clamp(stats.hp + amountAffected, 0, stats.maxHealth);
+                break;
+            case InventoryDateBase.StatType.Speed:
+                stats.speed += amountAffected;
+                break;
+            case InventoryDateBase.StatType.Spirit:
+                stats.spirit += amountAffected;
                 break;
         }
+        EnemyDB[index] = stats;
     }
 
     /// <summary>

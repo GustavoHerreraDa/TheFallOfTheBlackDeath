@@ -14,6 +14,16 @@ public class InventoryDateBase : ScriptableObject
         "Objetos Consumibles para utilizar al menos vez, por ejemplo la llave. Para abrir una puierta" +
         "Objetos Skillneed habilitan alguna skill o la potencian."
         )]
+    public enum EquipmentSlot { Head, Torso, Legs, Weapon, Accessory }
+    public enum StatType { None, Health, MaxHealth, Attack, Defense, Speed, Spirit }
+
+    [System.Serializable]
+    public struct StatModifier
+    {
+        public StatType stat;
+        public float amount;
+    }
+
     [System.Serializable]
     /// <summary>
     /// Stores the data used by object.
@@ -24,11 +34,11 @@ public class InventoryDateBase : ScriptableObject
         public string name;
         public Sprite sprite;
         public Uso uso;
+        public EquipmentSlot slot;
         public string characteristic;
         public string funtion;
-        public StatsUpgrade statsAffected;
+        public List<StatModifier> modifiers;
         public bool skillAffection;
-        public float amountAffected;
 
     }
     //Objetos equipables aumentan las stats del personaje que eligen el jugador por ejemplo la tiara o la bota que suben la vida, o la scimitarra.
@@ -39,12 +49,20 @@ public class InventoryDateBase : ScriptableObject
     /// Defines the named values used by uso.
     /// </summary>
     public enum Uso { Equipable, Usable, Consumable, SkillNeed, BodyPartHeal }
-    /// <summary>
-    /// Defines the named values used by stats upgrade.
-    /// </summary>
-    public enum StatsUpgrade {None, Health, Attack, Defense, Speed, Spirit }
 
 
     public Object[] DateBase;
+
+    public Object GetItem(int id)
+    {
+        if (id >= 0 && id < DateBase.Length)
+            return DateBase[id];
+        return default;
+    }
+
+    public bool IsValidId(int id)
+    {
+        return id >= 0 && id < DateBase.Length;
+    }
 }
 

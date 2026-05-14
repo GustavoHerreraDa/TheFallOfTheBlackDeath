@@ -55,6 +55,14 @@ public class PlayerUI : MonoBehaviour
     /// </summary>
     public void UpdatePlayerStats()
     {
+        UpdatePlayerStats(false, -1);
+    }
+
+    /// <summary>
+    /// Updates the player stats with optional preview of an item.
+    /// </summary>
+    public void UpdatePlayerStats(bool isPreview, int previewItemId)
+    {
         if (GameManager.Instance == null)
             return;
 
@@ -77,16 +85,32 @@ public class PlayerUI : MonoBehaviour
             currentHealth.text = "HP: " + stats.health;
 
         if (maxHealth != null)
-            maxHealth.text = stats.maxHealth.ToString();
+        {
+            float previewVal = isPreview ? fighter.GetPreviewModifier(previewItemId, InventoryDateBase.StatType.MaxHealth) : 0;
+            maxHealth.text = stats.maxHealth.ToString() + (previewVal != 0 ? " (" + (previewVal > 0 ? "+" : "") + previewVal + ")" : "");
+            maxHealth.color = previewVal > 0 ? Color.green : (previewVal < 0 ? Color.red : Color.white);
+        }
 
         if (attack != null)
-            attack.text = "Attack: " + stats.attack;
+        {
+            float previewVal = isPreview ? fighter.GetPreviewModifier(previewItemId, InventoryDateBase.StatType.Attack) : 0;
+            attack.text = "Attack: " + stats.attack + (previewVal != 0 ? " (" + (previewVal > 0 ? "+" : "") + previewVal + ")" : "");
+            attack.color = previewVal > 0 ? Color.green : (previewVal < 0 ? Color.red : Color.white);
+        }
 
         if (defense != null)
-            defense.text = "Defense: " + stats.deffense;
+        {
+            float previewVal = isPreview ? fighter.GetPreviewModifier(previewItemId, InventoryDateBase.StatType.Defense) : 0;
+            defense.text = "Defense: " + stats.deffense + (previewVal != 0 ? " (" + (previewVal > 0 ? "+" : "") + previewVal + ")" : "");
+            defense.color = previewVal > 0 ? Color.green : (previewVal < 0 ? Color.red : Color.white);
+        }
 
         if (speed != null)
-            speed.text = "Speed: " + stats.speed;
+        {
+            float previewVal = isPreview ? fighter.GetPreviewModifier(previewItemId, InventoryDateBase.StatType.Speed) : 0;
+            speed.text = "Speed: " + stats.speed + (previewVal != 0 ? " (" + (previewVal > 0 ? "+" : "") + previewVal + ")" : "");
+            speed.color = previewVal > 0 ? Color.green : (previewVal < 0 ? Color.red : Color.white);
+        }
 
         UpdateSkillUI();
 
@@ -120,17 +144,18 @@ public class PlayerUI : MonoBehaviour
     /// </summary>
     void OnEnable()
     {
-        // 1. Si cambias de personaje (Tu código actual)
         CharacterSwitcher.updateMainCharacterUI += UpdatePlayerStats;
         CharacterSwitcher.updateSecondaryCharacterUI += UpdatePlayerStats;
         
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnPlayerStatsUpdated += UpdatePlayerStats;
+            GameManager.Instance.OnPlayerStatsUpdated += RefreshStats;
         }
         
         UpdatePlayerStats();
     }
+
+    private void RefreshStats() => UpdatePlayerStats(false, -1);
 
     /// <summary>
     /// Unregisters runtime listeners when the component becomes inactive.
@@ -142,7 +167,7 @@ public class PlayerUI : MonoBehaviour
         
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnPlayerStatsUpdated -= UpdatePlayerStats;
+            GameManager.Instance.OnPlayerStatsUpdated -= RefreshStats;
         }
     }
 

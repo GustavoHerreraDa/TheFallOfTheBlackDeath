@@ -88,15 +88,25 @@ public class LootPanel : MonoBehaviour
 
         GameObject row = Instantiate(itemRowPrefab, itemContainer);
 
+        // Determine icon and name based on new or legacy data
+        Sprite spriteToDisplay = entry.itemSprite;
+        string nameToDisplay = entry.itemDisplayName;
+
+        if (entry.newItemData != null)
+        {
+            if (entry.newItemData.icon != null) spriteToDisplay = entry.newItemData.icon;
+            nameToDisplay = entry.newItemData.itemName;
+        }
+
         // Try to fill icon
         Image icon = row.transform.Find("Icon")?.GetComponent<Image>();
-        if (icon != null && entry.itemSprite != null)
-            icon.sprite = entry.itemSprite;
+        if (icon != null && spriteToDisplay != null)
+            icon.sprite = spriteToDisplay;
 
         // Item name
         TMP_Text nameText = row.transform.Find("ItemName")?.GetComponent<TMP_Text>();
         if (nameText != null)
-            nameText.text = entry.itemDisplayName;
+            nameText.text = nameToDisplay;
 
         // Amount
         TMP_Text amountText = row.transform.Find("Amount")?.GetComponent<TMP_Text>();

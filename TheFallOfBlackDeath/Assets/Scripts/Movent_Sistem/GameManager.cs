@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using TMPro;
 using UnityEngine.Serialization;
+using InventoryNew;
 
 
 /// <summary>
@@ -27,6 +28,14 @@ public class GameManager : MonoBehaviour
         public List<GameObject> Enemys = new List<GameObject>();
     }
 
+    [System.Obsolete("Usar NewEquippedSlotData en su lugar")]
+    [System.Serializable]
+    public struct EquippedSlotData
+    {
+        public InventoryDateBase.EquipmentSlot slot;
+        public int itemId;
+    }
+
     [System.Serializable]
     /// <summary>
     /// Stores the runtime stats and body-part health snapshot persisted for each recruited player fighter.
@@ -45,6 +54,16 @@ public class GameManager : MonoBehaviour
         public float speed;
 
         public List<float> bodyPartsHealth = new List<float>();
+        [System.Obsolete("Usar newEquippedItems en su lugar")]
+        public List<EquippedSlotData> equippedItemsList = new List<EquippedSlotData>();
+
+        [System.Serializable]
+        public struct NewEquippedSlotData
+        {
+            public InventoryNew.EquipmentSlot slot;
+            public string itemId;
+        }
+        public List<NewEquippedSlotData> newEquippedItems = new List<NewEquippedSlotData>();
     }
     
     public event System.Action OnPlayerStatsUpdated;
@@ -82,6 +101,11 @@ public class GameManager : MonoBehaviour
 
     }
     
+    public void NotifyPlayerStatsUpdated()
+    {
+        RefreshUI();
+    }
+
     /// <summary>
     /// Refreshes the ui.
     /// </summary>
@@ -494,6 +518,29 @@ public class GameManager : MonoBehaviour
         foreach (var part in fighter.bodyParts)
             data.bodyPartsHealth.Add(part.currentHealth);
 
+        data.equippedItemsList = new List<EquippedSlotData>();
+        foreach (var kvp in fighter.equippedItems)
+        {
+            data.equippedItemsList.Add(new EquippedSlotData { slot = kvp.Key, itemId = kvp.Value });
+        }
+
+        // Nuevo sistema de equipo
+        data.newEquippedItems = new List<PlayerStatusData.NewEquippedSlotData>();
+        if (fighter.equipmentHandler != null)
+        {
+            foreach (var kvp in fighter.equipmentHandler.GetAllEquipped())
+            {
+                if (kvp.Value != null)
+                {
+                    data.newEquippedItems.Add(new PlayerStatusData.NewEquippedSlotData 
+                    { 
+                        slot = kvp.Key, 
+                        itemId = kvp.Value.id 
+                    });
+                }
+            }
+        }
+
         // Persist per fighter index
         int key = fighter.figherIndex;
         if (savedPlayersStatus == null)
@@ -541,6 +588,29 @@ public class GameManager : MonoBehaviour
         {
             fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
         }
+
+        fighter.equippedItems = new Dictionary<InventoryDateBase.EquipmentSlot, int>();
+        foreach (var itemData in savedPlayerStatus.equippedItemsList)
+        {
+            fighter.equippedItems[itemData.slot] = itemData.itemId;
+        }
+
+        // Nuevo sistema de equipo
+        if (fighter.equipmentHandler != null && savedPlayerStatus.newEquippedItems != null && NewInventoryManager.Instance != null)
+        {
+            foreach (var itemData in savedPlayerStatus.newEquippedItems)
+            {
+                var equipment = NewInventoryManager.Instance.GetItemDataById(itemData.itemId) as NewEquipmentData;
+                if (equipment != null)
+                {
+                    fighter.equipmentHandler.Equip(equipment);
+                }
+            }
+        }
+
+        // Trigger recalculation of equipment stats in the fighter
+        // We'll need to make sure PlayerFighter has a way to refresh stats after loading
+        fighter.SendMessage("RecalculateEquipmentStats", SendMessageOptions.DontRequireReceiver);
 
         fighter.SyncBodyPartVisuals();
 

@@ -229,7 +229,14 @@ public abstract class Fighter : MonoBehaviour
 
         if (this.isAlive == false)
         {
-            audioSource.Play();
+            if (AudioManager.Instance != null && audioSource != null)
+            {
+                AudioManager.Instance.PlaySFX(audioSource.clip, audioSource.volume, false);
+            }
+            else if (audioSource != null)
+            {
+                audioSource.Play();
+            }
             animator.Play("Death");
             Invoke("Die", 2f);
         }
@@ -280,7 +287,7 @@ public abstract class Fighter : MonoBehaviour
     /// Gets the current stats.
     /// </summary>
     /// <returns>The resulting value.</returns>
-    public Stats GetCurrentStats()
+    public virtual Stats GetCurrentStats()
     {
         Stats modedStats = this.stats.Clone();
 

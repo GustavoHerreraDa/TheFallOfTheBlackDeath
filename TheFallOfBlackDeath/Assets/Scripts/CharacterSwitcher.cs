@@ -12,10 +12,16 @@ public class CharacterSwitcher : MonoBehaviour
     public int currentMainCharacterIndex;
     public int currentSecondaryCharacterIndex;
 
-    public delegate void UpdateMainCharacterUI();
+    public delegate void UpdateMainCharacterUI(bool isPreview, int previewId);
     public static event UpdateMainCharacterUI updateMainCharacterUI;
-    public delegate void UpdateSecondaryCharacterUI();
+    public delegate void UpdateSecondaryCharacterUI(bool isPreview, int previewId);
     public static event UpdateSecondaryCharacterUI updateSecondaryCharacterUI;
+
+    public static void NotifyStatsPreview(bool isPreview, int previewId)
+    {
+        updateMainCharacterUI?.Invoke(isPreview, previewId);
+        updateSecondaryCharacterUI?.Invoke(isPreview, previewId);
+    }
 
     /// <summary>
     /// Initializes the component once the scene dependencies are ready.
@@ -64,7 +70,7 @@ public class CharacterSwitcher : MonoBehaviour
             fightersDateBase.SetMainCharacter(pf.figherIndex, true);
         }
 
-        updateMainCharacterUI?.Invoke();
+        updateMainCharacterUI?.Invoke(false, -1);
     }
 
     /// <summary>
@@ -94,7 +100,7 @@ public class CharacterSwitcher : MonoBehaviour
             fightersDateBase.SetSecondaryCharacter(pf.figherIndex, true);
         }
 
-        updateSecondaryCharacterUI?.Invoke();
+        updateSecondaryCharacterUI?.Invoke(false, -1);
     }
 
     /// <summary>

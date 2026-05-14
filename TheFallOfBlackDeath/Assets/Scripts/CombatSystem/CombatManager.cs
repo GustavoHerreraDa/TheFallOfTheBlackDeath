@@ -70,6 +70,9 @@ public class CombatManager : MonoBehaviour
     /// </summary>
     void Start()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         if (GetComponent<CombatScannerSystem>() == null)
             gameObject.AddComponent<CombatScannerSystem>();
 
@@ -297,7 +300,14 @@ public class CombatManager : MonoBehaviour
                         }
                      
                         // ── 3. Victory audio + animation ───────────────────────────────
-                        audioSource.Play();
+                        if (AudioManager.Instance != null && audioSource != null)
+                        {
+                            AudioManager.Instance.PlaySFX(audioSource.clip, audioSource.volume, false);
+                        }
+                        else if (audioSource != null)
+                        {
+                            audioSource.Play();
+                        }
                         Animator[] playerAnimators = player.GetComponentsInChildren<Animator>();
                         foreach (Animator anim in playerAnimators)
                             anim.Play("Victory");
@@ -318,10 +328,21 @@ public class CombatManager : MonoBehaviour
                         }
                      
                         // ── 5. Grant items to inventory ────────────────────────────────
-                        if (InventoryManager.instance != null)
+                        if (InventoryManager.instance != null || InventoryNew.NewInventoryManager.Instance != null)
                         {
                             foreach (var entry in allLoot)
-                                InventoryManager.instance.AddItem(entry.itemId, entry.amount, entry.uso);
+                            {
+                                // Handle New System
+                                if (entry.newItemData != null && InventoryNew.NewInventoryManager.Instance != null)
+                                {
+                                    InventoryNew.NewInventoryManager.Instance.AddItem(entry.newItemData, entry.amount);
+                                }
+                                // Handle Legacy System (fallback)
+                                else if (InventoryManager.instance != null)
+                                {
+                                    InventoryManager.instance.AddItem(entry.itemId, entry.amount, entry.uso);
+                                }
+                            }
                         }
                      
                         // ── 6. Show loot panel and WAIT for player input ────────────────
@@ -370,7 +391,15 @@ public class CombatManager : MonoBehaviour
                         this.isCombatActive = false;
                         yield return new WaitForSeconds(2f);
                         SceneManager.LoadSceneAsync(5);
-                        sonidoDeDerrota.Play();
+                        
+                        if (AudioManager.Instance != null && sonidoDeDerrota != null)
+                        {
+                            AudioManager.Instance.PlaySFX(sonidoDeDerrota.clip, sonidoDeDerrota.volume, false);
+                        }
+                        else if (sonidoDeDerrota != null)
+                        {
+                            sonidoDeDerrota.Play();
+                        }
                     }
 
                     if (this.isCombatActive)

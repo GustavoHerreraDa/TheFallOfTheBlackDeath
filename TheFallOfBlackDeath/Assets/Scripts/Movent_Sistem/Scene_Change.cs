@@ -78,10 +78,33 @@ private IEnumerator DirectGlitchTransition(Vector3 playerPos)
         analogGlitch.active = true;
         digitalGlitch.active = true;
 
+<<<<<<< HEAD
         analogGlitch.scanLineJitter.Override(0.2f);
         analogGlitch.colorDrift.Override(0.4f);
         analogGlitch.horizontalShake.Override(0.2f);
         digitalGlitch.intensity.Override(0.2f);
+=======
+            analogGlitch.scanLineJitter.Override(0.2f);
+            analogGlitch.colorDrift.Override(0.4f);
+            analogGlitch.horizontalShake.Override(0.2f);
+            digitalGlitch.intensity.Override(0.2f); 
+        }
+
+
+        GameManager.Instance.lastPos = playerPos;
+        GameManager.Instance.hasValidLastPos = true;
+
+
+        yield return new WaitForSecondsRealtime(glitchDuration);
+        
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+
+        SceneManager.LoadScene(fightSceneIndex);
+        
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+>>>>>>> 2b0cbd818ded33157fdd55c463138a16fb31a89a
     }
 
     Debug.Log("[DirectGlitchTransition] Saving player position");
