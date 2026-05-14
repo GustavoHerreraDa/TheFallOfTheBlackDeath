@@ -85,6 +85,20 @@ namespace InventoryNew
             return 0;
         }
 
+        public float GetModifierForSlot(EquipmentSlot slot, StatType stat)
+        {
+            if (equippedItems.ContainsKey(slot) && equippedItems[slot] != null)
+            {
+                float total = 0;
+                foreach (var mod in equippedItems[slot].modifiers)
+                {
+                    if (mod.stat == stat) total += mod.amount;
+                }
+                return total;
+            }
+            return 0;
+        }
+
         public NewEquipmentData GetEquippedItem(EquipmentSlot slot)
         {
             return equippedItems[slot];

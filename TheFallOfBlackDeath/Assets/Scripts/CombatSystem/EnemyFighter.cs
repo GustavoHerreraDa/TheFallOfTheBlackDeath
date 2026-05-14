@@ -29,6 +29,14 @@ public class EnemyFighter : Fighter
     /// </summary>
     void Awake()
     {
+        if (bodyParts != null)
+        {
+            foreach (var part in bodyParts)
+            {
+                part.SetOwner(this);
+            }
+        }
+
         // Initialize enemy stats safely, falling back if DB is invalid
         Stats safeDefaults = new Stats(5, 30, 10, 8, 5, 5, 20, 0);
         if (globalDateBase != null && EnemyIndex >= 0 && EnemyIndex < globalDateBase.EnemyDB.Count)

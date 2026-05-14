@@ -27,6 +27,7 @@ public class BodyPartHealPanel : MonoBehaviour
         // Solo mostrar partes que estén dañadas pero NO destruidas
         foreach (var partData in target.bodyParts)
         {
+            if (partData == null) continue;
             if (partData.IsDestroyed) continue;
             if (partData.currentHealth >= partData.maxHealth) continue; // ya está full
 

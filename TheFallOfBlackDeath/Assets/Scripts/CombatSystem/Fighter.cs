@@ -16,8 +16,20 @@ public abstract class Fighter : MonoBehaviour
     {
         public BodyPart part;
         public Transform hitPoint;
-        public float maxHealth = 100f;
+        public float baseMaxHealth = 100f;
         public float currentHealth;
+        
+        // Propiedad maxHealth que se sincroniza con el dueño del Fighter (si existe)
+        private Fighter _owner;
+        public float maxHealth 
+        {
+            get 
+            {
+                if (_owner != null) return GetMaxHealth(_owner);
+                // Si no hay dueño asignado, intentamos usar el baseMaxHealth pero logueamos advertencia si es inesperado
+                return baseMaxHealth;
+            }
+        }
       
         public PartStatus currentStatus = PartStatus.None;
         [Header("Penalizaciones al destruirse")]
@@ -31,12 +43,44 @@ public abstract class Fighter : MonoBehaviour
         public BodyPartData(BodyPart part, float health)
         {
             this.part = part;
-            this.maxHealth = health;
+            this.baseMaxHealth = health;
             this.currentHealth = health;
             this.currentStatus = PartStatus.None;
         }
 
+        // Método para vincular al dueño y recalcular maxHealth si es necesario
+        public void SetOwner(Fighter owner)
+        {
+            _owner = owner;
+        }
+
         public bool IsDestroyed => currentHealth <= 0;
+
+        // Propiedad para obtener el maxHealth real (Base + Equipo)
+        public float GetMaxHealth(Fighter owner)
+        {
+            if (owner is PlayerFighter player && player.equipmentHandler != null)
+            {
+                InventoryNew.EquipmentSlot slot = MapPartToSlot(this.part);
+                float bonus = player.equipmentHandler.GetModifierForSlot(slot, InventoryNew.StatType.MaxHealth);
+                return baseMaxHealth + bonus;
+            }
+            return baseMaxHealth;
+        }
+
+        private InventoryNew.EquipmentSlot MapPartToSlot(BodyPart part)
+        {
+            switch (part)
+            {
+                case BodyPart.Head: return InventoryNew.EquipmentSlot.Head;
+                case BodyPart.Torso: return InventoryNew.EquipmentSlot.Torso;
+                case BodyPart.LeftArm: return InventoryNew.EquipmentSlot.LeftArm;
+                case BodyPart.RightArm: return InventoryNew.EquipmentSlot.RightArm;
+                case BodyPart.LeftLeg: return InventoryNew.EquipmentSlot.LeftLeg;
+                case BodyPart.RightLeg: return InventoryNew.EquipmentSlot.RightLeg;
+                default: return InventoryNew.EquipmentSlot.Accessory;
+            }
+        }
     }
     public List<BodyPartData> bodyParts;
 
@@ -260,9 +304,9 @@ public abstract class Fighter : MonoBehaviour
 
 
         float prev = target.currentHealth;
-        target.currentHealth = Mathf.Clamp(target.currentHealth + amount, 0, target.maxHealth);
+        target.currentHealth = Mathf.Clamp(target.currentHealth + amount, 0, target.GetMaxHealth(this));
 
-        Debug.Log($"{part} recibiÃ³ {amount}. Salud actual: {target.currentHealth}");
+        Debug.Log($"{part} recibiÃ³ {amount}. Salud actual: {target.currentHealth} / {target.GetMaxHealth(this)}");
 
         PlayDamageAnimation(part);
         

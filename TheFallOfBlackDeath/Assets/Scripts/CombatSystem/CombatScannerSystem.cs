@@ -165,11 +165,12 @@ public class CombatScannerSystem : MonoBehaviour
             if (partData == null)
                 continue;
 
+            float mHp = partData.maxHealth;
             builder.Append(partData.part);
             builder.Append(": ");
             builder.Append(Mathf.RoundToInt(partData.currentHealth));
             builder.Append('/');
-            builder.Append(Mathf.RoundToInt(partData.maxHealth));
+            builder.Append(Mathf.RoundToInt(mHp));
 
             if (partData.IsDestroyed)
                 builder.Append(" X");

@@ -89,7 +89,8 @@ public class BodyPartLEDController : MonoBehaviour
         }
         else
         {
-            float healthPercentage = _bodyPartData.currentHealth / _bodyPartData.maxHealth;
+            float mHp = _bodyPartData.maxHealth;
+            float healthPercentage = mHp > 0 ? _bodyPartData.currentHealth / mHp : 0;
             
             // Interpolación de colores: Verde (1.0) -> Amarillo (0.5) -> Rojo (0.0)
             if (healthPercentage > 0.5f)

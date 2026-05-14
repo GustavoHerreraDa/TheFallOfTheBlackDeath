@@ -221,8 +221,10 @@ public class IAEnemySimple : MonoBehaviour
         // aggregate: devuelve la parte con menor ratio current/max
         mostDamaged = availableParts.Aggregate((best, next) =>
         {
-            float bestRatio = best.currentHealth / best.maxHealth;
-            float nextRatio = next.currentHealth / next.maxHealth;
+            float bMax = best.maxHealth;
+            float nMax = next.maxHealth;
+            float bestRatio = bMax > 0 ? best.currentHealth / bMax : 1f;
+            float nextRatio = nMax > 0 ? next.currentHealth / nMax : 1f;
             return nextRatio < bestRatio ? next : best;
         });
 

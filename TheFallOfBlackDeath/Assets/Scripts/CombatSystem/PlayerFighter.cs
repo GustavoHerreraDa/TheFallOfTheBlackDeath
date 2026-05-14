@@ -60,6 +60,14 @@ public class PlayerFighter : Fighter
     /// </summary>
     void Awake()
     {
+        if (bodyParts != null)
+        {
+            foreach (var part in bodyParts)
+            {
+                part.SetOwner(this);
+            }
+        }
+
         equipmentStats = new Stats(0, 0, 0, 0, 0, 0, 0, 0, 0);
         // Detect existing saved data first to avoid overwriting restored state
         if (GameManager.Instance != null)
@@ -294,6 +302,20 @@ public class PlayerFighter : Fighter
 
         // Ensure health is clamped by total max health
         total.health = Mathf.Clamp(total.health, 0, total.maxHealth);
+
+        // Actualizar la salud global basada en las partes del cuerpo si corresponde
+        if (bodyParts != null && bodyParts.Count > 0)
+        {
+            float currentSum = 0;
+            float maxPartSum = 0;
+            foreach (var part in bodyParts)
+            {
+                currentSum += part.currentHealth;
+                maxPartSum += part.GetMaxHealth(this);
+            }
+            total.health = currentSum;
+            total.maxHealth = maxPartSum;
+        }
 
         foreach (var mod in this.statusMods)
         {
