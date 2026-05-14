@@ -70,8 +70,8 @@ namespace InventoryNew
             {
                 Debug.Log($"[NewInventoryPanelUI] Intentando usar consumible: {item.data.itemName}");
                 
-                // Si es un ítem de salud/pocion, abrimos el panel de partes del cuerpo
-                if (item.data.itemName.ToLower().Contains("salud") || item.data.itemName.ToLower().Contains("pocion"))
+                // Si es un ítem de salud, abrimos el panel de partes del cuerpo
+                if (item.data.isHealingItem)
                 {
                     if (bodyPartHealPanel == null)
                     {
@@ -82,14 +82,14 @@ namespace InventoryNew
                     if (bodyPartHealPanel != null)
                     {
                         var target = GameManager.Instance.character1; // O el personaje activo
-                        float healAmount = 25f; // Podría venir de los datos del ítem en el futuro
+                        float healAmount = item.data.healAmount;
                         
                         bodyPartHealPanel.Show(target, healAmount, onPartSelected: (part) => 
                         {
                             target.ModifyBodyPartHealth(part, healAmount);
                             NewInventoryManager.Instance.RemoveItem(item.data.id, 1);
                             RefreshUI();
-                            Debug.Log($"[NewInventoryPanelUI] {part} curado en {target.idName}");
+                            Debug.Log($"[NewInventoryPanelUI] {part} curado en {target.idName} con {healAmount} HP");
                         });
                     }
                     else

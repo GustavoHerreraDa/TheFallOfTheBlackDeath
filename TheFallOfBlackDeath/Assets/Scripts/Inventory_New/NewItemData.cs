@@ -13,5 +13,9 @@ namespace InventoryNew
         public Sprite icon;
         public ItemCategory category;
         public int maxStack = 99;
+
+        [Header("Consumable Effects")]
+        public bool isHealingItem;
+        public float healAmount;
     }
 }
