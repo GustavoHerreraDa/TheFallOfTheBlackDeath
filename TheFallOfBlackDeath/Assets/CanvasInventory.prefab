@@ -1320,15 +1320,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.36862746, g: 1, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 0.36862746, g: 1, b: 0, a: 0.7019608}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6d52758fa2d474b40b0f7f2ab93c3728, type: 2}
-  m_Type: 0
+  m_Sprite: {fileID: -705766893, guid: 503f9214d819d254ab7cab6667a28d20, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -4369,6 +4369,7 @@ GameObject:
   - component: {fileID: 6072340558977959648}
   - component: {fileID: 8852605101206865639}
   - component: {fileID: 4865089011093953613}
+  - component: {fileID: 2693014560131347657}
   m_Layer: 5
   m_Name: RightLeg
   m_TagString: Untagged
@@ -4416,7 +4417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.70980394, b: 0.08627451, a: 1}
+  m_Color: {r: 0.17473899, g: 0.5188679, b: 0, a: 0.50980395}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4492,6 +4493,18 @@ MonoBehaviour:
   slot: 5
   icon: {fileID: 8080952256331825456}
   slotName: {fileID: 9094145151724158356}
+--- !u!114 &2693014560131347657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741822057644899909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b457582b6f108564d9c6e7935b3b6b94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &1785679717046419291
 GameObject:
   m_ObjectHideFlags: 0
@@ -4635,7 +4648,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8845409251878615082}
   - {fileID: 7403624012431219913}
   - {fileID: 3330993021245659861}
   - {fileID: 907578710720254495}
@@ -4643,6 +4655,7 @@ RectTransform:
   - {fileID: 98647827743905567}
   - {fileID: 2161722753463124810}
   - {fileID: 7752974741357252961}
+  - {fileID: 8845409251878615082}
   - {fileID: 58484564587045532}
   - {fileID: 5877104500126720169}
   - {fileID: 2633470058280716202}
@@ -5525,7 +5538,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6678526659619563794}
   m_HandleRect: {fileID: 6505697733739402359}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -8244,7 +8257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.09477004, g: 0.4716981, b: 0, a: 1}
+  m_Color: {r: 0.09477004, g: 0.4716981, b: 0, a: 0.6313726}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8918,7 +8931,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.09477004, g: 0.4716981, b: 0, a: 1}
+  m_Color: {r: 0.09477004, g: 0.4716981, b: 0, a: 0.6313726}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9989,8 +10002,8 @@ RectTransform:
   m_GameObject: {fileID: 3690995255401253578}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3690995255498475473}
   m_Father: {fileID: 3690995255794875596}
@@ -10021,7 +10034,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.27450982, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.28477603, g: 1, b: 0.0141509175, a: 0.20392157}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10523,7 +10536,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -79}
+  m_AnchoredPosition: {x: 960, y: -112}
   m_SizeDelta: {x: 1520, y: 120}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3690995255794875595
@@ -10620,8 +10633,8 @@ RectTransform:
   m_GameObject: {fileID: 3690995256006343848}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3690995256267113969}
   m_Father: {fileID: 3690995255794875596}
@@ -10652,7 +10665,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.27450982, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.27450982, g: 1, b: 0, a: 0.2}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11170,8 +11183,8 @@ RectTransform:
   m_GameObject: {fileID: 3690995257243184053}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3690995257078910952}
   m_Father: {fileID: 3690995255794875596}
@@ -11202,7 +11215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.27843142, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.27843142, g: 1, b: 0, a: 0.2}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11483,7 +11496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.70980394, b: 0.08627451, a: 1}
+  m_Color: {r: 0.17473899, g: 0.5188679, b: 0, a: 0.50980395}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14162,6 +14175,7 @@ GameObject:
   - component: {fileID: 6165565190198308351}
   - component: {fileID: 7700081433428803469}
   - component: {fileID: 232576902892697016}
+  - component: {fileID: 5566038391364267534}
   m_Layer: 5
   m_Name: LeftArm
   m_TagString: Untagged
@@ -14209,7 +14223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.70980394, b: 0.08627451, a: 1}
+  m_Color: {r: 0.17473899, g: 0.5188679, b: 0, a: 0.50980395}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14285,6 +14299,18 @@ MonoBehaviour:
   slot: 2
   icon: {fileID: 449376550608925241}
   slotName: {fileID: 4576624898243081081}
+--- !u!114 &5566038391364267534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4905884924999820986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b457582b6f108564d9c6e7935b3b6b94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &4913227329770029176
 GameObject:
   m_ObjectHideFlags: 0
@@ -14554,7 +14580,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.09477004, g: 0.4716981, b: 0, a: 1}
+  m_Color: {r: 0.09477004, g: 0.4716981, b: 0, a: 0.6313726}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14584,6 +14610,7 @@ GameObject:
   - component: {fileID: 1981731595937261494}
   - component: {fileID: 3730445930746533384}
   - component: {fileID: 1513922541391952511}
+  - component: {fileID: 4094725770435484138}
   m_Layer: 5
   m_Name: Acessory
   m_TagString: Untagged
@@ -14631,7 +14658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.70980394, b: 0.08627451, a: 1}
+  m_Color: {r: 0.17473899, g: 0.5188679, b: 0, a: 0.50980395}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14707,6 +14734,18 @@ MonoBehaviour:
   slot: 6
   icon: {fileID: 6031613300614671373}
   slotName: {fileID: 2208206602376745101}
+--- !u!114 &4094725770435484138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4956442258130795654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b457582b6f108564d9c6e7935b3b6b94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &4970995484509338068
 GameObject:
   m_ObjectHideFlags: 0
@@ -15302,7 +15341,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.00012207031}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &58365691951887164
@@ -16261,9 +16300,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -16925,7 +16964,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.8}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -16977,6 +17016,7 @@ GameObject:
   - component: {fileID: 8606731725938937471}
   - component: {fileID: 1008013764073473042}
   - component: {fileID: 8380217109026352348}
+  - component: {fileID: 551695022645273329}
   m_Layer: 5
   m_Name: RightArm
   m_TagString: Untagged
@@ -17024,7 +17064,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.70980394, b: 0.08627451, a: 1}
+  m_Color: {r: 0.17473899, g: 0.5188679, b: 0, a: 0.50980395}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -17100,6 +17140,18 @@ MonoBehaviour:
   slot: 3
   icon: {fileID: 7444799275655378867}
   slotName: {fileID: 9210046649940138875}
+--- !u!114 &551695022645273329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5931158645539148959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b457582b6f108564d9c6e7935b3b6b94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &5940590664718216336
 GameObject:
   m_ObjectHideFlags: 0
@@ -18936,6 +18988,7 @@ GameObject:
   - component: {fileID: 40204220296252705}
   - component: {fileID: 5123734807477662446}
   - component: {fileID: 6149227608215055779}
+  - component: {fileID: 7285083651963457981}
   m_Layer: 5
   m_Name: Head
   m_TagString: Untagged
@@ -18983,7 +19036,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.7075472, b: 0.08520518, a: 1}
+  m_Color: {r: 0.17473899, g: 0.5188679, b: 0, a: 0.50980395}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -19059,6 +19112,18 @@ MonoBehaviour:
   slot: 0
   icon: {fileID: 4790524224841681799}
   slotName: {fileID: 2623237474319781231}
+--- !u!114 &7285083651963457981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6700392400582536555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b457582b6f108564d9c6e7935b3b6b94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &6773347053408618061
 GameObject:
   m_ObjectHideFlags: 0
@@ -19954,6 +20019,7 @@ GameObject:
   - component: {fileID: 8636715005572969253}
   - component: {fileID: 5383649769020052130}
   - component: {fileID: 4957247216752923379}
+  - component: {fileID: 6553807756796301407}
   m_Layer: 5
   m_Name: Torso
   m_TagString: Untagged
@@ -20001,7 +20067,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.70980394, b: 0.08627451, a: 1}
+  m_Color: {r: 0.17473899, g: 0.5188679, b: 0, a: 0.50980395}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -20077,6 +20143,18 @@ MonoBehaviour:
   slot: 1
   icon: {fileID: 8155926132313372116}
   slotName: {fileID: 7259446571867226031}
+--- !u!114 &6553807756796301407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6946456896555818654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b457582b6f108564d9c6e7935b3b6b94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &6971182920990744442
 GameObject:
   m_ObjectHideFlags: 0
@@ -21402,7 +21480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.09477004, g: 0.4716981, b: 0, a: 1}
+  m_Color: {r: 0.09477004, g: 0.4716981, b: 0, a: 0.6313726}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -25037,6 +25115,7 @@ GameObject:
   - component: {fileID: 4163494409783085700}
   - component: {fileID: 4129135800267782416}
   - component: {fileID: 2736584125380092209}
+  - component: {fileID: 21368312209190916}
   m_Layer: 5
   m_Name: LeftLeg
   m_TagString: Untagged
@@ -25084,7 +25163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.70980394, b: 0.08627451, a: 1}
+  m_Color: {r: 0.17473899, g: 0.5188679, b: 0, a: 0.50980395}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -25160,6 +25239,18 @@ MonoBehaviour:
   slot: 4
   icon: {fileID: 7362904250415618561}
   slotName: {fileID: 7325085069071097491}
+--- !u!114 &21368312209190916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9027142764025752677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b457582b6f108564d9c6e7935b3b6b94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &9037207692854635913
 GameObject:
   m_ObjectHideFlags: 0
@@ -26952,11 +27043,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11522485524618218, guid: c7cd605b5fa2fe347b091ce3f81d2e9c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.00017625093
+      value: 0.00007559242
       objectReference: {fileID: 0}
     - target: {fileID: 11522485524618218, guid: c7cd605b5fa2fe347b091ce3f81d2e9c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00075109256
+      value: -0.000023486007
       objectReference: {fileID: 0}
     - target: {fileID: 57017035022831094, guid: c7cd605b5fa2fe347b091ce3f81d2e9c, type: 3}
       propertyPath: m_IsActive
@@ -27049,6 +27140,10 @@ PrefabInstance:
     - target: {fileID: 2168197569353162167, guid: c7cd605b5fa2fe347b091ce3f81d2e9c, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2249459266864618720, guid: c7cd605b5fa2fe347b091ce3f81d2e9c, type: 3}
+      propertyPath: m_Value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2840542217357150646, guid: c7cd605b5fa2fe347b091ce3f81d2e9c, type: 3}
       propertyPath: m_Spacing
