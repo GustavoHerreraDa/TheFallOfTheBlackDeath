@@ -64,36 +64,42 @@ public class Scene_Change : MonoBehaviour
     /// </summary>
     /// <param name="playerPos">The player pos.</param>
     /// <returns>An enumerator that drives the coroutine sequence.</returns>
-    private IEnumerator DirectGlitchTransition(Vector3 playerPos)
+private IEnumerator DirectGlitchTransition(Vector3 playerPos)
+{
+    Debug.Log("[DirectGlitchTransition] Started");
+
+    Time.timeScale = 0.1f;
+    Time.fixedDeltaTime = 0.02f * Time.timeScale; // Mantiene la física estable
+
+    if (analogGlitch != null && digitalGlitch != null)
     {
-        Time.timeScale = 0.1f; 
-        Time.fixedDeltaTime = 0.02f * Time.timeScale; // Mantiene la física estable
-        
-        if (analogGlitch != null && digitalGlitch != null)
-        {
-            analogGlitch.active = true;
-            digitalGlitch.active = true;
+        Debug.Log("[DirectGlitchTransition] Glitch effects found, applying settings");
 
+        analogGlitch.active = true;
+        digitalGlitch.active = true;
 
-            analogGlitch.scanLineJitter.Override(0.2f);
-            analogGlitch.colorDrift.Override(0.4f);
-            analogGlitch.horizontalShake.Override(0.2f);
-            digitalGlitch.intensity.Override(0.2f); 
-        }
-
-
-        GameManager.Instance.lastPos = playerPos;
-        GameManager.Instance.hasValidLastPos = true;
-
-
-        yield return new WaitForSecondsRealtime(glitchDuration);
-        
-        Time.timeScale = 1f;
-        Time.fixedDeltaTime = 0.02f;
-
-        SceneManager.LoadScene(fightSceneIndex);
-        
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        analogGlitch.scanLineJitter.Override(0.2f);
+        analogGlitch.colorDrift.Override(0.4f);
+        analogGlitch.horizontalShake.Override(0.2f);
+        digitalGlitch.intensity.Override(0.2f);
     }
+
+    Debug.Log("[DirectGlitchTransition] Saving player position");
+
+    GameManager.Instance.lastPos = playerPos;
+    GameManager.Instance.hasValidLastPos = true;
+
+    Debug.Log("[DirectGlitchTransition] Waiting before scene transition");
+
+    yield return new WaitForSecondsRealtime(glitchDuration);
+
+    Time.timeScale = 1f;
+    Time.fixedDeltaTime = 0.02f;
+
+    SceneManager.LoadScene(fightSceneIndex);
+    
+    Cursor.visible = true;
+    Cursor.lockState = CursorLockMode.None;
+    Debug.Log("[DirectGlitchTransition] Cursor unlocked");
+}
 }

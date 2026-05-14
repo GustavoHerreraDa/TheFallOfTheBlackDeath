@@ -123,6 +123,7 @@ public class CameraHolder : MonoBehaviour
             if (Screen.dpi < 200) dpiScale = 1;
             else dpiScale = Screen.dpi / 200f;
             if (pos.x < 380 * dpiScale && Screen.height - pos.y < 250 * dpiScale) return;
+            Debug.Log("[CAMERA HOLDER] CURSOR INVISIBLE");
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             x += (float)(Input.GetAxis("Mouse X") * xRotate * 0.02);

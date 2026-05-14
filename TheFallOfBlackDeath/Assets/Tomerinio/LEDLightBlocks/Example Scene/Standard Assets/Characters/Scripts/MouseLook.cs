@@ -92,6 +92,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             if (m_cursorIsLocked)
             {
+                Debug.Log("[MouseLook] CURSOR INVISIBLE");
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
