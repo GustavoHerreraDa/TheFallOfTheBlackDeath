@@ -15,6 +15,11 @@ public class CameraManager : MonoBehaviour
     public bool enableMouseTracking = false; // Solo activar en menús o momentos tranquilos
     public float maxRotationAngle = 2f;      // Qué tanto rotará la cámara
     public float trackingSmoothness = 5f;    // Suavidad del movimiento
+
+    [Header("Anti-Jitter")]
+    [SerializeField] private float cameraPositionSmoothTime = 0.12f;
+    [SerializeField] private float focusPointSmoothTime = 0.08f;
+    [SerializeField] private float rotationSmoothness = 10f;
     
     [Header("Breathing Effect (Health Based)")]
     public bool enableBreathing = true;
@@ -38,6 +43,11 @@ public class CameraManager : MonoBehaviour
     
     private CombatManager combatManager;
     private ChromaticAberration chromaticAberration;
+    private Vector3 cameraPositionVelocity;
+    private Vector3 focusPointVelocity;
+    private Vector3 smoothedFocusPoint;
+    private Vector2 smoothedMouseTracking;
+    private bool hasSmoothedFocusPoint;
     [Header("Cameras")]
     public Camera mainCamera;       
     public Camera shaderCamera;     
@@ -120,12 +130,16 @@ public class CameraManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Updates the component each frame while it is active.
+    /// Updates the camera after fighters and animations have finished their frame.
     /// </summary>
-    private void Update()
+    private void LateUpdate()
     {
         // Solo proceder si el combate está activo y listo
-        if (combatManager == null || !combatManager.isCombatActive) return;
+        if (combatManager == null || !combatManager.isCombatActive)
+        {
+            ResetCameraSmoothing();
+            return;
+        }
 
         FighterIndex = combatManager.fighterIndex;
 
@@ -138,18 +152,19 @@ public class CameraManager : MonoBehaviour
         bool isPlayerTurn = activeFighter.team == Team.PLAYERS;
 
         // 1. CALCULO DEL PUNTO DE ENFOQUE DINÁMICO
-        Vector3 enemyFocusPoint = Vector3.zero;
+        Vector3 rawEnemyFocusPoint = Vector3.zero;
 
         if (isHoveringEnemy && hoverTarget != null)
         {
-            enemyFocusPoint = hoverTarget.transform.position;
+            rawEnemyFocusPoint = hoverTarget.transform.position;
         }
         else
         {
             // Si es turno del jugador, enfocar enemigos. Si es turno del enemigo, enfocar jugadores.
-            enemyFocusPoint = isPlayerTurn ? GetCachedEnemyFocusPoint() : GetPlayerTeamCenter();
+            rawEnemyFocusPoint = isPlayerTurn ? GetCachedEnemyFocusPoint() : GetPlayerTeamCenter();
         }
 
+        Vector3 enemyFocusPoint = GetSmoothedFocusPoint(rawEnemyFocusPoint);
         Vector3 midpoint = (activeFighter.transform.position + enemyFocusPoint) * 0.5f;
 
         // 2. CÁLCULO DE POSICIÓN Y ROTACIÓN OBJETIVO
@@ -173,14 +188,27 @@ public class CameraManager : MonoBehaviour
             targetPos += Vector3.up * cameraOffset.y;
             targetPos += dirToEnemy * cameraOffset.z;
 
-            // Interpolación suave de posición
-            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, targetPos, Time.deltaTime * selectionZoomSpeed);
+            // Suavizado estable de posicion.
+            mainCamera.transform.position = Vector3.SmoothDamp(
+                mainCamera.transform.position,
+                targetPos,
+                ref cameraPositionVelocity,
+                Mathf.Max(0.001f, cameraPositionSmoothTime),
+                Mathf.Infinity,
+                Time.deltaTime
+            );
 
             // Rotación: Mirar siempre al midpoint
-            if (midpoint != mainCamera.transform.position)
+            Vector3 lookDirection = midpoint - mainCamera.transform.position;
+            if (lookDirection.sqrMagnitude > 0.0001f)
             {
-                Quaternion targetRot = Quaternion.LookRotation(midpoint - mainCamera.transform.position);
-                mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, targetRot, Time.deltaTime * selectionZoomSpeed);
+                Quaternion targetRot = Quaternion.LookRotation(lookDirection.normalized, Vector3.up);
+                targetRot *= GetMouseTrackingOffset();
+                mainCamera.transform.rotation = Quaternion.Slerp(
+                    mainCamera.transform.rotation,
+                    targetRot,
+                    GetDampedLerpFactor(rotationSmoothness)
+                );
             }
 
             // FOV Constante (ej. 60) para evitar distorsiones, sumando respiración si aplica
@@ -200,10 +228,6 @@ public class CameraManager : MonoBehaviour
             }
             UpdateFOV(60f + breathOffset);
 
-            if (enableMouseTracking) 
-            {
-                ApplyMouseTracking();
-            }
         }
 
         // === LÓGICA DE DISTORSIÓN DE LENTE ===
@@ -213,7 +237,7 @@ public class CameraManager : MonoBehaviour
             float targetValue = isHoveringEnemy ? targetDistortion : 0f;
             
             // Interpolamos suavemente el valor actual hacia el target
-            float newValue = Mathf.Lerp(lensDistortion.intensity.value, targetValue, Time.deltaTime * distortionSpeed);
+            float newValue = Mathf.Lerp(lensDistortion.intensity.value, targetValue, GetDampedLerpFactor(distortionSpeed));
             
             lensDistortion.intensity.value = newValue;
         }
@@ -227,6 +251,7 @@ public class CameraManager : MonoBehaviour
         // Asegurar tiempo normal si se desactiva en medio de un HitStop
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
+        ResetCameraSmoothing();
     }
 
     /// <summary>
@@ -574,35 +599,65 @@ public class CameraManager : MonoBehaviour
         // No longer used directly, but kept for compatibility if needed.
     }
     
-    private void ApplyMouseTracking()
+    private Vector3 GetSmoothedFocusPoint(Vector3 targetFocusPoint)
     {
-        // 1. Verificación de seguridad básica
-        if (!enableMouseTracking || isHitActive || combatManager == null) return;
+        if (!hasSmoothedFocusPoint)
+        {
+            smoothedFocusPoint = targetFocusPoint;
+            focusPointVelocity = Vector3.zero;
+            hasSmoothedFocusPoint = true;
+            return smoothedFocusPoint;
+        }
 
-        // 2. CORRECCIÓN: Usar .Length en lugar de .Count para el Array de fighters
-        if (FighterIndex < 0 || FighterIndex >= combatManager.fighters.Length) return;
-
-        var targetFighter = combatManager.fighters[FighterIndex];
-
-        // 3. Verificar que el luchador y su pivot no sean nulos
-        if (targetFighter == null || targetFighter.CameraPivot == null) return;
-
-        // 4. Obtención de posición del mouse (-1 a 1)
-        float mouseX = (Input.mousePosition.x / Screen.width) * 2f - 1f;
-        float mouseY = (Input.mousePosition.y / Screen.height) * 2f - 1f;
-
-        // 5. Cálculo de rotación relativa
-        Quaternion mouseOffset = Quaternion.Euler(-mouseY * maxRotationAngle, mouseX * maxRotationAngle, 0f);
-    
-        // Usamos la rotación del pivot del luchador como base
-        Quaternion baseRotation = targetFighter.CameraPivot.rotation;
-
-        // 6. Aplicamos la rotación combinada de forma suave
-        mainCamera.transform.rotation = Quaternion.Slerp(
-            mainCamera.transform.rotation, 
-            baseRotation * mouseOffset, 
-            Time.deltaTime * trackingSmoothness
+        smoothedFocusPoint = Vector3.SmoothDamp(
+            smoothedFocusPoint,
+            targetFocusPoint,
+            ref focusPointVelocity,
+            Mathf.Max(0.001f, focusPointSmoothTime),
+            Mathf.Infinity,
+            Time.deltaTime
         );
+
+        return smoothedFocusPoint;
+    }
+
+    private Quaternion GetMouseTrackingOffset()
+    {
+        if (!enableMouseTracking || isHitActive || Screen.width <= 0 || Screen.height <= 0)
+        {
+            smoothedMouseTracking = Vector2.zero;
+            return Quaternion.identity;
+        }
+
+        Vector2 mouseTarget = new Vector2(
+            Mathf.Clamp((Input.mousePosition.x / Screen.width) * 2f - 1f, -1f, 1f),
+            Mathf.Clamp((Input.mousePosition.y / Screen.height) * 2f - 1f, -1f, 1f)
+        );
+
+        smoothedMouseTracking = Vector2.Lerp(
+            smoothedMouseTracking,
+            mouseTarget,
+            GetDampedLerpFactor(trackingSmoothness)
+        );
+
+        return Quaternion.Euler(
+            -smoothedMouseTracking.y * maxRotationAngle,
+            smoothedMouseTracking.x * maxRotationAngle,
+            0f
+        );
+    }
+
+    private float GetDampedLerpFactor(float smoothness)
+    {
+        return 1f - Mathf.Exp(-Mathf.Max(0f, smoothness) * Time.deltaTime);
+    }
+
+    private void ResetCameraSmoothing()
+    {
+        cameraPositionVelocity = Vector3.zero;
+        focusPointVelocity = Vector3.zero;
+        smoothedMouseTracking = Vector2.zero;
+        hasSmoothedFocusPoint = false;
     }
 
 #if UNITY_EDITOR
