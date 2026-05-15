@@ -327,21 +327,20 @@ public class CombatManager : MonoBehaviour
                             allLoot.AddRange(drops);
                         }
                      
-                        // ── 5. Grant items to inventory ────────────────────────────────
-                        if (InventoryManager.instance != null || InventoryNew.NewInventoryManager.Instance != null)
+                        // ── 5. Grant items to inventory (NEW SYSTEM ONLY) ──────────────
+                        // The legacy InventoryManager path has been removed.
+                        if (InventoryNew.NewInventoryManager.Instance != null)
                         {
                             foreach (var entry in allLoot)
                             {
-                                // Handle New System
-                                if (entry.newItemData != null && InventoryNew.NewInventoryManager.Instance != null)
+                                if (entry.newItemData == null)
                                 {
-                                    InventoryNew.NewInventoryManager.Instance.AddItem(entry.newItemData, entry.amount);
+                                    // Skip entries that haven't been migrated to NewItemData
+                                    Debug.LogWarning("Loot entry without NewItemData was skipped. Please assign a NewItemData in the BodyPartLootTable.");
+                                    continue;
                                 }
-                                // Handle Legacy System (fallback)
-                                else if (InventoryManager.instance != null)
-                                {
-                                    InventoryManager.instance.AddItem(entry.itemId, entry.amount, entry.uso);
-                                }
+
+                                InventoryNew.NewInventoryManager.Instance.AddItem(entry.newItemData, entry.amount);
                             }
                         }
                      
