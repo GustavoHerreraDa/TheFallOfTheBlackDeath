@@ -15,6 +15,11 @@ public class DialogueManager : MonoBehaviour
     [Header("Player")]
     public PlayerControl playerControl;
 
+    // Cache del Rigidbody del jugador para restaurar su estado tras el diálogo
+    private Rigidbody cachedPlayerRb;
+    private bool cachedUseGravity;
+    private RigidbodyConstraints cachedConstraints;
+
     private GameObject currentNPC;
     public delegate void RecruitEventHandler(GameObject npc, int fighterIndex);
     public static event RecruitEventHandler OnRecruitCharacter;
@@ -45,13 +50,21 @@ public class DialogueManager : MonoBehaviour
         {
             playerControl.enabled = false;
             playerControl.anim.SetFloat("Movent", 0f);
-            Rigidbody rb = playerControl.GetComponent<Rigidbody>();
-            if (rb != null)
+            // Intentamos obtener el rigidbody (en el root o en hijos) para congelar al jugador
+            cachedPlayerRb = playerControl.GetComponent<Rigidbody>();
+            if (cachedPlayerRb == null)
+                cachedPlayerRb = playerControl.GetComponentInChildren<Rigidbody>();
+
+            if (cachedPlayerRb != null)
             {
-                rb.linearVelocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
-                rb.useGravity = false;
-                rb.constraints = RigidbodyConstraints.FreezeAll; 
+                // Guardamos estado previo para restaurarlo al finalizar
+                cachedUseGravity = cachedPlayerRb.useGravity;
+                cachedConstraints = cachedPlayerRb.constraints;
+
+                cachedPlayerRb.linearVelocity = Vector3.zero;
+                cachedPlayerRb.angularVelocity = Vector3.zero;
+                cachedPlayerRb.useGravity = false;
+                cachedPlayerRb.constraints = RigidbodyConstraints.FreezeAll; 
             }
 
 
@@ -136,6 +149,7 @@ public class DialogueManager : MonoBehaviour
 
         if (playerControl != null)
             playerControl.enabled = true;
+        RestorePlayerRigidbody();
        
         if (currentNPC != null)
         {
@@ -204,7 +218,10 @@ public class DialogueManager : MonoBehaviour
     private void EndDialogueWithAction(DialogueEvent.DialogueEndAction action)
     {
         ui.ShowUI(false);
+        // Marcar diálogo como finalizado para permitir hablar con otros NPC
+        currentDialogue = null;
         if (playerControl != null) playerControl.enabled = true;
+        RestorePlayerRigidbody();
 
         if (currentNPC != null)
         {
@@ -228,6 +245,20 @@ public class DialogueManager : MonoBehaviour
             evt?.TriggerEvent();
         }
         currentNPC = null;
+    }
+
+    /// <summary>
+    /// Restaura el estado del rigidbody del jugador si fue modificado al iniciar el diálogo.
+    /// </summary>
+    private void RestorePlayerRigidbody()
+    {
+        if (cachedPlayerRb != null)
+        {
+            cachedPlayerRb.useGravity = cachedUseGravity;
+            cachedPlayerRb.constraints = cachedConstraints;
+            // Limpieza de caché
+            cachedPlayerRb = null;
+        }
     }
 
 

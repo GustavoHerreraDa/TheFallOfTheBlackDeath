@@ -10,7 +10,9 @@ public class DialogueInput : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (DialogueManager.Instance != null && Input.GetKeyDown(KeyCode.E))
+        if (DialogueManager.Instance != null 
+            && DialogueManager.Instance.IsDialogueActive 
+            && Input.GetKeyDown(KeyCode.E))
         {
             DialogueManager.Instance.NextLine();
         }

@@ -34,6 +34,10 @@ public class Camera_Main : MonoBehaviour
 
     private void Update()
     {
+        // Bloquear control de cámara durante diálogos
+        if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueActive)
+            return;
+
         float horizontal = Input.GetAxis("Mouse X");
         if (horizontal != 0f)
         {
@@ -57,6 +61,10 @@ public class Camera_Main : MonoBehaviour
 
     private void LateUpdate()
     {
+        // Mantener la cámara quieta si hay diálogo activo
+        if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueActive)
+            return;
+
         Vector3 orbit = new Vector3(
             Mathf.Cos(angle.x) * Mathf.Cos(angle.y),
             -Mathf.Sin(angle.y),
