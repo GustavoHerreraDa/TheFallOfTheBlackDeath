@@ -44,7 +44,7 @@ public class EnemyButtonUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         // === COMUNICACIÓN CON CAMERAMANAGER ===
         if (CameraManager.Instance != null)
-            CameraManager.Instance.SetSelectionZoom(true);
+            CameraManager.Instance.SetSelectionZoom(true, target);
         
         // === NUEVO: ACTIVAR BLOOM VERDE ===
         if (BloomManager.Instance != null)

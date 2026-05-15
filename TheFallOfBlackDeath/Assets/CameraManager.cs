@@ -66,9 +66,11 @@ public class CameraManager : MonoBehaviour
     private Coroutine glitchCoroutine;
     
     [Header("Selection Zoom (UI Hover)")]
-    [SerializeField] private float selectionZoomFOV = 45f;
+    [SerializeField] private float zoomDistance = 0.6f;
+    [SerializeField] private Vector3 cameraOffset = new Vector3(1.5f, 0f, 0f);
     [SerializeField] private float selectionZoomSpeed = 5f;
     private bool isHoveringEnemy = false;
+    private Fighter hoverTarget;
     private bool isHitActive = false;
 
     private float defaultFOV;
@@ -124,36 +126,76 @@ public class CameraManager : MonoBehaviour
 
         FighterIndex = combatManager.fighterIndex;
 
-        if (currentCameraIndex != combatManager.fighterIndex)
-        {
-            currentCameraIndex = combatManager.fighterIndex;
+        // Identificar jugador activo
+        if (FighterIndex < 0 || FighterIndex >= combatManager.fighters.Length) return;
+        var activeFighter = combatManager.fighters[FighterIndex];
+        if (activeFighter == null || activeFighter.CameraPivot == null) return;
 
-            if (currentCameraIndex >= 0 && currentCameraIndex < combatManager.fighters.Length)
-            {
-                ChangeCameraPositionToCurrentFighter();
-            }
+        // 1. CALCULO DEL PUNTO DE ENFOQUE DINÁMICO
+        Vector3 enemyFocusPoint = Vector3.zero;
+        int aliveEnemies = 0;
+
+        if (isHoveringEnemy && hoverTarget != null)
+        {
+            enemyFocusPoint = hoverTarget.transform.position;
         }
-        
-        // Lógica de Zoom (FOV) y Respiración
+        else
+        {
+            // Centro del grupo enemigo
+            foreach (var enemy in combatManager.enemyTeam)
+            {
+                if (enemy != null && enemy.isAlive)
+                {
+                    enemyFocusPoint += enemy.transform.position;
+                    aliveEnemies++;
+                }
+            }
+            if (aliveEnemies > 0) enemyFocusPoint /= aliveEnemies;
+            else enemyFocusPoint = activeFighter.transform.position + activeFighter.transform.forward * 5f; // Fallback
+        }
+
+        Vector3 midpoint = (activeFighter.transform.position + enemyFocusPoint) * 0.5f;
+
+        // 2. CÁLCULO DE POSICIÓN Y ROTACIÓN OBJETIVO
         if (!isHitActive && mainCamera != null)
         {
+            // Posición base desde el pivote del jugador
+            Vector3 basePos = activeFighter.CameraPivot.position;
+            
+            // Si estamos haciendo zoom, nos movemos hacia el midpoint
+            float currentZoomFactor = isHoveringEnemy ? zoomDistance : 0.1f; // Pequeño zoom incluso en idle para encuadrar
+            Vector3 targetPos = Vector3.Lerp(basePos, midpoint, currentZoomFactor);
+
+            // Aplicar Offset Lateral Estable (Regla de los tercios)
+            Vector3 dirToEnemy = (enemyFocusPoint - activeFighter.transform.position).normalized;
+            Vector3 sideDir = Vector3.Cross(Vector3.up, dirToEnemy).normalized;
+            
+            targetPos += sideDir * cameraOffset.x;
+            targetPos += Vector3.up * cameraOffset.y;
+            targetPos += dirToEnemy * cameraOffset.z;
+
+            // Interpolación suave de posición
+            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, targetPos, Time.deltaTime * selectionZoomSpeed);
+
+            // Rotación: Mirar siempre al midpoint
+            if (midpoint != mainCamera.transform.position)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(midpoint - mainCamera.transform.position);
+                mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, targetRot, Time.deltaTime * selectionZoomSpeed);
+            }
+
+            // FOV Constante (ej. 60) para evitar distorsiones, sumando respiración si aplica
+            float breathOffset = 0f;
             if (enableBreathing)
             {
-                ApplyBreathingEffect();
+                breathOffset = CalculateBreathingOffset(activeFighter);
             }
-            else
-            {
-                // Tu código original por si decides apagar la respiración
-                float targetFOV = isHoveringEnemy ? selectionZoomFOV : defaultFOV;
-                float newFOV = Mathf.Lerp(mainCamera.fieldOfView, targetFOV, Time.deltaTime * selectionZoomSpeed);
-                UpdateFOV(newFOV);
-            }
-            
+            UpdateFOV(60f + breathOffset);
+
             if (enableMouseTracking) 
             {
                 ApplyMouseTracking();
             }
-            
         }
 
         // === LÓGICA DE DISTORSIÓN DE LENTE ===
@@ -183,9 +225,11 @@ public class CameraManager : MonoBehaviour
     /// Sets the selection zoom.
     /// </summary>
     /// <param name="active">The active.</param>
-    public void SetSelectionZoom(bool active)
+    /// <param name="target">The target fighter.</param>
+    public void SetSelectionZoom(bool active, Fighter target = null)
     {
         isHoveringEnemy = active;
+        hoverTarget = target;
     }
 
     /// <summary>
@@ -430,23 +474,16 @@ public class CameraManager : MonoBehaviour
     }
     
     /// <summary>
-    /// Applies the breathing effect.
+    /// Calculates the breathing offset based on fighter health.
     /// </summary>
-    private void ApplyBreathingEffect()
+    private float CalculateBreathingOffset(Fighter currentFighter)
     {
-        // Verificación robusta de combatManager y el array de fighters
-        if (combatManager == null || combatManager.fighters == null || 
-            FighterIndex < 0 || FighterIndex >= combatManager.fighters.Length) return;
+        if (currentFighter == null || currentFighter.GetCurrentStats() == null || !currentFighter.isAlive) return 0f;
 
-        var currentFighter = combatManager.fighters[FighterIndex];
-        
-        // Verificación adicional: ¿El luchador tiene estadísticas asignadas?
-        if (currentFighter == null || currentFighter.stats == null || !currentFighter.isAlive) return;
-        
         float currentHp = currentFighter.GetCurrentStats().health;
         float maxHp = currentFighter.GetCurrentStats().maxHealth;
         float hpPercent = currentHp / Mathf.Max(1f, maxHp);
-        
+
         float currentSpeed = normalBreathSpeed;
         float currentAmplitude = normalBreathAmplitude;
 
@@ -457,22 +494,16 @@ public class CameraManager : MonoBehaviour
             currentAmplitude = Mathf.Lerp(normalBreathAmplitude, panicBreathAmplitude, panicFactor);
         }
 
-        //Calculamos la respiración SOLO si no estamos apuntando al enemigo
-        float breathOffset = 0f;
-        if (!isHoveringEnemy)
-        {
-            
-            currentBreathTime += Time.deltaTime * currentSpeed;
-            
-            breathOffset = Mathf.Sin(currentBreathTime) * currentAmplitude;
-        }
+        currentBreathTime += Time.deltaTime * currentSpeed;
+        return Mathf.Sin(currentBreathTime) * currentAmplitude;
+    }
 
-        
-        float targetFOV = (isHoveringEnemy ? selectionZoomFOV : defaultFOV) + breathOffset;
-
-        
-        float newFOV = Mathf.Lerp(mainCamera.fieldOfView, targetFOV, Time.deltaTime * selectionZoomSpeed);
-        UpdateFOV(newFOV);
+    /// <summary>
+    /// Applies the breathing effect. (Legacy, now using CalculateBreathingOffset)
+    /// </summary>
+    private void ApplyBreathingEffect()
+    {
+        // No longer used directly, but kept for compatibility if needed.
     }
     
     private void ApplyMouseTracking()

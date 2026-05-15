@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4207828089270956304
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7191642179478869286}
+  - component: {fileID: 59089852295672723}
+  m_Layer: 0
+  m_Name: CameraManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7191642179478869286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4207828089270956304}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.67394793, y: 2.043675, z: -0.17312652}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &59089852295672723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4207828089270956304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 811e7f2130f0b8d43b4b2754cc59fdcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableMouseTracking: 1
+  maxRotationAngle: 2
+  trackingSmoothness: 5
+  enableBreathing: 1
+  normalBreathSpeed: 2
+  normalBreathAmplitude: 0.5
+  panicBreathSpeed: 7
+  panicBreathAmplitude: 2.5
+  lowHealthThreshold: 0.4
+  defaultShakeDuration: 0.2
+  defaultShakeMagnitude: 0
+  defaultHitStopDuration: 0.2
+  mainCamera: {fileID: 0}
+  shaderCamera: {fileID: 0}
+  currentCameraIndex: 0
+  FighterIndex: 0
+  gameObjectFighter: {fileID: 0}
+  globalVolume: {fileID: 0}
+  targetDistortion: -0.5
+  distortionSpeed: 5
+  hitZoomFOV: 40
+  hitZoomSpeed: 12
+  hitRecoverSpeed: 8
+  hitMoveAmount: 0.3
+  glitchDuration: 2
+  maxGlitchIntensity: 1
+  zoomDistance: 0.2
+  cameraOffset: {x: 2, y: -0.5, z: -2}
+  selectionZoomSpeed: 5
+  cameraSpeed: 5
+  impulseSource: {fileID: 0}
