@@ -107,6 +107,9 @@ public class CameraManager : MonoBehaviour
         // === INICIALIZAR LENS DISTORTION ===
         if (globalVolume != null)
         {
+            // Instanciamos el perfil para no modificar el asset original en disco
+            globalVolume.profile = Instantiate(globalVolume.profile);
+            
             globalVolume.profile.TryGet(out lensDistortion);
             globalVolume.profile.TryGet(out chromaticAberration); // <--- OBTENEMOS EL EFECTO
         }
@@ -131,9 +134,11 @@ public class CameraManager : MonoBehaviour
         var activeFighter = combatManager.fighters[FighterIndex];
         if (activeFighter == null || activeFighter.CameraPivot == null) return;
 
+        // DETECCIÓN DE BANDO
+        bool isPlayerTurn = activeFighter.team == Team.PLAYERS;
+
         // 1. CALCULO DEL PUNTO DE ENFOQUE DINÁMICO
         Vector3 enemyFocusPoint = Vector3.zero;
-        int aliveEnemies = 0;
 
         if (isHoveringEnemy && hoverTarget != null)
         {
@@ -141,17 +146,8 @@ public class CameraManager : MonoBehaviour
         }
         else
         {
-            // Centro del grupo enemigo
-            foreach (var enemy in combatManager.enemyTeam)
-            {
-                if (enemy != null && enemy.isAlive)
-                {
-                    enemyFocusPoint += enemy.transform.position;
-                    aliveEnemies++;
-                }
-            }
-            if (aliveEnemies > 0) enemyFocusPoint /= aliveEnemies;
-            else enemyFocusPoint = activeFighter.transform.position + activeFighter.transform.forward * 5f; // Fallback
+            // Si es turno del jugador, enfocar enemigos. Si es turno del enemigo, enfocar jugadores.
+            enemyFocusPoint = isPlayerTurn ? GetCachedEnemyFocusPoint() : GetPlayerTeamCenter();
         }
 
         Vector3 midpoint = (activeFighter.transform.position + enemyFocusPoint) * 0.5f;
@@ -170,7 +166,10 @@ public class CameraManager : MonoBehaviour
             Vector3 dirToEnemy = (enemyFocusPoint - activeFighter.transform.position).normalized;
             Vector3 sideDir = Vector3.Cross(Vector3.up, dirToEnemy).normalized;
             
-            targetPos += sideDir * cameraOffset.x;
+            // INVERSIÓN DE OFFSET: Si es turno del enemigo, invertimos el offset lateral
+            float lateralOffset = isPlayerTurn ? cameraOffset.x : -cameraOffset.x;
+
+            targetPos += sideDir * lateralOffset;
             targetPos += Vector3.up * cameraOffset.y;
             targetPos += dirToEnemy * cameraOffset.z;
 
@@ -188,7 +187,16 @@ public class CameraManager : MonoBehaviour
             float breathOffset = 0f;
             if (enableBreathing)
             {
-                breathOffset = CalculateBreathingOffset(activeFighter);
+                // Solo aplicamos respiración si el luchador activo es aliado
+                if (isPlayerTurn)
+                {
+                    breathOffset = CalculateBreathingOffset(activeFighter);
+                }
+                else if (combatManager.playerTeam.Length > 0 && combatManager.playerTeam[0] != null)
+                {
+                    // Si no es su turno, usamos al jugador principal para mantener la tensión
+                    breathOffset = CalculateBreathingOffset(combatManager.playerTeam[0]);
+                }
             }
             UpdateFOV(60f + breathOffset);
 
@@ -209,6 +217,16 @@ public class CameraManager : MonoBehaviour
             
             lensDistortion.intensity.value = newValue;
         }
+    }
+
+    private void OnDisable()
+    {
+        if (lensDistortion != null) lensDistortion.intensity.value = 0f;
+        if (chromaticAberration != null) chromaticAberration.intensity.value = 0f;
+
+        // Asegurar tiempo normal si se desactiva en medio de un HitStop
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
     }
 
     /// <summary>
@@ -474,6 +492,56 @@ public class CameraManager : MonoBehaviour
     }
     
     /// <summary>
+    /// Calculates the player team center (alive fighters).
+    /// </summary>
+    private Vector3 GetPlayerTeamCenter()
+    {
+        Vector3 center = Vector3.zero;
+        int aliveCount = 0;
+
+        foreach (var player in combatManager.playerTeam)
+        {
+            if (player != null && player.isAlive)
+            {
+                center += player.transform.position;
+                aliveCount++;
+            }
+        }
+
+        if (aliveCount > 0) return center / aliveCount;
+        
+        // Fallback: si no hay jugadores vivos (raro en combate), usar la posición del primero que encontremos
+        if (combatManager.playerTeam.Length > 0 && combatManager.playerTeam[0] != null)
+            return combatManager.playerTeam[0].transform.position;
+
+        return Vector3.zero;
+    }
+
+    /// <summary>
+    /// Gets the cached enemy focus point or calculates it.
+    /// </summary>
+    private Vector3 GetCachedEnemyFocusPoint()
+    {
+        Vector3 enemyFocusPoint = Vector3.zero;
+        int aliveEnemies = 0;
+
+        foreach (var enemy in combatManager.enemyTeam)
+        {
+            if (enemy != null && enemy.isAlive)
+            {
+                enemyFocusPoint += enemy.transform.position;
+                aliveEnemies++;
+            }
+        }
+
+        if (aliveEnemies > 0) return enemyFocusPoint / aliveEnemies;
+
+        // Fallback
+        var activeFighter = combatManager.fighters[combatManager.fighterIndex];
+        return activeFighter.transform.position + activeFighter.transform.forward * 5f;
+    }
+
+    /// <summary>
     /// Calculates the breathing offset based on fighter health.
     /// </summary>
     private float CalculateBreathingOffset(Fighter currentFighter)
@@ -536,4 +604,22 @@ public class CameraManager : MonoBehaviour
             Time.deltaTime * trackingSmoothness
         );
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        if (combatManager == null || mainCamera == null) return;
+        int idx = combatManager.fighterIndex;
+        if (combatManager.fighters == null || idx < 0 || idx >= combatManager.fighters.Length) return;
+        var f = combatManager.fighters[idx];
+        if (f == null) return;
+
+        Vector3 enemyFocus = (hoverTarget != null ? hoverTarget.transform.position : GetCachedEnemyFocusPoint());
+        Vector3 mid = (f.transform.position + enemyFocus) * 0.5f;
+
+        Gizmos.color = Color.yellow; Gizmos.DrawSphere(mid, 0.1f);
+        Gizmos.color = Color.cyan; Gizmos.DrawLine(f.transform.position, enemyFocus);
+        Gizmos.color = Color.magenta; Gizmos.DrawLine(mainCamera.transform.position, mid);
+    }
+#endif
 }
