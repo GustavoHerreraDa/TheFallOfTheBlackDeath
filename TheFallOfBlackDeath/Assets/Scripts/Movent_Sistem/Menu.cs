@@ -50,11 +50,13 @@ public class Menu : MonoBehaviour
     /// </summary>
     void Update()
     {
+        // Cerrar inventario con Esc si está abierto
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (Inventorymenu.activeSelf) // Si el Inventorymenu est� activo, no abrir el Pausemenu
+            if (Inventorymenu.activeSelf)
             {
-                // C�digo adicional si se desea realizar alguna acci�n cuando se intenta abrir el Pausemenu con el Inventorymenu activo
+                // Si el inventario está abierto, lo cerramos y no abrimos el menú de pausa
+                Inventorytrue();
                 return;
             }
 
@@ -72,11 +74,12 @@ public class Menu : MonoBehaviour
                 PauseGame();
             }
         }
-        if (Input.GetKeyDown(KeyCode.I))
+        // Abrir/cerrar inventario con Tab o con I
+        if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.I))
         {
-            if (Pausemenu.activeSelf) // Si el Pausemenu est� activo, no abrir el Inventorymenu
+            if (Pausemenu.activeSelf) // Si el Pausemenu está activo, no abrir el Inventorymenu
             {
-                // C�digo adicional si se desea realizar alguna acci�n cuando se intenta abrir el Inventorymenu con el Pausemenu activo
+                // Evitar abrir inventario cuando está el menú de pausa
                 return;
             }
 
@@ -92,24 +95,7 @@ public class Menu : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            if (StatsMenu == null)
-                return;
-
-            Pausemenu.SetActive(false);
-
-            //Debug.Log("hola");
-            if (IsStats)
-            {
-                //Debug.Log("hola");
-                StatsTrue();
-            }
-            else
-            {
-                Statsfalse();
-            }
-        }
+        // Nota: El Tab previamente cambiaba el StatsMenu. Se elimina para evitar conflicto con el inventario.
 
         if (Input.GetKeyDown(KeyCode.R))
         {
