@@ -41,7 +41,7 @@ public abstract class Interactable : MonoBehaviour
         // OBJETO (pickup)
         if (other.gameObject.CompareTag("Object"))
         {
-            if (other.GetComponent<statsOBJ>() != null)
+            
             {
                 InteractMeessage.SetActive(true);
                 objCollider = other;
@@ -55,7 +55,7 @@ public abstract class Interactable : MonoBehaviour
         // PUERTA
         if (other.gameObject.CompareTag("Gate"))
         {
-            if (other.GetComponent<Gate>() != null)
+            
             {
                 InteractMeessage.SetActive(true);
                 objCollider = other;

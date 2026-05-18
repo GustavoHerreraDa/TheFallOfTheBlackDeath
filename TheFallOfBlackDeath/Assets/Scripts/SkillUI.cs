@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+using InventoryNew;
+
 /// <summary>
 /// Handles skill ui for the current project workflow.
 /// </summary>
@@ -25,8 +27,10 @@ public class SkillUI : MonoBehaviour
     /// </summary>
     void OnEnable()
     {
-        InventoryManager.OnInventoryChanged += UpdateUI;
-        InventoryManager.OnCharacterChanged += OnCharacterChanged;
+        if (NewInventoryManager.Instance != null)
+        {
+            NewInventoryManager.Instance.OnInventoryChanged += UpdateUI;
+        }
     }
 
     /// <summary>
@@ -34,8 +38,10 @@ public class SkillUI : MonoBehaviour
     /// </summary>
     void OnDisable()
     {
-        InventoryManager.OnInventoryChanged -= UpdateUI;
-        InventoryManager.OnCharacterChanged -= OnCharacterChanged;
+        if (NewInventoryManager.Instance != null)
+        {
+            NewInventoryManager.Instance.OnInventoryChanged -= UpdateUI;
+        }
     }
 
     /// <summary>
@@ -84,7 +90,7 @@ public class SkillUI : MonoBehaviour
         }
         
         if (skill.ItemsNeeded.Count > 0)
-            skill.HasItemsInInventory();
+            skill.HasRequiredItems();
 
         if (!skill.HasItemInInventory && skill.ItemsNeeded.Count > 0)
             return;

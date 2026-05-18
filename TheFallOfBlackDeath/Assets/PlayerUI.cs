@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+using InventoryNew;
+
 /// <summary>
 /// Handles player ui for the current project workflow.
 /// </summary>
@@ -23,23 +25,7 @@ public class PlayerUI : MonoBehaviour
 
     public bool isMainCharacterUI;
 
-   /* public void Awake()
-    {
-        GetPlayerFromCombatManager();
-    }*/
-
-    /*private void GetPlayerFromCombatManager()
-    {
-        if (combatManager == null)
-            return;
-
-        var _fighter = combatManager.fighters[combatManager.fighterIndex];
-
-        if (_fighter.GetType() == typeof(PlayerFighter))
-        {
-            fighter = _fighter;
-        }
-    }*/
+    public string previewItemId = ""; // ID de string para el nuevo sistema
 
     /// <summary>
     /// Initializes the component once the scene dependencies are ready.
@@ -47,7 +33,6 @@ public class PlayerUI : MonoBehaviour
     public void Start()
     {
         UpdatePlayerStats();
-
     }
 
     /// <summary>
@@ -55,13 +40,13 @@ public class PlayerUI : MonoBehaviour
     /// </summary>
     public void UpdatePlayerStats()
     {
-        UpdatePlayerStats(false, -1);
+        UpdatePlayerStats(false, "");
     }
 
     /// <summary>
     /// Updates the player stats with optional preview of an item.
     /// </summary>
-    public void UpdatePlayerStats(bool isPreview, int previewItemId)
+    public void UpdatePlayerStats(bool isPreview, string previewId)
     {
         if (GameManager.Instance == null)
             return;
@@ -86,28 +71,28 @@ public class PlayerUI : MonoBehaviour
 
         if (maxHealth != null)
         {
-            float previewVal = isPreview ? fighter.GetPreviewModifier(previewItemId, InventoryDateBase.StatType.MaxHealth) : 0;
+            float previewVal = isPreview ? fighter.GetPreviewModifier(previewId, StatType.MaxHealth) : 0;
             maxHealth.text = stats.maxHealth.ToString() + (previewVal != 0 ? " (" + (previewVal > 0 ? "+" : "") + previewVal + ")" : "");
             maxHealth.color = previewVal > 0 ? Color.green : (previewVal < 0 ? Color.red : Color.white);
         }
 
         if (attack != null)
         {
-            float previewVal = isPreview ? fighter.GetPreviewModifier(previewItemId, InventoryDateBase.StatType.Attack) : 0;
+            float previewVal = isPreview ? fighter.GetPreviewModifier(previewId, StatType.Attack) : 0;
             attack.text = "Attack: " + stats.attack + (previewVal != 0 ? " (" + (previewVal > 0 ? "+" : "") + previewVal + ")" : "");
             attack.color = previewVal > 0 ? Color.green : (previewVal < 0 ? Color.red : Color.white);
         }
 
         if (defense != null)
         {
-            float previewVal = isPreview ? fighter.GetPreviewModifier(previewItemId, InventoryDateBase.StatType.Defense) : 0;
+            float previewVal = isPreview ? fighter.GetPreviewModifier(previewId, StatType.Defense) : 0;
             defense.text = "Defense: " + stats.deffense + (previewVal != 0 ? " (" + (previewVal > 0 ? "+" : "") + previewVal + ")" : "");
             defense.color = previewVal > 0 ? Color.green : (previewVal < 0 ? Color.red : Color.white);
         }
 
         if (speed != null)
         {
-            float previewVal = isPreview ? fighter.GetPreviewModifier(previewItemId, InventoryDateBase.StatType.Speed) : 0;
+            float previewVal = isPreview ? fighter.GetPreviewModifier(previewId, StatType.Speed) : 0;
             speed.text = "Speed: " + stats.speed + (previewVal != 0 ? " (" + (previewVal > 0 ? "+" : "") + previewVal + ")" : "");
             speed.color = previewVal > 0 ? Color.green : (previewVal < 0 ? Color.red : Color.white);
         }
@@ -155,7 +140,7 @@ public class PlayerUI : MonoBehaviour
         UpdatePlayerStats();
     }
 
-    private void RefreshStats() => UpdatePlayerStats(false, -1);
+    private void RefreshStats() => UpdatePlayerStats(false, "");
 
     /// <summary>
     /// Unregisters runtime listeners when the component becomes inactive.

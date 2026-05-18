@@ -28,14 +28,6 @@ public class GameManager : MonoBehaviour
         public List<GameObject> Enemys = new List<GameObject>();
     }
 
-    [System.Obsolete("Usar NewEquippedSlotData en su lugar")]
-    [System.Serializable]
-    public struct EquippedSlotData
-    {
-        public InventoryDateBase.EquipmentSlot slot;
-        public int itemId;
-    }
-
     [System.Serializable]
     /// <summary>
     /// Stores the runtime stats and body-part health snapshot persisted for each recruited player fighter.
@@ -54,8 +46,6 @@ public class GameManager : MonoBehaviour
         public float speed;
 
         public List<float> bodyPartsHealth = new List<float>();
-        [System.Obsolete("Usar newEquippedItems en su lugar")]
-        public List<EquippedSlotData> equippedItemsList = new List<EquippedSlotData>();
 
         [System.Serializable]
         public struct NewEquippedSlotData
@@ -158,7 +148,6 @@ public class GameManager : MonoBehaviour
     }
 
     public List<EnemiesGroup> enemies;
-    public List<statsOBJ> pickObjs;
     public static GameManager Instance
     {
         get { return _instance; }
@@ -348,7 +337,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("Buscando enemigos");
 
         enemies = new List<EnemiesGroup>(FindObjectsOfType<EnemiesGroup>());
-        pickObjs = new List<statsOBJ>(FindObjectsOfType<statsOBJ>());
     }
     
 
@@ -435,17 +423,25 @@ public class GameManager : MonoBehaviour
                 Destroy(enemy.gameObject);
             }
             // recorre el inventario y destruye los pickups que ya están en el inventario.
-            for (int i = 0; i < InventoryManager.instance.inventory.Count; i++)
+            if (NewInventoryManager.Instance != null)
             {
-                // revisa si coincide el id del item pickeado con el que esta en el inventario.
-                var pickUp = pickObjs.Where(x => x.id == InventoryManager.instance.inventory[i].id).FirstOrDefault();
-
-                if (pickUp != null)
-                    Destroy(pickUp.gameObject);
-
-                //Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + pickUp.GroupName);
+                var inventoryItems = NewInventoryManager.Instance.GetAllItems();
+                var newPickups = FindObjectsOfType<NewItemPickup>();
+                foreach (var item in inventoryItems)
+                {
+                    var pickup = newPickups.FirstOrDefault(p => p != null && p.gameObject.activeInHierarchy && 
+                        GetItemDataFromPickup(p)?.id == item.data.id);
+                    
+                    if (pickup != null)
+                        Destroy(pickup.gameObject);
+                }
             }
         }
+    }
+
+    private NewItemData GetItemDataFromPickup(NewItemPickup pickup)
+    {
+        return pickup != null ? pickup.itemData : null; 
     }
     //OFF de manera temporal reactivar cuando aplique el sistema de sanidad
    /* void RandomEncounter()
@@ -518,12 +514,6 @@ public class GameManager : MonoBehaviour
         foreach (var part in fighter.bodyParts)
             data.bodyPartsHealth.Add(part.currentHealth);
 
-        data.equippedItemsList = new List<EquippedSlotData>();
-        foreach (var kvp in fighter.equippedItems)
-        {
-            data.equippedItemsList.Add(new EquippedSlotData { slot = kvp.Key, itemId = kvp.Value });
-        }
-
         // Nuevo sistema de equipo
         data.newEquippedItems = new List<PlayerStatusData.NewEquippedSlotData>();
         if (fighter.equipmentHandler != null)
@@ -587,12 +577,6 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < fighter.bodyParts.Count && i < savedPlayerStatus.bodyPartsHealth.Count; i++)
         {
             fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
-        }
-
-        fighter.equippedItems = new Dictionary<InventoryDateBase.EquipmentSlot, int>();
-        foreach (var itemData in savedPlayerStatus.equippedItemsList)
-        {
-            fighter.equippedItems[itemData.slot] = itemData.itemId;
         }
 
         // Nuevo sistema de equipo

@@ -33,19 +33,15 @@ public class PlayerFighter : Fighter
     [Header("New Inventory System")]
     public EquipmentHandler equipmentHandler;
 
-    [System.Obsolete("Usar equipmentHandler en su lugar")]
-    public Dictionary<InventoryDateBase.EquipmentSlot, int> equippedItems = new Dictionary<InventoryDateBase.EquipmentSlot, int>();
-    [System.Obsolete("Usar equipmentHandler en su lugar")]
-    public Stats equipmentStats;
-
     /// <summary>
     /// Devuelve el modificador de un ítem para una estadística específica.
     /// Útil para previsualizar cambios.
     /// </summary>
-    public float GetPreviewModifier(int itemId, InventoryDateBase.StatType type)
+    public float GetPreviewModifier(string itemId, StatType type)
     {
-        if (InventoryManager.instance == null) return 0;
-        if (!InventoryManager.instance.TryGetItemData(itemId, out var data)) return 0;
+        if (NewInventoryManager.Instance == null) return 0;
+        var data = NewInventoryManager.Instance.GetItemDataById(itemId) as NewEquipmentData;
+        if (data == null || data.modifiers == null) return 0;
 
         float total = 0;
         foreach (var mod in data.modifiers)
@@ -68,7 +64,6 @@ public class PlayerFighter : Fighter
             }
         }
 
-        equipmentStats = new Stats(0, 0, 0, 0, 0, 0, 0, 0, 0);
         // Detect existing saved data first to avoid overwriting restored state
         if (GameManager.Instance != null)
         {
@@ -274,11 +269,11 @@ public class PlayerFighter : Fighter
 
     public override Stats GetCurrentStats()
     {
-        float bonusMaxHealth = equipmentStats.maxHealth;
-        float bonusAttack = equipmentStats.attack;
-        float bonusDefense = equipmentStats.deffense;
-        float bonusSpirit = equipmentStats.spirit;
-        float bonusSpeed = equipmentStats.speed;
+        float bonusMaxHealth = 0;
+        float bonusAttack = 0;
+        float bonusDefense = 0;
+        float bonusSpirit = 0;
+        float bonusSpeed = 0;
 
         // Sumar bonos del nuevo sistema si existe
         if (equipmentHandler != null)
@@ -340,104 +335,33 @@ public class PlayerFighter : Fighter
     }
 
     [System.Obsolete("Usar GetNewTotalStat en su lugar")]
-    public float GetTotalStat(InventoryDateBase.StatType type)
+    public float GetTotalStat(StatType type)
     {
         switch (type)
         {
-            case InventoryDateBase.StatType.Attack: return stats.attack + equipmentStats.attack;
-            case InventoryDateBase.StatType.Defense: return stats.deffense + equipmentStats.deffense;
-            case InventoryDateBase.StatType.Speed: return stats.speed + equipmentStats.speed;
-            case InventoryDateBase.StatType.Spirit: return stats.spirit + equipmentStats.spirit;
-            case InventoryDateBase.StatType.MaxHealth: return stats.maxHealth + equipmentStats.maxHealth;
-            case InventoryDateBase.StatType.Health: return stats.health;
+            case StatType.Attack: return stats.attack + (equipmentHandler != null ? equipmentHandler.GetTotalModifier(type) : 0);
+            case StatType.Defense: return stats.deffense + (equipmentHandler != null ? equipmentHandler.GetTotalModifier(type) : 0);
+            case StatType.Speed: return stats.speed + (equipmentHandler != null ? equipmentHandler.GetTotalModifier(type) : 0);
+            case StatType.Spirit: return stats.spirit + (equipmentHandler != null ? equipmentHandler.GetTotalModifier(type) : 0);
+            case StatType.MaxHealth: return stats.maxHealth + (equipmentHandler != null ? equipmentHandler.GetTotalModifier(type) : 0);
             default: return 0;
         }
     }
 
-    [System.Obsolete("Usar equipmentHandler.Equip en su lugar")]
-    public void EquipItem(int itemId)
+    public void UpdateStats(StatType statType, float amountAffected)
     {
-        if (InventoryManager.instance == null) return;
-        if (!InventoryManager.instance.TryGetItemData(itemId, out var itemData)) return;
-
-        InventoryDateBase.EquipmentSlot slot = itemData.slot;
-
-        if (equippedItems.ContainsKey(slot))
+        switch (statType)
         {
-            UnequipItem(slot);
+            case StatType.Attack: stats.attack += amountAffected; break;
+            case StatType.Defense: stats.deffense += amountAffected; break;
+            case StatType.MaxHealth: stats.maxHealth += amountAffected; break;
+            case StatType.Speed: stats.speed += amountAffected; break;
+            case StatType.Spirit: stats.spirit += amountAffected; break;
         }
-
-        equippedItems[slot] = itemId;
-        RecalculateEquipmentStats();
-        
-        // Notify UI or GameManager
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.SavePlayerState(this);
-            GameManager.Instance.NotifyPlayerStatsUpdated();
-        }
-    }
-
-    [System.Obsolete("Usar equipmentHandler.Unequip en su lugar")]
-    public void UnequipItem(InventoryDateBase.EquipmentSlot slot)
-    {
-        if (equippedItems.ContainsKey(slot))
-        {
-            equippedItems.Remove(slot);
-            RecalculateEquipmentStats();
-            
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.SavePlayerState(this);
-                GameManager.Instance.NotifyPlayerStatsUpdated();
-            }
-        }
-    }
-
-    [System.Obsolete("No necesario con el nuevo sistema")]
-    private void RecalculateEquipmentStats()
-    {
-        equipmentStats = new Stats(0, 0, 0, 0, 0, 0, 0, 0, 0);
-        foreach (var entry in equippedItems)
-        {
-            if (InventoryManager.instance.TryGetItemData(entry.Value, out var data))
-            {
-                foreach (var mod in data.modifiers)
-                {
-                    ApplyModifier(equipmentStats, mod.stat, mod.amount);
-                }
-            }
-        }
-    }
-
-    private void ApplyModifier(Stats target, InventoryDateBase.StatType type, float amount)
-    {
-        switch (type)
-        {
-            case InventoryDateBase.StatType.Attack: target.attack += amount; break;
-            case InventoryDateBase.StatType.Defense: target.deffense += amount; break;
-            case InventoryDateBase.StatType.Health: 
-                // Si es un mod de equipo y estamos modificando equipmentStats, no deberíamos tocar stats.health aquí directamente si es equipo pasivo.
-                // Pero si es una poción que llama a ApplyModifier sobre stats, sí.
-                if (target == this.stats)
-                    stats.health = Mathf.Clamp(stats.health + amount, 0, GetCurrentStats().maxHealth);
-                else
-                    target.health += amount; 
-                break;
-            case InventoryDateBase.StatType.MaxHealth: target.maxHealth += amount; break;
-            case InventoryDateBase.StatType.Speed: target.speed += amount; break;
-            case InventoryDateBase.StatType.Spirit: target.spirit += amount; break;
-        }
-    }
-
-    public void UpdateStats(InventoryDateBase.StatType statType, float amountAffected)
-    {
-        ApplyModifier(this.stats, statType, amountAffected);
         
         // Persistir si no estamos en play (aunque esto parece ser lógica vieja)
         if (!Application.isPlaying && fightersDateBase != null)
         {
-            // Nota: fightersDateBase.UpdateFighterStats ahora usa StatType directamente
             fightersDateBase.UpdateFighterStats(figherIndex, amountAffected, statType);
         }
 
@@ -456,7 +380,7 @@ public class PlayerFighter : Fighter
     public void UpdateStats(string statAffected, float amountAffected)
     {
         // Intentar parsear a StatType para reutilizar lógica
-        if (System.Enum.TryParse(statAffected, out InventoryDateBase.StatType type))
+        if (System.Enum.TryParse(statAffected, out StatType type))
         {
             UpdateStats(type, amountAffected);
         }
@@ -565,25 +489,25 @@ public class PlayerFighter : Fighter
     /// </summary>
     /// <param name="stat">The stat.</param>
     /// <param name="amount">The amount.</param>
-    public void ApplyStatUpgrade(InventoryDateBase.StatType stat, float amount)
+    public void ApplyStatUpgrade(StatType stat, float amount)
     {
         Debug.Log($"[{idName}] +{amount} en {stat}");
         switch (stat)
         {
-            case InventoryDateBase.StatType.Health:
-                stats.health = Mathf.Clamp(stats.health + amount, 0, GetCurrentStats().maxHealth);
-                break;
-            case InventoryDateBase.StatType.Attack:
+            case StatType.Attack:
                 stats.attack += amount;
                 break;
-            case InventoryDateBase.StatType.Defense:
+            case StatType.Defense:
                 stats.deffense += amount;
                 break;
-            case InventoryDateBase.StatType.Speed:
+            case StatType.Speed:
                 stats.speed += amount;
                 break;
-            case InventoryDateBase.StatType.Spirit:
+            case StatType.Spirit:
                 stats.spirit += amount;
+                break;
+            case StatType.MaxHealth:
+                stats.maxHealth += amount;
                 break;
         }
 
@@ -657,7 +581,7 @@ public class PlayerFighter : Fighter
     /// </summary>
     /// <param name="stat">The stat.</param>
     /// <param name="amount">The amount.</param>
-    public void RemoveStatUpgrade(InventoryDateBase.StatType stat, float amount)
+    public void RemoveStatUpgrade(StatType stat, float amount)
     {
         ApplyStatUpgrade(stat, -amount);
     }

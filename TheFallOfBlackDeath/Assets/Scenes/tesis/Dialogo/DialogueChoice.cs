@@ -19,7 +19,6 @@ public class DialogueChoice
     public string[] removeFlags;
 
     [Header("Recompensa (Solo si action es GiveItem)")]
-    public int itemID;
+    public string itemID; // Ahora es un string para el nuevo inventario
     public int itemAmount = 1;
-    public InventoryDateBase.Uso itemType; // Equipable, Usable, etc.
 }

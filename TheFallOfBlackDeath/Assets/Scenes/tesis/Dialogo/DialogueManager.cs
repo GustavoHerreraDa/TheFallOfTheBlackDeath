@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using InventoryNew;
+
 /// <summary>
 /// Controls dialogue progression, player input locking, branching choices, and gameplay events triggered from conversations.
 /// </summary>
@@ -9,7 +11,7 @@ public class DialogueManager : MonoBehaviour
     private Dialogue currentDialogue;
     private int currentLineIndex;
     private DialogueUI ui;
-    public delegate void GiveItemHandler(int id, int amount, InventoryDateBase.Uso type);
+    public delegate void GiveItemHandler(string id, int amount);
     public static event GiveItemHandler OnGiveItem;
     
     [Header("Player")]
@@ -176,12 +178,21 @@ public class DialogueManager : MonoBehaviour
         if (choice.removeFlags != null)
             foreach (var f in choice.removeFlags) GlobalState.Instance.RemoveFlag(f);
 
-        // --- LÓGICA DE DAR ITEM ---
+        // --- LÃ“GICA DE DAR ITEM ---
         if (choice.action == DialogueEvent.DialogueEndAction.GiveItem)
         {
             // Disparamos el evento con los datos del ScriptableObject
             Debug.Log($"Dialogo: Regalando item ID {choice.itemID}");
-            OnGiveItem?.Invoke(choice.itemID, choice.itemAmount, choice.itemType);
+            OnGiveItem?.Invoke(choice.itemID, choice.itemAmount);
+
+            if (NewInventoryManager.Instance != null)
+            {
+                var itemData = NewInventoryManager.Instance.GetItemDataById(choice.itemID);
+                if (itemData != null)
+                {
+                    NewInventoryManager.Instance.AddItem(itemData, choice.itemAmount);
+                }
+            }
             
             // Si hay un diálogo siguiente, vamos a él en lugar de cerrar
             if (choice.nextDialogue != null)

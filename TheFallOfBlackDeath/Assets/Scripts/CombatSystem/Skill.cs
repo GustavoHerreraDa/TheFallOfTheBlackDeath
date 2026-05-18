@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using InventoryNew;
 //TP2 GUSTAVO TORRES/FACUNDO FERREIRO
 /// <summary>
 /// Defines the named values used by skill type.
@@ -63,7 +64,16 @@ public abstract class Skill : MonoBehaviour
     public Sprite iconUI;
     public string animationName;
     public bool HasItemInInventory;
-    public List<InventoryManager.InventoryObjectID> ItemsNeeded;
+
+    [System.Serializable]
+    public class ItemRequirement
+    {
+        public string itemId;
+        public int amount = 1;
+    }
+
+    [Header("Item Requirements (Nuevo Inventario)")]
+    public List<ItemRequirement> ItemsNeeded = new List<ItemRequirement>();
     
     [Header("SFX - Habilidad")]
     [Tooltip("El sonido que hace al lanzarse (ej: disparo, grito, carga mágica)")]
@@ -173,12 +183,38 @@ public abstract class Skill : MonoBehaviour
     }
 
     /// <summary>
-    /// Determines whether the component has items in inventory.
+    /// Verifica si el jugador tiene los ítems requeridos usando el nuevo sistema de inventario.
     /// </summary>
-    public void HasItemsInInventory()
+    public bool HasRequiredItems()
     {
-        var hasItems = InventoryManager.instance == null ? true : InventoryManager.instance.HasItemInIventory(ItemsNeeded);
-        HasItemInInventory = hasItems;
+        // Si no hay requisitos, se considera que puede usarse.
+        if (ItemsNeeded == null || ItemsNeeded.Count == 0)
+        {
+            HasItemInInventory = true;
+            return true;
+        }
+
+        var inv = NewInventoryManager.Instance;
+        if (inv == null)
+        {
+            // Si el inventario aún no está en escena, no bloqueamos el uso para no romper flujo en editor.
+            HasItemInInventory = true;
+            return true;
+        }
+
+        foreach (var req in ItemsNeeded)
+        {
+            if (req == null || string.IsNullOrEmpty(req.itemId)) continue;
+            int have = inv.GetItemCount(req.itemId);
+            if (have < (req.amount <= 0 ? 1 : req.amount))
+            {
+                HasItemInInventory = false;
+                return false;
+            }
+        }
+
+        HasItemInInventory = true;
+        return true;
     }
 
     /// <summary>
@@ -210,17 +246,19 @@ public abstract class Skill : MonoBehaviour
     /// <returns>True when the requested condition is met; otherwise, false.</returns>
     public bool IsUsable(Fighter fighter)
     {
-        if (requiredParts == null || requiredParts.Count == 0)
-            return true;
-
-        foreach (var part in requiredParts)
+        // Primero, chequear requisitos de partes del cuerpo
+        if (requiredParts != null && requiredParts.Count > 0)
         {
-            var bodyPart = fighter.GetBodyPart(part);
-            if (bodyPart == null || bodyPart.IsDestroyed)
-                return false;
+            foreach (var part in requiredParts)
+            {
+                var bodyPart = fighter.GetBodyPart(part);
+                if (bodyPart == null || bodyPart.IsDestroyed)
+                    return false;
+            }
         }
 
-        return true;
+        // Luego, chequear requisitos de inventario (nuevo sistema)
+        return HasRequiredItems();
     }
 
 

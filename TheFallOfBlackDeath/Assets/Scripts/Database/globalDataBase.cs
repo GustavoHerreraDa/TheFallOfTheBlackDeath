@@ -43,29 +43,26 @@ public class globalDataBase : ScriptableObject
     /// <param name="index">The index.</param>
     /// <param name="amountAffected">The amount affected.</param>
     /// <param name="statAffected">The stat affected.</param>
-    public void UpdateFighterStats(int index, float amountAffected, InventoryDateBase.StatType statAffected)
+    public void UpdateFighterStats(int index, float amountAffected, InventoryNew.StatType statAffected)
     {
         if (index < 0 || index >= EnemyDB.Count) return;
         
         EnemyStats stats = EnemyDB[index];
         switch (statAffected)
         {
-            case InventoryDateBase.StatType.Attack:
+            case InventoryNew.StatType.Attack:
                 stats.attack += amountAffected;
                 break;
-            case InventoryDateBase.StatType.Defense:
+            case InventoryNew.StatType.Defense:
                 stats.deffense += amountAffected;
                 break;
-            case InventoryDateBase.StatType.MaxHealth:
+            case InventoryNew.StatType.MaxHealth:
                 stats.maxHealth += amountAffected;
                 break;
-            case InventoryDateBase.StatType.Health:
-                stats.hp = Mathf.Clamp(stats.hp + amountAffected, 0, stats.maxHealth);
-                break;
-            case InventoryDateBase.StatType.Speed:
+            case InventoryNew.StatType.Speed:
                 stats.speed += amountAffected;
                 break;
-            case InventoryDateBase.StatType.Spirit:
+            case InventoryNew.StatType.Spirit:
                 stats.spirit += amountAffected;
                 break;
         }

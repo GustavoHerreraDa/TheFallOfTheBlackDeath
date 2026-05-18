@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static InventoryManager;
 using TMPro;
 //TP2 GUSTAVO TORRES/FACUNDO FERREIRO
 /// <summary>
@@ -102,7 +101,7 @@ public class PlayerSkillPanel : MonoBehaviour
     /// <param name="index">The index.</param>
     /// <param name="skillName">The skill name.</param>
     /// <param name="itemsNeeded">The items needed.</param>
-    public void ConfigureButton(int index, string skillName, List<InventoryObjectID> itemsNeeded)
+    public void ConfigureButton(int index, string skillName, List<Skill.ItemRequirement> itemsNeeded)
     {
         if (targetFigther == null || targetFigther.skills == null)
         {
@@ -121,11 +120,10 @@ public class PlayerSkillPanel : MonoBehaviour
             Debug.LogWarning($"[PlayerSkillPanel.ConfigureButton(items)] skill at {index} is null");
             return;
         }
-
-        bool hasItems = InventoryManager.instance == null ? true : InventoryManager.instance.HasItemInIventory(itemsNeeded);
-        bool hasBodyParts = skill.IsUsable(targetFigther);
-
-        bool interactable = hasItems && hasBodyParts;
+        // Verificar inventario nuevo a través de la propia skill
+        bool hasItems = skill.HasRequiredItems();
+        // `IsUsable` ya incluye chequeo de partes del cuerpo y de inventario
+        bool interactable = skill.IsUsable(targetFigther) && hasItems;
 
         this.skillButtons[index].SetActive(true);
         var button = this.skillButtons[index].GetComponent<Button>();

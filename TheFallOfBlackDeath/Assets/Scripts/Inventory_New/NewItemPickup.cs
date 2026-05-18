@@ -11,8 +11,8 @@ namespace InventoryNew
     public class NewItemPickup : MonoBehaviour
     {
         [Header("Item Configuration")]
-        [SerializeField] private NewItemData itemData;
-        [SerializeField] private int amount = 1;
+        public NewItemData itemData;
+        public int amount = 1;
 
         [Header("Interaction Settings")]
         [SerializeField] private string pickupMessage = "Presiona E para recoger ";

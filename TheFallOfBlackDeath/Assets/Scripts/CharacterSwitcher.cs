@@ -12,12 +12,12 @@ public class CharacterSwitcher : MonoBehaviour
     public int currentMainCharacterIndex;
     public int currentSecondaryCharacterIndex;
 
-    public delegate void UpdateMainCharacterUI(bool isPreview, int previewId);
+    public delegate void UpdateMainCharacterUI(bool isPreview, string previewId);
     public static event UpdateMainCharacterUI updateMainCharacterUI;
-    public delegate void UpdateSecondaryCharacterUI(bool isPreview, int previewId);
+    public delegate void UpdateSecondaryCharacterUI(bool isPreview, string previewId);
     public static event UpdateSecondaryCharacterUI updateSecondaryCharacterUI;
 
-    public static void NotifyStatsPreview(bool isPreview, int previewId)
+    public static void NotifyStatsPreview(bool isPreview, string previewId)
     {
         updateMainCharacterUI?.Invoke(isPreview, previewId);
         updateSecondaryCharacterUI?.Invoke(isPreview, previewId);
@@ -70,7 +70,7 @@ public class CharacterSwitcher : MonoBehaviour
             fightersDateBase.SetMainCharacter(pf.figherIndex, true);
         }
 
-        updateMainCharacterUI?.Invoke(false, -1);
+        updateMainCharacterUI?.Invoke(false, "");
     }
 
     /// <summary>
@@ -100,7 +100,7 @@ public class CharacterSwitcher : MonoBehaviour
             fightersDateBase.SetSecondaryCharacter(pf.figherIndex, true);
         }
 
-        updateSecondaryCharacterUI?.Invoke(false, -1);
+        updateSecondaryCharacterUI?.Invoke(false, "");
     }
 
     /// <summary>

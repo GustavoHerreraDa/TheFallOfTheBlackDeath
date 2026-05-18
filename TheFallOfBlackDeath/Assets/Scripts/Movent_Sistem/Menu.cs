@@ -130,7 +130,7 @@ public class Menu : MonoBehaviour
         cameraMain.enabled = false;
         playerControl.stop = true;
 
-        InventoryManager.instance.RefreshAllUI();
+        
         Inventorymenu.GetComponent<TabInventory>().UpdateSkillUI();
 
     }

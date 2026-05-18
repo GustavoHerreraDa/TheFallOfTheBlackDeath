@@ -11,14 +11,6 @@ public class BodyPartLootTable : ScriptableObject
     [System.Serializable]
     public class LootEntry
     {
-        [Header("Legacy Item (Old System)")]
-        [System.Obsolete("Legacy inventory is no longer supported. Use 'newItemData'.")]
-        [HideInInspector]
-        public int itemId;
-        [System.Obsolete("Legacy inventory is no longer supported. Use 'newItemData'.")]
-        [HideInInspector]
-        public InventoryDateBase.Uso uso = InventoryDateBase.Uso.Equipable;
-
         [Header("New Item (Fear & Hunger System)")]
         [Tooltip("Assign the new NewItemData asset here")]
         public NewItemData newItemData;
