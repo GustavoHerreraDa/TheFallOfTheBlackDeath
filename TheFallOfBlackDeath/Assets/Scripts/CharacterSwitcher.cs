@@ -58,7 +58,7 @@ public class CharacterSwitcher : MonoBehaviour
         {
             if (fightersDateBase.EnemyDB[i].isMainCharacter)
             {
-                fightersDateBase.SetMainCharacter(fightersDateBase.EnemyDB[i].CharacterSwitcherIndex, false);
+                fightersDateBase.SetMainCharacter(i, false);
             }
         }
 
@@ -111,6 +111,7 @@ public class CharacterSwitcher : MonoBehaviour
         if (pf != null && GameManager.Instance != null)
         {
             GameManager.Instance.RegisterPartyMember(pf);
+            fightersDateBase?.SetSecondaryCharacter(pf.figherIndex, true);
         }
     }
 
@@ -122,6 +123,7 @@ public class CharacterSwitcher : MonoBehaviour
         if (pf != null && GameManager.Instance != null)
         {
             GameManager.Instance.UnregisterPartyMember(pf);
+            fightersDateBase?.SetSecondaryCharacter(pf.figherIndex, false);
         }
     }
 

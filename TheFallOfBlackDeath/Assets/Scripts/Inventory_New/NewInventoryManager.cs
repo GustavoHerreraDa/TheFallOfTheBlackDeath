@@ -97,7 +97,7 @@ namespace InventoryNew
         {
             if (itemData == null) return;
             
-            var existingItem = items.FirstOrDefault(i => i.data.id == itemData.id);
+            var existingItem = items.FirstOrDefault(i => i != null && i.data != null && i.data.id == itemData.id);
 
             if (existingItem != null)
             {
@@ -119,7 +119,7 @@ namespace InventoryNew
 
         public void RemoveItem(string itemId, int amount = 1)
         {
-            var existingItem = items.FirstOrDefault(i => i.data.id == itemId);
+            var existingItem = items.FirstOrDefault(i => i != null && i.data != null && i.data.id == itemId);
 
             if (existingItem != null)
             {
@@ -134,13 +134,13 @@ namespace InventoryNew
 
         public List<InventoryItem> GetItemsByCategory(ItemCategory category)
         {
-            return items.Where(i => i.data.category == category).ToList();
+            return items.Where(i => i != null && i.data != null && i.data.category == category).ToList();
         }
 
         public List<NewEquipmentData> GetEquippableForSlot(EquipmentSlot slot)
         {
             var list = items
-                .Where(i => i.data is NewEquipmentData)
+                .Where(i => i != null && i.data is NewEquipmentData)
                 .Select(i => i.data as NewEquipmentData)
                 .Where(e => e.slot == slot)
                 .ToList();
@@ -153,7 +153,7 @@ namespace InventoryNew
 
         public int GetItemCount(string itemId)
         {
-            var item = items.FirstOrDefault(i => i.data.id == itemId);
+            var item = items.FirstOrDefault(i => i != null && i.data != null && i.data.id == itemId);
             return item != null ? item.amount : 0;
         }
 
@@ -176,7 +176,10 @@ namespace InventoryNew
         {
             var data = new InventorySaveData
             {
-                items = items.Select(i => new ItemSaveEntry { id = i.data.id, amount = i.amount }).ToList()
+                items = items
+                    .Where(i => i != null && i.data != null && !string.IsNullOrEmpty(i.data.id))
+                    .Select(i => new ItemSaveEntry { id = i.data.id, amount = i.amount })
+                    .ToList()
             };
             return data;
         }
@@ -188,6 +191,8 @@ namespace InventoryNew
 
             foreach (var entry in saveData.items)
             {
+                if (entry.amount <= 0) continue;
+
                 if (TryGetItemDataById(entry.id, out var itemData))
                 {
                     items.Add(new InventoryItem { data = itemData, amount = entry.amount });
@@ -202,7 +207,8 @@ namespace InventoryNew
 
         public NewItemData GetItemDataById(string id)
         {
-            return masterCatalog.FirstOrDefault(i => i.id == id);
+            if (string.IsNullOrEmpty(id)) return null;
+            return masterCatalog.FirstOrDefault(i => i != null && i.id == id);
         }
     }
 

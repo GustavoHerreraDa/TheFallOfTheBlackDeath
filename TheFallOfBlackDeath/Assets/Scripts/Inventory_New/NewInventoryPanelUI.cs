@@ -27,7 +27,7 @@ namespace InventoryNew
         {
             if (activeTarget == null && GameManager.Instance != null)
             {
-                activeTarget = GameManager.Instance.character1;
+                activeTarget = GameManager.Instance.GetLeader() ?? GameManager.Instance.character1;
             }
             RefreshUI();
             if (NewInventoryManager.Instance != null)
@@ -83,6 +83,8 @@ namespace InventoryNew
 
         private void HandleItemClick(InventoryItem item)
         {
+            if (item == null || item.data == null) return;
+
             if (item.data.category == ItemCategory.Consumable)
             {
                 Debug.Log($"[NewInventoryPanelUI] Intentando usar consumible: {item.data.itemName}");
@@ -98,7 +100,19 @@ namespace InventoryNew
 
                     if (bodyPartHealPanel != null)
                     {
-                        var target = activeTarget != null ? activeTarget : GameManager.Instance.character1;
+                        if (GameManager.Instance == null)
+                        {
+                            Debug.LogError("[NewInventoryPanelUI] No se encontro GameManager para elegir objetivo.");
+                            return;
+                        }
+
+                        var target = activeTarget != null ? activeTarget : (GameManager.Instance.GetLeader() ?? GameManager.Instance.character1);
+                        if (target == null)
+                        {
+                            Debug.LogError("[NewInventoryPanelUI] No hay personaje activo para curar.");
+                            return;
+                        }
+
                         float healAmount = item.data.healAmount;
                         
                         bodyPartHealPanel.Show(target, healAmount, onPartSelected: (part) => 

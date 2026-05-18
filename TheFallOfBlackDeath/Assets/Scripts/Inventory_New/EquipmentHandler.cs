@@ -41,31 +41,25 @@ namespace InventoryNew
         {
             if (equipment == null) return;
 
-            // Unequip current item in that slot
-            Unequip(equipment.slot);
+            var currentItem = equippedItems[equipment.slot];
 
-            // Consumir del inventario si es posible
             if (NewInventoryManager.Instance != null)
             {
-                if (NewInventoryManager.Instance.TryRemoveItem(equipment.id, 1))
-                {
-                    // Equip new item
-                    equippedItems[equipment.slot] = equipment;
-                    RecalculateStats();
-                    OnEquipChanged?.Invoke();
-                }
-                else
+                if (!NewInventoryManager.Instance.TryRemoveItem(equipment.id, 1))
                 {
                     Debug.LogWarning($"[EquipmentHandler] No se pudo equipar {equipment.itemName} porque no hay suficientes unidades en el inventario.");
+                    return;
+                }
+
+                if (currentItem != null)
+                {
+                    NewInventoryManager.Instance.AddItem(currentItem, 1);
                 }
             }
-            else
-            {
-                // Fallback por si no hay manager (no debería pasar)
-                equippedItems[equipment.slot] = equipment;
-                RecalculateStats();
-                OnEquipChanged?.Invoke();
-            }
+
+            equippedItems[equipment.slot] = equipment;
+            RecalculateStats();
+            OnEquipChanged?.Invoke();
         }
 
         public void Unequip(EquipmentSlot slot)

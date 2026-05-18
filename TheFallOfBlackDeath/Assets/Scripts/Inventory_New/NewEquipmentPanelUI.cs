@@ -25,7 +25,7 @@ namespace InventoryNew
         {
             if (activeFighter == null && GameManager.Instance != null)
             {
-                Setup(GameManager.Instance.character1);
+                Setup(GameManager.Instance.GetLeader() ?? GameManager.Instance.character1);
             }
             else if (activeFighter != null)
             {
@@ -40,6 +40,7 @@ namespace InventoryNew
             if (party.Count <= 1) return;
 
             int currentIndex = party.IndexOf(activeFighter);
+            if (currentIndex < 0) currentIndex = 0;
             int nextIndex = (currentIndex + 1) % party.Count;
             Setup(party[nextIndex]);
         }
@@ -51,6 +52,7 @@ namespace InventoryNew
             if (party.Count <= 1) return;
 
             int currentIndex = party.IndexOf(activeFighter);
+            if (currentIndex < 0) currentIndex = 0;
             int prevIndex = (currentIndex - 1 + party.Count) % party.Count;
             Setup(party[prevIndex]);
         }
@@ -86,6 +88,7 @@ namespace InventoryNew
 
             foreach (var slotUI in slotUIs)
             {
+                if (slotUI == null) continue;
                 var item = activeFighter.equipmentHandler.GetEquippedItem(slotUI.slot);
                 slotUI.SetItem(item);
             }
@@ -101,6 +104,12 @@ namespace InventoryNew
         private void ShowSelection(EquipmentSlot slot)
         {
             Debug.Log($"[NewEquipmentPanelUI] ShowSelection para: {slot}");
+            if (NewInventoryManager.Instance == null)
+            {
+                Debug.LogWarning("[NewEquipmentPanelUI] No hay NewInventoryManager disponible.");
+                return;
+            }
+
             selectionPanel.SetActive(true);
             
             // Clear previous items

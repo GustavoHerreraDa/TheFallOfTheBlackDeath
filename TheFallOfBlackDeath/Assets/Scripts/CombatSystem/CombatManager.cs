@@ -634,6 +634,11 @@ public class CombatManager : MonoBehaviour
         int spawnIdx = 0;
         var uiController = FindObjectOfType<CombatStatusUIController>();
 
+        if (InstantiateActivePartyFromGameManager(uiController))
+        {
+            return;
+        }
+
         // Usar la lista de reclutados de la DB para instanciar a los personajes activos
         for (int i = 0; i < globalDataBase.EnemyDB.Count; i++)
         {
@@ -644,7 +649,7 @@ public class CombatManager : MonoBehaviour
             if (dbEntry.isMainCharacter || dbEntry.isSecondaryCharacter)
             {
                 Transform spawnPoint = null;
-                if (spawnIdx < playerSpawnPoints.Count)
+                if (spawnIdx < playerSpawnPoints.Count && playerSpawnPoints[spawnIdx] != null)
                 {
                     spawnPoint = playerSpawnPoints[spawnIdx];
                 }
@@ -691,6 +696,90 @@ public class CombatManager : MonoBehaviour
                 spawnIdx++;
             }
         }
+    }
+
+    private bool InstantiateActivePartyFromGameManager(CombatStatusUIController uiController)
+    {
+        if (GameManager.Instance == null) return false;
+
+        var activePartyIds = GameManager.Instance.GetActivePartyIds();
+        if (activePartyIds == null || activePartyIds.Count == 0) return false;
+
+        int spawnIdx = 0;
+        foreach (int partyId in activePartyIds)
+        {
+            if (partyId < 0 || partyId >= globalDataBase.EnemyDB.Count) continue;
+
+            var dbEntry = globalDataBase.EnemyDB[partyId];
+            if (dbEntry.enemyPrefab == null)
+            {
+                Debug.LogWarning($"[CombatManager] El party member {dbEntry.Name} no tiene prefab asignado.");
+                continue;
+            }
+
+            GameObject characterGO = Instantiate(
+                dbEntry.enemyPrefab,
+                GetPlayerSpawnPosition(spawnIdx, dbEntry.Name),
+                Quaternion.Euler(-0.4f, -90, 0),
+                playerParent.transform
+            );
+
+            var playerFighter = characterGO.GetComponent<PlayerFighter>();
+            if (playerFighter == null)
+            {
+                Debug.LogWarning($"[CombatManager] El prefab de {dbEntry.Name} no tiene PlayerFighter.");
+                continue;
+            }
+
+            playerFighter.GetSkillPanel(
+                skillPanel,
+                playerFighter.statusPanel,
+                enemiesPanel,
+                bodyPartPanel
+            );
+
+            if (spawnIdx == 0 || dbEntry.isMainCharacter)
+            {
+                GameManager.Instance.SetMainCharacter(playerFighter);
+            }
+            else
+            {
+                GameManager.Instance.RegisterPartyMember(playerFighter);
+            }
+
+            GameManager.Instance.ApplySavedStatusToFighter(playerFighter);
+
+            if (uiController != null)
+            {
+                uiController.RegisterPlayer(playerFighter);
+            }
+
+            spawnIdx++;
+        }
+
+        return spawnIdx > 0;
+    }
+
+    private Vector3 GetPlayerSpawnPosition(int spawnIdx, string fighterName)
+    {
+        if (spawnIdx < playerSpawnPoints.Count && playerSpawnPoints[spawnIdx] != null)
+        {
+            return playerSpawnPoints[spawnIdx].position;
+        }
+
+        if (spawnIdx == 0 && mainCharacterPos != null)
+        {
+            return mainCharacterPos.position;
+        }
+
+        if (spawnIdx == 1 && secondaryCharacterPos != null)
+        {
+            return secondaryCharacterPos.position;
+        }
+
+        Debug.LogWarning($"[CombatManager] No hay spawn point para {fighterName}. Usando fallback con offset.");
+        Vector3 basePosition = mainCharacterPos != null ? mainCharacterPos.position : transform.position;
+        return basePosition + Vector3.right * (1.5f * spawnIdx);
     }
 
 }

@@ -76,28 +76,11 @@ public class globalDataBase : ScriptableObject
     /// <param name="isCharacter">The is character.</param>
     public void SetMainCharacter(int index, bool isCharacter)
     {
-        EnemyStats newCharacterStats = new EnemyStats
-        {
-            isMainCharacter = isCharacter,
-            isSecondaryCharacter = EnemyDB[index].isSecondaryCharacter,
-            enemyPrefab = EnemyDB[index].enemyPrefab,
-            prefabIndex = EnemyDB[index].prefabIndex,
-            maxHealth = EnemyDB[index].maxHealth, 
-            hp = EnemyDB[index].hp,
-            level = EnemyDB[index].level, 
-            attack = EnemyDB[index].attack, 
-            deffense = EnemyDB[index].deffense, 
-            spirit = EnemyDB[index].spirit, 
-            speed = EnemyDB[index].speed,
-            experience = EnemyDB[index].experience,
-            experienceToNextLevel = EnemyDB[index].experienceToNextLevel,
-            Description = EnemyDB[index].Description, 
-            LargeDescription = EnemyDB[index].LargeDescription, 
-            Name = EnemyDB[index].Name,
-            CharacterSwitcherIndex = EnemyDB[index].CharacterSwitcherIndex,
-            characterImage = EnemyDB[index].characterImage
-        };
-        EnemyDB[index] = newCharacterStats;
+        if (index < 0 || index >= EnemyDB.Count) return;
+
+        EnemyStats stats = EnemyDB[index];
+        stats.isMainCharacter = isCharacter;
+        EnemyDB[index] = stats;
     }
 
     /// <summary>
@@ -107,28 +90,11 @@ public class globalDataBase : ScriptableObject
     /// <param name="isCharacter">The is character.</param>
     public void SetSecondaryCharacter(int index, bool isCharacter)
     {
-        EnemyStats newCharacterStats = new EnemyStats
-        {
-            isMainCharacter = EnemyDB[index].isMainCharacter,
-            isSecondaryCharacter = isCharacter,
-            enemyPrefab = EnemyDB[index].enemyPrefab,
-            prefabIndex = EnemyDB[index].prefabIndex,
-            maxHealth = EnemyDB[index].maxHealth, 
-            hp = EnemyDB[index].hp,
-            level = EnemyDB[index].level, 
-            attack = EnemyDB[index].attack, 
-            deffense = EnemyDB[index].deffense, 
-            spirit = EnemyDB[index].spirit, 
-            speed = EnemyDB[index].speed,
-            experience = EnemyDB[index].experience,
-            experienceToNextLevel = EnemyDB[index].experienceToNextLevel,
-            Description = EnemyDB[index].Description, 
-            LargeDescription = EnemyDB[index].LargeDescription, 
-            Name = EnemyDB[index].Name,
-            CharacterSwitcherIndex = EnemyDB[index].CharacterSwitcherIndex,
-            characterImage = EnemyDB[index].characterImage
-        };
-        EnemyDB[index] = newCharacterStats;
+        if (index < 0 || index >= EnemyDB.Count) return;
+
+        EnemyStats stats = EnemyDB[index];
+        stats.isSecondaryCharacter = isCharacter;
+        EnemyDB[index] = stats;
     }
 
     //public EnemyStats[] EnemyDB;

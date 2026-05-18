@@ -35,10 +35,18 @@ namespace InventoryNew
             }
         }
 
+        private void Awake()
+        {
+            if (string.IsNullOrEmpty(pickupId))
+            {
+                pickupId = System.Guid.NewGuid().ToString();
+            }
+        }
+
         private void Start()
         {
             // Comprobar si ya fue recogido
-            if (GameManager.Instance != null && GameManager.Instance.IsPickupCollected(pickupId))
+            if (GameManager.Instance != null && GameManager.Instance.IsPickupCollected(GetPersistenceKey()))
             {
                 Destroy(gameObject);
                 return;
@@ -77,7 +85,7 @@ namespace InventoryNew
                 // Registrar recogida en el GameManager
                 if (GameManager.Instance != null)
                 {
-                    GameManager.Instance.RegisterPickupCollected(pickupId);
+                    GameManager.Instance.RegisterPickupCollected(GetPersistenceKey());
                 }
                 
                 if (destroyOnPickup)
@@ -133,6 +141,23 @@ namespace InventoryNew
                     Debug.Log($"{pickupMessage} {itemData.itemName}");
                 }
             }
+        }
+
+        public string GetPersistenceKey()
+        {
+            return $"{gameObject.scene.name}:{pickupId}:{GetHierarchyPath(transform)}";
+        }
+
+        private string GetHierarchyPath(Transform current)
+        {
+            string path = current.name;
+            while (current.parent != null)
+            {
+                current = current.parent;
+                path = current.name + "/" + path;
+            }
+
+            return path;
         }
     }
 }
