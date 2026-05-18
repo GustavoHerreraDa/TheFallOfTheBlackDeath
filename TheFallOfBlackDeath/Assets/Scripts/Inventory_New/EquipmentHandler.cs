@@ -17,12 +17,25 @@ namespace InventoryNew
 
         private void Awake()
         {
-            InitializeSlots();
-            InitializeStats();
+            EnsureInitialized();
+        }
+
+        private void EnsureInitialized()
+        {
+            if (equippedItems == null || equippedItems.Count == 0)
+            {
+                InitializeSlots();
+            }
+
+            if (totalModifiers == null || totalModifiers.Count == 0)
+            {
+                InitializeStats();
+            }
         }
 
         private void InitializeSlots()
         {
+            if (equippedItems == null) equippedItems = new Dictionary<EquipmentSlot, NewEquipmentData>();
             foreach (EquipmentSlot slot in Enum.GetValues(typeof(EquipmentSlot)))
             {
                 equippedItems[slot] = null;
@@ -31,6 +44,7 @@ namespace InventoryNew
 
         private void InitializeStats()
         {
+            if (totalModifiers == null) totalModifiers = new Dictionary<StatType, float>();
             foreach (StatType stat in Enum.GetValues(typeof(StatType)))
             {
                 totalModifiers[stat] = 0;
@@ -39,6 +53,7 @@ namespace InventoryNew
 
         public void Equip(NewEquipmentData equipment)
         {
+            EnsureInitialized();
             if (equipment == null) return;
 
             var currentItem = equippedItems[equipment.slot];
@@ -64,7 +79,8 @@ namespace InventoryNew
 
         public void Unequip(EquipmentSlot slot)
         {
-            if (equippedItems[slot] != null)
+            EnsureInitialized();
+            if (equippedItems.ContainsKey(slot) && equippedItems[slot] != null)
             {
                 var item = equippedItems[slot];
                 equippedItems[slot] = null;
@@ -97,6 +113,7 @@ namespace InventoryNew
 
         public float GetTotalModifier(StatType stat)
         {
+            EnsureInitialized();
             if (totalModifiers.ContainsKey(stat))
             {
                 return totalModifiers[stat];
@@ -106,6 +123,7 @@ namespace InventoryNew
 
         public float GetModifierForSlot(EquipmentSlot slot, StatType stat)
         {
+            EnsureInitialized();
             if (equippedItems.ContainsKey(slot) && equippedItems[slot] != null)
             {
                 float total = 0;
@@ -120,16 +138,23 @@ namespace InventoryNew
 
         public NewEquipmentData GetEquippedItem(EquipmentSlot slot)
         {
-            return equippedItems[slot];
+            EnsureInitialized();
+            if (equippedItems.TryGetValue(slot, out var item))
+            {
+                return item;
+            }
+            return null;
         }
 
         public Dictionary<EquipmentSlot, NewEquipmentData> GetAllEquipped()
         {
+            EnsureInitialized();
             return new Dictionary<EquipmentSlot, NewEquipmentData>(equippedItems);
         }
 
         public void ClearAllEquipped()
         {
+            EnsureInitialized();
             InitializeSlots();
             RecalculateStats();
             OnEquipChanged?.Invoke();
@@ -141,6 +166,7 @@ namespace InventoryNew
         /// </summary>
         public void EquipForce(NewEquipmentData equipment)
         {
+            EnsureInitialized();
             if (equipment == null) return;
             equippedItems[equipment.slot] = equipment;
             RecalculateStats();
