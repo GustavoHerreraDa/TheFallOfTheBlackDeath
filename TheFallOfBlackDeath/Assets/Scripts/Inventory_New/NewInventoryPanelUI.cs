@@ -15,8 +15,20 @@ namespace InventoryNew
         [Header("Category Selection")]
         public ItemCategory currentCategory = ItemCategory.Consumable;
 
+        private PlayerFighter activeTarget;
+
+        public void SetActiveTarget(PlayerFighter target)
+        {
+            activeTarget = target;
+            Debug.Log($"[NewInventoryPanelUI] Objetivo activo cambiado a: {(target != null ? target.idName : "Ninguno")}");
+        }
+
         private void OnEnable()
         {
+            if (activeTarget == null && GameManager.Instance != null)
+            {
+                activeTarget = GameManager.Instance.character1;
+            }
             RefreshUI();
             if (NewInventoryManager.Instance != null)
             {
@@ -41,11 +53,16 @@ namespace InventoryNew
         public void RefreshUI()
         {
             if (contentParent == null || itemPrefab == null) return;
+            if (NewInventoryManager.Instance == null)
+            {
+                Debug.LogWarning("[NewInventoryPanelUI] NewInventoryManager.Instance es null. Esperando...");
+                return;
+            }
 
             // Limpiar lista actual
             foreach (Transform child in contentParent)
             {
-                Destroy(child.gameObject);
+                if (child != null) Destroy(child.gameObject);
             }
 
             // Obtener items filtrados
@@ -81,7 +98,7 @@ namespace InventoryNew
 
                     if (bodyPartHealPanel != null)
                     {
-                        var target = GameManager.Instance.character1; // O el personaje activo
+                        var target = activeTarget != null ? activeTarget : GameManager.Instance.character1;
                         float healAmount = item.data.healAmount;
                         
                         bodyPartHealPanel.Show(target, healAmount, onPartSelected: (part) => 

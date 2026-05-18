@@ -10,6 +10,9 @@ namespace InventoryNew
     /// </summary>
     public class NewItemPickup : MonoBehaviour
     {
+        [Header("Persistence")]
+        public string pickupId;
+
         [Header("Item Configuration")]
         public NewItemData itemData;
         public int amount = 1;
@@ -24,8 +27,23 @@ namespace InventoryNew
 
         private bool playerInRange = false;
 
+        private void OnValidate()
+        {
+            if (string.IsNullOrEmpty(pickupId))
+            {
+                pickupId = System.Guid.NewGuid().ToString();
+            }
+        }
+
         private void Start()
         {
+            // Comprobar si ya fue recogido
+            if (GameManager.Instance != null && GameManager.Instance.IsPickupCollected(pickupId))
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             if (interactionPrompt != null) interactionPrompt.SetActive(false);
             
             // Opcional: Podríamos intentar auto-detectar el nombre si no hay mensaje personalizado
@@ -56,7 +74,11 @@ namespace InventoryNew
                 NewInventoryManager.Instance.AddItem(itemData, amount);
                 Debug.Log($"[NewItemPickup] Recogido: {itemData.itemName} x{amount}");
                 
-                // Aquí podrías disparar efectos visuales o sonidos de recogida
+                // Registrar recogida en el GameManager
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.RegisterPickupCollected(pickupId);
+                }
                 
                 if (destroyOnPickup)
                 {

@@ -33,6 +33,28 @@ namespace InventoryNew
             }
         }
 
+        public void SetNextFighter()
+        {
+            if (GameManager.Instance == null) return;
+            var party = GameManager.Instance.GetPartyMembers();
+            if (party.Count <= 1) return;
+
+            int currentIndex = party.IndexOf(activeFighter);
+            int nextIndex = (currentIndex + 1) % party.Count;
+            Setup(party[nextIndex]);
+        }
+
+        public void SetPreviousFighter()
+        {
+            if (GameManager.Instance == null) return;
+            var party = GameManager.Instance.GetPartyMembers();
+            if (party.Count <= 1) return;
+
+            int currentIndex = party.IndexOf(activeFighter);
+            int prevIndex = (currentIndex - 1 + party.Count) % party.Count;
+            Setup(party[prevIndex]);
+        }
+
         public void Setup(PlayerFighter fighter)
         {
             if (fighter == null) return;

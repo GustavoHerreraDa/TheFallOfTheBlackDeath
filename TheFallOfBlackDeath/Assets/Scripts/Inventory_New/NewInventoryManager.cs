@@ -23,11 +23,74 @@ namespace InventoryNew
             {
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
+                ValidateCatalog();
             }
             else
             {
+                // Combinar catálogos antes de destruir el duplicado
+                MergeCatalogs(Instance, this);
                 Destroy(gameObject);
             }
+        }
+
+        private void ValidateCatalog()
+        {
+            var seenIds = new HashSet<string>();
+            foreach (var item in masterCatalog)
+            {
+                if (item == null) continue;
+                if (string.IsNullOrEmpty(item.id))
+                {
+                    Debug.LogWarning($"[NewInventoryManager] Item en catálogo tiene ID vacío: {item.itemName}");
+                    continue;
+                }
+                if (seenIds.Contains(item.id))
+                {
+                    Debug.LogWarning($"[NewInventoryManager] ID duplicado en catálogo: {item.id} ({item.itemName})");
+                }
+                seenIds.Add(item.id);
+            }
+        }
+
+        private void MergeCatalogs(NewInventoryManager original, NewInventoryManager duplicate)
+        {
+            if (duplicate.masterCatalog == null || duplicate.masterCatalog.Count == 0) return;
+
+            int addedCount = 0;
+            foreach (var item in duplicate.masterCatalog)
+            {
+                if (item == null) continue;
+                if (!original.masterCatalog.Any(i => i != null && i.id == item.id))
+                {
+                    original.masterCatalog.Add(item);
+                    addedCount++;
+                }
+            }
+            if (addedCount > 0)
+            {
+                Debug.Log($"[NewInventoryManager] Se han fusionado {addedCount} ítems nuevos al catálogo maestro desde un duplicado.");
+            }
+        }
+
+        public bool TryGetItemDataById(string id, out NewItemData item)
+        {
+            item = GetItemDataById(id);
+            return item != null;
+        }
+
+        public bool HasItem(string itemId, int amount = 1)
+        {
+            return GetItemCount(itemId) >= amount;
+        }
+
+        public bool TryRemoveItem(string itemId, int amount = 1)
+        {
+            if (HasItem(itemId, amount))
+            {
+                RemoveItem(itemId, amount);
+                return true;
+            }
+            return false;
         }
 
         public void AddItem(NewItemData itemData, int amount = 1)
@@ -95,6 +158,47 @@ namespace InventoryNew
         }
 
         public List<InventoryItem> GetAllItems() => new List<InventoryItem>(items);
+
+        [Serializable]
+        public struct InventorySaveData
+        {
+            public List<ItemSaveEntry> items;
+        }
+
+        [Serializable]
+        public struct ItemSaveEntry
+        {
+            public string id;
+            public int amount;
+        }
+
+        public InventorySaveData GetSaveData()
+        {
+            var data = new InventorySaveData
+            {
+                items = items.Select(i => new ItemSaveEntry { id = i.data.id, amount = i.amount }).ToList()
+            };
+            return data;
+        }
+
+        public void LoadSaveData(InventorySaveData saveData)
+        {
+            items.Clear();
+            if (saveData.items == null) return;
+
+            foreach (var entry in saveData.items)
+            {
+                if (TryGetItemDataById(entry.id, out var itemData))
+                {
+                    items.Add(new InventoryItem { data = itemData, amount = entry.amount });
+                }
+                else
+                {
+                    Debug.LogWarning($"[NewInventoryManager] No se pudo cargar ítem con ID: {entry.id}. No existe en el catálogo.");
+                }
+            }
+            OnInventoryChanged?.Invoke();
+        }
 
         public NewItemData GetItemDataById(string id)
         {

@@ -616,67 +616,80 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    [Header("Positions")]
+    public List<Transform> playerSpawnPoints = new List<Transform>();
+    public List<Transform> enemySpawnPoints = new List<Transform>();
+
     /// <summary>
     /// Spawns the selected party members for the battle scene and wires their UI references.
     /// </summary>
     private void InstantiatePlayerFighters()
     {
+        if (globalDataBase == null)
+        {
+            Debug.LogError("[CombatManager] globalDataBase no está asignada.");
+            return;
+        }
+
+        int spawnIdx = 0;
+        var uiController = FindObjectOfType<CombatStatusUIController>();
+
+        // Usar la lista de reclutados de la DB para instanciar a los personajes activos
         for (int i = 0; i < globalDataBase.EnemyDB.Count; i++)
         {
-            if (globalDataBase.EnemyDB[i].isMainCharacter)
+            var dbEntry = globalDataBase.EnemyDB[i];
+            
+            // Un personaje pelea si es Main o si es Secondary Y está marcado como tal en la DB
+            // (La DB actúa como el estado persistente de quién está en la party)
+            if (dbEntry.isMainCharacter || dbEntry.isSecondaryCharacter)
             {
-                GameObject mainCharacter = Instantiate(
-                    globalDataBase.EnemyDB[i].enemyPrefab,
-                    mainCharacterPos.transform.position,
+                Transform spawnPoint = null;
+                if (spawnIdx < playerSpawnPoints.Count)
+                {
+                    spawnPoint = playerSpawnPoints[spawnIdx];
+                }
+                else
+                {
+                    Debug.LogWarning($"[CombatManager] No hay suficientes spawn points para el jugador {dbEntry.Name}. Usando fallback.");
+                    spawnPoint = mainCharacterPos;
+                }
+
+                GameObject characterGO = Instantiate(
+                    dbEntry.enemyPrefab,
+                    spawnPoint.position,
                     Quaternion.Euler(-0.4f, -90, 0),
                     playerParent.transform
                 );
 
-                var playerFighter = mainCharacter.GetComponent<PlayerFighter>();
+                var playerFighter = characterGO.GetComponent<PlayerFighter>();
 
+                playerFighter.GetSkillPanel(
+                    skillPanel,
+                    playerFighter.statusPanel,
+                    enemiesPanel,
+                    bodyPartPanel
+                );
+
+                // Registrar en el GameManager según sea main o secondary
+                if (dbEntry.isMainCharacter)
+                {
+                    GameManager.Instance.SetMainCharacter(playerFighter);
+                }
+                else
+                {
+                    // Esto ahora lo añade a la lista activeParty internamente
+                    GameManager.Instance.RegisterPartyMember(playerFighter);
+                }
+
+                GameManager.Instance.ApplySavedStatusToFighter(playerFighter);
                 
-                playerFighter.GetSkillPanel(
-                    skillPanel,
-                    playerFighter.statusPanel,
-                    enemiesPanel,
-                    bodyPartPanel
-                );
+                if (uiController != null)
+                {
+                    uiController.RegisterPlayer(playerFighter);
+                }
 
-                GameManager.Instance.SetMainCharacter(playerFighter);
-                GameManager.Instance.ApplySavedStatusToFighter(playerFighter);
-                FindObjectOfType<CombatStatusUIController>()
-                    .RegisterPlayer(playerFighter);
+                spawnIdx++;
             }
-        /// <summary>
-        /// Executes the if workflow.
-        /// </summary>
-        /// <param name="GameManager.Instance.hasRecruitedSecondary">The game manager.instance.has recruited secondary.</param>
-        /// <returns>The resulting value.</returns>
-            else if (globalDataBase.EnemyDB[i].isSecondaryCharacter && GameManager.Instance.hasRecruitedSecondary)
-            {
-                GameObject secondaryCharacter = Instantiate(
-                    globalDataBase.EnemyDB[i].enemyPrefab,
-                    secondaryCharacterPos.transform.position,
-                    Quaternion.Euler(-0.4f, -90, 0),
-                    playerParent.transform
-                );
-
-                var playerFighter = secondaryCharacter.GetComponent<PlayerFighter>();
-
-                playerFighter.GetSkillPanel(
-                    skillPanel,
-                    playerFighter.statusPanel,
-                    enemiesPanel,
-                    bodyPartPanel
-                );
-
-                GameManager.Instance.SetSecondaryCharacter(playerFighter);
-                GameManager.Instance.ApplySavedStatusToFighter(playerFighter);
-                FindObjectOfType<CombatStatusUIController>()
-                    .RegisterPlayer(playerFighter);
-            }
-            
-            
         }
     }
 

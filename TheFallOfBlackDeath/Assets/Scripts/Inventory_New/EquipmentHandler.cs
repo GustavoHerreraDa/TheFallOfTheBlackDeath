@@ -44,18 +44,43 @@ namespace InventoryNew
             // Unequip current item in that slot
             Unequip(equipment.slot);
 
-            // Equip new item
-            equippedItems[equipment.slot] = equipment;
-            
-            RecalculateStats();
-            OnEquipChanged?.Invoke();
+            // Consumir del inventario si es posible
+            if (NewInventoryManager.Instance != null)
+            {
+                if (NewInventoryManager.Instance.TryRemoveItem(equipment.id, 1))
+                {
+                    // Equip new item
+                    equippedItems[equipment.slot] = equipment;
+                    RecalculateStats();
+                    OnEquipChanged?.Invoke();
+                }
+                else
+                {
+                    Debug.LogWarning($"[EquipmentHandler] No se pudo equipar {equipment.itemName} porque no hay suficientes unidades en el inventario.");
+                }
+            }
+            else
+            {
+                // Fallback por si no hay manager (no debería pasar)
+                equippedItems[equipment.slot] = equipment;
+                RecalculateStats();
+                OnEquipChanged?.Invoke();
+            }
         }
 
         public void Unequip(EquipmentSlot slot)
         {
             if (equippedItems[slot] != null)
             {
+                var item = equippedItems[slot];
                 equippedItems[slot] = null;
+
+                // Devolver al inventario
+                if (NewInventoryManager.Instance != null)
+                {
+                    NewInventoryManager.Instance.AddItem(item, 1);
+                }
+
                 RecalculateStats();
                 OnEquipChanged?.Invoke();
             }
@@ -107,6 +132,25 @@ namespace InventoryNew
         public Dictionary<EquipmentSlot, NewEquipmentData> GetAllEquipped()
         {
             return new Dictionary<EquipmentSlot, NewEquipmentData>(equippedItems);
+        }
+
+        public void ClearAllEquipped()
+        {
+            InitializeSlots();
+            RecalculateStats();
+            OnEquipChanged?.Invoke();
+        }
+
+        /// <summary>
+        /// Equips an item without consuming it from inventory and without unequipping/returning the previous one to inventory.
+        /// Useful for loading saved states.
+        /// </summary>
+        public void EquipForce(NewEquipmentData equipment)
+        {
+            if (equipment == null) return;
+            equippedItems[equipment.slot] = equipment;
+            RecalculateStats();
+            OnEquipChanged?.Invoke();
         }
     }
 }

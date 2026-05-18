@@ -53,7 +53,7 @@ public class CharacterSwitcher : MonoBehaviour
         if (fightersDateBase == null || characters == null || characterIndex < 0 || characterIndex >= characters.Count)
             return;
 
-        // Clear previous main flag without relying on GameManager
+        // Clear previous main flag
         for (int i = 0; i < fightersDateBase.EnemyDB.Count; i++)
         {
             if (fightersDateBase.EnemyDB[i].isMainCharacter)
@@ -66,7 +66,10 @@ public class CharacterSwitcher : MonoBehaviour
         var pf = characters[characterIndex]?.GetComponent<PlayerFighter>();
         if (pf != null)
         {
-            GameManager.Instance?.SetMainCharacter(pf);
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.SetMainCharacter(pf);
+            }
             fightersDateBase.SetMainCharacter(pf.figherIndex, true);
         }
 
@@ -83,24 +86,43 @@ public class CharacterSwitcher : MonoBehaviour
         if (fightersDateBase == null || characters == null || characterIndex < 0 || characterIndex >= characters.Count)
             return;
 
-        // Clear previous secondary flag without relying on GameManager
-        for (int i = 0; i < fightersDateBase.EnemyDB.Count; i++)
-        {
-            if (fightersDateBase.EnemyDB[i].isSecondaryCharacter)
-            {
-                fightersDateBase.SetSecondaryCharacter(fightersDateBase.EnemyDB[i].CharacterSwitcherIndex, false);
-            }
-        }
+        // Note: No limpiamos TODOS los isSecondaryCharacter porque ahora podemos tener varios reclutados.
+        // Solo nos aseguramos de que el actual esté marcado en la DB.
 
         currentSecondaryCharacterIndex = characterIndex;
         var pf = characters[characterIndex]?.GetComponent<PlayerFighter>();
         if (pf != null)
         {
-            GameManager.Instance?.SetSecondaryCharacter(pf);
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.SetSecondaryCharacter(pf);
+            }
             fightersDateBase.SetSecondaryCharacter(pf.figherIndex, true);
         }
 
         updateSecondaryCharacterUI?.Invoke(false, "");
+    }
+
+    public void AddToActiveParty(int characterIndex)
+    {
+        if (characters == null || characterIndex < 0 || characterIndex >= characters.Count) return;
+        
+        var pf = characters[characterIndex]?.GetComponent<PlayerFighter>();
+        if (pf != null && GameManager.Instance != null)
+        {
+            GameManager.Instance.RegisterPartyMember(pf);
+        }
+    }
+
+    public void RemoveFromActiveParty(int characterIndex)
+    {
+        if (characters == null || characterIndex < 0 || characterIndex >= characters.Count) return;
+        
+        var pf = characters[characterIndex]?.GetComponent<PlayerFighter>();
+        if (pf != null && GameManager.Instance != null)
+        {
+            GameManager.Instance.UnregisterPartyMember(pf);
+        }
     }
 
     /// <summary>
