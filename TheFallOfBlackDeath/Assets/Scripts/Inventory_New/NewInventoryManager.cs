@@ -218,4 +218,6 @@ namespace InventoryNew
         public NewItemData data;
         public int amount;
     }
+    
+    
 }

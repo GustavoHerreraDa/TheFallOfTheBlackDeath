@@ -15,6 +15,7 @@ public class CombatScannerSystem : MonoBehaviour
     public float fontSize = 3f;
     public Color textColor = new Color(0.55f, 1f, 0.88f);
     public TMP_FontAsset fontAsset;
+    public Material scannerMaterial;
 
     private readonly Dictionary<Fighter, TextMeshPro> labels = new Dictionary<Fighter, TextMeshPro>();
     private readonly StringBuilder builder = new StringBuilder(256);
@@ -124,6 +125,9 @@ public class CombatScannerSystem : MonoBehaviour
             label.gameObject.SetActive(true);
             label.transform.position = GetLabelPosition(enemy);
 
+            // Notify enemy renderers about the scanner state
+            SetEnemyScannerVisuals(enemy, true);
+
             if (mainCamera != null)
             {
                 Vector3 direction = label.transform.position - mainCamera.transform.position;
@@ -213,10 +217,13 @@ public class CombatScannerSystem : MonoBehaviour
 
     private void HideAll()
     {
-        foreach (TextMeshPro label in labels.Values)
+        foreach (var kvp in labels)
         {
-            if (label != null)
-                label.gameObject.SetActive(false);
+            if (kvp.Value != null)
+                kvp.Value.gameObject.SetActive(false);
+            
+            if (kvp.Key != null)
+                SetEnemyScannerVisuals(kvp.Key, false);
         }
     }
 
@@ -227,5 +234,34 @@ public class CombatScannerSystem : MonoBehaviour
 
         if (labels.TryGetValue(enemy, out TextMeshPro label) && label != null)
             label.gameObject.SetActive(false);
+        
+        SetEnemyScannerVisuals(enemy, false);
+    }
+
+    /// <summary>
+    /// Activa o desactiva visualmente el escaneo en los renderers del enemigo.
+    /// </summary>
+    private void SetEnemyScannerVisuals(Fighter enemy, bool active)
+    {
+        if (enemy == null) return;
+
+        Renderer[] renderers = enemy.GetComponentsInChildren<Renderer>(true);
+        foreach (var r in renderers)
+        {
+            // Validación: Ignorar objetos de texto flotantes del mundo
+            if (r.gameObject.name == "CombatScannerText") continue;
+            if (r.GetComponent<TextMeshPro>() != null) continue;
+
+            BodyPartMaterialController controller = r.GetComponent<BodyPartMaterialController>();
+            if (active)
+            {
+                if (controller == null) controller = r.gameObject.AddComponent<BodyPartMaterialController>();
+                controller.SetScannerState(true, scannerMaterial);
+            }
+            else
+            {
+                if (controller != null) controller.SetScannerState(false, scannerMaterial);
+            }
+        }
     }
 }
