@@ -9,7 +9,7 @@ using TMPro;
 public class Tooltip : MonoBehaviour // Idealmente las clases en C# empiezan con mayúscula
 {
     public SkillManager skillManager;
-    private static Tooltip instance;
+    public static Tooltip instance;
     public Image tool;
     public TextMeshProUGUI skillNameTxT;
     public GameObject actionsButtonsPanel;

@@ -20,6 +20,9 @@ public class PlayerSkillPanel : MonoBehaviour
     public Color rareColor = Color.chartreuse;
     public Color epicColor = new Color(0.6f, 0f, 1f);
 
+    [Header("Mutilation Feedback")]
+    public AudioClip mutilationErrorSound;
+
     private PlayerFighter targetFigther;
 
     /// <summary>
@@ -53,6 +56,17 @@ public class PlayerSkillPanel : MonoBehaviour
         {
             Debug.LogWarning($"[PlayerSkillPanel.ConfigureButton] skill at {index} is null");
             return;
+        }
+
+        bool isDestroyed = false;
+        foreach (var part in skill.requiredParts)
+        {
+            var bp = targetFigther.GetBodyPart(part);
+            if (bp == null || bp.IsDestroyed)
+            {
+                isDestroyed = true;
+                break;
+            }
         }
 
         bool isUsable = skill.IsUsable(targetFigther);
@@ -92,7 +106,15 @@ public class PlayerSkillPanel : MonoBehaviour
                 }
             }
         }
-        this.skillButtonLabels[index].text = skillName;
+
+        if (isDestroyed)
+        {
+            this.skillButtonLabels[index].text = $"<s>{skillName}</s> <color=red>[MUTILADO]</color>";
+        }
+        else
+        {
+            this.skillButtonLabels[index].text = skillName;
+        }
     }
 
     /// <summary>
@@ -120,6 +142,18 @@ public class PlayerSkillPanel : MonoBehaviour
             Debug.LogWarning($"[PlayerSkillPanel.ConfigureButton(items)] skill at {index} is null");
             return;
         }
+
+        bool isDestroyed = false;
+        foreach (var part in skill.requiredParts)
+        {
+            var bp = targetFigther.GetBodyPart(part);
+            if (bp == null || bp.IsDestroyed)
+            {
+                isDestroyed = true;
+                break;
+            }
+        }
+
         // Verificar inventario nuevo a través de la propia skill
         bool hasItems = skill.HasRequiredItems();
         // `IsUsable` ya incluye chequeo de partes del cuerpo y de inventario
@@ -160,7 +194,15 @@ public class PlayerSkillPanel : MonoBehaviour
                 }
             }
         }
-        this.skillButtonLabels[index].text = skillName;
+
+        if (isDestroyed)
+        {
+            this.skillButtonLabels[index].text = $"<s>{skillName}</s> <color=red>[MUTILADO]</color>";
+        }
+        else
+        {
+            this.skillButtonLabels[index].text = skillName;
+        }
     }
 
     /// <summary>
@@ -254,8 +296,66 @@ public class PlayerSkillPanel : MonoBehaviour
             {
                 button.onClick.RemoveAllListeners();
                 button.onClick.AddListener(() => OnSkillButtonClick(captured));
+                
+                // --- InyecciÃ³n dinÃ¡mica de EventTrigger para Feedback de MutilaciÃ³n ---
+                UnityEngine.EventSystems.EventTrigger trigger = skillButtons[i].GetComponent<UnityEngine.EventSystems.EventTrigger>();
+                if (trigger == null) trigger = skillButtons[i].AddComponent<UnityEngine.EventSystems.EventTrigger>();
+                trigger.triggers.Clear();
+
+                // PointerEnter
+                UnityEngine.EventSystems.EventTrigger.Entry entryEnter = new UnityEngine.EventSystems.EventTrigger.Entry();
+                entryEnter.eventID = UnityEngine.EventSystems.EventTriggerType.PointerEnter;
+                entryEnter.callback.AddListener((data) => { OnSkillButtonEnter(captured); });
+                trigger.triggers.Add(entryEnter);
+
+                // PointerExit
+                UnityEngine.EventSystems.EventTrigger.Entry entryExit = new UnityEngine.EventSystems.EventTrigger.Entry();
+                entryExit.eventID = UnityEngine.EventSystems.EventTriggerType.PointerExit;
+                entryExit.callback.AddListener((data) => { OnSkillButtonExit(); });
+                trigger.triggers.Add(entryExit);
             }
         }
+    }
+
+    private void OnSkillButtonEnter(int index)
+    {
+        if (targetFigther == null || targetFigther.skills == null || index >= targetFigther.skills.Length) return;
+
+        var skill = targetFigther.skills[index];
+        if (skill == null) return;
+
+        bool isDestroyed = false;
+        string missingPartName = "";
+        foreach (var part in skill.requiredParts)
+        {
+            var bp = targetFigther.GetBodyPart(part);
+            if (bp == null || bp.IsDestroyed)
+            {
+                isDestroyed = true;
+                missingPartName = part.ToString();
+                break;
+            }
+        }
+
+        if (isDestroyed)
+        {
+            if (AudioManager.Instance != null && mutilationErrorSound != null)
+            {
+                AudioManager.Instance.PlaySFX(mutilationErrorSound, 0.6f, false);
+            }
+
+            string warning = $"<color=red>ADVERTENCIA: FALTA EXTREMIDAD ({missingPartName})</color>\n\n";
+            Tooltip.ShowTooltip_static(warning + skill.SkillDesc);
+        }
+        else
+        {
+            Tooltip.ShowTooltip_static(skill.SkillDesc);
+        }
+    }
+
+    private void OnSkillButtonExit()
+    {
+        Tooltip.HideTooltip_static();
     }
 
     /// <summary>
