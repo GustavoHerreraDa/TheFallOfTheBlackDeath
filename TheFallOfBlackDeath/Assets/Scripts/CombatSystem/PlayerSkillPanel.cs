@@ -40,81 +40,12 @@ public class PlayerSkillPanel : MonoBehaviour
     /// <param name="skillName">The skill name.</param>
     public void ConfigureButton(int index, string skillName)
     {
-        if (targetFigther == null || targetFigther.skills == null)
-        {
-            Debug.LogWarning("[PlayerSkillPanel.ConfigureButton] target or skills null");
-            return;
-        }
-        if (index < 0 || index >= targetFigther.skills.Length || index >= skillButtons.Length || index >= skillButtonLabels.Length)
-        {
-            Debug.LogWarning($"[PlayerSkillPanel.ConfigureButton] index {index} out of range");
-            return;
-        }
-
+        if (targetFigther == null || targetFigther.skills == null || index < 0 || index >= targetFigther.skills.Length) return;
         var skill = targetFigther.skills[index];
-        if (skill == null)
-        {
-            Debug.LogWarning($"[PlayerSkillPanel.ConfigureButton] skill at {index} is null");
-            return;
-        }
+        if (skill == null) return;
 
-        bool isDestroyed = false;
-        foreach (var part in skill.requiredParts)
-        {
-            var bp = targetFigther.GetBodyPart(part);
-            if (bp == null || bp.IsDestroyed)
-            {
-                isDestroyed = true;
-                break;
-            }
-        }
-
-        bool isUsable = skill.IsUsable(targetFigther);
-
-        this.skillButtons[index].SetActive(true);
-        var button = this.skillButtons[index].GetComponent<Button>();
-        if (button != null)
-        {
-            button.interactable = isUsable;
-
-            // DetecciÃ³n de sinergia
-            bool synergyAvailable = false;
-            if (targetFigther != null && targetFigther.combatManager != null && targetFigther.combatManager.enemyTeam != null)
-            {
-                foreach (var enemy in targetFigther.combatManager.enemyTeam)
-                {
-                    if (enemy != null && enemy.isAlive && skill.CanTriggerSynergy(enemy))
-                    {
-                        synergyAvailable = true;
-                        break;
-                    }
-                }
-            }
-
-            // Aplicar feedback visual
-            var image = button.GetComponent<Image>();
-            if (image != null)
-            {
-                Color rarityColor = GetRarityColor(skill.rarity);
-                if (synergyAvailable)
-                {
-                    image.color = synergyColor;
-                }
-                else
-                {
-                    image.color = rarityColor;
-                }
-            }
-        }
-
-        if (isDestroyed)
-        {
-            this.skillButtonLabels[index].text = $"<s>{skillName}</s> <color=red>[MUTILADO]</color>";
-        }
-        else
-        {
-            this.skillButtonLabels[index].text = skillName;
-        }
+        // Unificamos llamando a la sobrecarga completa
+        ConfigureButton(index, skill.skillName, skill.ItemsNeeded);
     }
 
     /// <summary>
@@ -125,24 +56,30 @@ public class PlayerSkillPanel : MonoBehaviour
     /// <param name="itemsNeeded">The items needed.</param>
     public void ConfigureButton(int index, string skillName, List<Skill.ItemRequirement> itemsNeeded)
     {
-        if (targetFigther == null || targetFigther.skills == null)
+        // 1. Validación de seguridad y slot vacío
+        if (targetFigther == null || targetFigther.skills == null || index < 0 || 
+            index >= targetFigther.skills.Length || index >= skillButtons.Length || index >= skillButtonLabels.Length)
         {
-            Debug.LogWarning("[PlayerSkillPanel.ConfigureButton(items)] target or skills null");
-            return;
-        }
-        if (index < 0 || index >= targetFigther.skills.Length || index >= skillButtons.Length || index >= skillButtonLabels.Length)
-        {
-            Debug.LogWarning($"[PlayerSkillPanel.ConfigureButton(items)] index {index} out of range");
             return;
         }
 
         var skill = targetFigther.skills[index];
+        
+        // Si el slot está vacío o no hay skill, reseteamos visualmente y salimos
         if (skill == null)
         {
-            Debug.LogWarning($"[PlayerSkillPanel.ConfigureButton(items)] skill at {index} is null");
+            this.skillButtons[index].SetActive(true);
+            var btn = this.skillButtons[index].GetComponent<Button>();
+            if (btn != null) btn.interactable = false;
+            this.skillButtonLabels[index].text = "-?";
             return;
         }
 
+        // 2. Recuperar nombre nativo limpio (ignorando el parámetro que pueda venir sucio)
+        string cleanSkillName = skill.skillName;
+        bool isUsable = skill.IsUsable(targetFigther);
+        
+        // Determinar si la falta de usabilidad es específicamente por mutilación
         bool isDestroyed = false;
         foreach (var part in skill.requiredParts)
         {
@@ -154,20 +91,16 @@ public class PlayerSkillPanel : MonoBehaviour
             }
         }
 
-        // Verificar inventario nuevo a través de la propia skill
-        bool hasItems = skill.HasRequiredItems();
-        // `IsUsable` ya incluye chequeo de partes del cuerpo y de inventario
-        bool interactable = skill.IsUsable(targetFigther) && hasItems;
-
         this.skillButtons[index].SetActive(true);
         var button = this.skillButtons[index].GetComponent<Button>();
+        
         if (button != null)
         {
-            button.interactable = interactable;
+            button.interactable = isUsable;
 
-            // DetecciÃ³n de sinergia
+            // Detección de sinergia
             bool synergyAvailable = false;
-            if (targetFigther != null && targetFigther.combatManager != null && targetFigther.combatManager.enemyTeam != null)
+            if (targetFigther.combatManager != null && targetFigther.combatManager.enemyTeam != null)
             {
                 foreach (var enemy in targetFigther.combatManager.enemyTeam)
                 {
@@ -179,29 +112,33 @@ public class PlayerSkillPanel : MonoBehaviour
                 }
             }
 
-            // Aplicar feedback visual
+            // Feedback visual de la imagen
             var image = button.GetComponent<Image>();
             if (image != null)
             {
-                Color rarityColor = GetRarityColor(skill.rarity);
-                if (synergyAvailable)
+                if (isDestroyed)
+                {
+                    image.color = GetRarityColor(skill.rarity) * 0.5f; 
+                }
+                else if (synergyAvailable)
                 {
                     image.color = synergyColor;
                 }
                 else
                 {
-                    image.color = rarityColor;
+                    image.color = GetRarityColor(skill.rarity);
                 }
             }
         }
 
+        // 3. Condicional Visual Estricto: Limpiar o aplicar formato de mutilación
         if (isDestroyed)
         {
-            this.skillButtonLabels[index].text = $"<s>{skillName}</s> <color=red>[MUTILADO]</color>";
+            this.skillButtonLabels[index].text = $"<s>{cleanSkillName}</s> <color=red>[MUTILADO]</color>";
         }
         else
         {
-            this.skillButtonLabels[index].text = skillName;
+            this.skillButtonLabels[index].text = cleanSkillName;
         }
     }
 
@@ -278,28 +215,29 @@ public class PlayerSkillPanel : MonoBehaviour
         int shown = Mathf.Min(skillsCount, Mathf.Min(skillButtons.Length, skillButtonLabels.Length));
         for (int i = 0; i < shown; i++)
         {
-            // Set label and interactable state via ConfigureButton with ItemsNeeded when available
-            var skill = targetFigther.skills[i];
+            // --- CAPTURA SEGURA DEL ÍNDICE PARA EL CIERRE (CLOSURE) ---
+            int captured = i;
+
+            // Set label and interactable state via ConfigureButton
+            var skill = targetFigther.skills[captured];
             if (skill != null)
             {
-                ConfigureButton(i, skill.skillName, skill.ItemsNeeded);
+                ConfigureButton(captured, skill.skillName, skill.ItemsNeeded);
             }
             else
             {
-                ConfigureButton(i, "-?");
+                ConfigureButton(captured, "-?");
             }
 
-            // Closure-safe index capture for button
-            int captured = i;
-            var button = skillButtons[i].GetComponent<Button>();
+            var button = skillButtons[captured].GetComponent<Button>();
             if (button != null)
             {
                 button.onClick.RemoveAllListeners();
                 button.onClick.AddListener(() => OnSkillButtonClick(captured));
                 
                 // --- InyecciÃ³n dinÃ¡mica de EventTrigger para Feedback de MutilaciÃ³n ---
-                UnityEngine.EventSystems.EventTrigger trigger = skillButtons[i].GetComponent<UnityEngine.EventSystems.EventTrigger>();
-                if (trigger == null) trigger = skillButtons[i].AddComponent<UnityEngine.EventSystems.EventTrigger>();
+                UnityEngine.EventSystems.EventTrigger trigger = skillButtons[captured].GetComponent<UnityEngine.EventSystems.EventTrigger>();
+                if (trigger == null) trigger = skillButtons[captured].AddComponent<UnityEngine.EventSystems.EventTrigger>();
                 trigger.triggers.Clear();
 
                 // PointerEnter
