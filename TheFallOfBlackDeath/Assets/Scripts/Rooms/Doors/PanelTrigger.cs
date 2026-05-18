@@ -1,4 +1,5 @@
 using UnityEngine;
+using InventoryNew;
 
 /// Attach this to a trigger/collider.
 /// Shows a shared panel and allows opening the assigned door.
@@ -10,6 +11,11 @@ public class PanelTrigger : MonoBehaviour
     [SerializeField] private GameObject panel;
     [SerializeField] private VerticalDoorGroupController controller;
     [SerializeField] private int doorIndex;
+
+    [Header("Requirements Settings")]
+    [SerializeField] private bool requiresItem = false;
+    [SerializeField] private string requiredItemId = "Key_ID";
+    [SerializeField] private bool consumeItemOnUse = false;
 
     private bool playerInside;
 
@@ -50,6 +56,35 @@ public class PanelTrigger : MonoBehaviour
     public void OpenDoor()
     {
         if (!playerInside) return;
+
+        // Validación de requisitos de inventario
+        if (requiresItem)
+        {
+            if (NewInventoryManager.Instance != null)
+            {
+                if (!NewInventoryManager.Instance.HasItem(requiredItemId))
+                {
+                    // FEEDBACK: El jugador no tiene el ítem
+                    Debug.Log($"<color=orange>[Door System]</color> Cerrado. Necesitas: {requiredItemId}");
+                    
+                    // Aquí se puede disparar un evento de UI para mostrar un mensaje en pantalla
+                    // ej: UIManager.Instance.ShowNotification("Necesitas la " + requiredItemId);
+                    
+                    return;
+                }
+
+                // Si se llega aquí, tiene el ítem. ¿Se consume?
+                if (consumeItemOnUse)
+                {
+                    NewInventoryManager.Instance.RemoveItem(requiredItemId, 1);
+                    Debug.Log($"<color=green>[Door System]</color> Ítem '{requiredItemId}' consumido al abrir la puerta.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("[Door System] NewInventoryManager no encontrado. Permitiendo acceso por defecto en modo debug.");
+            }
+        }
 
         controller?.TryOpenDoor(doorIndex);
 
