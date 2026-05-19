@@ -75,6 +75,11 @@ namespace InventoryNew
             equippedItems[equipment.slot] = equipment;
             RecalculateStats();
             OnEquipChanged?.Invoke();
+            
+           /* if (AudioManager.Instance != null && AudioManager.Instance.equipSound != null)
+            {
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.equipSound);
+            }*/
         }
 
         public void Unequip(EquipmentSlot slot)

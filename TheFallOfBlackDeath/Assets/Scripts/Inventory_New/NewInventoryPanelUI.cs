@@ -25,15 +25,21 @@ namespace InventoryNew
 
         private void OnEnable()
         {
-            if (activeTarget == null && GameManager.Instance != null)
+            // ... tu lógica actual de target ...
+            StartCoroutine(EnsureManagerReady());
+        }
+
+        private System.Collections.IEnumerator EnsureManagerReady()
+        {
+            // Esperar hasta que el manager esté listo
+            while (NewInventoryManager.Instance == null)
             {
-                activeTarget = GameManager.Instance.GetLeader() ?? GameManager.Instance.character1;
+                yield return null; // Espera un frame
             }
+
+            // Una vez que sale del bucle, el manager es seguro
+            NewInventoryManager.Instance.OnInventoryChanged += RefreshUI;
             RefreshUI();
-            if (NewInventoryManager.Instance != null)
-            {
-                NewInventoryManager.Instance.OnInventoryChanged += RefreshUI;
-            }
         }
 
         private void OnDisable()

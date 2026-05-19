@@ -48,12 +48,12 @@ public class GameManager : MonoBehaviour
         public List<float> bodyPartsHealth = new List<float>();
 
         [System.Serializable]
-        public struct NewEquippedSlotData
+        public struct EquippedItemData
         {
             public InventoryNew.EquipmentSlot slot;
             public string itemId;
         }
-        public List<NewEquippedSlotData> newEquippedItems = new List<NewEquippedSlotData>();
+        public List<EquippedItemData> equippedItems = new List<EquippedItemData>();
     }
     
     public event System.Action OnPlayerStatsUpdated;
@@ -868,15 +868,15 @@ public class GameManager : MonoBehaviour
         foreach (var part in fighter.bodyParts)
             data.bodyPartsHealth.Add(part.currentHealth);
 
-        // Nuevo sistema de equipo
-        data.newEquippedItems = new List<PlayerStatusData.NewEquippedSlotData>();
+        // Persistencia de equipo: Guardar los IDs de los objetos equipados
+        data.equippedItems = new List<PlayerStatusData.EquippedItemData>();
         if (fighter.equipmentHandler != null)
         {
             foreach (var kvp in fighter.equipmentHandler.GetAllEquipped())
             {
                 if (kvp.Value != null)
                 {
-                    data.newEquippedItems.Add(new PlayerStatusData.NewEquippedSlotData 
+                    data.equippedItems.Add(new PlayerStatusData.EquippedItemData 
                     { 
                         slot = kvp.Key, 
                         itemId = kvp.Value.id 
@@ -935,15 +935,17 @@ public class GameManager : MonoBehaviour
             fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
         }
 
-        // Nuevo sistema de equipo
-        if (fighter.equipmentHandler != null && savedPlayerStatus.newEquippedItems != null && NewInventoryManager.Instance != null)
+        // Lógica de Carga: Limpiar equipo actual y restaurar desde la lista guardada
+        if (fighter.equipmentHandler != null && savedPlayerStatus.equippedItems != null && NewInventoryManager.Instance != null)
         {
-            fighter.equipmentHandler.ClearAllEquipped();
-            foreach (var itemData in savedPlayerStatus.newEquippedItems)
+            fighter.equipmentHandler.ClearAllEquipped(); // Asegura que el equipo esté limpio antes de cargar
+            foreach (var itemData in savedPlayerStatus.equippedItems)
             {
+                // Buscar NewEquipmentData en el catálogo mediante el ID
                 var equipment = NewInventoryManager.Instance.GetItemDataById(itemData.itemId) as NewEquipmentData;
                 if (equipment != null)
                 {
+                    // Re-equipar usando EquipForce para persistencia sin afectar inventario
                     fighter.equipmentHandler.EquipForce(equipment);
                 }
             }

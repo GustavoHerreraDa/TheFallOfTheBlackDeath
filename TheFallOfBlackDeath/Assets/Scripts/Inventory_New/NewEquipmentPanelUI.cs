@@ -112,6 +112,15 @@ namespace InventoryNew
 
             selectionPanel.SetActive(true);
             
+            // Highlight the compatible slot
+            foreach (var slotUI in slotUIs)
+            {
+                if (slotUI != null)
+                {
+                    slotUI.SetHighlight(slotUI.slot == slot);
+                }
+            }
+            
             // Clear previous items
             foreach (Transform child in selectionContent)
             {
@@ -136,6 +145,13 @@ namespace InventoryNew
         {
             activeFighter.equipmentHandler.Equip(item);
             selectionPanel.SetActive(false);
+            
+            // Clear highlights
+            foreach (var slotUI in slotUIs)
+            {
+                if (slotUI != null) slotUI.SetHighlight(false);
+            }
+
             RefreshUI();
             
             // Save state
@@ -195,6 +211,15 @@ namespace InventoryNew
         private void HideStats()
         {
             statsText.text = "";
+        }
+
+        public void CloseSelection()
+        {
+            selectionPanel.SetActive(false);
+            foreach (var slotUI in slotUIs)
+            {
+                if (slotUI != null) slotUI.SetHighlight(false);
+            }
         }
     }
 }

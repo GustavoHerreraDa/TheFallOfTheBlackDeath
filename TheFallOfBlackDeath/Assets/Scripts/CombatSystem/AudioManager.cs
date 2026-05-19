@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
     
     
+    
     [Header("Sonidos de Acción")]
     public AudioClip healSound;
 
@@ -25,6 +26,7 @@ public class AudioManager : MonoBehaviour
     [Header("Sonidos de UI")]
     public AudioClip uiHoverSound;    // Pasar el ratÃ³n
     public AudioClip uiClickSound;    // Hacer clic
+    public AudioClip equipSound;
 
     [Header("Sonidos de Ambiente / Puertas")]
     public AudioClip doorOpenSound;   // Sonido al abrir puerta
