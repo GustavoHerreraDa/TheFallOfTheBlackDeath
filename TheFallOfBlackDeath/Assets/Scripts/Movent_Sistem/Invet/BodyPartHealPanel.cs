@@ -56,6 +56,11 @@ public class BodyPartHealPanel : MonoBehaviour
 
     private void OnPartClick(BodyPart part)
     {
+        if (AudioManager.Instance != null && AudioManager.Instance.healSound != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.healSound);
+        }
+
         Hide();
         _onPartSelected?.Invoke(part);
     }

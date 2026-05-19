@@ -7,6 +7,10 @@ using UnityEngine.Audio;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
+    
+    
+    [Header("Sonidos de Acción")]
+    public AudioClip healSound;
 
     [Header("Mixer Configuration")]
     public AudioMixer mainMixer;         // Referencia al AudioMixer principal
