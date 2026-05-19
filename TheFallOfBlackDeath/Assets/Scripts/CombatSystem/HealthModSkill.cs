@@ -233,7 +233,7 @@ protected override void OnRun(Fighter receiver)
 
 
         if (this.BodyPartTarget == BodyPart.Head)
-            adjusted += 0.5f;
+            adjusted += 0.9f;
 
  
         Fighter.BodyPartData rightLeg = receiver.GetBodyPart(BodyPart.RightLeg);
