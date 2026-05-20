@@ -157,6 +157,11 @@ namespace InventoryNew
             // Save state
             if (GameManager.Instance != null)
                 GameManager.Instance.SavePlayerState(activeFighter);
+            
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.equipSound);
+            }
         }
 
         private void ShowStats(NewEquipmentData item)

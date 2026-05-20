@@ -938,15 +938,17 @@ public class GameManager : MonoBehaviour
         // Lógica de Carga: Limpiar equipo actual y restaurar desde la lista guardada
         if (fighter.equipmentHandler != null && savedPlayerStatus.equippedItems != null && NewInventoryManager.Instance != null)
         {
-            fighter.equipmentHandler.ClearAllEquipped(); // Asegura que el equipo esté limpio antes de cargar
+            fighter.equipmentHandler.ClearAllEquipped(); 
             foreach (var itemData in savedPlayerStatus.equippedItems)
             {
-                // Buscar NewEquipmentData en el catálogo mediante el ID
                 var equipment = NewInventoryManager.Instance.GetItemDataById(itemData.itemId) as NewEquipmentData;
                 if (equipment != null)
                 {
-                    // Re-equipar usando EquipForce para persistencia sin afectar inventario
                     fighter.equipmentHandler.EquipForce(equipment);
+                }
+                else // <--- AGREGA ESTO
+                {
+                    Debug.LogError($"[GameManager] ALERTA: No se pudo restaurar el equipo con ID '{itemData.itemId}'. ¿Olvidaste agregar el ScriptableObject al masterCatalog del NewInventoryManager o el ID está vacío?");
                 }
             }
         }
