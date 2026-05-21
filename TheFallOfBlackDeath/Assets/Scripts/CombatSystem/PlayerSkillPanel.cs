@@ -204,10 +204,13 @@ public class PlayerSkillPanel : MonoBehaviour
     /// <param name="newTarget">The new target.</param>
     public void ShowForPlayer(PlayerFighter newTarget)
     {
-        
         this.gameObject.SetActive(true);
-
         this.targetFigther = newTarget;
+
+        if (targetFigther != null && targetFigther.combatManager != null)
+        {
+            targetFigther.combatManager.InvokeOnSkillMenuOpened();
+        }
 
         if (newTarget.uiAnchor != null)
         {
@@ -263,6 +266,11 @@ public class PlayerSkillPanel : MonoBehaviour
     /// </summary>
     public void Hide()
     {
+        if (targetFigther != null && targetFigther.combatManager != null)
+        {
+            targetFigther.combatManager.InvokeOnSkillMenuClosed();
+        }
+
         this.gameObject.SetActive(false);
 
         foreach (var btn in this.skillButtons)

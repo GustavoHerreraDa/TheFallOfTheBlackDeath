@@ -50,6 +50,12 @@ public class CombatManager : MonoBehaviour
     public LootPanel lootPanel;
     public bool IsReady { get; private set; }
 
+    // --- EVENTOS PARA EL SISTEMA DE CÁMARAS ---
+    public event System.Action<Fighter> OnTurnStarted;
+    public event System.Action<Fighter, Fighter> OnActionExecuted;
+    public event System.Action OnSkillMenuOpened;
+    public event System.Action OnSkillMenuClosed;
+
     private List<Fighter> returnBuffer;
     public TurnsDisplay turnsDisplay;
 
@@ -220,6 +226,7 @@ public class CombatManager : MonoBehaviour
                     yield return null;
 
                     // Executing fighter skill
+                    OnActionExecuted?.Invoke(this.fighters[this.fighterIndex], currentFighterSkill.MainTarget);
                     currentFighterSkill.Run();
 
                     // Wait for fighter skill animation
@@ -480,6 +487,7 @@ public class CombatManager : MonoBehaviour
         }
         
         currentFighter.InitTurn();
+        OnTurnStarted?.Invoke(currentFighter);
         this.combatStatus = CombatStatus.WAITING_FOR_FIGHTER;
     }
     else
@@ -505,6 +513,9 @@ public class CombatManager : MonoBehaviour
 
         return this.returnBuffer.ToArray();
     }*/
+    public void InvokeOnSkillMenuOpened() => OnSkillMenuOpened?.Invoke();
+    public void InvokeOnSkillMenuClosed() => OnSkillMenuClosed?.Invoke();
+
     /// <summary>
     /// Returns only the fighters that are currently alive from the provided team.
     /// </summary>
