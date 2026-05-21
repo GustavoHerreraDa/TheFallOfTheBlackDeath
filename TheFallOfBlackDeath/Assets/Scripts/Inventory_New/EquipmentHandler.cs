@@ -17,12 +17,25 @@ namespace InventoryNew
 
         private void Awake()
         {
-            InitializeSlots();
-            InitializeStats();
+            EnsureInitialized();
+        }
+
+        private void EnsureInitialized()
+        {
+            if (equippedItems == null || equippedItems.Count == 0)
+            {
+                InitializeSlots();
+            }
+
+            if (totalModifiers == null || totalModifiers.Count == 0)
+            {
+                InitializeStats();
+            }
         }
 
         private void InitializeSlots()
         {
+            if (equippedItems == null) equippedItems = new Dictionary<EquipmentSlot, NewEquipmentData>();
             foreach (EquipmentSlot slot in Enum.GetValues(typeof(EquipmentSlot)))
             {
                 equippedItems[slot] = null;
@@ -31,6 +44,7 @@ namespace InventoryNew
 
         private void InitializeStats()
         {
+            if (totalModifiers == null) totalModifiers = new Dictionary<StatType, float>();
             foreach (StatType stat in Enum.GetValues(typeof(StatType)))
             {
                 totalModifiers[stat] = 0;
@@ -39,23 +53,49 @@ namespace InventoryNew
 
         public void Equip(NewEquipmentData equipment)
         {
+            EnsureInitialized();
             if (equipment == null) return;
 
-            // Unequip current item in that slot
-            Unequip(equipment.slot);
+            var currentItem = equippedItems[equipment.slot];
 
-            // Equip new item
+            if (NewInventoryManager.Instance != null)
+            {
+                if (!NewInventoryManager.Instance.TryRemoveItem(equipment.id, 1))
+                {
+                    Debug.LogWarning($"[EquipmentHandler] No se pudo equipar {equipment.itemName} porque no hay suficientes unidades en el inventario.");
+                    return;
+                }
+
+                if (currentItem != null)
+                {
+                    NewInventoryManager.Instance.AddItem(currentItem, 1);
+                }
+            }
+
             equippedItems[equipment.slot] = equipment;
-            
             RecalculateStats();
             OnEquipChanged?.Invoke();
+            
+           /* if (AudioManager.Instance != null && AudioManager.Instance.equipSound != null)
+            {
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.equipSound);
+            }*/
         }
 
         public void Unequip(EquipmentSlot slot)
         {
-            if (equippedItems[slot] != null)
+            EnsureInitialized();
+            if (equippedItems.ContainsKey(slot) && equippedItems[slot] != null)
             {
+                var item = equippedItems[slot];
                 equippedItems[slot] = null;
+
+                // Devolver al inventario
+                if (NewInventoryManager.Instance != null)
+                {
+                    NewInventoryManager.Instance.AddItem(item, 1);
+                }
+
                 RecalculateStats();
                 OnEquipChanged?.Invoke();
             }
@@ -78,6 +118,7 @@ namespace InventoryNew
 
         public float GetTotalModifier(StatType stat)
         {
+            EnsureInitialized();
             if (totalModifiers.ContainsKey(stat))
             {
                 return totalModifiers[stat];
@@ -87,6 +128,7 @@ namespace InventoryNew
 
         public float GetModifierForSlot(EquipmentSlot slot, StatType stat)
         {
+            EnsureInitialized();
             if (equippedItems.ContainsKey(slot) && equippedItems[slot] != null)
             {
                 float total = 0;
@@ -101,12 +143,39 @@ namespace InventoryNew
 
         public NewEquipmentData GetEquippedItem(EquipmentSlot slot)
         {
-            return equippedItems[slot];
+            EnsureInitialized();
+            if (equippedItems.TryGetValue(slot, out var item))
+            {
+                return item;
+            }
+            return null;
         }
 
         public Dictionary<EquipmentSlot, NewEquipmentData> GetAllEquipped()
         {
+            EnsureInitialized();
             return new Dictionary<EquipmentSlot, NewEquipmentData>(equippedItems);
+        }
+
+        public void ClearAllEquipped()
+        {
+            EnsureInitialized();
+            InitializeSlots();
+            RecalculateStats();
+            OnEquipChanged?.Invoke();
+        }
+
+        /// <summary>
+        /// Equips an item without consuming it from inventory and without unequipping/returning the previous one to inventory.
+        /// Useful for loading saved states.
+        /// </summary>
+        public void EquipForce(NewEquipmentData equipment)
+        {
+            EnsureInitialized();
+            if (equipment == null) return;
+            equippedItems[equipment.slot] = equipment;
+            RecalculateStats();
+            OnEquipChanged?.Invoke();
         }
     }
 }

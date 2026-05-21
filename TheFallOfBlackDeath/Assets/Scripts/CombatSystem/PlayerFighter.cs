@@ -125,7 +125,7 @@ public class PlayerFighter : Fighter
         // Register with GameManager but DO NOT save over existing data here
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.SetMainCharacter(this); // importante
+            GameManager.Instance.RegisterSceneFighter(this);
             if (!hasSavedDataForThisFighter)
             {
                 // Only save when first time creating character with DB/default values

@@ -48,12 +48,12 @@ public class GameManager : MonoBehaviour
         public List<float> bodyPartsHealth = new List<float>();
 
         [System.Serializable]
-        public struct NewEquippedSlotData
+        public struct EquippedItemData
         {
             public InventoryNew.EquipmentSlot slot;
             public string itemId;
         }
-        public List<NewEquippedSlotData> newEquippedItems = new List<NewEquippedSlotData>();
+        public List<EquippedItemData> equippedItems = new List<EquippedItemData>();
     }
     
     public event System.Action OnPlayerStatsUpdated;
@@ -66,12 +66,273 @@ public class GameManager : MonoBehaviour
     //agrego estas referencias para poder acceder al Fighter desde InventoryUI y equipar objetos.
     public PlayerFighter character1;
     public PlayerFighter character2;
+
+    [Header("Party System")]
+    [SerializeField] private List<int> activePartyIds = new List<int>();
+    [SerializeField] private List<int> recruitedCharacterIds = new List<int>();
+    [SerializeField] public int maxActivePartySize = 3;
+
+    private List<PlayerFighter> activeParty = new List<PlayerFighter>();
+
+    public void RegisterPartyMember(PlayerFighter fighter)
+    {
+        if (fighter == null) return;
+        NormalizePartyIds();
+        if (!activePartyIds.Contains(fighter.figherIndex))
+        {
+            if (activePartyIds.Count < maxActivePartySize)
+            {
+                activePartyIds.Add(fighter.figherIndex);
+            }
+            else
+            {
+                Debug.LogWarning($"[GameManager] No se pudo añadir a {fighter.idName} a la party activa: límite alcanzado.");
+            }
+        }
+        
+        if (!recruitedCharacterIds.Contains(fighter.figherIndex))
+        {
+            recruitedCharacterIds.Add(fighter.figherIndex);
+        }
+
+        if (activePartyIds.Contains(fighter.figherIndex))
+        {
+            RegisterRuntimePartyReference(fighter);
+            SetDatabaseActivePartyFlag(fighter.figherIndex, true);
+        }
+        else
+        {
+            SetDatabaseActivePartyFlag(fighter.figherIndex, false);
+        }
+        
+        UpdateCompatibilityProperties();
+        RefreshUI();
+    }
+
+    public void UnregisterPartyMember(PlayerFighter fighter)
+    {
+        if (fighter == null) return;
+        activePartyIds.Remove(fighter.figherIndex);
+        activeParty.Remove(fighter);
+        SetDatabaseActivePartyFlag(fighter.figherIndex, false);
+        UpdateCompatibilityProperties();
+        RefreshUI();
+    }
+
+    public List<PlayerFighter> GetPartyMembers()
+    {
+        RefreshActivePartyReferencesFromScene();
+        return new List<PlayerFighter>(activeParty);
+    }
+
+    public List<int> GetActivePartyIds()
+    {
+        NormalizePartyIds();
+        return new List<int>(activePartyIds);
+    }
+
+    public PlayerFighter GetLeader()
+    {
+        RefreshActivePartyReferencesFromScene();
+        return activeParty.Count > 0 ? activeParty[0] : null;
+    }
+
+    public void SetLeader(PlayerFighter fighter)
+    {
+        if (fighter == null) return;
+
+        NormalizePartyIds();
+        MarkCharacterRecruited(fighter.figherIndex);
+        activePartyIds.Remove(fighter.figherIndex);
+        activePartyIds.Insert(0, fighter.figherIndex);
+        TrimActivePartyToLimit();
+        RegisterRuntimePartyReference(fighter);
+        SyncDatabasePartyFlags();
+        UpdateCompatibilityProperties();
+        RefreshUI();
+    }
+
+    public bool IsRecruited(int fighterIndex) => recruitedCharacterIds.Contains(fighterIndex);
+
+    public bool IsActivePartyMember(int fighterIndex)
+    {
+        NormalizePartyIds();
+        return activePartyIds.Contains(fighterIndex);
+    }
+
+    public void MarkCharacterRecruited(int fighterIndex)
+    {
+        if (fighterIndex < 0) return;
+        if (!recruitedCharacterIds.Contains(fighterIndex))
+        {
+            recruitedCharacterIds.Add(fighterIndex);
+        }
+    }
+
+    public void RegisterSceneFighter(PlayerFighter fighter)
+    {
+        if (fighter == null) return;
+
+        bool isMain = IsMainCharacterInDatabase(fighter.figherIndex, fighter.fightersDateBase);
+        bool isActive = IsActivePartyMember(fighter.figherIndex) ||
+                        IsSecondaryCharacterInDatabase(fighter.figherIndex, fighter.fightersDateBase);
+
+        if (isMain || fighter.GetComponent<PlayerControl>() != null)
+        {
+            SetMainCharacter(fighter);
+        }
+        else if (isActive)
+        {
+            RegisterPartyMember(fighter);
+        }
+    }
+
+    private void UpdateCompatibilityProperties()
+    {
+        RefreshActivePartyReferencesFromScene();
+        character1 = activeParty.Count > 0 ? activeParty[0] : null;
+        character2 = activeParty.Count > 1 ? activeParty[1] : null;
+        hasRecruitedSecondary = character2 != null;
+    }
+
+    private void NormalizePartyIds()
+    {
+        var uniqueIds = new List<int>();
+        foreach (int id in activePartyIds)
+        {
+            if (id < 0 || uniqueIds.Contains(id)) continue;
+            uniqueIds.Add(id);
+            if (uniqueIds.Count >= maxActivePartySize) break;
+        }
+
+        activePartyIds = uniqueIds;
+    }
+
+    private void TrimActivePartyToLimit()
+    {
+        NormalizePartyIds();
+        while (activePartyIds.Count > maxActivePartySize)
+        {
+            activePartyIds.RemoveAt(activePartyIds.Count - 1);
+        }
+    }
+
+    private void RegisterRuntimePartyReference(PlayerFighter fighter)
+    {
+        if (fighter == null) return;
+
+        activeParty.RemoveAll(p => p == null || p.figherIndex == fighter.figherIndex);
+        activeParty.Add(fighter);
+        OrderRuntimePartyByIds();
+    }
+
+    private void RefreshActivePartyReferencesFromScene()
+    {
+        NormalizePartyIds();
+        activeParty.RemoveAll(p => p == null || !activePartyIds.Contains(p.figherIndex));
+
+        var sceneFighters = FindObjectsOfType<PlayerFighter>();
+        foreach (int id in activePartyIds)
+        {
+            if (activeParty.Any(p => p != null && p.figherIndex == id)) continue;
+
+            var match = sceneFighters.FirstOrDefault(p => p != null && p.figherIndex == id);
+            if (match != null)
+            {
+                activeParty.Add(match);
+            }
+        }
+
+        OrderRuntimePartyByIds();
+    }
+
+    private void OrderRuntimePartyByIds()
+    {
+        activeParty = activeParty
+            .Where(p => p != null && activePartyIds.Contains(p.figherIndex))
+            .OrderBy(p => activePartyIds.IndexOf(p.figherIndex))
+            .ToList();
+    }
+
+    private bool IsMainCharacterInDatabase(int fighterIndex, globalDataBase dbOverride = null)
+    {
+        var db = dbOverride != null ? dbOverride : globalGlobalDatabase;
+        return db != null &&
+               fighterIndex >= 0 &&
+               fighterIndex < db.EnemyDB.Count &&
+               db.EnemyDB[fighterIndex].isMainCharacter;
+    }
+
+    private bool IsSecondaryCharacterInDatabase(int fighterIndex, globalDataBase dbOverride = null)
+    {
+        var db = dbOverride != null ? dbOverride : globalGlobalDatabase;
+        return db != null &&
+               fighterIndex >= 0 &&
+               fighterIndex < db.EnemyDB.Count &&
+               db.EnemyDB[fighterIndex].isSecondaryCharacter;
+    }
+
+    private void SetDatabaseActivePartyFlag(int fighterIndex, bool isActive)
+    {
+        var db = globalGlobalDatabase;
+        if (db == null && character1 != null)
+        {
+            db = character1.fightersDateBase;
+        }
+
+        if (db == null ||
+            fighterIndex < 0 ||
+            fighterIndex >= db.EnemyDB.Count ||
+            db.EnemyDB[fighterIndex].isMainCharacter)
+        {
+            return;
+        }
+
+        db.SetSecondaryCharacter(fighterIndex, isActive);
+    }
+
+    private void SyncDatabasePartyFlags()
+    {
+        if (globalGlobalDatabase == null) return;
+
+        for (int i = 0; i < globalGlobalDatabase.EnemyDB.Count; i++)
+        {
+            if (globalGlobalDatabase.EnemyDB[i].isMainCharacter)
+            {
+                globalGlobalDatabase.SetSecondaryCharacter(i, false);
+            }
+            else
+            {
+                globalGlobalDatabase.SetSecondaryCharacter(i, activePartyIds.Contains(i));
+            }
+        }
+    }
+
     public bool hasRecruitedSecondary = false;
     public bool hasValidLastPos = false;
     public Vector3 lastPos;
     public Transform startPost;
     public List<string> groupEnemyDefeat;
     public List<string> objectsPickup;
+    
+    // New persistent pickups using GUIDs
+    [SerializeField] private List<string> collectedPickupGuids = new List<string>();
+
+    public bool IsPickupCollected(string guid)
+    {
+        if (string.IsNullOrEmpty(guid)) return false;
+        return collectedPickupGuids.Contains(guid);
+    }
+
+    public void RegisterPickupCollected(string guid)
+    {
+        if (string.IsNullOrEmpty(guid)) return;
+        if (!collectedPickupGuids.Contains(guid))
+        {
+            collectedPickupGuids.Add(guid);
+        }
+    }
+
     public bool canGetEncounter = false;
     public bool gotAttacked = false;
     public bool isWalking = false;
@@ -161,8 +422,27 @@ public class GameManager : MonoBehaviour
     public void SetMainCharacter(PlayerFighter pf)
     {
         if (pf == null) return;
-        character1 = pf;
-        RefreshUI();
+
+        if (globalGlobalDatabase != null)
+        {
+            for (int i = 0; i < globalGlobalDatabase.EnemyDB.Count; i++)
+            {
+                if (globalGlobalDatabase.EnemyDB[i].isMainCharacter && i != pf.figherIndex)
+                {
+                    globalGlobalDatabase.SetMainCharacter(i, false);
+                }
+            }
+
+            globalGlobalDatabase.SetMainCharacter(pf.figherIndex, true);
+        }
+
+        if (!activePartyIds.Contains(pf.figherIndex))
+        {
+            activePartyIds.Insert(0, pf.figherIndex);
+            TrimActivePartyToLimit();
+        }
+
+        SetLeader(pf);
     }
 
     /// <summary>
@@ -171,9 +451,48 @@ public class GameManager : MonoBehaviour
     /// <param name="pf">The pf.</param>
     public void SetSecondaryCharacter(PlayerFighter pf)
     {
-        if (pf == null) return;
-        character2 = pf;
-        hasRecruitedSecondary = character2 != null;
+        if (pf == null)
+        {
+            if (activePartyIds.Count > 1) activePartyIds.RemoveAt(1);
+            UpdateCompatibilityProperties();
+            RefreshUI();
+            return;
+        }
+        
+        if (!activePartyIds.Contains(pf.figherIndex))
+        {
+            if (activePartyIds.Count >= 2)
+            {
+                activePartyIds[1] = pf.figherIndex;
+            }
+            else
+            {
+                activePartyIds.Add(pf.figherIndex);
+            }
+        }
+        else
+        {
+            // Mover a la segunda posición si ya está en la party pero no es segundo
+            int idx = activePartyIds.IndexOf(pf.figherIndex);
+            if (idx != 1)
+            {
+                activePartyIds.RemoveAt(idx);
+                if (activePartyIds.Count >= 1) activePartyIds.Insert(1, pf.figherIndex);
+                else activePartyIds.Add(pf.figherIndex);
+            }
+        }
+        
+        if (!recruitedCharacterIds.Contains(pf.figherIndex))
+        {
+            recruitedCharacterIds.Add(pf.figherIndex);
+        }
+
+        TrimActivePartyToLimit();
+        RegisterRuntimePartyReference(pf);
+        SetDatabaseActivePartyFlag(pf.figherIndex, true);
+        SyncDatabasePartyFlags();
+        
+        UpdateCompatibilityProperties();
         RefreshUI();
     }
 
@@ -192,13 +511,13 @@ public class GameManager : MonoBehaviour
         }
 
         int mainIdx = -1;
-        int secondaryIdx = -1;
+        var dbActiveIds = new List<int>();
         if (db != null && db.EnemyDB != null)
         {
             for (int i = 0; i < db.EnemyDB.Count; i++)
             {
-                if (db.EnemyDB[i].isMainCharacter) mainIdx = db.EnemyDB[i].CharacterSwitcherIndex;
-                if (db.EnemyDB[i].isSecondaryCharacter) secondaryIdx = db.EnemyDB[i].CharacterSwitcherIndex;
+                if (db.EnemyDB[i].isMainCharacter) mainIdx = i;
+                if (db.EnemyDB[i].isSecondaryCharacter) dbActiveIds.Add(i);
             }
         }
 
@@ -207,33 +526,64 @@ public class GameManager : MonoBehaviour
         /// </summary>
         /// <param name="idx">The idx.</param>
         /// <returns>The resulting value.</returns>
-        PlayerFighter TryFindBySwitcherIndex(int idx)
+        PlayerFighter TryFindByDatabaseIndex(int idx)
         {
             if (idx < 0) return null;
+            foreach (var pf in FindObjectsOfType<PlayerFighter>())
+            {
+                if (pf.figherIndex == idx) return pf;
+            }
+
             // Try via CharacterSwitcher list first
             var switcher = FindObjectOfType<CharacterSwitcher>();
-            if (switcher != null && switcher.characters != null && idx < switcher.characters.Count && idx >= 0)
+            int switcherIndex = idx;
+            if (db != null && idx < db.EnemyDB.Count)
             {
-                var go = switcher.characters[idx];
+                switcherIndex = db.EnemyDB[idx].CharacterSwitcherIndex;
+            }
+
+            if (switcher != null && switcher.characters != null && switcherIndex < switcher.characters.Count && switcherIndex >= 0)
+            {
+                var go = switcher.characters[switcherIndex];
                 if (go != null)
                 {
                     var pf = go.GetComponent<PlayerFighter>();
                     if (pf != null) return pf;
                 }
             }
-            // Fallback: search any PlayerFighter with matching figherIndex
-            foreach (var pf in FindObjectsOfType<PlayerFighter>())
-            {
-                if (pf.figherIndex == idx) return pf;
-            }
             return null;
         }
 
-        var mainPf = TryFindBySwitcherIndex(mainIdx);
-        var secPf = TryFindBySwitcherIndex(secondaryIdx);
+        if (activePartyIds.Count == 0 && mainIdx >= 0)
+        {
+            activePartyIds.Add(mainIdx);
+        }
+
+        foreach (int id in dbActiveIds)
+        {
+            if (!activePartyIds.Contains(id) && activePartyIds.Count < maxActivePartySize)
+            {
+                activePartyIds.Add(id);
+            }
+        }
+
+        var mainPf = TryFindByDatabaseIndex(mainIdx);
 
         if (mainPf != null) SetMainCharacter(mainPf);
-        if (secPf != null) SetSecondaryCharacter(secPf);
+
+        foreach (int id in activePartyIds.ToArray())
+        {
+            if (id == mainIdx) continue;
+
+            var partyMember = TryFindByDatabaseIndex(id);
+            if (partyMember != null)
+            {
+                RegisterPartyMember(partyMember);
+            }
+        }
+
+        SyncDatabasePartyFlags();
+        UpdateCompatibilityProperties();
     }
 
     /// <summary>
@@ -285,6 +635,7 @@ public class GameManager : MonoBehaviour
 
         // 2. Restaurar estado desde Flags persistentes
         RestoreRecruitmentFromFlags();
+        SyncDatabasePartyFlags();
 
         // Resolver referencias de personajes a partir de la base de datos y de la escena,
         // evitando dependencia circular con CharacterSwitcher y evitando asignaciones externas.
@@ -304,7 +655,7 @@ public class GameManager : MonoBehaviour
             PlayerFighter player = FindObjectOfType<PlayerFighter>();
             if (player != null)
             {
-                character1 = player;
+                SetMainCharacter(player);
                 Debug.Log("PlayerFighter detectado automáticamente: " + player.name);
             }
         }
@@ -375,11 +726,17 @@ public class GameManager : MonoBehaviour
             if (PlayerPrefs.GetInt("Flag_" + flag, 0) == 1)
             {
                 Debug.Log($"Restaurando reclutamiento para index {i} desde Flags");
-                globalGlobalDatabase.SetSecondaryCharacter(i, true);
+                MarkCharacterRecruited(i);
+                if (!activePartyIds.Contains(i) && activePartyIds.Count < maxActivePartySize)
+                {
+                    activePartyIds.Add(i);
+                }
+                globalGlobalDatabase.SetSecondaryCharacter(i, activePartyIds.Contains(i));
                 if (GlobalState.Instance != null) GlobalState.Instance.AddFlag(flag);
-                this.hasRecruitedSecondary = true;
             }
         }
+
+        UpdateCompatibilityProperties();
     }
 
     /// <summary>
@@ -389,23 +746,25 @@ public class GameManager : MonoBehaviour
     /// <param name="mode">The mode.</param>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Asegurar que los NPCs reclutados no aparezcan como interactuables en la nueva escena
-        StartCoroutine(HideRecruitedNPCs());
-
         if (scene.buildIndex == 1)
         {
+            // Asegurar que los NPCs reclutados no aparezcan como interactuables en la nueva escena
+            StartCoroutine(HideRecruitedNPCs());
+
             print ("level " + scene);
             //gameState = GameStates.TOWN_STATE;
 
             // busqueda de enemigos y objetos en la escena.
             GameManager.Instance.FindEnemiesAndObjets();
             GameManager.Instance.FindPlayer();
+            GameManager.Instance.UpdateCharactersFromDatabase();
             GameManager.Instance.RestorePlayerState();
 
             // CORRECCIÓN: Aplicar posición de forma segura con corrutina
             StartCoroutine(RestorePlayerPositionSafely());
 
             SetGameState(GameStates.TOWN_STATE);
+            RemoveCollectedPickupsFromScene();
             string nombre = PlayerPrefs.GetString("GrupoEnemigo");
 
             if (nombre == string.Empty)
@@ -422,26 +781,21 @@ public class GameManager : MonoBehaviour
                 Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + enemy.GroupName);
                 Destroy(enemy.gameObject);
             }
-            // recorre el inventario y destruye los pickups que ya están en el inventario.
-            if (NewInventoryManager.Instance != null)
-            {
-                var inventoryItems = NewInventoryManager.Instance.GetAllItems();
-                var newPickups = FindObjectsOfType<NewItemPickup>();
-                foreach (var item in inventoryItems)
-                {
-                    var pickup = newPickups.FirstOrDefault(p => p != null && p.gameObject.activeInHierarchy && 
-                        GetItemDataFromPickup(p)?.id == item.data.id);
-                    
-                    if (pickup != null)
-                        Destroy(pickup.gameObject);
-                }
-            }
+            // Limpia solo los pickups recogidos por su clave persistente.
+            RemoveCollectedPickupsFromScene();
         }
     }
 
-    private NewItemData GetItemDataFromPickup(NewItemPickup pickup)
+    private void RemoveCollectedPickupsFromScene()
     {
-        return pickup != null ? pickup.itemData : null; 
+        foreach (var pickup in FindObjectsOfType<NewItemPickup>())
+        {
+            if (pickup == null) continue;
+            if (IsPickupCollected(pickup.GetPersistenceKey()))
+            {
+                Destroy(pickup.gameObject);
+            }
+        }
     }
     //OFF de manera temporal reactivar cuando aplique el sistema de sanidad
    /* void RandomEncounter()
@@ -514,15 +868,15 @@ public class GameManager : MonoBehaviour
         foreach (var part in fighter.bodyParts)
             data.bodyPartsHealth.Add(part.currentHealth);
 
-        // Nuevo sistema de equipo
-        data.newEquippedItems = new List<PlayerStatusData.NewEquippedSlotData>();
+        // Persistencia de equipo: Guardar los IDs de los objetos equipados
+        data.equippedItems = new List<PlayerStatusData.EquippedItemData>();
         if (fighter.equipmentHandler != null)
         {
             foreach (var kvp in fighter.equipmentHandler.GetAllEquipped())
             {
                 if (kvp.Value != null)
                 {
-                    data.newEquippedItems.Add(new PlayerStatusData.NewEquippedSlotData 
+                    data.equippedItems.Add(new PlayerStatusData.EquippedItemData 
                     { 
                         slot = kvp.Key, 
                         itemId = kvp.Value.id 
@@ -547,8 +901,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void RestorePlayerState()
     {
-        ApplySavedStatusToFighter(character1);
-        ApplySavedStatusToFighter(character2);
+        foreach (var fighter in GetPartyMembers())
+        {
+            ApplySavedStatusToFighter(fighter);
+        }
         RefreshUI();
     }
 
@@ -579,15 +935,20 @@ public class GameManager : MonoBehaviour
             fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
         }
 
-        // Nuevo sistema de equipo
-        if (fighter.equipmentHandler != null && savedPlayerStatus.newEquippedItems != null && NewInventoryManager.Instance != null)
+        // Lógica de Carga: Limpiar equipo actual y restaurar desde la lista guardada
+        if (fighter.equipmentHandler != null && savedPlayerStatus.equippedItems != null && NewInventoryManager.Instance != null)
         {
-            foreach (var itemData in savedPlayerStatus.newEquippedItems)
+            fighter.equipmentHandler.ClearAllEquipped(); 
+            foreach (var itemData in savedPlayerStatus.equippedItems)
             {
                 var equipment = NewInventoryManager.Instance.GetItemDataById(itemData.itemId) as NewEquipmentData;
                 if (equipment != null)
                 {
-                    fighter.equipmentHandler.Equip(equipment);
+                    fighter.equipmentHandler.EquipForce(equipment);
+                }
+                else // <--- AGREGA ESTO
+                {
+                    Debug.LogError($"[GameManager] ALERTA: No se pudo restaurar el equipo con ID '{itemData.itemId}'. ¿Olvidaste agregar el ScriptableObject al masterCatalog del NewInventoryManager o el ID está vacío?");
                 }
             }
         }
@@ -757,11 +1118,12 @@ public class GameManager : MonoBehaviour
             if (globalGlobalDatabase != null && pf.figherIndex < globalGlobalDatabase.EnemyDB.Count)
             {
                 var dbData = globalGlobalDatabase.EnemyDB[pf.figherIndex];
-                if (dbData.isSecondaryCharacter && !dbData.isMainCharacter)
+                if (IsRecruited(pf.figherIndex) && !dbData.isMainCharacter)
                 {
                     // Si ya es character2 (compañero activo), configurarlo como seguidor
-                    if (character2 != null && character2.figherIndex == pf.figherIndex)
+                    if (IsActivePartyMember(pf.figherIndex))
                     {
+                        RegisterRuntimePartyReference(pf);
                         SetupFollower(pf.gameObject);
                     }
                     else
@@ -782,6 +1144,13 @@ public class GameManager : MonoBehaviour
     /// <param name="npc">The npc.</param>
     private void SetupFollower(GameObject npc)
     {
+        var leader = GetLeader();
+        if (leader == null)
+        {
+            Debug.LogWarning("[GameManager] No hay lider activo para asignar follower.");
+            return;
+        }
+
         AllyFollower follower = npc.GetComponent<AllyFollower>();
         if (follower == null) follower = npc.AddComponent<AllyFollower>();
 
@@ -789,7 +1158,7 @@ public class GameManager : MonoBehaviour
         FollowPlayer oldFollower = npc.GetComponent<FollowPlayer>();
         if (oldFollower != null) oldFollower.enabled = false;
         
-        follower.target = character1.transform;
+        follower.target = leader.transform;
         follower.stoppingDistance = 2f;
 
         DialogueInteractable interactable = npc.GetComponent<DialogueInteractable>();
@@ -805,12 +1174,14 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"GameManager: Reclutando personaje ID {index} ({npc.name})");
 
-        // VALIDACIÓN: ¿Ya tenemos compañero?
-        if (this.character2 != null)
+        // VALIDACIÓN: ¿Ya fue reclutado?
+        if (IsRecruited(index))
         {
-            Debug.LogWarning("¡Party llena! No se puede reclutar.");
-            return; 
+            Debug.LogWarning("Este personaje ya ha sido reclutado.");
+            return;
         }
+
+        MarkCharacterRecruited(index);
 
         // PASO CRÍTICO: Añadir flag persistente
         if (GlobalState.Instance != null)
@@ -819,32 +1190,35 @@ public class GameManager : MonoBehaviour
         }
 
         // PASO CRÍTICO: Actualizar la Base de Datos
-        // Esto hace que CombatManager.InstantiatePlayerFighters funcione en la próxima pelea
-        
-        if (globalGlobalDatabase != null)
-        {
-            globalGlobalDatabase.SetSecondaryCharacter(index, true);
-        }
-        else
-        {
-            // Fallback: Usar la DB referenciada en el character1 si la global es null
-            character1.fightersDateBase.SetSecondaryCharacter(index, true);
-        }
 
         // Configuración en tiempo real (para la escena actual)
         PlayerFighter newAlly = npc.GetComponent<PlayerFighter>();
         if (newAlly != null)
         {
-            SetSecondaryCharacter(newAlly);
-            this.hasRecruitedSecondary = true;
-        
+            // Intentar registrar en la party activa
+            if (activePartyIds.Count < maxActivePartySize)
+            {
+                RegisterPartyMember(newAlly);
+                // Hacer que el NPC empiece a seguir al jugador
+                SetupFollower(npc);
+            }
+            else
+            {
+                // Solo registrar como reclutado (esto ocurre dentro de RegisterPartyMember normalmente, 
+                // pero si la party está llena lo hacemos manual)
+                MarkCharacterRecruited(newAlly.figherIndex);
+                SetDatabaseActivePartyFlag(newAlly.figherIndex, false);
+                
+                // Desactivar diálogo pero no poner como follower activo
+                var interactable = npc.GetComponent<DialogueInteractable>();
+                if (interactable != null) interactable.enabled = false;
+                
+                Debug.Log("Reclutado pero no añadido a la party activa (límite alcanzado).");
+            }
+
             // Guardar estado inicial
             SavePlayerState(newAlly);
-
-            // Hacer que el NPC empiece a seguir al jugador
-            SetupFollower(npc);
-        
-            Debug.Log("Reclutamiento completado y guardado en DB.");
+            Debug.Log("Reclutamiento completado.");
         }
     }
     

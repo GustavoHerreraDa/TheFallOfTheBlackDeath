@@ -11,11 +11,9 @@ namespace InventoryNew
 
         public event Action OnInventoryChanged;
 
-        [Header("Settings")]
-        public List<NewItemData> masterCatalog = new List<NewItemData>();
+        [Header("Settings")] public List<NewItemData> masterCatalog = new List<NewItemData>();
 
-        [SerializeField]
-        private List<InventoryItem> items = new List<InventoryItem>();
+        [SerializeField] private List<InventoryItem> items = new List<InventoryItem>();
 
         private void Awake()
         {
@@ -23,40 +21,103 @@ namespace InventoryNew
             {
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
+                ValidateCatalog();
             }
             else
             {
+                // Combinar catálogos antes de destruir el duplicado
+                MergeCatalogs(Instance, this);
                 Destroy(gameObject);
             }
+        }
+
+        private void ValidateCatalog()
+        {
+            var seenIds = new HashSet<string>();
+            foreach (var item in masterCatalog)
+            {
+                if (item == null) continue;
+                if (string.IsNullOrEmpty(item.id))
+                {
+                    Debug.LogWarning($"[NewInventoryManager] Item en catálogo tiene ID vacío: {item.itemName}");
+                    continue;
+                }
+
+                if (seenIds.Contains(item.id))
+                {
+                    Debug.LogWarning($"[NewInventoryManager] ID duplicado en catálogo: {item.id} ({item.itemName})");
+                }
+
+                seenIds.Add(item.id);
+            }
+        }
+
+        private void MergeCatalogs(NewInventoryManager original, NewInventoryManager duplicate)
+        {
+            if (duplicate.masterCatalog == null || duplicate.masterCatalog.Count == 0) return;
+
+            int addedCount = 0;
+            foreach (var item in duplicate.masterCatalog)
+            {
+                if (item == null) continue;
+                if (!original.masterCatalog.Any(i => i != null && i.id == item.id))
+                {
+                    original.masterCatalog.Add(item);
+                    addedCount++;
+                }
+            }
+
+            if (addedCount > 0)
+            {
+                Debug.Log(
+                    $"[NewInventoryManager] Se han fusionado {addedCount} ítems nuevos al catálogo maestro desde un duplicado.");
+            }
+        }
+
+        public bool TryGetItemDataById(string id, out NewItemData item)
+        {
+            item = GetItemDataById(id);
+            return item != null;
+        }
+
+        public bool HasItem(string itemId, int amount = 1)
+        {
+            return GetItemCount(itemId) >= amount;
+        }
+
+        public bool TryRemoveItem(string itemId, int amount = 1)
+        {
+            if (HasItem(itemId, amount))
+            {
+                RemoveItem(itemId, amount);
+                return true;
+            }
+
+            return false;
         }
 
         public void AddItem(NewItemData itemData, int amount = 1)
         {
             if (itemData == null) return;
-            
-            var existingItem = items.FirstOrDefault(i => i.data.id == itemData.id);
+
+            var existingItem = items.FirstOrDefault(i => i != null && i.data != null && i.data.id == itemData.id);
 
             if (existingItem != null)
             {
                 existingItem.amount += amount;
+                existingItem.isNew = true; // Marcar como nuevo
             }
             else
             {
-                items.Add(new InventoryItem { data = itemData, amount = amount });
+                items.Add(new InventoryItem { data = itemData, amount = amount, isNew = true });
             }
 
             OnInventoryChanged?.Invoke();
-            
-            // Opcional: Sonido de recogida si el AudioManager existe
-            if (AudioManager.Instance != null && AudioManager.Instance.uiClickSound != null)
-            {
-                AudioManager.Instance.PlaySFX(AudioManager.Instance.uiClickSound, 0.7f);
-            }
         }
 
         public void RemoveItem(string itemId, int amount = 1)
         {
-            var existingItem = items.FirstOrDefault(i => i.data.id == itemId);
+            var existingItem = items.FirstOrDefault(i => i != null && i.data != null && i.data.id == itemId);
 
             if (existingItem != null)
             {
@@ -65,47 +126,115 @@ namespace InventoryNew
                 {
                     items.Remove(existingItem);
                 }
+
                 OnInventoryChanged?.Invoke();
             }
         }
 
         public List<InventoryItem> GetItemsByCategory(ItemCategory category)
         {
-            return items.Where(i => i.data.category == category).ToList();
+            return items.Where(i => i != null && i.data != null && i.data.category == category).ToList();
         }
 
         public List<NewEquipmentData> GetEquippableForSlot(EquipmentSlot slot)
         {
             var list = items
-                .Where(i => i.data is NewEquipmentData)
+                .Where(i => i != null && i.data is NewEquipmentData)
                 .Select(i => i.data as NewEquipmentData)
                 .Where(e => e.slot == slot)
                 .ToList();
-            
+
             Debug.Log($"[NewInventoryManager] Buscando ítems para slot {slot}. Encontrados: {list.Count}");
-            foreach(var item in list) Debug.Log($"- Item: {item.itemName} (ID: {item.id})");
-            
+            foreach (var item in list) Debug.Log($"- Item: {item.itemName} (ID: {item.id})");
+
             return list;
         }
 
         public int GetItemCount(string itemId)
         {
-            var item = items.FirstOrDefault(i => i.data.id == itemId);
+            var item = items.FirstOrDefault(i => i != null && i.data != null && i.data.id == itemId);
             return item != null ? item.amount : 0;
         }
 
         public List<InventoryItem> GetAllItems() => new List<InventoryItem>(items);
 
+        [Serializable]
+        public struct InventorySaveData
+        {
+            public List<ItemSaveEntry> items;
+        }
+
+        [Serializable]
+        public struct ItemSaveEntry
+        {
+            public string id;
+            public int amount;
+        }
+
+        public InventorySaveData GetSaveData()
+        {
+            var data = new InventorySaveData
+            {
+                items = items
+                    .Where(i => i != null && i.data != null && !string.IsNullOrEmpty(i.data.id))
+                    .Select(i => new ItemSaveEntry { id = i.data.id, amount = i.amount })
+                    .ToList()
+            };
+            return data;
+        }
+
+        public void LoadSaveData(InventorySaveData saveData)
+        {
+            items.Clear();
+            if (saveData.items == null) return;
+
+            foreach (var entry in saveData.items)
+            {
+                if (entry.amount <= 0) continue;
+
+                if (TryGetItemDataById(entry.id, out var itemData))
+                {
+                    items.Add(new InventoryItem { data = itemData, amount = entry.amount });
+                }
+                else
+                {
+                    Debug.LogWarning(
+                        $"[NewInventoryManager] No se pudo cargar ítem con ID: {entry.id}. No existe en el catálogo.");
+                }
+            }
+
+            OnInventoryChanged?.Invoke();
+        }
+
         public NewItemData GetItemDataById(string id)
         {
-            return masterCatalog.FirstOrDefault(i => i.id == id);
+            if (string.IsNullOrEmpty(id)) return null;
+            return masterCatalog.FirstOrDefault(i => i != null && i.id == id);
         }
-    }
 
+        // FUNCIONES MOVIDAS AQUÍ ADENTRO DE LA CLASE:
+        public bool HasNewItemForSlot(EquipmentSlot slot)
+        {
+            return items.Any(i => i != null && i.isNew && i.data is NewEquipmentData eq && eq.slot == slot);
+        }
+        
+        public void ClearNewStatusForSlot(EquipmentSlot slot)
+        {
+            var targetItems = items.Where(i => i != null && i.isNew && i.data is NewEquipmentData eq && eq.slot == slot).ToList();
+            foreach (var item in targetItems)
+            {
+                item.isNew = false;
+            }
+            OnInventoryChanged?.Invoke();
+        }
+    } // <--- CIERRE DE LA CLASE NewInventoryManager
+
+    // LA CLASE INVENTORY ITEM QUEDA SOLA AL FINAL:
     [Serializable]
     public class InventoryItem
     {
         public NewItemData data;
         public int amount;
+        public bool isNew;
     }
 }

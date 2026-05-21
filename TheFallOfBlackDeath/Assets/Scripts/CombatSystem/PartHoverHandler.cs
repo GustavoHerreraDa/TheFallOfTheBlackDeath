@@ -9,10 +9,8 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
 {
     private Renderer targetRenderer;
     private Material highlightMaterial;
-    [SerializeField]
-    private Material[] originalMaterials; 
+    private BodyPartMaterialController materialController;
 
- 
     private Skill currentSkill;
     private Fighter targetFighter;
     private BodyPart targetPart;
@@ -42,9 +40,11 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
         if (rend != null)
         {
-            Material[] mats = rend.materials;
-            originalMaterials = new Material[mats.Length];
-            mats.CopyTo(originalMaterials, 0);
+            materialController = rend.GetComponent<BodyPartMaterialController>();
+            if (materialController == null)
+            {
+                materialController = rend.gameObject.AddComponent<BodyPartMaterialController>();
+            }
         }
     }
     
@@ -58,14 +58,10 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX(AudioManager.Instance.uiHoverSound, 0.5f, false);
         
-        // 1. Visual Highlight (Your existing code)
-        if (targetRenderer != null && highlightMaterial != null)
+        // 1. Visual Highlight (Using BodyPartMaterialController)
+        if (materialController != null)
         {
-            Material[] highlightSheet = new Material[targetRenderer.materials.Length];
-            for (int i = 0; i < highlightSheet.Length; i++) {
-                highlightSheet[i] = highlightMaterial;
-            }
-            targetRenderer.materials = highlightSheet;
+            materialController.SetHoverState(true, highlightMaterial);
         }
 
             // 2. --- NEW: DAMAGE PREVIEW CALCULATION ---
@@ -148,9 +144,9 @@ public class PartHoverHandler : MonoBehaviour, IPointerEnterHandler, IPointerExi
     /// </summary>
     public void ResetToOriginal()
     {
-        // 1. Reset Visuals
-        if (targetRenderer != null && originalMaterials != null) {
-            targetRenderer.materials = originalMaterials;
+        // 1. Reset Visuals (Using BodyPartMaterialController)
+        if (materialController != null) {
+            materialController.SetHoverState(false, highlightMaterial);
         }
 
         // 2. Reset Text

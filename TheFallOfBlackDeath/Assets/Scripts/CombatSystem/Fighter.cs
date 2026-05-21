@@ -474,7 +474,7 @@ public abstract class Fighter : MonoBehaviour
             }
         }
 
-        // 4. LÃ³gica de reglas "Duras" (Cosas que no son solo restas de stats)
+        // 4. la logica de reglas "Duras" (Cosas que no son solo restas de stats)
         switch (part.part)
         {
             case BodyPart.Head:

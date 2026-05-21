@@ -57,6 +57,7 @@ public abstract class Skill : MonoBehaviour
 
     protected Fighter emitter;
     protected List<Fighter> receivers;
+    public Fighter MainTarget => (receivers != null && receivers.Count > 0) ? receivers[0] : null;
     [TextArea(3, 10)]
     public string SkillDesc;
     protected Queue<string> messages;

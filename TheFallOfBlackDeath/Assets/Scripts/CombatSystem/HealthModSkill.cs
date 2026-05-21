@@ -233,7 +233,7 @@ protected override void OnRun(Fighter receiver)
 
 
         if (this.BodyPartTarget == BodyPart.Head)
-            adjusted += 0.5f;
+            adjusted += 0.9f;
 
  
         Fighter.BodyPartData rightLeg = receiver.GetBodyPart(BodyPart.RightLeg);
@@ -245,11 +245,11 @@ protected override void OnRun(Fighter receiver)
     
         if (leftLegDestroyed && rightLegDestroyed)
         {
-            adjusted -= 0.4f; // más fácil pegar en general
+            adjusted -= 1f; // más fácil pegar en general
         }
         else if (leftLegDestroyed || rightLegDestroyed)
         {
-            adjusted -= 0.2f;
+            adjusted -= 0.4f;
         }
 
         return Mathf.Clamp01(adjusted);
