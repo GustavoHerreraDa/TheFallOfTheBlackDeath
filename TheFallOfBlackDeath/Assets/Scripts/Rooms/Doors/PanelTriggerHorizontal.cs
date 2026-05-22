@@ -37,7 +37,15 @@ public class PanelTriggerHorizontal : MonoBehaviour
 
         ShowMouse();
     }
+    public void OpenCurrentDoor()
+    {
+        PanelTrigger.Current?.OpenDoor();
+    }
 
+    public void DismissCurrentPanel()
+    {
+        PanelTrigger.Current?.DismissPanel();
+    }
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Charecter")) return;
