@@ -45,6 +45,9 @@ public class Scene_Change : MonoBehaviour
     /// <param name="other">The other.</param>
     private void OnTriggerEnter(Collider other)
     {
+        EnemiesGroup enemiesGroup = GetEncounterGroup();
+        if (enemiesGroup != null && enemiesGroup.IsStunned)
+            return;
 
         var player = other.GetComponent<PlayerControl>();
         if (player)
@@ -89,6 +92,12 @@ private IEnumerator DirectGlitchTransition(Vector3 playerPos)
     GameManager.Instance.lastPos = playerPos;
     GameManager.Instance.hasValidLastPos = true;
 
+    EnemiesGroup enemiesGroup = GetEncounterGroup();
+    if (enemiesGroup != null)
+    {
+        GameManager.Instance.RegisterCurrentEncounterGroup(enemiesGroup.GroupName);
+    }
+
     Debug.Log("[DirectGlitchTransition] Waiting before scene transition");
 
     yield return new WaitForSecondsRealtime(glitchDuration);
@@ -101,5 +110,14 @@ private IEnumerator DirectGlitchTransition(Vector3 playerPos)
     Cursor.visible = true;
     Cursor.lockState = CursorLockMode.None;
     Debug.Log("[DirectGlitchTransition] Cursor unlocked");
+}
+
+private EnemiesGroup GetEncounterGroup()
+{
+    EnemiesGroup enemiesGroup = GetComponentInParent<EnemiesGroup>();
+    if (enemiesGroup == null)
+        enemiesGroup = GetComponentInChildren<EnemiesGroup>();
+
+    return enemiesGroup;
 }
 }

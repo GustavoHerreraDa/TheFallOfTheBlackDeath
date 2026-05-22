@@ -267,6 +267,17 @@ public class PlayerFighter : Fighter
         }
     }
 
+    public void AttemptRun()
+    {
+        if (combatManager == null)
+        {
+            Debug.LogWarning($"[PlayerFighter.AttemptRun] combatManager is null on {idName}");
+            return;
+        }
+
+        combatManager.TryRunFromCombat(this);
+    }
+
     public override Stats GetCurrentStats()
     {
         float bonusMaxHealth = 0;

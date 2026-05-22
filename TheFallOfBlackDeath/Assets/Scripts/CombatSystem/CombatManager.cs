@@ -50,6 +50,15 @@ public class CombatManager : MonoBehaviour
     public LootPanel lootPanel;
     public bool IsReady { get; private set; }
 
+    [Header("Escape")]
+    [SerializeField, Range(0f, 1f)] private float baseEscapeChance = 0.65f;
+    [SerializeField] private float speedEscapeChancePerPoint = 0.03f;
+    [SerializeField] private float brokenLegEscapePenalty = 0.25f;
+    [SerializeField] private float escapeResultDelay = 0.6f;
+    [SerializeField] private float escapedEnemyStunDuration = 4f;
+    [SerializeField] private int explorationSceneIndex = 1;
+    private bool escapeInProgress;
+
     // --- EVENTOS PARA EL SISTEMA DE CÁMARAS ---
     public event System.Action<Fighter> OnTurnStarted;
     public event System.Action<Fighter, Fighter> OnActionExecuted;
@@ -581,6 +590,124 @@ public class CombatManager : MonoBehaviour
         }
 
         return this.FilterJustAlive(team);
+    }
+
+    public void TryRunFromCombat(PlayerFighter runner)
+    {
+        if (escapeInProgress || runner == null || !isCombatActive)
+            return;
+
+        if (CurrentFighter != runner || combatStatus != CombatStatus.WAITING_FOR_FIGHTER)
+        {
+            Debug.LogWarning("[CombatManager.TryRunFromCombat] RUN can only be used by the active fighter.");
+            return;
+        }
+
+        StartCoroutine(RunFromCombatRoutine(runner));
+    }
+
+    private IEnumerator RunFromCombatRoutine(PlayerFighter runner)
+    {
+        escapeInProgress = true;
+
+        if (skillPanel != null)
+            skillPanel.Hide();
+
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
+
+        Tooltip.HideTooltip_static();
+
+        float escapeChance = CalculateEscapeChance(runner);
+        LogPanel.Write($"{runner.idName} tries to run.");
+
+        yield return new WaitForSeconds(escapeResultDelay);
+
+        bool escaped = Random.value <= escapeChance;
+        if (escaped)
+        {
+            LogPanel.Write("Escaped!");
+            SavePlayerTeamState();
+
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.RegisterEscapedEncounter(GetCurrentEnemyGroupName(), escapedEnemyStunDuration);
+                GameManager.Instance.SetGameState(GameManager.GameStates.TOWN_STATE);
+                GameManager.Instance.enemyToBattle.Clear();
+            }
+
+            isCombatActive = false;
+            yield return new WaitForSeconds(escapeResultDelay);
+            SceneManager.LoadScene(explorationSceneIndex);
+            yield break;
+        }
+
+        LogPanel.Write("Could not escape!");
+        combatStatus = CombatStatus.CHECK_FOR_VICTORY;
+        escapeInProgress = false;
+    }
+
+    private float CalculateEscapeChance(PlayerFighter runner)
+    {
+        float runnerSpeed = runner.GetCurrentStats().speed;
+        float fastestEnemySpeed = 0f;
+
+        if (enemyTeam != null)
+        {
+            foreach (var enemy in enemyTeam)
+            {
+                if (enemy != null && enemy.isAlive)
+                    fastestEnemySpeed = Mathf.Max(fastestEnemySpeed, enemy.GetCurrentStats().speed);
+            }
+        }
+
+        float chance = baseEscapeChance + ((runnerSpeed - fastestEnemySpeed) * speedEscapeChancePerPoint);
+        if (runner.legBroken)
+            chance -= brokenLegEscapePenalty;
+
+        return Mathf.Clamp01(chance);
+    }
+
+    private void SavePlayerTeamState()
+    {
+        if (GameManager.Instance == null || playerTeam == null)
+            return;
+
+        foreach (var fighter in playerTeam)
+        {
+            if (fighter is PlayerFighter playerFighter)
+                GameManager.Instance.SavePlayerState(playerFighter);
+        }
+    }
+
+    private string GetCurrentEnemyGroupName()
+    {
+        if (GameManager.Instance != null)
+        {
+            string currentEncounterGroup = GameManager.Instance.GetCurrentEncounterGroupName();
+            if (!string.IsNullOrEmpty(currentEncounterGroup))
+                return currentEncounterGroup;
+        }
+
+        if (!string.IsNullOrEmpty(groupEnemyName))
+            return groupEnemyName;
+
+        if (enemyTeam == null)
+            return string.Empty;
+
+        foreach (var enemy in enemyTeam)
+        {
+            if (enemy == null) continue;
+
+            EnemiesGroup group = enemy.GetComponentInParent<EnemiesGroup>();
+            if (group == null)
+                group = enemy.GetComponentInChildren<EnemiesGroup>();
+
+            if (group != null && !string.IsNullOrEmpty(group.GroupName))
+                return group.GroupName;
+        }
+
+        return string.Empty;
     }
 
     /// <summary>

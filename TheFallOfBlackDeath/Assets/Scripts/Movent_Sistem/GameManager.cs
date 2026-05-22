@@ -314,6 +314,12 @@ public class GameManager : MonoBehaviour
     public Transform startPost;
     public List<string> groupEnemyDefeat;
     public List<string> objectsPickup;
+
+    [Header("Escape Flow")]
+    [SerializeField] private float defaultEscapedEnemyStunDuration = 4f;
+    private string currentEncounterGroupName = string.Empty;
+    private string pendingEscapedEnemyGroupName = string.Empty;
+    private float pendingEscapedEnemyStunDuration;
     
     // New persistent pickups using GUIDs
     [SerializeField] private List<string> collectedPickupGuids = new List<string>();
@@ -331,6 +337,50 @@ public class GameManager : MonoBehaviour
         {
             collectedPickupGuids.Add(guid);
         }
+    }
+
+    public void RegisterCurrentEncounterGroup(string groupName)
+    {
+        currentEncounterGroupName = string.IsNullOrEmpty(groupName) ? string.Empty : groupName;
+    }
+
+    public string GetCurrentEncounterGroupName()
+    {
+        return currentEncounterGroupName;
+    }
+
+    public void RegisterEscapedEncounter(string groupName, float stunDuration)
+    {
+        string groupToStun = string.IsNullOrEmpty(groupName) ? currentEncounterGroupName : groupName;
+        if (string.IsNullOrEmpty(groupToStun))
+            return;
+
+        pendingEscapedEnemyGroupName = groupToStun;
+        pendingEscapedEnemyStunDuration = stunDuration > 0f ? stunDuration : defaultEscapedEnemyStunDuration;
+    }
+
+    private void ApplyPendingEscapedEnemyStun()
+    {
+        if (string.IsNullOrEmpty(pendingEscapedEnemyGroupName))
+            return;
+
+        if (enemies == null || enemies.Count == 0)
+            FindEnemiesAndObjets();
+
+        var escapedEnemy = enemies.FirstOrDefault(x => x != null && x.GroupName == pendingEscapedEnemyGroupName);
+        if (escapedEnemy != null)
+        {
+            escapedEnemy.StunForSeconds(pendingEscapedEnemyStunDuration);
+            Debug.Log($"Enemy group escaped from stunned: {pendingEscapedEnemyGroupName}");
+        }
+        else
+        {
+            Debug.LogWarning($"No enemy group found to stun after escape: {pendingEscapedEnemyGroupName}");
+        }
+
+        pendingEscapedEnemyGroupName = string.Empty;
+        pendingEscapedEnemyStunDuration = 0f;
+        currentEncounterGroupName = string.Empty;
     }
 
     public bool canGetEncounter = false;
@@ -765,6 +815,8 @@ public class GameManager : MonoBehaviour
 
             SetGameState(GameStates.TOWN_STATE);
             RemoveCollectedPickupsFromScene();
+            ApplyPendingEscapedEnemyStun();
+
             string nombre = PlayerPrefs.GetString("GrupoEnemigo");
 
             if (nombre == string.Empty)

@@ -11,6 +11,11 @@ public class PlayerSkillPanel : MonoBehaviour
     public GameObject[] skillButtons;
     public TextMeshProUGUI[] skillButtonLabels;
 
+    [Header("Escape")]
+    public GameObject runButton;
+    public TextMeshProUGUI runButtonLabel;
+    [SerializeField] private string runButtonText = "RUN";
+
     [Header("Synergy Feedback")]
     public Color synergyColor = Color.yellow;
     public Color normalColor = Color.chartreuse;
@@ -178,6 +183,17 @@ public class PlayerSkillPanel : MonoBehaviour
         targetFigther.ExecuteSkill(index);
     }
 
+    public void OnRunButtonClick()
+    {
+        if (targetFigther == null)
+        {
+            Debug.LogWarning("[PlayerSkillPanel.OnRunButtonClick] targetFigther is null");
+            return;
+        }
+
+        targetFigther.AttemptRun();
+    }
+
     /// <summary>
     /// Gets the rarity color.
     /// </summary>
@@ -259,6 +275,47 @@ public class PlayerSkillPanel : MonoBehaviour
                 button.onClick.AddListener(() => OnSkillButtonClick(captured));
             }
         }
+
+        ConfigureRunButton(shown);
+    }
+
+    private void ConfigureRunButton(int firstFreeButtonIndex)
+    {
+        GameObject buttonObject = runButton;
+        TextMeshProUGUI label = runButtonLabel;
+
+        if (buttonObject == null &&
+            firstFreeButtonIndex >= 0 &&
+            firstFreeButtonIndex < skillButtons.Length)
+        {
+            buttonObject = skillButtons[firstFreeButtonIndex];
+            if (firstFreeButtonIndex < skillButtonLabels.Length)
+                label = skillButtonLabels[firstFreeButtonIndex];
+        }
+
+        if (buttonObject == null)
+            return;
+
+        bool canRun = targetFigther != null && targetFigther.combatManager != null;
+        buttonObject.SetActive(canRun);
+
+        var button = buttonObject.GetComponent<Button>();
+        if (button != null)
+        {
+            button.onClick.RemoveAllListeners();
+            button.interactable = canRun;
+            button.onClick.AddListener(OnRunButtonClick);
+
+            var image = button.GetComponent<Image>();
+            if (image != null)
+                image.color = normalColor;
+        }
+
+        if (label == null)
+            label = buttonObject.GetComponentInChildren<TextMeshProUGUI>();
+
+        if (label != null)
+            label.text = runButtonText;
     }
 
     /// <summary>
@@ -275,7 +332,22 @@ public class PlayerSkillPanel : MonoBehaviour
 
         foreach (var btn in this.skillButtons)
         {
-            if (btn != null) btn.SetActive(false);
+            if (btn == null) continue;
+
+            var button = btn.GetComponent<Button>();
+            if (button != null)
+                button.onClick.RemoveAllListeners();
+
+            btn.SetActive(false);
+        }
+
+        if (runButton != null)
+        {
+            var button = runButton.GetComponent<Button>();
+            if (button != null)
+                button.onClick.RemoveAllListeners();
+
+            runButton.SetActive(false);
         }
 
         Tooltip.HideTooltip_static();

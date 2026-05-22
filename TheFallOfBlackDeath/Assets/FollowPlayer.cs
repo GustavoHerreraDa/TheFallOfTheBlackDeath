@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 /// <summary>
 /// Handles follow player for the current project workflow.
@@ -40,6 +41,8 @@ public class FollowPlayer : MonoBehaviour
 
     private bool sonidoReproducido = false;
     private float lostSightTimer = 0f;
+    private bool isStunned = false;
+    private Coroutine stunRoutine;
 
     /// <summary>
     /// Initializes the component once the scene dependencies are ready.
@@ -76,6 +79,17 @@ public class FollowPlayer : MonoBehaviour
     /// </summary>
     void Update()
     {
+        if (isStunned)
+        {
+            if (agent != null)
+            {
+                agent.isStopped = true;
+                agent.velocity = Vector3.zero;
+            }
+
+            return;
+        }
+
         CheckTransitions();
 
         switch (currentState)
@@ -120,7 +134,7 @@ public class FollowPlayer : MonoBehaviour
 
     void CheckTransitions()
     {
-        if (currentState == EnemyState.Death || player == null)
+        if (isStunned || currentState == EnemyState.Death || player == null)
             return;
 
         float sqrDist = (transform.position - player.position).sqrMagnitude;
@@ -157,7 +171,7 @@ public class FollowPlayer : MonoBehaviour
 
     bool CanSeePlayer()
     {
-        if (player == null)
+        if (isStunned || player == null)
             return false;
 
         Vector3 enemyEyePos = transform.position + Vector3.up * eyeHeight;
@@ -240,5 +254,41 @@ public class FollowPlayer : MonoBehaviour
         }
 
         this.enabled = false;
+    }
+
+    public void StunForSeconds(float duration)
+    {
+        if (duration <= 0f)
+            return;
+
+        if (stunRoutine != null)
+            StopCoroutine(stunRoutine);
+
+        stunRoutine = StartCoroutine(StunRoutine(duration));
+    }
+
+    private IEnumerator StunRoutine(float duration)
+    {
+        isStunned = true;
+        sonidoReproducido = false;
+        lostSightTimer = 0f;
+
+        if (agent != null)
+        {
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
+        }
+
+        currentState = EnemyState.Idle;
+        SetAnimationBooleans();
+
+        yield return new WaitForSeconds(duration);
+
+        isStunned = false;
+
+        EnemyState nextState = (puntoA != null && puntoB != null) ? EnemyState.Patrol : EnemyState.Idle;
+        currentState = nextState == EnemyState.Patrol ? EnemyState.Idle : EnemyState.Patrol;
+        ChangeState(nextState);
+        stunRoutine = null;
     }
 }
