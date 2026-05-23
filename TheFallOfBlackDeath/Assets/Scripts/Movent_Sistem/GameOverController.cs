@@ -13,6 +13,7 @@ public class GameOverController : MonoBehaviour
     public void ReturnToMainMenu()
     {
         Debug.Log("Bot�n clickeado, intentando cargar la escena");
+        PrepareGameOverExit();
         SceneManager.LoadScene(0);
     }
     /// <summary>
@@ -32,7 +33,15 @@ public class GameOverController : MonoBehaviour
     public void gobackmenu()
     {
 
+        PrepareGameOverExit();
         SceneManager.LoadScene(0);
     }
 
+    private void PrepareGameOverExit()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.PrepareForGameOverReturnToMenu();
+        }
+    }
 }

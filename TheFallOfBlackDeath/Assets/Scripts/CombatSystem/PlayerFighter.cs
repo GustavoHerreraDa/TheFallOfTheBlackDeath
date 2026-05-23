@@ -150,8 +150,7 @@ public class PlayerFighter : Fighter
             StartCoroutine(DeferredApplySavedStatus());
         }
 
-        // Always restore destroyed body part visuals (legBroken se computa desde bodyParts)
-        LoadBodyState();
+        // Body-part runtime state is restored by GameManager.PlayerStatusData.
     }
 
     /// <summary>
@@ -170,9 +169,6 @@ public class PlayerFighter : Fighter
             appliedSavedDataThisScene = true;
             Debug.Log($"[PlayerFighter.Start] Post-restore hp={stats.health}/{stats.maxHealth}, atk={stats.attack}, def={stats.deffense}");
         }
-
-        // Re-apply body part visual state after stats are restored
-        LoadBodyState();
 
         // Log skills count after any potential restore
         int count = (this.skills != null) ? this.skills.Length : 0;
@@ -603,23 +599,10 @@ public class PlayerFighter : Fighter
     /// <param name="part">The part.</param>
     public void SaveBodyPartState(BodyPart part)
     {
-        if (fightersDateBase == null || figherIndex < 0 || figherIndex >= fightersDateBase.EnemyDB.Count)
-        {
-            Debug.LogWarning($"[PlayerFighter.SaveBodyPartState] Cannot save: DB null or index out of range (index={figherIndex})");
-            return;
-        }
+        if (GameManager.Instance != null)
+            GameManager.Instance.SavePlayerState(this);
 
-        globalDataBase.EnemyStats entry = fightersDateBase.EnemyDB[figherIndex];
-
-        if (entry.destroyedParts == null)
-            entry.destroyedParts = new System.Collections.Generic.List<BodyPart>();
-
-        if (!entry.destroyedParts.Contains(part))
-            entry.destroyedParts.Add(part);
-
-        entry.currentHealth = stats.health;
-        fightersDateBase.EnemyDB[figherIndex] = entry;
-        Debug.Log($"[PlayerFighter.SaveBodyPartState] Saved destroyed part {part}, hp={stats.health} for figherIndex={figherIndex}");
+        Debug.Log($"[PlayerFighter.SaveBodyPartState] Runtime body state saved for {idName}: {part}");
     }
 
     /// <summary>
@@ -627,27 +610,8 @@ public class PlayerFighter : Fighter
     /// </summary>
     public void LoadBodyState()
     {
-        if (fightersDateBase == null || figherIndex < 0 || figherIndex >= fightersDateBase.EnemyDB.Count)
-            return;
-
-        var entry = fightersDateBase.EnemyDB[figherIndex];
-
-        if (entry.destroyedParts == null || entry.destroyedParts.Count == 0)
-            return;
-
-        foreach (BodyPart part in entry.destroyedParts)
-        {
-            BodyPartData partData = GetBodyPart(part);
-            if (partData != null)
-                partData.currentHealth = 0;
-        }
-
-        SyncBodyPartVisuals();
-
-        if (entry.currentHealth > 0)
-            stats.health = Mathf.Clamp(entry.currentHealth, 0, stats.maxHealth);
-
-        Debug.Log($"[PlayerFighter.LoadBodyState] Restored {entry.destroyedParts.Count} parts, legBroken={legBroken} (computed), hp={stats.health} for figherIndex={figherIndex}");
+        if (GameManager.Instance != null)
+            GameManager.Instance.ApplySavedStatusToFighter(this);
     }
 }
 

@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
         public float speed;
 
         public List<float> bodyPartsHealth = new List<float>();
+        public List<float> bodyPartsMaxHealth = new List<float>();
 
         [System.Serializable]
         public struct EquippedItemData
@@ -381,6 +382,100 @@ public class GameManager : MonoBehaviour
         pendingEscapedEnemyGroupName = string.Empty;
         pendingEscapedEnemyStunDuration = 0f;
         currentEncounterGroupName = string.Empty;
+    }
+
+    public void RegisterPartyDefeat(Fighter[] defeatedTeam)
+    {
+        RecoverSavedPartyAfterDefeat(defeatedTeam);
+        ClearCombatTransitionState();
+        SetGameState(GameStates.IDLE_STATE);
+    }
+
+    public void PrepareForGameOverReturnToMenu()
+    {
+        RecoverSavedPartyAfterDefeat(null);
+        ClearCombatTransitionState();
+        SetGameState(GameStates.IDLE_STATE);
+    }
+
+    private void RecoverSavedPartyAfterDefeat(Fighter[] defeatedTeam)
+    {
+        bool recoveredRuntimeFighter = false;
+
+        if (defeatedTeam != null)
+        {
+            foreach (var fighter in defeatedTeam)
+            {
+                if (fighter is PlayerFighter playerFighter)
+                {
+                    SavePlayerState(playerFighter);
+                    RecoverSavedStatusForRespawn(playerFighter.figherIndex, playerFighter);
+                    recoveredRuntimeFighter = true;
+                }
+            }
+        }
+
+        if (!recoveredRuntimeFighter && savedPlayersStatus != null)
+        {
+            foreach (int fighterIndex in savedPlayersStatus.Keys.ToList())
+            {
+                RecoverSavedStatusForRespawn(fighterIndex, null);
+            }
+        }
+
+        RefreshUI();
+    }
+
+    private void RecoverSavedStatusForRespawn(int fighterIndex, PlayerFighter runtimeFighter)
+    {
+        if (savedPlayersStatus == null || !savedPlayersStatus.TryGetValue(fighterIndex, out var savedStatus))
+            return;
+
+        float maxHealth = savedStatus.maxHealth;
+        if (runtimeFighter != null && runtimeFighter.stats != null)
+            maxHealth = Mathf.Max(maxHealth, runtimeFighter.stats.maxHealth);
+
+        savedStatus.maxHealth = maxHealth;
+        savedStatus.currentHealth = maxHealth;
+
+        if (runtimeFighter != null && runtimeFighter.bodyParts != null)
+        {
+            savedStatus.bodyPartsHealth = new List<float>();
+            savedStatus.bodyPartsMaxHealth = new List<float>();
+
+            foreach (var part in runtimeFighter.bodyParts)
+            {
+                float partMaxHealth = part.GetMaxHealth(runtimeFighter);
+                part.currentHealth = partMaxHealth;
+                savedStatus.bodyPartsHealth.Add(partMaxHealth);
+                savedStatus.bodyPartsMaxHealth.Add(partMaxHealth);
+            }
+
+            runtimeFighter.stats.health = maxHealth;
+            runtimeFighter.statusPanel?.SetStats(runtimeFighter.idName, runtimeFighter.stats);
+        }
+        else if (savedStatus.bodyPartsMaxHealth != null &&
+                 savedStatus.bodyPartsHealth != null &&
+                 savedStatus.bodyPartsMaxHealth.Count == savedStatus.bodyPartsHealth.Count)
+        {
+            savedStatus.bodyPartsHealth = new List<float>(savedStatus.bodyPartsMaxHealth);
+        }
+
+        savedPlayersStatus[fighterIndex] = savedStatus;
+    }
+
+    private void ClearCombatTransitionState()
+    {
+        ClearSavedPosition();
+        enemyToBattle.Clear();
+        enemyAnount = 0;
+        enemyAmount = 0;
+        canGetEncounter = false;
+        gotAttacked = false;
+        isWalking = false;
+        currentEncounterGroupName = string.Empty;
+        pendingEscapedEnemyGroupName = string.Empty;
+        pendingEscapedEnemyStunDuration = 0f;
     }
 
     public bool canGetEncounter = false;
@@ -914,11 +1009,15 @@ public class GameManager : MonoBehaviour
             defense = s.deffense,
             spirit = s.spirit,
             speed = s.speed,
-            bodyPartsHealth = new List<float>()
+            bodyPartsHealth = new List<float>(),
+            bodyPartsMaxHealth = new List<float>()
         };
 
         foreach (var part in fighter.bodyParts)
+        {
             data.bodyPartsHealth.Add(part.currentHealth);
+            data.bodyPartsMaxHealth.Add(part.GetMaxHealth(fighter));
+        }
 
         // Persistencia de equipo: Guardar los IDs de los objetos equipados
         data.equippedItems = new List<PlayerStatusData.EquippedItemData>();
@@ -985,6 +1084,18 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < fighter.bodyParts.Count && i < savedPlayerStatus.bodyPartsHealth.Count; i++)
         {
             fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
+        }
+
+        if (savedPlayerStatus.bodyPartsMaxHealth == null ||
+            savedPlayerStatus.bodyPartsMaxHealth.Count != fighter.bodyParts.Count)
+        {
+            savedPlayerStatus.bodyPartsMaxHealth = new List<float>();
+            foreach (var part in fighter.bodyParts)
+            {
+                savedPlayerStatus.bodyPartsMaxHealth.Add(part.GetMaxHealth(fighter));
+            }
+
+            savedPlayersStatus[key] = savedPlayerStatus;
         }
 
         // Lógica de Carga: Limpiar equipo actual y restaurar desde la lista guardada

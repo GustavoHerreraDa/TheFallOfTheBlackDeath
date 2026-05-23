@@ -391,17 +391,11 @@ public class CombatManager : MonoBehaviour
 
                     if (defeat)
                     {
-                        // Save all player fighters' state on defeat as well
-                        if (playerTeam != null)
+                        if (GameManager.Instance != null)
                         {
-                            foreach (var f in playerTeam)
-                            {
-                                if (f is PlayerFighter pf)
-                                {
-                                    GameManager.Instance.SavePlayerState(pf);
-                                }
-                            }
+                            GameManager.Instance.RegisterPartyDefeat(playerTeam);
                         }
+
                         LogPanel.Write("Defeat!");
                         this.isCombatActive = false;
                         yield return new WaitForSeconds(2f);
