@@ -13,7 +13,7 @@ public class HorizontalSlidingDoor : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float openDistance = 1.5f;
     [SerializeField] private float speed = 3f;
-    [SerializeField] private bool open = false;
+    [SerializeField] public bool open = false;
 
     [Header("Audio (Optional Overrides)")]
     [SerializeField] private AudioClip customOpenSound;

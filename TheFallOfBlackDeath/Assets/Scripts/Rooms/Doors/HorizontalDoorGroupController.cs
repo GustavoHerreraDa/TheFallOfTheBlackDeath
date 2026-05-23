@@ -11,6 +11,16 @@ public class HorizontalDoorGroupController : MonoBehaviour
 
     private int openedDoorIndex = -1;
 
+    public bool CanOpenDoor(int index)
+    {
+        if (!IsValid(index)) return false;
+
+        if (openedDoorIndex == -1)
+        {
+            return true;
+        }
+        return false;
+    }
     public void TryOpenDoor(int index)
     {
         if (!IsValid(index)) return;

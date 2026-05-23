@@ -31,7 +31,8 @@ public class PanelTriggerHorizontal : MonoBehaviour
 
         Current = this;
         playerInside = true;
-
+        bool canopenDoor = controller.CanOpenDoor(doorIndex);
+        if (canopenDoor == false) return;
         if (panel != null)
             panel.SetActive(true);
 
