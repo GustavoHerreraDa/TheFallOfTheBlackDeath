@@ -103,8 +103,25 @@ public abstract class Fighter : MonoBehaviour
     public delegate void HealthModificationDelegate(float amount);
     public HealthModificationDelegate healthModificationDelegate;
     public List<StatusMod> statusMods;
-    public bool legBroken => bodyParts != null && bodyParts.Exists(p =>
-        (p.part == BodyPart.LeftLeg || p.part == BodyPart.RightLeg) && p.IsDestroyed);
+    public int brokenLegCount
+    {
+        get
+        {
+            if (bodyParts == null) return 0;
+
+            int count = 0;
+            foreach (var part in bodyParts)
+            {
+                if ((part.part == BodyPart.LeftLeg || part.part == BodyPart.RightLeg) && part.IsDestroyed)
+                    count++;
+            }
+
+            return count;
+        }
+    }
+    public bool legBroken => brokenLegCount > 0;
+    public bool oneLegBroken => brokenLegCount == 1;
+    public bool bothLegsBroken => brokenLegCount >= 2;
     public Stats stats;
     public Stats modedStats;
     public Skill[] skills;

@@ -19,6 +19,19 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private float alturaDeSalto;
     [SerializeField] private float tiempoAlGirar;
 
+    [Header("Animacion por Piernas")]
+    [SerializeField] private string movementParameter = "Movent";
+    [SerializeField] private string brokenLegsParameter = "BrokenLegs";
+    [SerializeField] private string oneLegBrokenParameter = "OneLegBroken";
+    [SerializeField] private string bothLegsBrokenParameter = "BothLegsBroken";
+    [SerializeField] private float idleAnimValue = 0f;
+    [SerializeField] private float walkAnimValue = 0.1f;
+    [SerializeField] private float runAnimValue = 0.2f;
+    [SerializeField] private float oneLegBrokenMoveAnimValue = 0.3f;
+    [SerializeField] private float bothLegsBrokenMoveAnimValue = 0.4f;
+    [SerializeField] private float oneLegBrokenSpeedMultiplier = 0.65f;
+    [SerializeField] private float bothLegsBrokenSpeedMultiplier = 0.35f;
+
     [Header("Datos sobre el piso")]
     [SerializeField] private Transform detectaPiso;
     [SerializeField] private float distanciaPiso;
@@ -84,9 +97,12 @@ public class PlayerControl : MonoBehaviour
 
         if (!stop)
         {
+            int brokenLegs = GetBrokenLegCount();
+            UpdateLegInjuryAnimatorParameters(brokenLegs);
+
             if (isInspectingCharacter)
             {
-                anim.SetFloat("Movent", 0f);
+                SetMovementAnimation(idleAnimValue);
                 if (GameManager.Instance != null)
                     GameManager.Instance.isWalking = false;
 
@@ -99,44 +115,21 @@ public class PlayerControl : MonoBehaviour
 
             if (isWalking)
             {
-                if (Input.GetKey(KeyCode.LeftShift))
-                {
-                    if(fighter.legBroken == false)
-                    {
-                        Vector3 mover = Quaternion.Euler(0, objetivoAngulo, 0) * Vector3.forward;
-                        controller.Move(mover.normalized * velCorriendo * Time.deltaTime);
-                        anim.SetFloat("Movent", 0.2f);
-                        if (GameManager.Instance != null)
+                bool canRun = brokenLegs == 0;
+                bool wantsRun = Input.GetKey(KeyCode.LeftShift) && canRun;
+                float currentSpeed = GetMovementSpeedForLegState(brokenLegs, wantsRun);
+                Vector3 mover = Quaternion.Euler(0, objetivoAngulo, 0) * Vector3.forward;
 
-                            GameManager.Instance.isWalking = true;
-                    }
+                controller.Move(mover.normalized * currentSpeed * Time.deltaTime);
+                SetMovementAnimation(GetMovementAnimValueForLegState(brokenLegs, wantsRun));
 
-                    if (fighter.legBroken == true)
-                    {
-                        Vector3 mover = Quaternion.Euler(0, objetivoAngulo, 0) * Vector3.forward;
-                        controller.Move(mover.normalized * velocidad * Time.deltaTime);
-                        anim.SetFloat("Movent", 0.1f);
-                        if (GameManager.Instance != null)
-
-                            GameManager.Instance.isWalking = true;
-                    }
-                        
-                        
-                }
-                else
-                {
-                    Vector3 mover = Quaternion.Euler(0, objetivoAngulo, 0) * Vector3.forward;
-                    controller.Move(mover.normalized * velocidad * Time.deltaTime);
-                    anim.SetFloat("Movent", 0.1f);
-                    if (GameManager.Instance != null)
-
-                        GameManager.Instance.isWalking = true;
-                }
+                if (GameManager.Instance != null)
+                    GameManager.Instance.isWalking = true;
             }
             else
             {
                 
-                anim.SetFloat("Movent", 0f);
+                SetMovementAnimation(idleAnimValue);
                 if (GameManager.Instance != null)
 
                     GameManager.Instance.isWalking = false;
@@ -162,7 +155,7 @@ public class PlayerControl : MonoBehaviour
     /// <param name="seconds">The seconds.</param>
     public void StopPlayer(float seconds)
     {
-        anim.SetFloat("Movent", 0f);
+        SetMovementAnimation(idleAnimValue);
         stop = true;
         playerRB.isKinematic = true;
         StartCoroutine(WaitSeconds(seconds));
@@ -237,6 +230,67 @@ public class PlayerControl : MonoBehaviour
         controller.enabled = false;
         transform.position = destinoPosition;
         controller.enabled = true;
+    }
+
+    private int GetBrokenLegCount()
+    {
+        return fighter != null ? fighter.brokenLegCount : 0;
+    }
+
+    private float GetMovementSpeedForLegState(int brokenLegs, bool wantsRun)
+    {
+        if (brokenLegs >= 2)
+            return velocidad * bothLegsBrokenSpeedMultiplier;
+
+        if (brokenLegs == 1)
+            return velocidad * oneLegBrokenSpeedMultiplier;
+
+        return wantsRun ? velCorriendo : velocidad;
+    }
+
+    private float GetMovementAnimValueForLegState(int brokenLegs, bool wantsRun)
+    {
+        if (brokenLegs >= 2)
+            return bothLegsBrokenMoveAnimValue;
+
+        if (brokenLegs == 1)
+            return oneLegBrokenMoveAnimValue;
+
+        return wantsRun ? runAnimValue : walkAnimValue;
+    }
+
+    private void SetMovementAnimation(float value)
+    {
+        if (anim != null && HasAnimatorParameter(movementParameter, AnimatorControllerParameterType.Float))
+            anim.SetFloat(movementParameter, value);
+    }
+
+    private void UpdateLegInjuryAnimatorParameters(int brokenLegs)
+    {
+        if (anim == null) return;
+
+        if (HasAnimatorParameter(brokenLegsParameter, AnimatorControllerParameterType.Int))
+            anim.SetInteger(brokenLegsParameter, brokenLegs);
+
+        if (HasAnimatorParameter(oneLegBrokenParameter, AnimatorControllerParameterType.Bool))
+            anim.SetBool(oneLegBrokenParameter, brokenLegs == 1);
+
+        if (HasAnimatorParameter(bothLegsBrokenParameter, AnimatorControllerParameterType.Bool))
+            anim.SetBool(bothLegsBrokenParameter, brokenLegs >= 2);
+    }
+
+    private bool HasAnimatorParameter(string parameterName, AnimatorControllerParameterType type)
+    {
+        if (anim == null || string.IsNullOrEmpty(parameterName))
+            return false;
+
+        foreach (var parameter in anim.parameters)
+        {
+            if (parameter.name == parameterName && parameter.type == type)
+                return true;
+        }
+
+        return false;
     }
 
 }
