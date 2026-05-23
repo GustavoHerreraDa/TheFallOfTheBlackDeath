@@ -5383,6 +5383,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1867699473 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 996539238965934458, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+  m_PrefabInstance: {fileID: 8204355792642854230}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1975841418
 GameObject:
   m_ObjectHideFlags: 0
@@ -6842,6 +6847,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 380670529944311470, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      propertyPath: BodyPartTarget
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 380670529944311470, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: animationDuration
       value: 2
       objectReference: {fileID: 0}
@@ -7453,6 +7462,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8204355791575341872, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8204355792642854233}
+    - targetCorrespondingSourceObject: {fileID: 996539238965934458, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8204355792642854236}
     - targetCorrespondingSourceObject: {fileID: 7000866621237896049, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8204355792642854237}
@@ -7491,12 +7503,31 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 380670529944311470, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
   m_PrefabInstance: {fileID: 8204355792642854230}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1867699473}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6fd7c4aefd267343b9cf63676659504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8204355792642854236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1867699473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4831ffff020247289d71f368742658bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CounterAttackReaction
+  owner: {fileID: 1523806086}
+  canReactToReactions: 0
+  counterAttackSkill: {fileID: 8204355792642854235}
+  requiredBodyPart: 4
+  triggerChance: 1
+  reactionStartDelay: 0.1
+  requireAttackerAlive: 1
 --- !u!114 &8204355792642854237
 MonoBehaviour:
   m_ObjectHideFlags: 0

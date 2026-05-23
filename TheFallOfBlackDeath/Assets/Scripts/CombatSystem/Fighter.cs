@@ -70,6 +70,8 @@ public abstract class Fighter : MonoBehaviour
                 return baseMaxHealth;
             }
         }
+        
+        
       
         public PartStatus currentStatus = PartStatus.None;
         [Header("Penalizaciones al destruirse")]
@@ -168,6 +170,10 @@ public abstract class Fighter : MonoBehaviour
     public Skill[] skills;
     public StatusCondition statusCondition;
     private List<BodyPartStatusCondition> bodyPartStatusConditions;
+    private static readonly Renderer[] EmptyRendererCache = new Renderer[0];
+    private readonly Dictionary<BodyPart, Renderer[]> renderersByBodyPart = new Dictionary<BodyPart, Renderer[]>();
+    private readonly Dictionary<Renderer, Material[]> damageGlitchSlotsByRenderer = new Dictionary<Renderer, Material[]>();
+    private bool renderersByBodyPartCacheReady;
 
     public Transform uiAnchor;
     public Transform scannerAnchor;
@@ -206,7 +212,87 @@ public abstract class Fighter : MonoBehaviour
         this.modedStats = stats;
         this.statusMods = new List<StatusMod>();
         this.bodyPartStatusConditions = new List<BodyPartStatusCondition>();
+        EnsureBodyPartRendererCache();
 
+    }
+
+    /// <summary>
+    /// Builds visual lookup data as soon as the fighter becomes active.
+    /// </summary>
+    protected virtual void OnEnable()
+    {
+        renderersByBodyPartCacheReady = false;
+        EnsureBodyPartRendererCache();
+    }
+
+    private void EnsureBodyPartRendererCache()
+    {
+        if (renderersByBodyPartCacheReady) return;
+
+        BuildBodyPartRendererCache();
+    }
+
+    private void BuildBodyPartRendererCache()
+    {
+        renderersByBodyPart.Clear();
+        renderersByBodyPartCacheReady = true;
+
+        if (bodyParts == null || bodyParts.Count == 0) return;
+
+        var partKeys = new List<BodyPart>(bodyParts.Count);
+        var partNames = new List<string>(bodyParts.Count);
+        var rendererBuckets = new List<List<Renderer>>(bodyParts.Count);
+
+        foreach (var partData in bodyParts)
+        {
+            if (partData == null || partData.part == BodyPart.None || renderersByBodyPart.ContainsKey(partData.part))
+                continue;
+
+            renderersByBodyPart[partData.part] = EmptyRendererCache;
+            partKeys.Add(partData.part);
+            partNames.Add(partData.part.ToString());
+            rendererBuckets.Add(new List<Renderer>());
+        }
+
+        if (partKeys.Count == 0) return;
+
+        Renderer[] allRenderers = GetComponentsInChildren<Renderer>(true);
+        for (int rendererIndex = 0; rendererIndex < allRenderers.Length; rendererIndex++)
+        {
+            Renderer renderer = allRenderers[rendererIndex];
+            if (renderer == null) continue;
+
+            string rendererName = renderer.name;
+            for (int partIndex = 0; partIndex < partKeys.Count; partIndex++)
+            {
+                if (RendererNameMatchesBodyPart(rendererName, partNames[partIndex]))
+                    rendererBuckets[partIndex].Add(renderer);
+            }
+        }
+
+        for (int partIndex = 0; partIndex < partKeys.Count; partIndex++)
+        {
+            List<Renderer> renderers = rendererBuckets[partIndex];
+            renderersByBodyPart[partKeys[partIndex]] = renderers.Count > 0
+                ? renderers.ToArray()
+                : EmptyRendererCache;
+        }
+    }
+
+    private static bool RendererNameMatchesBodyPart(string rendererName, string partName)
+    {
+        return System.StringComparer.OrdinalIgnoreCase.Equals(rendererName, partName) ||
+               rendererName.IndexOf(partName, System.StringComparison.Ordinal) >= 0;
+    }
+
+    private Renderer[] GetCachedBodyPartRenderers(BodyPart part)
+    {
+        EnsureBodyPartRendererCache();
+
+        if (renderersByBodyPart.TryGetValue(part, out Renderer[] renderers))
+            return renderers;
+
+        return EmptyRendererCache;
     }
 
     /// <summary>
@@ -668,20 +754,19 @@ public abstract class Fighter : MonoBehaviour
     /// <param name="part">The part.</param>
     protected void HidePartMesh(BodyPart part)
     {
-        string partName = part.ToString();
-        Renderer[] allRenderers = GetComponentsInChildren<Renderer>(true);
+        Renderer[] partRenderers = GetCachedBodyPartRenderers(part);
 
-        foreach (Renderer r in allRenderers)
+        for (int i = 0; i < partRenderers.Length; i++)
         {
-            if (r.name.Equals(partName, System.StringComparison.OrdinalIgnoreCase) || r.name.Contains(partName))
-            {
-                // CAMBIO IMPORTANTE:
-                // No desactives el objeto (r.gameObject.SetActive(false))
-                // Solo desactiva el componente que lo dibuja.
-                r.enabled = false; 
-                
-                Debug.Log($"Malla de {partName} ocultada (Renderer desactivado).");
-            }
+            Renderer r = partRenderers[i];
+            if (r == null) continue;
+
+            // CAMBIO IMPORTANTE:
+            // No desactives el objeto (r.gameObject.SetActive(false))
+            // Solo desactiva el componente que lo dibuja.
+            r.enabled = false;
+
+            Debug.Log($"Malla de {part} ocultada (Renderer desactivado).");
         }
     }
     public abstract void InitTurn();
@@ -700,49 +785,56 @@ public abstract class Fighter : MonoBehaviour
     {
         if (damageGlitchMaterial == null) yield break;
 
-        string partName = part.ToString();
-        Renderer[] allRenderers = GetComponentsInChildren<Renderer>(true);
-        var partRenderers = new List<Renderer>();
-
-        // Same filter as HidePartMesh
-        foreach (Renderer r in allRenderers)
-        {
-            if (r.name.Equals(partName, System.StringComparison.OrdinalIgnoreCase) ||
-                r.name.Contains(partName))
-                partRenderers.Add(r);
-        }
-
-        if (partRenderers.Count == 0) yield break;
+        Renderer[] partRenderers = GetCachedBodyPartRenderers(part);
+        if (partRenderers.Length == 0) yield break;
 
         // Cache original material arrays and swap in the glitch material
-        var originalMaterials = new Material[partRenderers.Count][];
-        for (int i = 0; i < partRenderers.Count; i++)
+        var originalMaterials = new Material[partRenderers.Length][];
+        for (int i = 0; i < partRenderers.Length; i++)
         {
-            originalMaterials[i] = partRenderers[i].sharedMaterials;
+            Renderer partRenderer = partRenderers[i];
+            if (partRenderer == null) continue;
 
-            // Build a new array filled entirely with the glitch material
-            var glitchSlots = new Material[originalMaterials[i].Length];
-            for (int s = 0; s < glitchSlots.Length; s++)
-                glitchSlots[s] = damageGlitchMaterial;
+            originalMaterials[i] = partRenderer.sharedMaterials;
+            Material[] glitchSlots = GetDamageGlitchSlots(partRenderer, originalMaterials[i].Length);
 
-            partRenderers[i].materials = glitchSlots;
+            partRenderer.sharedMaterials = glitchSlots;
         }
 
         // Hold for duration (or until the part is destroyed)
+        BodyPartData damagedPart = GetBodyPart(part);
         float elapsed = 0f;
         while (elapsed < duration)
         {
-            if (GetBodyPart(part) == null || GetBodyPart(part).IsDestroyed) break;
+            if (damagedPart == null || damagedPart.IsDestroyed) break;
             elapsed += Time.deltaTime;
             yield return null;
         }
 
         // Restore original materials
-        for (int i = 0; i < partRenderers.Count; i++)
+        for (int i = 0; i < partRenderers.Length; i++)
         {
-            if (partRenderers[i] != null)
-                partRenderers[i].materials = originalMaterials[i];
+            if (partRenderers[i] != null && originalMaterials[i] != null)
+                partRenderers[i].sharedMaterials = originalMaterials[i];
         }
+    }
+
+    private Material[] GetDamageGlitchSlots(Renderer renderer, int slotCount)
+    {
+        if (damageGlitchSlotsByRenderer.TryGetValue(renderer, out Material[] glitchSlots) &&
+            glitchSlots != null &&
+            glitchSlots.Length == slotCount &&
+            (slotCount == 0 || glitchSlots[0] == damageGlitchMaterial))
+        {
+            return glitchSlots;
+        }
+
+        glitchSlots = new Material[slotCount];
+        for (int i = 0; i < glitchSlots.Length; i++)
+            glitchSlots[i] = damageGlitchMaterial;
+
+        damageGlitchSlotsByRenderer[renderer] = glitchSlots;
+        return glitchSlots;
     }
     
 }
