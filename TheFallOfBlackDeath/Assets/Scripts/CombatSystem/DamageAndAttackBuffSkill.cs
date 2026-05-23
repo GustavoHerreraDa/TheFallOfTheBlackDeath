@@ -29,7 +29,7 @@ public class DamageAndAttackBuffSkill : Skill
         emitter.animator.Play(animationName);
 
         // Aplicar el daño
-        receiver.ModifyHealth(-damage);
+        receiver.ModifyHealth(-damage, this.emitter, this);
     }
 
     /// <summary>

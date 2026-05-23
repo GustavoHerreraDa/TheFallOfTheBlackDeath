@@ -3,6 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 //TP2 AUGUSTO NANINI/FACUNDO FERREIRO
 
+public struct DamageReceivedEventData
+{
+    public readonly Fighter attacker;
+    public readonly Fighter receiver;
+    public readonly Skill sourceSkill;
+    public readonly BodyPart bodyPart;
+    public readonly float requestedAmount;
+    public readonly float appliedAmount;
+    public readonly float previousHealth;
+    public readonly float currentHealth;
+    public readonly bool affectedBodyPart;
+    public readonly bool destroyedBodyPart;
+
+    public bool IsDamage => appliedAmount < 0f;
+
+    public DamageReceivedEventData(
+        Fighter attacker,
+        Fighter receiver,
+        Skill sourceSkill,
+        BodyPart bodyPart,
+        float requestedAmount,
+        float appliedAmount,
+        float previousHealth,
+        float currentHealth,
+        bool affectedBodyPart,
+        bool destroyedBodyPart)
+    {
+        this.attacker = attacker;
+        this.receiver = receiver;
+        this.sourceSkill = sourceSkill;
+        this.bodyPart = bodyPart;
+        this.requestedAmount = requestedAmount;
+        this.appliedAmount = appliedAmount;
+        this.previousHealth = previousHealth;
+        this.currentHealth = currentHealth;
+        this.affectedBodyPart = affectedBodyPart;
+        this.destroyedBodyPart = destroyedBodyPart;
+    }
+}
+
 /// <summary>
 /// Defines the shared combatant model used by players and enemies, including stats, body-part damage, status conditions, and turn behavior.
 /// </summary>
@@ -93,6 +133,7 @@ public abstract class Fighter : MonoBehaviour
     public Material damageGlitchMaterial;
 
     public event System.Action<BodyPart> OnBodyPartDestroyedEvent;
+    public event System.Action<DamageReceivedEventData> OnDamageReceived;
 
     public Team team;
     public string idName;
@@ -250,15 +291,20 @@ public abstract class Fighter : MonoBehaviour
     /// <param name="amount">The amount.</param>
     public void ModifyHealth(float amount)
     {
+        ModifyHealth(amount, null, null, BodyPart.None);
+    }
+
+    public void ModifyHealth(float amount, Fighter attacker, Skill sourceSkill, BodyPart bodyPart = BodyPart.None)
+    {
         float previousHealth = this.stats.health;
 
         this.stats.health = Mathf.Clamp(this.stats.health + amount, 0f, this.stats.maxHealth);
         this.stats.health = Mathf.Round(this.stats.health);
+        float modifiedAmount = this.stats.health - previousHealth;
 
   
         if (healthModificationDelegate != null)
         {
-            float modifiedAmount = this.stats.health - previousHealth;
             healthModificationDelegate(modifiedAmount);
         }
 
@@ -301,6 +347,21 @@ public abstract class Fighter : MonoBehaviour
             animator.Play("Death");
             Invoke("Die", 2f);
         }
+
+        if (modifiedAmount < 0f)
+        {
+            OnDamageReceived?.Invoke(new DamageReceivedEventData(
+                attacker,
+                this,
+                sourceSkill,
+                bodyPart,
+                amount,
+                modifiedAmount,
+                previousHealth,
+                this.stats.health,
+                false,
+                false));
+        }
     }
 
     /// <summary>
@@ -309,6 +370,11 @@ public abstract class Fighter : MonoBehaviour
     /// <param name="part">The part.</param>
     /// <param name="amount">The amount.</param>
     public void ModifyBodyPartHealth(BodyPart part, float amount)
+    {
+        ModifyBodyPartHealth(part, amount, null, null);
+    }
+
+    public void ModifyBodyPartHealth(BodyPart part, float amount, Fighter attacker, Skill sourceSkill)
     {
         BodyPartData target = bodyParts.Find(p => p.part == part);
         if (target == null) return;
@@ -322,6 +388,8 @@ public abstract class Fighter : MonoBehaviour
 
         float prev = target.currentHealth;
         target.currentHealth = Mathf.Clamp(target.currentHealth + amount, 0, target.GetMaxHealth(this));
+        float modifiedAmount = target.currentHealth - prev;
+        bool destroyedBodyPart = prev > 0 && target.IsDestroyed;
 
         Debug.Log($"{part} recibiÃ³ {amount}. Salud actual: {target.currentHealth} / {target.GetMaxHealth(this)}");
 
@@ -332,7 +400,7 @@ public abstract class Fighter : MonoBehaviour
             if (CameraManager.Instance != null)
                 CameraManager.Instance.TriggerDamageGlitch();
         }
-        if (prev > 0 && target.IsDestroyed)
+        if (destroyedBodyPart)
         {
             OnBodyPartDestroyed(target);
         }
@@ -341,6 +409,21 @@ public abstract class Fighter : MonoBehaviour
         {
             Vector3 textPos = transform.position + Vector3.up * 3f;
             FloatingTextManager.Instance.ShowText($"{part} destroyed!", textPos, Color.magenta);
+        }
+
+        if (modifiedAmount < 0f)
+        {
+            OnDamageReceived?.Invoke(new DamageReceivedEventData(
+                attacker,
+                this,
+                sourceSkill,
+                part,
+                amount,
+                modifiedAmount,
+                prev,
+                target.currentHealth,
+                true,
+                destroyedBodyPart));
         }
     }
     

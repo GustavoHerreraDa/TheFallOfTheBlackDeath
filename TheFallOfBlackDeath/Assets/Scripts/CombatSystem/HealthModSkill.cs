@@ -68,7 +68,7 @@ protected override void OnRun(Fighter receiver)
         if (missRoll < adjustedMissChance)
         {
             FloatingTextManager.Instance.ShowText("Miss!", textPos, Color.gray);
-            receiver.ModifyHealth(0);                
+            receiver.ModifyHealth(0, this.emitter, this);
             return;
         }
 
@@ -106,7 +106,7 @@ protected override void OnRun(Fighter receiver)
                 if (!part.IsDestroyed)
                 {
                     float finalPartDmg = ApplySynergy(part, baseDmg);
-                    receiver.ModifyBodyPartHealth(part.part, finalPartDmg);
+                    receiver.ModifyBodyPartHealth(part.part, finalPartDmg, this.emitter, this);
                     totalAreaDmg += finalPartDmg;
                 }
             }
@@ -122,7 +122,7 @@ protected override void OnRun(Fighter receiver)
         else if (this.TryGetTargetBodyPart(receiver, out Fighter.BodyPartData targetPart))
         {
             float finalDmg = ApplySynergy(targetPart, baseDmg);
-            receiver.ModifyBodyPartHealth(this.BodyPartTarget, finalDmg);
+            receiver.ModifyBodyPartHealth(this.BodyPartTarget, finalDmg, this.emitter, this);
             
             FloatingTextManager.Instance.ShowText($"-{(int)finalDmg}", textPos, isCrit ? Color.yellow : Color.red, isCrit);
         }

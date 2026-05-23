@@ -44,7 +44,7 @@ public class ApplySCSkill : BodyPartTargetSkill
 
         if (damageAmount > 0f)
         {
-            receiver.ModifyBodyPartHealth(this.BodyPartTarget, -damageAmount);
+            receiver.ModifyBodyPartHealth(this.BodyPartTarget, -damageAmount, this.emitter, this);
             this.messages.Enqueue($"Hit {receiver.idName}'s {this.BodyPartTarget} for {(int)damageAmount}");
 
             Vector3 textPos = this.GetBodyPartTextPosition(receiver, this.BodyPartTarget);

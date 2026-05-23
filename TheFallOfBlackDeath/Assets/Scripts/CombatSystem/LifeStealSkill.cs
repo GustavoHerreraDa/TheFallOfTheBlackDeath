@@ -25,7 +25,7 @@ public class LifeStealSkill : Skill
         messages.Enqueue("Hit for " + (int)remainingDamage + " to " + receiver.idName);
         messages.Enqueue("Stole " + (int)healedAmount + " life from " + receiver.idName);
 
-        receiver.ModifyHealth(-(int)remainingDamage);
+        receiver.ModifyHealth(-(int)remainingDamage, this.emitter, this);
         emitter.ModifyHealth((int)healedAmount);
     }
 

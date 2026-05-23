@@ -42,6 +42,7 @@ public class CombatManager : MonoBehaviour
     public bool isCombatActive;
     public CombatStatus combatStatus;
     private Skill currentFighterSkill;
+    private readonly Queue<IEnumerator> pendingReactions = new Queue<IEnumerator>();
     public int enemyAmount;
     //SPAWN POINTS
     public bool isRadomEncounter = false;
@@ -78,6 +79,8 @@ public class CombatManager : MonoBehaviour
         (fighters != null && fighterIndex >= 0 && fighterIndex < fighters.Length)
             ? fighters[fighterIndex]
             : null;
+
+    public bool IsProcessingReaction { get; private set; }
 
 
     /// <summary>
@@ -240,6 +243,7 @@ public class CombatManager : MonoBehaviour
 
                     // Wait for fighter skill animation
                     yield return new WaitForSeconds(currentFighterSkill.animationDuration);
+                    yield return StartCoroutine(ResolvePendingReactions());
 
                     this.combatStatus = CombatStatus.CHECK_ACTION_MESSAGES;
                     Debug.Log("Se ejecuta la def atta");
@@ -537,6 +541,31 @@ public class CombatManager : MonoBehaviour
         }
 
         return this.returnBuffer.ToArray();
+    }
+
+    public void EnqueueReaction(IEnumerator reaction)
+    {
+        if (reaction == null || !isCombatActive)
+            return;
+
+        pendingReactions.Enqueue(reaction);
+    }
+
+    private IEnumerator ResolvePendingReactions()
+    {
+        while (pendingReactions.Count > 0 && isCombatActive)
+        {
+            IEnumerator reaction = pendingReactions.Dequeue();
+
+            IsProcessingReaction = true;
+            yield return StartCoroutine(reaction);
+            IsProcessingReaction = false;
+
+            UpdateStatsUI();
+            yield return null;
+        }
+
+        IsProcessingReaction = false;
     }
 
     /// <summary>
