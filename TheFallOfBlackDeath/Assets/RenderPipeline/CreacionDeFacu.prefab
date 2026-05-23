@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7464553221605636646
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 257115322676996224}
+  m_Layer: 6
+  m_Name: muzzleflash
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &257115322676996224
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7464553221605636646}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.50484467, y: 0.5048437, z: -0.49510896, w: -0.49510792}
+  m_LocalPosition: {x: 0.107, y: 0.146, z: 0.075}
+  m_LocalScale: {x: 0.71428573, y: 0.71428573, z: 0.7142858}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7355569551686814217}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &9196798229722904001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -138,7 +169,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: d33bfa5338dda6b44b51642aca3844b8, type: 2}
     - target: {fileID: -7769697638845312766, guid: b0177267123af874a8c28cbfffe30087, type: 3}
       propertyPath: m_Name
-      value: HOMBODERECHO
+      value: hombro_Derecho
       objectReference: {fileID: 0}
     - target: {fileID: -7769697638845312766, guid: b0177267123af874a8c28cbfffe30087, type: 3}
       propertyPath: m_Layer
@@ -326,7 +357,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4322848343577726157, guid: b0177267123af874a8c28cbfffe30087, type: 3}
       propertyPath: m_Name
-      value: LEFTLEG
+      value: RIGHTLEG
       objectReference: {fileID: 0}
     - target: {fileID: -4322848343577726157, guid: b0177267123af874a8c28cbfffe30087, type: 3}
       propertyPath: m_Layer
@@ -478,7 +509,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: d33bfa5338dda6b44b51642aca3844b8, type: 2}
     - target: {fileID: -1011547237558999129, guid: b0177267123af874a8c28cbfffe30087, type: 3}
       propertyPath: m_Name
-      value: RIGHTLEG
+      value: LEFTLEG
       objectReference: {fileID: 0}
     - target: {fileID: -1011547237558999129, guid: b0177267123af874a8c28cbfffe30087, type: 3}
       propertyPath: m_Layer
@@ -560,6 +591,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: d33bfa5338dda6b44b51642aca3844b8, type: 2}
+    - target: {fileID: 61024138679298860, guid: b0177267123af874a8c28cbfffe30087, type: 3}
+      propertyPath: m_Name
+      value: RIGHTLEG
+      objectReference: {fileID: 0}
     - target: {fileID: 61024138679298860, guid: b0177267123af874a8c28cbfffe30087, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -691,6 +726,10 @@ PrefabInstance:
     - target: {fileID: 3135921509060577837, guid: b0177267123af874a8c28cbfffe30087, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3228519358114892612, guid: b0177267123af874a8c28cbfffe30087, type: 3}
+      propertyPath: m_Name
+      value: LEFTLEG
       objectReference: {fileID: 0}
     - target: {fileID: 3228519358114892612, guid: b0177267123af874a8c28cbfffe30087, type: 3}
       propertyPath: m_Layer
@@ -1042,7 +1081,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1852576806548013000, guid: b0177267123af874a8c28cbfffe30087, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 257115322676996224}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b0177267123af874a8c28cbfffe30087, type: 3}
       insertIndex: -1
@@ -1117,8 +1159,8 @@ MonoBehaviour:
   monitoredPart: 5
   ledRenderer: {fileID: 1178114994575860089}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 766.99615, g: 766.99615, b: 0, a: 1}
-  criticalColor: {r: 766.99615, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &556558661048732746 stripped
 GameObject:
@@ -1141,8 +1183,8 @@ MonoBehaviour:
   monitoredPart: 1
   ledRenderer: {fileID: 2741817932057310747}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 766.99615, g: 766.99615, b: 0, a: 1}
-  criticalColor: {r: 766.99615, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!137 &823064182053762196 stripped
 SkinnedMeshRenderer:
@@ -1175,8 +1217,8 @@ MonoBehaviour:
   monitoredPart: 2
   ledRenderer: {fileID: 7223133260450952436}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 5.9921575, g: 5.9921575, b: 0, a: 1}
-  criticalColor: {r: 5.9921575, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &1454493878001509365 stripped
 GameObject:
@@ -1199,8 +1241,8 @@ MonoBehaviour:
   monitoredPart: 3
   ledRenderer: {fileID: 1758532956280973374}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 766.99615, g: 766.99615, b: 0, a: 1}
-  criticalColor: {r: 766.99615, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!137 &1565469287955414038 stripped
 SkinnedMeshRenderer:
@@ -1228,8 +1270,8 @@ MonoBehaviour:
   monitoredPart: 1
   ledRenderer: {fileID: 2695558500778231438}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 766.99615, g: 766.99615, b: 0, a: 1}
-  criticalColor: {r: 766.99615, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!137 &1758532956280973374 stripped
 SkinnedMeshRenderer:
@@ -1257,8 +1299,8 @@ MonoBehaviour:
   monitoredPart: 4
   ledRenderer: {fileID: 8647562498418674479}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 766.99615, g: 766.99615, b: 0, a: 1}
-  criticalColor: {r: 766.99615, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &2645167927870300955 stripped
 GameObject:
@@ -1281,8 +1323,8 @@ MonoBehaviour:
   monitoredPart: 5
   ledRenderer: {fileID: 1565469287955414038}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 766.99615, g: 766.99615, b: 0, a: 1}
-  criticalColor: {r: 766.99615, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!137 &2695558500778231438 stripped
 SkinnedMeshRenderer:
@@ -1315,8 +1357,8 @@ MonoBehaviour:
   monitoredPart: 2
   ledRenderer: {fileID: 3250960335254491806}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 766.99615, g: 766.99615, b: 0, a: 1}
-  criticalColor: {r: 766.99615, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!137 &3216454618656426546 stripped
 SkinnedMeshRenderer:
@@ -1364,8 +1406,8 @@ MonoBehaviour:
   monitoredPart: 6
   ledRenderer: {fileID: 3942577326128244594}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 766.99615, g: 766.99615, b: 0, a: 1}
-  criticalColor: {r: 766.99615, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &4833247262048495706 stripped
 GameObject:
@@ -1388,8 +1430,8 @@ MonoBehaviour:
   monitoredPart: 5
   ledRenderer: {fileID: 4353349411278064088}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 5.9921575, g: 5.9921575, b: 0, a: 1}
-  criticalColor: {r: 5.9921575, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &5572663761034100531 stripped
 GameObject:
@@ -1412,8 +1454,8 @@ MonoBehaviour:
   monitoredPart: 2
   ledRenderer: {fileID: 5619277257325665932}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 766.99615, g: 766.99615, b: 0, a: 1}
-  criticalColor: {r: 766.99615, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!137 &5619277257325665932 stripped
 SkinnedMeshRenderer:
@@ -1441,8 +1483,8 @@ MonoBehaviour:
   monitoredPart: 6
   ledRenderer: {fileID: 6663520822697959171}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 766.99615, g: 766.99615, b: 0, a: 1}
-  criticalColor: {r: 766.99615, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!137 &5655028031289871126 stripped
 SkinnedMeshRenderer:
@@ -1470,8 +1512,8 @@ MonoBehaviour:
   monitoredPart: 1
   ledRenderer: {fileID: 6921965206278764960}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 766.99615, g: 766.99615, b: 0, a: 1}
-  criticalColor: {r: 766.99615, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!137 &6663520822697959171 stripped
 SkinnedMeshRenderer:
@@ -1504,12 +1546,17 @@ MonoBehaviour:
   monitoredPart: 3
   ledRenderer: {fileID: 5655028031289871126}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 766.99615, g: 766.99615, b: 0, a: 1}
-  criticalColor: {r: 766.99615, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!137 &7223133260450952436 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 1989515907741761845, guid: b0177267123af874a8c28cbfffe30087, type: 3}
+  m_PrefabInstance: {fileID: 9196798229722904001}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7355569551686814217 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: b0177267123af874a8c28cbfffe30087, type: 3}
   m_PrefabInstance: {fileID: 9196798229722904001}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &7450402313142204147 stripped
@@ -1533,8 +1580,8 @@ MonoBehaviour:
   monitoredPart: 1
   ledRenderer: {fileID: 823064182053762196}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 766.99615, g: 766.99615, b: 0, a: 1}
-  criticalColor: {r: 766.99615, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &8250655925443434314 stripped
 GameObject:
@@ -1557,8 +1604,8 @@ MonoBehaviour:
   monitoredPart: 4
   ledRenderer: {fileID: 3216454618656426546}
   fullHealthColor: {r: 0, g: 11.984315, b: 0, a: 1}
-  damagedColor: {r: 766.99615, g: 766.99615, b: 0, a: 1}
-  criticalColor: {r: 766.99615, g: 0, b: 0, a: 1}
+  damagedColor: {r: 11.984315, g: 11.984315, b: 0, a: 1}
+  criticalColor: {r: 11.984315, g: 0, b: 0, a: 1}
   destroyedColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &8313924817386342544 stripped
 GameObject:
