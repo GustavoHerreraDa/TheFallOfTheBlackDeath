@@ -130,7 +130,7 @@ public abstract class Skill : MonoBehaviour
     /// <summary>
     /// Executes the run workflow.
     /// </summary>
-    public void Run()
+    public void Run(bool resolveBodyPartTargetOnRun = false)
     {
         if (!CanUseSkill(emitter))
         {
@@ -145,11 +145,41 @@ public abstract class Skill : MonoBehaviour
         }
         foreach (var receiver in this.receivers)
         {
+            if (resolveBodyPartTargetOnRun && this is BodyPartTargetSkill)
+            {
+                this.BodyPartTarget = this.GetRandomTargetableBodyPart(receiver);
+
+                if (this.BodyPartTarget == BodyPart.None)
+                {
+                    string receiverName = receiver != null ? receiver.idName : "Target";
+                    this.messages.Enqueue($"{receiverName} has no targetable body parts.");
+                    continue;
+                }
+            }
+
             this.Animate(receiver);
             this.OnRun(receiver);
         }
 
         this.receivers.Clear();
+    }
+
+    private BodyPart GetRandomTargetableBodyPart(Fighter receiver)
+    {
+        if (receiver == null || receiver.bodyParts == null || receiver.bodyParts.Count == 0)
+            return BodyPart.None;
+
+        List<BodyPart> targetableParts = new List<BodyPart>();
+        foreach (var partData in receiver.bodyParts)
+        {
+            if (partData != null && partData.part != BodyPart.None && !partData.IsDestroyed)
+                targetableParts.Add(partData.part);
+        }
+
+        if (targetableParts.Count == 0)
+            return BodyPart.None;
+
+        return targetableParts[Random.Range(0, targetableParts.Count)];
     }
 
     /// <summary>

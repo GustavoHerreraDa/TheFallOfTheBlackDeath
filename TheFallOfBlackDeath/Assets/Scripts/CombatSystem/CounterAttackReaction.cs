@@ -59,7 +59,7 @@ public class CounterAttackReaction : ReactionComponent
 
         counterAttackSkill.SetEmitter(owner);
         counterAttackSkill.AddReceiver(damageEvent.attacker);
-        counterAttackSkill.Run();
+        counterAttackSkill.Run(resolveBodyPartTargetOnRun: true);
 
         while (true)
         {
