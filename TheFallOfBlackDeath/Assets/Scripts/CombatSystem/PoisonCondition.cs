@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -7,6 +8,8 @@ public class PoisonCondition : BodyPartStatusCondition
 {
     [Header("Poison Settings")]
     public float poisonDamage = 10f;
+
+    private IDamageCalculator damageCalculator = new StandardDamageCalculator();
 
     /// <summary>
     /// Executes the on apply workflow.
@@ -18,20 +21,25 @@ public class PoisonCondition : BodyPartStatusCondition
             return false;
 
         float totalDamage = poisonDamage * this.Stacks;
-        receiver.ModifyBodyPartHealth(this.TargetPart, -totalDamage);
+
+        // Use Damage Pipeline: construct context for DoT (True Damage / Bypass defense)
+        DamageCalculationContext context = new DamageCalculationContext(
+            null,
+            receiver,
+            null,
+            this.TargetPart,
+            -totalDamage,
+            HealthModType.FIXED,
+            DamageType.Chemical,
+            PartStatus.None,
+            0f, 0f, 0f, 0f,
+            false // DoT bypasses miss/crit rolls
+        );
+
+        DamageResult result = damageCalculator.Calculate(context);
+        receiver.ModifyBodyPartHealth(this.TargetPart, result, null, null);
 
         messages.Enqueue($"{receiver.idName} sufre {(int)totalDamage} de dano por Veneno en {this.TargetPart}.");
-
-        Vector3 textPos = receiver.GetHitPoint(this.TargetPart).position + Vector3.up * 0.5f;
-
-        if (FloatingTextManager.Instance != null)
-            FloatingTextManager.Instance.ShowText($"-{(int)totalDamage}", textPos, new Color(0.2f, 0.9f, 0.2f));
-
-        if (CameraManager.Instance != null)
-            CameraManager.Instance.TriggerShake(0.2f);
-
-        if (AudioManager.Instance != null && AudioManager.Instance.uiHoverSound != null)
-            AudioManager.Instance.PlaySFX(AudioManager.Instance.uiHoverSound, 0.6f);
 
         return true;
     }

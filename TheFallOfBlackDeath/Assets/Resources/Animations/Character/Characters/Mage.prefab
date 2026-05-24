@@ -23,13 +23,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 218414328232541013}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.851, z: 0.201}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 193511059121162837}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &683621395803670117
 GameObject:
@@ -55,13 +55,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683621395803670117}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7705051739415241010}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8912635166674302027
 MonoBehaviour:
@@ -105,13 +105,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713824622133589527}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.5, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 193511059121162837}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1488757592670571959
 GameObject:
@@ -137,13 +137,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488757592670571959}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 193511059121162837}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &6343844475885339763
 AudioSource:
@@ -155,7 +155,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 91d9d1e0690c05f4bbe6f4022cc65ae0, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 91d9d1e0690c05f4bbe6f4022cc65ae0, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.3
   m_Pitch: 1
@@ -266,13 +267,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2142521201413598877}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
   m_LocalPosition: {x: 6.78, y: 1.54, z: -0.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 193511059121162837}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8384839703797912473
 MonoBehaviour:
@@ -287,8 +288,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Radiant Enchantment
+  rarity: 0
   animationDuration: 2
   targeting: 1
+  BodyPartTarget: 0
   effectPrfb: {fileID: 3874635022589376825, guid: ffdfb7851a968494f8fe76ee88f3791a, type: 3}
   SkillDesc: Boost your own and ally's attack power by 10.
   skillType: 0
@@ -296,6 +299,10 @@ MonoBehaviour:
   animationName: Enchantment
   HasItemInInventory: 0
   ItemsNeeded: []
+  activationSound: {fileID: 0}
+  customImpactSound: {fileID: 0}
+  sanityCost: 0
+  requiredParts: 
   message: '{receiver} attack raises!'
 --- !u!114 &6688557189918274574
 MonoBehaviour:
@@ -335,13 +342,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3392411528650745039}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
   m_LocalPosition: {x: 5.7599998, y: 1.41, z: -1.6998763}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 193511059121162837}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4576965211438588479
 MonoBehaviour:
@@ -356,8 +363,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Ignition
+  rarity: 0
   animationDuration: 1
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 8194992990867289339, guid: 99bc28c0d45f51c4fbac01080b73edc7, type: 3}
   SkillDesc: Damage an enemy for 20 (unalterable damage)
   skillType: 0
@@ -365,9 +374,18 @@ MonoBehaviour:
   animationName: Ignition
   HasItemInInventory: 0
   ItemsNeeded: []
+  activationSound: {fileID: 0}
+  customImpactSound: {fileID: 0}
+  sanityCost: 0
+  requiredParts: 
+  damageType: 0
+  statusToApply: 0
   amount: -20
   modType: 1
-  critChance: 0.2
+  baseCritChance: 0.2
+  spiritSoftCap: 50
+  maxSpiritCritBonus: 0.4
+  missChance: 0
 --- !u!1 &4019169374392337954
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,6 +410,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4019169374392337954}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
   m_LocalPosition: {x: 5.5420003, y: 1.56, z: -1.2859999}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -399,7 +418,6 @@ Transform:
   m_Children:
   - {fileID: 4468606151082520903}
   m_Father: {fileID: 193511059121162837}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3062859073622527165
 MonoBehaviour:
@@ -414,8 +432,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Curse
+  rarity: 0
   animationDuration: 2
   targeting: 2
+  BodyPartTarget: 0
   effectPrfb: {fileID: 5642766282230003982, guid: b5c8ca7ed10b61e499cce8ec3b6e2e4c, type: 3}
   SkillDesc: Curse the enemy subtracting the 20% of their maximum health per turn
   skillType: 0
@@ -423,9 +443,19 @@ MonoBehaviour:
   animationName: Morbid Whispers
   HasItemInInventory: 0
   ItemsNeeded:
-  - id: 6
+  - itemId: 
     amount: 1
-    uso: 0
+  activationSound: {fileID: 0}
+  customImpactSound: {fileID: 0}
+  sanityCost: 0
+  requiredParts: 
+  damageAmount: 0
+  damageType: 0
+  modType: 1
+  baseCritChance: 0.05
+  spiritSoftCap: 50
+  maxSpiritCritBonus: 0.4
+  missChance: 0
 --- !u!1 &4586735904866427309
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,7 +466,6 @@ GameObject:
   m_Component:
   - component: {fileID: 193511059121162837}
   - component: {fileID: 752940128}
-  - component: {fileID: 509108342876606882}
   - component: {fileID: 597558093478365385}
   m_Layer: 0
   m_Name: Mage
@@ -452,6 +481,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4586735904866427309}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -466,7 +496,6 @@ Transform:
   - {fileID: 3080193212161059553}
   - {fileID: 7705051739415241010}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &752940128
 MonoBehaviour:
@@ -480,6 +509,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54cd0b67e51238547a59bd64b5935e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyParts: []
+  partDestroyedVFX: {fileID: 0}
+  damageGlitchMaterial: {fileID: 0}
   team: 0
   idName: Mage
   statusPanel: {fileID: 0}
@@ -487,32 +519,21 @@ MonoBehaviour:
   combatManager: {fileID: 0}
   audioSource: {fileID: 6343844475885339763}
   statusMods: []
+  skills: []
   statusCondition: {fileID: 0}
+  uiAnchor: {fileID: 0}
+  scannerAnchor: {fileID: 0}
   CameraPivot: {fileID: 3563984741310642686}
   DamagePivot: {fileID: 4594844065058979866}
   skillPanel: {fileID: 0}
   enemiesPanel: {fileID: 0}
+  bodyPartPanel: {fileID: 0}
+  hasCombatScanner: 0
   fightersDateBase: {fileID: 11400000, guid: 216d7f144b676904bb29a5831638f88f, type: 2}
   figherIndex: 11
   ally1: {fileID: 0}
   ally2: {fileID: 0}
---- !u!114 &509108342876606882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4586735904866427309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 736621f09d8511d48ba6af7f73ae5721, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fighter: {fileID: 752940128}
-  playerRenderer: {fileID: 5443101047006984934}
-  baseMaterial: {fileID: 0}
-  buffMaterial: {fileID: 0}
-  materiales: []
+  equipmentHandler: {fileID: 0}
 --- !u!114 &597558093478365385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -552,13 +573,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6551878282358501835}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3080193212161059553}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6459040396373160082
 MonoBehaviour:
@@ -603,6 +624,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9121706483701580858}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.5076331, y: 0.49224862, z: 0.49224862, w: 0.5076331}
   m_LocalPosition: {x: 0.25145912, y: -0.13, z: 4.3460484}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -610,7 +632,6 @@ Transform:
   m_Children:
   - {fileID: 6751583541241326179}
   m_Father: {fileID: 193511059121162837}
-  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1691776799100954632
 MonoBehaviour:
@@ -625,8 +646,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillName: Paralysis
+  rarity: 0
   animationDuration: 1.5
   targeting: 4
+  BodyPartTarget: 0
   effectPrfb: {fileID: 1717075959720994568, guid: 2f48691469e7d394bac81990c3ec94be, type: 3}
   SkillDesc: 
   skillType: 1
@@ -634,11 +657,23 @@ MonoBehaviour:
   animationName: Attack
   HasItemInInventory: 0
   ItemsNeeded: []
+  activationSound: {fileID: 0}
+  customImpactSound: {fileID: 0}
+  sanityCost: 0
+  requiredParts: 
+  damageAmount: 0
+  damageType: 0
+  modType: 1
+  baseCritChance: 0.05
+  spiritSoftCap: 50
+  maxSpiritCritBonus: 0.4
+  missChance: 0
 --- !u!1001 &5136546972893005751
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 193511059121162837}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
@@ -698,11 +733,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6433645644149723929, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 3ec7914d784e016468be54c3acc36777, type: 2}
     - target: {fileID: -3916483347770014314, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 25d62b6215113fa4b8a2c474873e8380, type: 2}
     - target: {fileID: 919132149155446097, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
@@ -726,18 +761,27 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: 96c599675af27454585b589a04ed450a, type: 2}
     - target: {fileID: 6519012932089129726, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: c99f20e2970ebd346acdebbc72d7ed7a, type: 2}
     - target: {fileID: 6973506404828989956, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 6bf1c8272e5d0044e82bd7489e27daa8, type: 2}
     - target: {fileID: 9109923741680709264, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 1719b94450e31044dabf1a64b4d8854d, type: 2}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7074607959414816277}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1758809743624433819}
   m_SourcePrefab: {fileID: 100100000, guid: 0ce570a6d1d3aa1469800b069bcc983e, type: 3}
 --- !u!95 &1594903086208776742 stripped
 Animator:
@@ -761,10 +805,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5443101047006984934}
-  serializedVersion: 2
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -778,8 +833,17 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5443101047006984934}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 0.04
   m_Height: 0.36
   m_Direction: 1
