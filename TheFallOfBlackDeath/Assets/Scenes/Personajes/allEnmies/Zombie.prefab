@@ -231,7 +231,9 @@ MonoBehaviour:
   statusToApply: 0
   amount: -50
   modType: 0
-  critChance: 0
+  baseCritChance: 0
+  spiritSoftCap: 50
+  maxSpiritCritBonus: 0.4
   missChance: 0.3
 --- !u!1 &1997501815185043262
 GameObject:
@@ -343,7 +345,9 @@ MonoBehaviour:
   statusToApply: 0
   amount: -25
   modType: 0
-  critChance: 0.2
+  baseCritChance: 0.2
+  spiritSoftCap: 50
+  maxSpiritCritBonus: 0.4
   missChance: 0.1
 --- !u!1 &3470058341050529588
 GameObject:
@@ -1434,7 +1438,9 @@ MonoBehaviour:
   statusToApply: 0
   amount: -40
   modType: 0
-  critChance: 0
+  baseCritChance: 0
+  spiritSoftCap: 50
+  maxSpiritCritBonus: 0.4
   missChance: 0.7
 --- !u!1 &6143041948275206334
 GameObject:
@@ -1669,6 +1675,7 @@ GameObject:
   - component: {fileID: 7107897706854565897}
   - component: {fileID: 8400046515867276513}
   - component: {fileID: 3192437276343432333}
+  - component: {fileID: 4042638484369087166}
   m_Layer: 6
   m_Name: Zombie
   m_TagString: Untagged
@@ -1851,6 +1858,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatusVisualController
   database: {fileID: 11400000, guid: b91972313dec3644abd544c8c92dcb5d, type: 2}
   pollInterval: 0.15
+--- !u!114 &4042638484369087166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8204355791575341872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8da85b996af8477c9f942ac2df8a4a51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFeedbackListener
+  fighter: {fileID: 8204355791406637776}
+  textOffset: {x: 0, y: 0.5, z: 0}
+  normalDamageColor: {r: 1, g: 0, b: 0, a: 1}
+  criticalDamageColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  missColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  healColor: {r: 0, g: 1, b: 0, a: 1}
+  normalShake: 0.6
+  criticalShake: 1
+  criticalHitStop: 0.15
+  glitchPlayerOnDamage: 0
+  normalHitVolume: 0.2
+  criticalHitVolume: 0.2
 --- !u!1 &8961525143929996263
 GameObject:
   m_ObjectHideFlags: 0

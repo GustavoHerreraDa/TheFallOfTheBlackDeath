@@ -64,7 +64,9 @@ MonoBehaviour:
   statusToApply: 0
   amount: -30
   modType: 1
-  critChance: 0
+  baseCritChance: 0
+  spiritSoftCap: 50
+  maxSpiritCritBonus: 0.4
   missChance: 0
 --- !u!1 &3105780398260842073
 GameObject:
@@ -131,7 +133,9 @@ MonoBehaviour:
   statusToApply: 0
   amount: -70
   modType: 0
-  critChance: 0.5
+  baseCritChance: 0.5
+  spiritSoftCap: 50
+  maxSpiritCritBonus: 0.4
   missChance: 0
 --- !u!1 &3546500895190041043
 GameObject:
@@ -287,7 +291,7 @@ Transform:
   m_GameObject: {fileID: 3559455682242741898}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.38, y: 0, z: 2.03}
+  m_LocalPosition: {x: 4.57, y: 0, z: 2.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -358,7 +362,9 @@ MonoBehaviour:
   statusToApply: 1
   amount: -10
   modType: 1
-  critChance: 0
+  baseCritChance: 0
+  spiritSoftCap: 50
+  maxSpiritCritBonus: 0.4
   missChance: 0
 --- !u!1 &6890905301355940229
 GameObject:
@@ -384,13 +390,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6890905301355940229}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.03772506, y: 0, z: 0, w: 0.9992882}
-  m_LocalPosition: {x: -0.059, y: 4.09, z: -4.67}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.059, y: 3.43, z: -0.67}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7305297877295874578}
-  m_LocalEulerAnglesHint: {x: 4.324, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7786955661051944844
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,6 +442,7 @@ GameObject:
   - component: {fileID: 7951363336701126589}
   - component: {fileID: 2267247594860759730}
   - component: {fileID: 1954430940256263937}
+  - component: {fileID: 6703787319210108940}
   m_Layer: 6
   m_Name: Blacksmith
   m_TagString: Character
@@ -521,7 +528,7 @@ MonoBehaviour:
   damageGlitchMaterial: {fileID: 2100000, guid: e442aaa0e916623439c4525751b1ec9a, type: 2}
   team: 0
   idName: Samus
-  statusPanel: {fileID: 7816162062918348613, guid: 778bd09d217ded0469daf82304f20b36, type: 3}
+  statusPanel: {fileID: 3768425372319716852}
   animator: {fileID: 8853367772164502707}
   combatManager: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
   audioSource: {fileID: 6264840674767571634}
@@ -608,6 +615,30 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6703787319210108940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8267380649681350226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8da85b996af8477c9f942ac2df8a4a51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFeedbackListener
+  fighter: {fileID: 1830900076}
+  textOffset: {x: 0, y: 0.5, z: 0}
+  normalDamageColor: {r: 1, g: 0, b: 0, a: 1}
+  criticalDamageColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  missColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  healColor: {r: 0, g: 1, b: 0, a: 1}
+  normalShake: 0.6
+  criticalShake: 1
+  criticalHitStop: 0.15
+  glitchPlayerOnDamage: 0
+  normalHitVolume: 0.7
+  criticalHitVolume: 1
 --- !u!1 &8987339969749546392
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,7 +703,9 @@ MonoBehaviour:
   statusToApply: 0
   amount: -20
   modType: 1
-  critChance: 0
+  baseCritChance: 0
+  spiritSoftCap: 50
+  maxSpiritCritBonus: 0.4
   missChance: 0
 --- !u!1001 &5584372795537390924
 PrefabInstance:
@@ -1091,6 +1124,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3768425372319716852 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8733481953672816824, guid: f5dcad1d33ec77f43a660cd6ae031cd2, type: 3}
+  m_PrefabInstance: {fileID: 5584372795537390924}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 842f3c42f93eaf74eb25f2a545c3e32a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &8009096800158568614 stripped

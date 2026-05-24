@@ -15,6 +15,7 @@ public struct DamageReceivedEventData
     public readonly float currentHealth;
     public readonly bool affectedBodyPart;
     public readonly bool destroyedBodyPart;
+    public readonly DamageResult damageResult;
 
     public bool IsDamage => appliedAmount < 0f;
 
@@ -28,7 +29,8 @@ public struct DamageReceivedEventData
         float previousHealth,
         float currentHealth,
         bool affectedBodyPart,
-        bool destroyedBodyPart)
+        bool destroyedBodyPart,
+        DamageResult damageResult = default(DamageResult))
     {
         this.attacker = attacker;
         this.receiver = receiver;
@@ -40,6 +42,7 @@ public struct DamageReceivedEventData
         this.currentHealth = currentHealth;
         this.affectedBodyPart = affectedBodyPart;
         this.destroyedBodyPart = destroyedBodyPart;
+        this.damageResult = damageResult;
     }
 }
 
@@ -136,6 +139,7 @@ public abstract class Fighter : MonoBehaviour
 
     public event System.Action<BodyPart> OnBodyPartDestroyedEvent;
     public event System.Action<DamageReceivedEventData> OnDamageReceived;
+    public event System.Action<DamageResult> OnDamageResolved;
 
     public Team team;
     public string idName;
@@ -382,6 +386,32 @@ public abstract class Fighter : MonoBehaviour
 
     public void ModifyHealth(float amount, Fighter attacker, Skill sourceSkill, BodyPart bodyPart = BodyPart.None)
     {
+        DamageResult result = DamageResult.FromLegacyAmount(attacker, this, sourceSkill, bodyPart, amount);
+        ApplyHealthModification(amount, attacker, sourceSkill, bodyPart, result);
+    }
+
+    public void ModifyHealth(DamageResult result)
+    {
+        result.receiver = this;
+
+        if (result.isMiss)
+        {
+            PlayMissAnimation();
+            float current = this.stats != null ? this.stats.health : 0f;
+            OnDamageResolved?.Invoke(result.WithApplication(0f, current, current, false, false));
+            return;
+        }
+
+        ApplyHealthModification(result.finalAmount, result.attacker, result.sourceSkill, result.targetPart, result);
+    }
+
+    private void ApplyHealthModification(
+        float amount,
+        Fighter attacker,
+        Skill sourceSkill,
+        BodyPart bodyPart,
+        DamageResult damageResult)
+    {
         float previousHealth = this.stats.health;
 
         this.stats.health = Mathf.Clamp(this.stats.health + amount, 0f, this.stats.maxHealth);
@@ -398,7 +428,7 @@ public abstract class Fighter : MonoBehaviour
         
         if (amount == 0f)
         {
-            animator.Play("Miss");
+            PlayMissAnimation();
         }
         /// <summary>
         /// Executes the if workflow.
@@ -407,11 +437,13 @@ public abstract class Fighter : MonoBehaviour
         /// <returns>The resulting value.</returns>
         else if (amount > 0f)
         {
-            animator.Play("Heal");
+            if (animator != null)
+                animator.Play("Heal");
         }
         else
         {
-            animator.Play("Damages");
+            if (animator != null)
+                animator.Play("Damages");
             
             if (this.GetComponent<PlayerFighter>() != null) 
             {
@@ -430,9 +462,18 @@ public abstract class Fighter : MonoBehaviour
             {
                 audioSource.Play();
             }
-            animator.Play("Death");
+            if (animator != null)
+                animator.Play("Death");
             Invoke("Die", 2f);
         }
+
+        DamageResult appliedResult = damageResult.WithApplication(
+            modifiedAmount,
+            previousHealth,
+            this.stats.health,
+            false,
+            false);
+        OnDamageResolved?.Invoke(appliedResult);
 
         if (modifiedAmount < 0f)
         {
@@ -446,7 +487,8 @@ public abstract class Fighter : MonoBehaviour
                 previousHealth,
                 this.stats.health,
                 false,
-                false));
+                false,
+                appliedResult));
         }
     }
 
@@ -462,8 +504,41 @@ public abstract class Fighter : MonoBehaviour
 
     public void ModifyBodyPartHealth(BodyPart part, float amount, Fighter attacker, Skill sourceSkill)
     {
+        DamageResult result = DamageResult.FromLegacyAmount(attacker, this, sourceSkill, part, amount);
+        ApplyBodyPartHealthModification(part, amount, attacker, sourceSkill, result);
+    }
+
+    public void ModifyBodyPartHealth(BodyPart part, DamageResult result, Fighter attacker, Skill sourceSkill)
+    {
+        result.attacker = attacker;
+        result.receiver = this;
+        result.sourceSkill = sourceSkill;
+        result.targetPart = part;
+
+        BodyPartData target = bodyParts != null ? bodyParts.Find(p => p.part == part) : null;
+        if (result.isMiss)
+        {
+            PlayMissAnimation();
+            float current = target != null ? target.currentHealth : 0f;
+            OnDamageResolved?.Invoke(result.WithApplication(0f, current, current, true, false));
+            return;
+        }
+
+        ApplyBodyPartHealthModification(part, result.finalAmount, attacker, sourceSkill, result);
+    }
+
+    private void ApplyBodyPartHealthModification(
+        BodyPart part,
+        float amount,
+        Fighter attacker,
+        Skill sourceSkill,
+        DamageResult damageResult)
+    {
         BodyPartData target = bodyParts.Find(p => p.part == part);
         if (target == null) return;
+
+        if (damageResult.hasStatusChange)
+            target.currentStatus = damageResult.resultingStatus;
         
         
         if (amount < 0 && !target.IsDestroyed)
@@ -499,12 +574,31 @@ public abstract class Fighter : MonoBehaviour
 
         if (modifiedAmount < 0f)
         {
+            DamageResult appliedResult = damageResult.WithApplication(
+                modifiedAmount,
+                prev,
+                target.currentHealth,
+                true,
+                destroyedBodyPart);
+
+            OnDamageResolved?.Invoke(appliedResult);
+
             OnDamageReceived?.Invoke(new DamageReceivedEventData(
                 attacker,
                 this,
                 sourceSkill,
                 part,
                 amount,
+                modifiedAmount,
+                prev,
+                target.currentHealth,
+                true,
+                destroyedBodyPart,
+                appliedResult));
+        }
+        else
+        {
+            OnDamageResolved?.Invoke(damageResult.WithApplication(
                 modifiedAmount,
                 prev,
                 target.currentHealth,
@@ -694,6 +788,11 @@ public abstract class Fighter : MonoBehaviour
         return DamagePivot;
     }
 
+    private void PlayMissAnimation()
+    {
+        if (animator != null)
+            animator.Play("Miss");
+    }
 
     /// <summary>
     /// Executes the play damage animation workflow.
