@@ -111,7 +111,7 @@ public class Menu : MonoBehaviour
     private void Inventorytrue()
     {
 
-        Cursor.lockState = CursorLockMode.Locked;
+        CursorManager.Instance?.ReleaseCursor(Inventorymenu);
         Inventorymenu.SetActive(false);
         inventory = false;
         cameraMain.enabled = true;
@@ -124,7 +124,7 @@ public class Menu : MonoBehaviour
     private void Inventoryfalse()
     {
             inventorySound.Play();
-        Cursor.lockState = CursorLockMode.None;
+        CursorManager.Instance?.RequestCursor(Inventorymenu);
         Inventorymenu.SetActive(true);
         inventory = true;
         cameraMain.enabled = false;
@@ -165,7 +165,7 @@ public class Menu : MonoBehaviour
     public void PauseGame()
     {
         pauseSound.Play();
-        Cursor.lockState = CursorLockMode.None;
+        CursorManager.Instance?.RequestCursor(Pausemenu);
         Pausemenu.SetActive(true);
         Time.timeScale = 0f;
         Pause = true;
@@ -183,7 +183,7 @@ public class Menu : MonoBehaviour
         if (combatManager.isCombatActive == true)
         {
             resumeSound.Play();
-            Cursor.lockState = CursorLockMode.None;
+            CursorManager.Instance?.ReleaseCursor(Pausemenu);
             Pausemenu.SetActive(false);
             Time.timeScale = 1f;
             Pause = false;
@@ -192,7 +192,7 @@ public class Menu : MonoBehaviour
         else
         {
             resumeSound.Play();
-            Cursor.lockState = CursorLockMode.Locked;
+            CursorManager.Instance?.ReleaseCursor(Pausemenu);
             Pausemenu.SetActive(false);
             Time.timeScale = 1f;
             Pause = false;

@@ -88,8 +88,7 @@ public class CombatManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        CursorManager.Instance?.RequestCursor(this);
 
         if (GetComponent<CombatScannerSystem>() == null)
             gameObject.AddComponent<CombatScannerSystem>();
@@ -141,8 +140,7 @@ public class CombatManager : MonoBehaviour
     /// </summary>
     public void EncuentrosAleatorios()
     {
-        Cursor.lockState = CursorLockMode.None; 
-        Cursor.visible = true; 
+        CursorManager.Instance?.RequestCursor(this);
 
         for (int i = 0; i < GameManager.Instance.enemyAnount; i++)
         {
@@ -382,6 +380,7 @@ public class CombatManager : MonoBehaviour
                         }
                      
                         // ── 7. Post-loot cleanup and scene transition ───────────────────
+                        CursorManager.Instance?.ReleaseCursor(this);
                         GameManager.Instance.SetGameState(GameManager.GameStates.TOWN_STATE);
                         GameManager.Instance.enemyToBattle.Clear();
                      
@@ -660,6 +659,7 @@ public class CombatManager : MonoBehaviour
             }
 
             isCombatActive = false;
+            CursorManager.Instance?.ReleaseCursor(this);
             yield return new WaitForSeconds(escapeResultDelay);
             SceneManager.LoadScene(explorationSceneIndex);
             yield break;

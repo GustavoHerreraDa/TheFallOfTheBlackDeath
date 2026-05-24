@@ -113,14 +113,12 @@ public class PanelTriggerHorizontal : MonoBehaviour
 
     private void ShowMouse()
     {
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        CursorManager.Instance?.RequestCursor(this);
     }
 
     private void HideMouse()
     {
         Debug.Log("[VERTICAL DOOR TRIGGER] CURSOR INVISIBLE");
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        CursorManager.Instance?.ReleaseCursor(this);
     }
 }
