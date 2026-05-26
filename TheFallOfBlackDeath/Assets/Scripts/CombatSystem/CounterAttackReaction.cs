@@ -69,8 +69,8 @@ public class CounterAttackReaction : ReactionComponent
             LogPanel.Write(nextMessage);
         }
 
-        if (counterAttackSkill.animationDuration > 0f)
-            yield return new WaitForSeconds(counterAttackSkill.animationDuration);
+        if (counterAttackSkill.actionDelay > 0f)
+            yield return new WaitForSeconds(counterAttackSkill.actionDelay);
 
         reactionQueued = false;
     }

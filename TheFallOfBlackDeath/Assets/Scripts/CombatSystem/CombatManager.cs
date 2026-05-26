@@ -240,7 +240,7 @@ public class CombatManager : MonoBehaviour
                     currentFighterSkill.Run();
 
                     // Wait for fighter skill animation
-                    yield return new WaitForSeconds(currentFighterSkill.animationDuration);
+                    yield return new WaitForSeconds(currentFighterSkill.actionDelay);
                     yield return StartCoroutine(ResolvePendingReactions());
 
                     this.combatStatus = CombatStatus.CHECK_ACTION_MESSAGES;

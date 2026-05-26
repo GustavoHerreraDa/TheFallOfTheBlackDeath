@@ -3,42 +3,28 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using InventoryNew;
 //TP2 GUSTAVO TORRES/FACUNDO FERREIRO
+
+// ── Enums (unchanged) ─────────────────────────────────────────────────────────
+
+public enum SkillType      { AttackSimple, SpecialHability, Heal, BossHability, Melee, Range }
+public enum BodyPart       { None, Head, Torso, LeftLeg, LeftArm, RightArm, RightLeg }
+public enum SkillRarity    { Common, Rare, Epic }
+
 /// <summary>
-/// Defines the named values used by skill type.
-/// </summary>
-public enum SkillType
-{
-    AttackSimple,
-    SpecialHability,
-    Heal,
-    BossHability,
-    Melee,
-    Range
-}
-/// <summary>
-/// Defines the named values used by body part.
-/// </summary>
-public enum BodyPart
-{
-    None,
-    Head,
-    Torso,
-    LeftLeg,
-    LeftArm,
-    RightArm,
-    RightLeg
-}
-/// <summary>
-/// Defines the named values used by skill rarity.
-/// </summary>
-public enum SkillRarity
-{
-    Common,
-    Rare,
-    Epic
-}
-/// <summary>
-/// Defines the base behavior for combat skills, including targeting, messaging, animation, item requirements, and execution flow.
+/// Defines the base behavior for combat skills, including targeting, messaging,
+/// animation, item requirements, and execution flow.
+///
+/// CHANGE LOG (VFX refactor):
+///   • Removed the old <c>effectPrfb</c> + <c>animationDuration</c> fields that
+///     hard-coded a single "spawn at hit-point and destroy" pattern.
+///   • Added <see cref="effectConfig"/> (<see cref="SkillEffectConfig"/>), a
+///     ScriptableObject that declaratively describes the full visual behaviour
+///     (melee splash, ranged projectile, emitter burst, or any combination).
+///   • <see cref="effectPlayer"/> is auto-resolved at runtime via
+///     <see cref="GetOrCreateEffectPlayer"/>; no manual wiring required.
+///   • All per-receiver VFX is now triggered through
+///     <see cref="SkillEffectPlayer.Play"/> inside the private <c>Animate</c> method.
+///   • Every other existing public method, event, and flow is untouched.
 /// </summary>
 public abstract class Skill : MonoBehaviour
 {
@@ -48,24 +34,28 @@ public abstract class Skill : MonoBehaviour
     [Header("Rarity")]
     public SkillRarity rarity;
 
-    public float animationDuration;
+    // ── VFX (new system) ───────────────────────────────────────────────────────
+    [Header("Visual Effect")]
+    [Tooltip("ScriptableObject that describes the full visual behaviour of this skill. " +
+             "Assign one of the assets under Assets/Combat/SkillEffects/.")]
+    public SkillEffectConfig effectConfig;
 
+    [Tooltip("Delay before the next action in the combat loop. Replaces the old animationDuration.")]
+    public float actionDelay = 1.0f;
+
+    // ── Targeting & body ──────────────────────────────────────────────────────
     public SkillTargeting targeting;
     public BodyPart BodyPartTarget;
 
-    public GameObject effectPrfb;
-
-    protected Fighter emitter;
-    protected List<Fighter> receivers;
-    public Fighter MainTarget => (receivers != null && receivers.Count > 0) ? receivers[0] : null;
+    // ── Descriptions & UI ─────────────────────────────────────────────────────
     [TextArea(3, 10)]
     public string SkillDesc;
-    protected Queue<string> messages;
     public SkillType skillType;
     public Sprite iconUI;
     public string animationName;
     public bool HasItemInInventory;
 
+    // ── Item requirements ─────────────────────────────────────────────────────
     [System.Serializable]
     public class ItemRequirement
     {
@@ -73,23 +63,36 @@ public abstract class Skill : MonoBehaviour
         public int amount = 1;
     }
 
-    [Header("Item Requirements (Nuevo Inventario)")]
+    [Header("Item Requirements")]
     public List<ItemRequirement> ItemsNeeded = new List<ItemRequirement>();
-    
-    [Header("SFX - Habilidad")]
-    [Tooltip("El sonido que hace al lanzarse (ej: disparo, grito, carga mágica)")]
-    public AudioClip activationSound; 
-    
-    // (Opcional si quieres que cada ataque suene distinto al pegar)
-    [Tooltip("El sonido que hace al impactar (ej: explosión de fuego, corte de espada)")]
+
+    // ── Audio ─────────────────────────────────────────────────────────────────
+    [Header("SFX")]
+    [Tooltip("Sound played when the skill is activated (shot, shout, magic charge…)")]
+    public AudioClip activationSound;
+
+    [Tooltip("Sound played on impact (explosion, sword slash…)")]
     public AudioClip customImpactSound;
 
+    // ── Stats ─────────────────────────────────────────────────────────────────
     [Header("Sanity Cost")]
     public float sanityCost = 0f;
 
-
+    // ── Body requirements ─────────────────────────────────────────────────────
     [Header("Body Requirements")]
     public List<BodyPart> requiredParts = new List<BodyPart>();
+
+    // ── Runtime state (protected so subclasses can enqueue messages) ──────────
+    protected Fighter emitter;
+    protected List<Fighter> receivers;
+    protected Queue<string> messages;
+
+    // ── Lazy effect player ────────────────────────────────────────────────────
+    private SkillEffectPlayer _effectPlayer;
+
+    // ── Convenience properties ────────────────────────────────────────────────
+    public Fighter MainTarget => (receivers != null && receivers.Count > 0) ? receivers[0] : null;
+
     public bool needsManualTargeting
     {
         get
@@ -105,49 +108,82 @@ public abstract class Skill : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Initializes cached references and runtime state before the component starts running.
-    /// </summary>
+    // ──────────────────────────────────────────────────────────────────────────
+    //  Unity lifecycle
+    // ──────────────────────────────────────────────────────────────────────────
+
     void Awake()
     {
-        this.messages = new Queue<string>();
+        this.messages  = new Queue<string>();
         this.receivers = new List<Fighter>();
     }
 
+    // ──────────────────────────────────────────────────────────────────────────
+    //  VFX
+    // ──────────────────────────────────────────────────────────────────────────
+
     /// <summary>
-    /// Executes the animate workflow.
+    /// Plays the visual effect for a single receiver.
+    /// Delegates entirely to <see cref="SkillEffectPlayer"/> + <see cref="SkillEffectConfig"/>
+    /// so this method stays lean and every skill stays decoupled from VFX logic.
     /// </summary>
-    /// <param name="receiver">The receiver.</param>
     private void Animate(Fighter receiver)
     {
-
-        Transform hitPoint = receiver.GetHitPoint(this.BodyPartTarget);
-        var go = Instantiate(this.effectPrfb, hitPoint.position, hitPoint.rotation);
-        Destroy(go, this.animationDuration);
-      
+        if (effectConfig == null) return;
+        GetOrCreateEffectPlayer().Play(effectConfig, emitter, receiver, this.BodyPartTarget);
     }
 
     /// <summary>
-    /// Executes the run workflow.
+    /// Returns the scene-level <see cref="SkillEffectPlayer"/>, creating one on demand.
+    /// We attach it to the emitter's GameObject so it has a proper MonoBehaviour context
+    /// for coroutines and is cleaned up when the fighter is destroyed.
+    /// </summary>
+    private SkillEffectPlayer GetOrCreateEffectPlayer()
+    {
+        if (_effectPlayer != null) return _effectPlayer;
+
+        // Try to reuse one already on the emitter
+        if (emitter != null)
+        {
+            _effectPlayer = emitter.GetComponent<SkillEffectPlayer>();
+            if (_effectPlayer == null)
+                _effectPlayer = emitter.gameObject.AddComponent<SkillEffectPlayer>();
+            return _effectPlayer;
+        }
+
+        // Fallback: attach to this skill's GameObject
+        _effectPlayer = GetComponent<SkillEffectPlayer>();
+        if (_effectPlayer == null)
+            _effectPlayer = gameObject.AddComponent<SkillEffectPlayer>();
+
+        return _effectPlayer;
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    //  Execution
+    // ──────────────────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Runs the skill: validates body-part requirements, plays SFX, then for each
+    /// receiver resolves the body-part target, spawns VFX, and calls <see cref="OnRun"/>.
     /// </summary>
     public void Run(bool resolveBodyPartTargetOnRun = false)
     {
         if (!CanUseSkill(emitter))
         {
-            this.messages.Enqueue($"{emitter.idName} intentó usar {skillName}, pero no puede xq no tiene esa parte del cuerpo.");
+            this.messages.Enqueue($"{emitter.idName} intentó usar {skillName}, pero no puede porque no tiene esa parte del cuerpo.");
             Debug.Log($"{emitter.idName} no puede usar {skillName} por partes destruidas.");
             return;
         }
-        
+
         if (AudioManager.Instance != null && this.activationSound != null)
-        {
             AudioManager.Instance.PlaySFX(this.activationSound, 0.8f);
-        }
+
         foreach (var receiver in this.receivers)
         {
             if (resolveBodyPartTargetOnRun && this is BodyPartTargetSkill)
             {
-                this.BodyPartTarget = this.GetRandomTargetableBodyPart(receiver);
+                this.BodyPartTarget = GetRandomTargetableBodyPart(receiver);
 
                 if (this.BodyPartTarget == BodyPart.None)
                 {
@@ -157,81 +193,60 @@ public abstract class Skill : MonoBehaviour
                 }
             }
 
-            this.Animate(receiver);
-            this.OnRun(receiver);
+            this.Animate(receiver);     // ← VFX (new system)
+            this.OnRun(receiver);       // ← Damage / healing / status logic
         }
 
         this.receivers.Clear();
     }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    //  Helpers
+    // ──────────────────────────────────────────────────────────────────────────
 
     private BodyPart GetRandomTargetableBodyPart(Fighter receiver)
     {
         if (receiver == null || receiver.bodyParts == null || receiver.bodyParts.Count == 0)
             return BodyPart.None;
 
-        List<BodyPart> targetableParts = new List<BodyPart>();
+        var targetableParts = new List<BodyPart>();
         foreach (var partData in receiver.bodyParts)
         {
             if (partData != null && partData.part != BodyPart.None && !partData.IsDestroyed)
                 targetableParts.Add(partData.part);
         }
 
-        if (targetableParts.Count == 0)
-            return BodyPart.None;
-
-        return targetableParts[Random.Range(0, targetableParts.Count)];
+        return targetableParts.Count == 0
+            ? BodyPart.None
+            : targetableParts[Random.Range(0, targetableParts.Count)];
     }
 
-    /// <summary>
-    /// Sets the emitter.
-    /// </summary>
-    /// <param name="_emitter">The emitter.</param>
+    // ──────────────────────────────────────────────────────────────────────────
+    //  Public API (unchanged signatures)
+    // ──────────────────────────────────────────────────────────────────────────
+
     public void SetEmitter(Fighter _emitter)
     {
         this.emitter = _emitter;
     }
 
-    /// <summary>
-    /// Adds the receiver.
-    /// </summary>
-    /// <param name="_receiver">The receiver.</param>
     public void AddReceiver(Fighter _receiver)
     {
         this.receivers.Add(_receiver);
         emitter.animator.Play(animationName);
     }
 
-    /// <summary>
-    /// Gets the next message.
-    /// </summary>
-    /// <returns>The resulting value.</returns>
     public string GetNextMessage()
     {
-        if (this.messages.Count != 0)
-            return this.messages.Dequeue();
-        else
-            return null;
+        return this.messages.Count != 0 ? this.messages.Dequeue() : null;
     }
 
-    /// <summary>
-    /// Verifica si el jugador tiene los ítems requeridos usando el nuevo sistema de inventario.
-    /// </summary>
     public bool HasRequiredItems()
     {
-        // Si no hay requisitos, se considera que puede usarse.
-        if (ItemsNeeded == null || ItemsNeeded.Count == 0)
-        {
-            HasItemInInventory = true;
-            return true;
-        }
+        if (ItemsNeeded == null || ItemsNeeded.Count == 0) { HasItemInInventory = true; return true; }
 
         var inv = NewInventoryManager.Instance;
-        if (inv == null)
-        {
-            // Si el inventario aún no está en escena, no bloqueamos el uso para no romper flujo en editor.
-            HasItemInInventory = true;
-            return true;
-        }
+        if (inv == null) { HasItemInInventory = true; return true; }
 
         foreach (var req in ItemsNeeded)
         {
@@ -248,15 +263,9 @@ public abstract class Skill : MonoBehaviour
         return true;
     }
 
-    /// <summary>
-    /// Determines whether the component can use skill.
-    /// </summary>
-    /// <param name="fighter">The fighter.</param>
-    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     protected bool CanUseSkill(Fighter fighter)
     {
-        if (requiredParts == null || requiredParts.Count == 0)
-            return true;
+        if (requiredParts == null || requiredParts.Count == 0) return true;
 
         foreach (var part in requiredParts)
         {
@@ -267,42 +276,28 @@ public abstract class Skill : MonoBehaviour
                 return false;
             }
         }
-
         return true;
     }
-    /// <summary>
-    /// Determines whether the component is usable.
-    /// </summary>
-    /// <param name="fighter">The fighter.</param>
-    /// <returns>True when the requested condition is met; otherwise, false.</returns>
+
     public bool IsUsable(Fighter fighter)
     {
-        // Primero, chequear requisitos de partes del cuerpo
         if (requiredParts != null && requiredParts.Count > 0)
         {
             foreach (var part in requiredParts)
             {
                 var bodyPart = fighter.GetBodyPart(part);
-                if (bodyPart == null || bodyPart.IsDestroyed)
-                    return false;
+                if (bodyPart == null || bodyPart.IsDestroyed) return false;
             }
         }
-
-        // Luego, chequear requisitos de inventario (nuevo sistema)
         return HasRequiredItems();
     }
 
-
-    /// <summary>
-    /// Determines whether the component can trigger synergy.
-    /// </summary>
-    /// <param name="target">The target.</param>
-    /// <param name="part">The part.</param>
-    /// <returns>True when the requested condition is met; otherwise, false.</returns>
     public virtual bool CanTriggerSynergy(Fighter target, BodyPart part = BodyPart.None)
-    {
-        return false;
-    }
+        => false;
+
+    // ──────────────────────────────────────────────────────────────────────────
+    //  Abstract contract
+    // ──────────────────────────────────────────────────────────────────────────
 
     protected abstract void OnRun(Fighter receiver);
 }
