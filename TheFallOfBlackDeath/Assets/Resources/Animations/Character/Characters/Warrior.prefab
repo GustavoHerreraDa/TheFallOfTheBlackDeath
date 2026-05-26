@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1319790218102814969}
-  - component: {fileID: 450989879}
   - component: {fileID: 450989877}
   - component: {fileID: 567520148388829423}
   - component: {fileID: 3724623507510010323}
@@ -46,28 +45,6 @@ Transform:
   - {fileID: 9106328659988143222}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &450989879
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 347213020163082240}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 2ac09231d80a523408157feb99d8e679, type: 3}
-  m_Controller: {fileID: 9100000, guid: 61af194ab6ee6c440bd8e5e73e040e62, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &450989877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,10 +276,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ApplySCSkill
   skillName: Toxic Punch
   rarity: 1
-  animationDuration: 1
+  effectConfig: {fileID: 0}
+  actionDelay: 1
   targeting: 4
   BodyPartTarget: 0
-  effectPrfb: {fileID: 2087025816826761159, guid: d04d7b350477d9747b91ab4fce88801a, type: 3}
   SkillDesc: Envenena
   skillType: 0
   iconUI: {fileID: 0}
@@ -428,10 +405,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Colossal Impact
   rarity: 0
-  animationDuration: 1.5
+  effectConfig: {fileID: 0}
+  actionDelay: 1
   targeting: 4
   BodyPartTarget: 0
-  effectPrfb: {fileID: 2087025816826761159, guid: 6c19bab9ca0d50b4c9fd3122cacb2931, type: 3}
   SkillDesc: Channel immense strength into a devastating blow, dealing 75 damage
     to the enemy (always critical).
   skillType: 0

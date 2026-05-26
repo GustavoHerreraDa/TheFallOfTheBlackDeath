@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class CursorManager : MonoBehaviour
 {
+    
+    [Header("Settings")]
+    public bool alwaysVisible = false; 
+    
     public static CursorManager Instance { get; private set; }
 
     public Texture2D[] cursorFrames;
@@ -48,16 +52,11 @@ public class CursorManager : MonoBehaviour
 
     private void EvaluateCursorState()
     {
-        if (requesters.Count > 0)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        
+        bool shouldShow = alwaysVisible || requesters.Count > 0;
+        Cursor.visible = shouldShow;
+        Cursor.lockState = shouldShow ? CursorLockMode.None : CursorLockMode.Locked;
+        
         Debug.Log($"[CursorManager] Evaluate: visible={Cursor.visible}, lockState={Cursor.lockState}, requesters={requesters.Count}");
     }
 
