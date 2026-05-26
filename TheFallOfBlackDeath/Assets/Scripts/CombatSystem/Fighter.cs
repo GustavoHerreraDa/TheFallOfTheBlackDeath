@@ -738,8 +738,8 @@ public abstract class Fighter : MonoBehaviour
         }
         
         CameraManager.Instance.TriggerHitStop(1); // Hit stop 
-        CameraManager.Instance.TriggerShake(1.4f);    // Camera Shake
-        CameraManager.Instance.TriggerDamageGlitch(); // AberraciÃ³n cromÃ¡tica
+        CameraManager.Instance.TriggerShake(0.5f);    // Camera Shake
+        CameraManager.Instance.TriggerDamageGlitch(); // 
         
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX(AudioManager.Instance.armorBreakSound, 1f);

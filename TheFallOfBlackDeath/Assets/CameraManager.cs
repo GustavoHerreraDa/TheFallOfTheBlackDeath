@@ -57,8 +57,7 @@ public class CameraManager : MonoBehaviour
     {
         if (fxManager != null)
         {
-            // Disparamos solo el shake (duración de hitstop = 0)
-            fxManager.PlayHitReactionEffects(force, 0f);
+            fxManager.PlayShake(force);
         }
     }
 
@@ -69,8 +68,7 @@ public class CameraManager : MonoBehaviour
     {
         if (fxManager != null)
         {
-            // Disparamos solo el hitstop (fuerza de shake = 0)
-            fxManager.PlayHitReactionEffects(0f, duration);
+            fxManager.PlayHitStop(duration);
         }
     }
 

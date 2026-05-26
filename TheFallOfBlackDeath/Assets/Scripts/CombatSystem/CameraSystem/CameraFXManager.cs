@@ -67,20 +67,46 @@ public class CameraFXManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Dispara el efecto de impacto: Shake e HitStop elástico.
+    /// Dispara un screen shake via Cinemachine Impulse. No toca el TimeScale.
+    /// </summary>
+    public void PlayShake(float shakeForce)
+    {
+        if (impulseSource == null || shakeForce <= 0f) return;
+
+        Vector3 randomDir = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0f).normalized;
+        impulseSource.GenerateImpulse(randomDir * shakeForce);
+    }
+
+    /// <summary>
+    /// Frena el tiempo brevemente con recuperación elástica.
+    /// Solo arranca una nueva rutina si no hay una en curso, o si la nueva
+    /// duración es mayor a la que ya está corriendo (hits más fuertes ganan).
+    /// </summary>
+    public void PlayHitStop(float duration)
+    {
+        if (duration <= 0f) return;
+
+        // Si ya hay un HitStop en curso y el nuevo es menos intenso, lo ignoramos
+        // para que la destrucción de parte (más dramática) no sea cancelada por
+        // el shake que Fighter.cs dispara en la línea siguiente.
+        if (_hitStopCoroutine != null && _pendingHitStopDuration >= duration) return;
+
+        if (_hitStopCoroutine != null) StopCoroutine(_hitStopCoroutine);
+        _pendingHitStopDuration = duration;
+        _hitStopCoroutine = StartCoroutine(HitStopRoutine(duration));
+    }
+
+    // Guardamos la duración del HitStop activo para comparar en llamadas concurrentes
+    private float _pendingHitStopDuration;
+
+    /// <summary>
+    /// Mantiene compatibilidad con llamadas legacy que pasaban ambos valores juntos.
+    /// Solo invoca los dos métodos separados — no contiene lógica propia.
     /// </summary>
     public void PlayHitReactionEffects(float shakeForce, float hitStopDuration)
     {
-        // Screen Shake nativo de Cinemachine (caótico y perpendicular)
-        if (impulseSource != null)
-        {
-            Vector3 randomDir = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0).normalized;
-            impulseSource.GenerateImpulse(randomDir * shakeForce);
-        }
-
-        // Control de corrutinas previas para evitar race conditions en el TimeScale
-        if (_hitStopCoroutine != null) StopCoroutine(_hitStopCoroutine);
-        _hitStopCoroutine = StartCoroutine(HitStopRoutine(hitStopDuration));
+        PlayShake(shakeForce);
+        PlayHitStop(hitStopDuration);
     }
 
     private IEnumerator HitStopRoutine(float duration)
@@ -113,6 +139,7 @@ public class CameraFXManager : MonoBehaviour
             CameraDirector.Instance.ChangeState(CameraState.Overview);
         }
         
+        _pendingHitStopDuration = 0f;
         _hitStopCoroutine = null;
     }
 
