@@ -1,3 +1,4 @@
+// Cambios: Reemplazo de suscripción a CharacterSwitcher por PartyManager.OnPartyChanged y agregado de wrapper.
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -129,8 +130,7 @@ public class PlayerUI : MonoBehaviour
     /// </summary>
     void OnEnable()
     {
-        CharacterSwitcher.updateMainCharacterUI += UpdatePlayerStats;
-        CharacterSwitcher.updateSecondaryCharacterUI += UpdatePlayerStats;
+        PartyManager.OnPartyChanged += OnPartyChanged;
         
         if (GameManager.Instance != null)
         {
@@ -140,6 +140,7 @@ public class PlayerUI : MonoBehaviour
         UpdatePlayerStats();
     }
 
+    private void OnPartyChanged() => UpdatePlayerStats(false, "");
     private void RefreshStats() => UpdatePlayerStats(false, "");
 
     /// <summary>
@@ -147,8 +148,7 @@ public class PlayerUI : MonoBehaviour
     /// </summary>
     void OnDisable()
     {
-        CharacterSwitcher.updateMainCharacterUI -= UpdatePlayerStats;
-        CharacterSwitcher.updateSecondaryCharacterUI -= UpdatePlayerStats;
+        PartyManager.OnPartyChanged -= OnPartyChanged;
         
         if (GameManager.Instance != null)
         {

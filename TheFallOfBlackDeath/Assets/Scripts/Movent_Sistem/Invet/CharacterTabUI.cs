@@ -1,3 +1,4 @@
+// Cambios: Se reemplazó CharacterSwitcher por PartyManager y se deprecaron los métodos de switch de líder.
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ using UnityEngine;
 public class CharacterTabUI : MonoBehaviour
 {
 
-    [SerializeField] private CharacterSwitcher _characterSwitcher;
+    [SerializeField] private PartyManager _partyManager;
 
     /// <summary>
     /// Executes the main character btn workflow.
@@ -16,10 +17,7 @@ public class CharacterTabUI : MonoBehaviour
     /// <param name="characterIndex">The character index.</param>
     public void MainCharacterBTN(int characterIndex)
     {
-
-        _characterSwitcher.SwitchMainCharacter(characterIndex, false);
-        //_boddyStatus.Refresh();
-
+        Debug.Log("Funcionalidad de Switch Main Character deprecada.");
     }
 
     /// <summary>
@@ -28,6 +26,6 @@ public class CharacterTabUI : MonoBehaviour
     /// <param name="characterIndex">The character index.</param>
     public void SecondaryCharacterBTN(int characterIndex)
     {
-        _characterSwitcher.SwitchSecondaryCharacter(characterIndex, false);
+        Debug.Log("Funcionalidad de Switch Secondary Character deprecada.");
     }
 }

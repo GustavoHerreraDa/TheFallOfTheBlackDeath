@@ -641,7 +641,7 @@ public class GameManager : MonoBehaviour
         RefreshUI();
     }
 
-    // Resolve characters based on DB and scene content to avoid circular deps with CharacterSwitcher
+    // Resolve characters based on DB and scene content to avoid circular deps with PartyManager
     /// <summary>
     /// Updates the characters from database.
     /// </summary>
@@ -679,17 +679,17 @@ public class GameManager : MonoBehaviour
                 if (pf.figherIndex == idx) return pf;
             }
 
-            // Try via CharacterSwitcher list first
-            var switcher = FindObjectOfType<CharacterSwitcher>();
+            // Try via PartyManager list first
+            var manager = PartyManager.Instance;
             int switcherIndex = idx;
             if (db != null && idx < db.EnemyDB.Count)
             {
                 switcherIndex = db.EnemyDB[idx].CharacterSwitcherIndex;
             }
 
-            if (switcher != null && switcher.characters != null && switcherIndex < switcher.characters.Count && switcherIndex >= 0)
+            if (manager != null && manager.partyObjects != null && switcherIndex < manager.partyObjects.Count && switcherIndex >= 0)
             {
-                var go = switcher.characters[switcherIndex];
+                var go = manager.partyObjects[switcherIndex];
                 if (go != null)
                 {
                     var pf = go.GetComponent<PlayerFighter>();
@@ -783,7 +783,7 @@ public class GameManager : MonoBehaviour
         SyncDatabasePartyFlags();
 
         // Resolver referencias de personajes a partir de la base de datos y de la escena,
-        // evitando dependencia circular con CharacterSwitcher y evitando asignaciones externas.
+        // evitando dependencia circular con PartyManager y evitando asignaciones externas.
         UpdateCharactersFromDatabase();
 
         StartCoroutine(WaitForPlayer());

@@ -23,11 +23,6 @@ public class BodyStatusUI : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        if (gm == null)
-            gm = FindObjectOfType<GameManager>();
-
-        if (fighter == null)
-            fighter = FindObjectOfType<PlayerFighter>();
     }
 
     /// <summary>
@@ -35,7 +30,21 @@ public class BodyStatusUI : MonoBehaviour
     /// </summary>
     private void OnEnable()
     {
+        PartyManager.OnPartyChanged += Refresh;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnPlayerStatsUpdated += Refresh;
+        }
         Refresh();
+    }
+
+    private void OnDisable()
+    {
+        PartyManager.OnPartyChanged -= Refresh;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnPlayerStatsUpdated -= Refresh;
+        }
     }
 
     /// <summary>
@@ -43,11 +52,18 @@ public class BodyStatusUI : MonoBehaviour
     /// </summary>
     public void Refresh()
     {
-        if (gm == null || fighter == null)
+        if (GameManager.Instance == null)
+            return;
+
+        fighter = GameManager.Instance.character1;
+
+        if (fighter == null)
             return;
 
         //obtiene cada parte del cuerpo como una lista de tuplas
-        var data = gm.BodyPartsIntegrity(fighter).ToList();
+        var data = GameManager.Instance.BodyPartsIntegrity(fighter).ToList();
+
+        if (data.Count < 6) return;
 
         Debug.Log("paertes = " + data.Count);
 
