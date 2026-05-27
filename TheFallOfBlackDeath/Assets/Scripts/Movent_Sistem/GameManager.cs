@@ -59,6 +59,16 @@ public class GameManager : MonoBehaviour
     
     public event System.Action OnPlayerStatsUpdated;
 
+    [System.Serializable]
+    public class PartyPositionData
+    {
+        public int fighterIndex;
+        public Vector3 position;
+    }
+
+    [SerializeField]
+    private List<PartyPositionData> savedPartyPositions = new List<PartyPositionData>();
+
     public Dictionary<int, PlayerStatusData> savedPlayersStatus = new Dictionary<int, PlayerStatusData>();
     [FormerlySerializedAs("globalEnemyDatabase")] public globalDataBase globalGlobalDatabase;
     public List<RegionData> Regions = new List<RegionData>();
@@ -1222,6 +1232,9 @@ public class GameManager : MonoBehaviour
             
             // Limpiar flag después de aplicar
             hasValidLastPos = false;
+
+            // Restaurar posiciones de la party después de posicionar al líder
+            RestorePartyPositions();
         }
         else
         {
@@ -1242,6 +1255,8 @@ public class GameManager : MonoBehaviour
             lastPos = character.transform.position;
             hasValidLastPos = true;
             Debug.Log($"Posición guardada: {lastPos}");
+            
+            SavePartyPositions();
         }
     }
     
@@ -1254,8 +1269,100 @@ public class GameManager : MonoBehaviour
         lastPos = position;
         hasValidLastPos = true;
         Debug.Log($"Posición guardada manualmente: {lastPos}");
+        
+        SavePartyPositions();
     }
-    
+
+    public void SavePartyPositions()
+    {
+        savedPartyPositions.Clear();
+        List<PlayerFighter> members = GetPartyMembers();
+        
+        foreach (var fighter in members)
+        {
+            if (fighter == null) continue;
+            
+            savedPartyPositions.Add(new PartyPositionData
+            {
+                fighterIndex = fighter.figherIndex,
+                position = fighter.transform.position
+            });
+        }
+        
+        Debug.Log($"[GameManager] Guardadas {savedPartyPositions.Count} posiciones de la party.");
+    }
+
+    public void RestorePartyPositions()
+    {
+        if (savedPartyPositions == null || savedPartyPositions.Count == 0) return;
+
+        PlayerFighter leader = GetLeader();
+        Vector3 leaderPos = lastPos;
+        bool hasLeaderPos = hasValidLastPos;
+
+        if (leader != null && hasLeaderPos)
+        {
+            leaderPos = lastPos;
+        }
+        else if (leader != null && !hasLeaderPos && startPost != null)
+        {
+            leaderPos = startPost.position;
+            hasLeaderPos = true;
+        }
+
+        Vector3[] offsets =
+        {
+            new Vector3(-1.5f, 0, -1.5f),
+            new Vector3(1.5f, 0, -1.5f)
+        };
+
+        int followerCount = 0;
+        var members = GetPartyMembers();
+
+        foreach (var data in savedPartyPositions)
+        {
+            PlayerFighter fighter = members.FirstOrDefault(m => m != null && m.figherIndex == data.fighterIndex);
+            if (fighter == null) continue;
+
+            CharacterController controller = fighter.GetComponent<CharacterController>();
+            if (controller != null) controller.enabled = false;
+
+            if (fighter == leader)
+            {
+                fighter.transform.position = data.position;
+                // Si venimos de un cambio de escena que define lastPos, priorizar esa para el líder
+                if (hasLeaderPos) fighter.transform.position = leaderPos;
+            }
+            else
+            {
+                // Followers: usar offset alrededor del líder para evitar overlap/jitter
+                if (hasLeaderPos)
+                {
+                    Vector3 offset = (followerCount < offsets.Length) ? offsets[followerCount] : new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
+                    fighter.transform.position = leaderPos + offset;
+                    followerCount++;
+                }
+                else
+                {
+                    fighter.transform.position = data.position;
+                }
+            }
+
+            if (controller != null)
+            {
+                StartCoroutine(ReenableController(controller));
+            }
+        }
+        
+        Debug.Log("[GameManager] Posiciones de la party restauradas.");
+    }
+
+    private IEnumerator ReenableController(CharacterController controller)
+    {
+        yield return new WaitForFixedUpdate();
+        if (controller != null) controller.enabled = true;
+    }
+
     /// <summary>
     /// Executes the clear saved position workflow.
     /// </summary>

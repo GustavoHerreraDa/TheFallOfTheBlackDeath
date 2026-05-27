@@ -9554,7 +9554,7 @@ PrefabInstance:
     - target: {fileID: 636467660071256860, guid: aa2dc14ecf9170e41ae9bd7c0c8d6b65, type: 3}
       propertyPath: _partyManager
       value: 
-      objectReference: {fileID: 1830958813}
+      objectReference: {fileID: 0}
     - target: {fileID: 1045294496828479252, guid: aa2dc14ecf9170e41ae9bd7c0c8d6b65, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -44552,7 +44552,7 @@ GameObject:
   m_Component:
   - component: {fileID: 947462441}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Navmesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57267,6 +57267,7 @@ Transform:
   - {fileID: 815182578}
   - {fileID: 974877505}
   - {fileID: 2107468449}
+  - {fileID: 1503082273}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1269972719
@@ -71156,6 +71157,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8054341967929913385, guid: fbed7615175637f41981de1ee0ada3d1, type: 3}
   m_PrefabInstance: {fileID: 1501739067}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1503082272
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1503082273}
+  - component: {fileID: 1503082274}
+  m_Layer: 0
+  m_Name: PartyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1503082273
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503082272}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1269391488}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1503082274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503082272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b2429803b194631badd1c355d9da6b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PartyManager
+  partyObjects: []
 --- !u!1001 &1503168364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79593,7 +79639,8 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -6.75
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5794620884593337269, guid: dba6465631280334ea5b9880d905596e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1444911630304278296, guid: dba6465631280334ea5b9880d905596e, type: 3}
@@ -86525,10 +86572,7 @@ PrefabInstance:
     - {fileID: 4073819262335631226, guid: ce5a470fd90c55846b6997ec40dc40c8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8616518740904041104, guid: ce5a470fd90c55846b6997ec40dc40c8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1830958813}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce5a470fd90c55846b6997ec40dc40c8, type: 3}
 --- !u!114 &1830958802 stripped
 MonoBehaviour:
@@ -86557,20 +86601,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca8ee6b66f9c22f48908aa8c33abdcd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1830958813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1184518343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b2429803b194631badd1c355d9da6b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PartyManager
-  partyObjects:
-  - {fileID: 0}
 --- !u!1001 &1831561835
 PrefabInstance:
   m_ObjectHideFlags: 0

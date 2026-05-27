@@ -89,8 +89,7 @@ private IEnumerator DirectGlitchTransition(Vector3 playerPos)
 
     Debug.Log("[DirectGlitchTransition] Saving player position");
 
-    GameManager.Instance.lastPos = playerPos;
-    GameManager.Instance.hasValidLastPos = true;
+    GameManager.Instance.SaveCurrentPosition(playerPos);
 
     EnemiesGroup enemiesGroup = GetEncounterGroup();
     if (enemiesGroup != null)
