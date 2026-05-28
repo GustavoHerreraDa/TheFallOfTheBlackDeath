@@ -18,11 +18,19 @@ namespace InventoryNew
         [Header("Stats Preview")]
         public TMP_Text statsText;
 
+        [Header("Party Selection")]
+        public PartyMemberSelectorUI memberSelector;
+
         private PlayerFighter activeFighter;
         private EquipmentSlot pendingSlot;
 
         private void OnEnable()
         {
+            if (memberSelector != null)
+            {
+                memberSelector.OnMemberSelected += Setup;
+            }
+
             if (activeFighter == null && GameManager.Instance != null)
             {
                 Setup(GameManager.Instance.GetLeader() ?? GameManager.Instance.character1);
@@ -42,6 +50,11 @@ namespace InventoryNew
         // FALTABA ESTE MÉTODO PARA EVITAR ERRORES AL CERRAR EL PANEL
         private void OnDisable()
         {
+            if (memberSelector != null)
+            {
+                memberSelector.OnMemberSelected -= Setup;
+            }
+
             if (NewInventoryManager.Instance != null)
             {
                 NewInventoryManager.Instance.OnInventoryChanged -= RefreshUI;
@@ -57,7 +70,16 @@ namespace InventoryNew
             int currentIndex = party.IndexOf(activeFighter);
             if (currentIndex < 0) currentIndex = 0;
             int nextIndex = (currentIndex + 1) % party.Count;
-            Setup(party[nextIndex]);
+            
+            // Actualizar selector visual si existe
+            if (memberSelector != null)
+            {
+                memberSelector.SelectMember(party[nextIndex]);
+            }
+            else
+            {
+                Setup(party[nextIndex]);
+            }
         }
 
         public void SetPreviousFighter()
@@ -69,7 +91,16 @@ namespace InventoryNew
             int currentIndex = party.IndexOf(activeFighter);
             if (currentIndex < 0) currentIndex = 0;
             int prevIndex = (currentIndex - 1 + party.Count) % party.Count;
-            Setup(party[prevIndex]);
+            
+            // Actualizar selector visual si existe
+            if (memberSelector != null)
+            {
+                memberSelector.SelectMember(party[prevIndex]);
+            }
+            else
+            {
+                Setup(party[prevIndex]);
+            }
         }
 
         public void Setup(PlayerFighter fighter)

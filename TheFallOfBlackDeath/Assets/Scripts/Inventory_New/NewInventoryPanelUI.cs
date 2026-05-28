@@ -11,6 +11,7 @@ namespace InventoryNew
         public GameObject itemPrefab;
         public TMP_Text descriptionText;
         public BodyPartHealPanel bodyPartHealPanel;
+        public PartyMemberSelectorUI memberSelector;
 
         [Header("Category Selection")]
         public ItemCategory currentCategory = ItemCategory.Consumable;
@@ -25,6 +26,11 @@ namespace InventoryNew
 
         private void OnEnable()
         {
+            if (memberSelector != null)
+            {
+                memberSelector.OnMemberSelected += SetActiveTarget;
+            }
+
             // ... tu lógica actual de target ...
             StartCoroutine(EnsureManagerReady());
         }
@@ -44,6 +50,11 @@ namespace InventoryNew
 
         private void OnDisable()
         {
+            if (memberSelector != null)
+            {
+                memberSelector.OnMemberSelected -= SetActiveTarget;
+            }
+
             if (NewInventoryManager.Instance != null)
             {
                 NewInventoryManager.Instance.OnInventoryChanged -= RefreshUI;

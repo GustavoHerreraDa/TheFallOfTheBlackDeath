@@ -136,6 +136,18 @@ public class GameManager : MonoBehaviour
         return new List<PlayerFighter>(activeParty);
     }
 
+    /// <summary>
+    /// Obtiene la imagen del personaje desde la base de datos global.
+    /// </summary>
+    public Sprite GetCharacterImage(int fighterIndex)
+    {
+        if (globalGlobalDatabase != null && fighterIndex >= 0 && fighterIndex < globalGlobalDatabase.EnemyDB.Count)
+        {
+            return globalGlobalDatabase.EnemyDB[fighterIndex].characterImage;
+        }
+        return null;
+    }
+
     public List<int> GetActivePartyIds()
     {
         NormalizePartyIds();

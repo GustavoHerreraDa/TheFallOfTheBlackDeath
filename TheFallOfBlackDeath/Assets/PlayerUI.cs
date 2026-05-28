@@ -12,8 +12,18 @@ using InventoryNew;
 /// </summary>
 public class PlayerUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public PlayerFighter fighter;
+    [SerializeField] private int partyIndex = 0;
+
+    private PlayerFighter Fighter => ResolveFighter();
+
+    private PlayerFighter ResolveFighter()
+    {
+        if (GameManager.Instance == null) return null;
+        var party = GameManager.Instance.GetPartyMembers();
+        if (party == null || partyIndex >= party.Count)
+            return GameManager.Instance.character1;
+        return party[partyIndex];
+    }
     public CombatManager combatManager;
     public TextMeshProUGUI nameHero;
     public TextMeshProUGUI currentHealth;
@@ -24,7 +34,9 @@ public class PlayerUI : MonoBehaviour
     public SkillUI[] skillsUI;
     public BodyStatusUI _boddyStatus;
 
-    public bool isMainCharacterUI;
+    // Ya no usamos isMainCharacterUI para decidir qué fighter usar, 
+    // ahora se asigna directamente vía Inspector o mediante SetFighter()
+    // public bool isMainCharacterUI; 
 
     public string previewItemId = ""; // ID de string para el nuevo sistema
 
@@ -52,48 +64,45 @@ public class PlayerUI : MonoBehaviour
         if (GameManager.Instance == null)
             return;
 
-        fighter = isMainCharacterUI
-            ? GameManager.Instance.character1
-            : GameManager.Instance.character2;
-
-        if (fighter == null)
+        // Si el Fighter no ha sido asignado aún (vía index), ResolveFighter ya maneja el fallback
+        if (Fighter == null)
         {
-            Debug.Log($"[PlayerUI] Fighter todavía no asignado (isMain={isMainCharacterUI})");
+            Debug.Log("[PlayerUI] Fighter todavía no asignado y no hay líder disponible");
             return;
         }
 
-        var stats = fighter.GetCurrentStats();
+        var stats = Fighter.GetCurrentStats();
 
         if (nameHero != null)
-            nameHero.text = fighter.idName;
+            nameHero.text = Fighter.idName;
 
         if (currentHealth != null)
             currentHealth.text = "HP: " + stats.health;
 
         if (maxHealth != null)
         {
-            float previewVal = isPreview ? fighter.GetPreviewModifier(previewId, StatType.MaxHealth) : 0;
+            float previewVal = isPreview ? Fighter.GetPreviewModifier(previewId, StatType.MaxHealth) : 0;
             maxHealth.text = stats.maxHealth.ToString() + (previewVal != 0 ? " (" + (previewVal > 0 ? "+" : "") + previewVal + ")" : "");
             maxHealth.color = previewVal > 0 ? Color.green : (previewVal < 0 ? Color.red : Color.white);
         }
 
         if (attack != null)
         {
-            float previewVal = isPreview ? fighter.GetPreviewModifier(previewId, StatType.Attack) : 0;
+            float previewVal = isPreview ? Fighter.GetPreviewModifier(previewId, StatType.Attack) : 0;
             attack.text = "Attack: " + stats.attack + (previewVal != 0 ? " (" + (previewVal > 0 ? "+" : "") + previewVal + ")" : "");
             attack.color = previewVal > 0 ? Color.green : (previewVal < 0 ? Color.red : Color.white);
         }
 
         if (defense != null)
         {
-            float previewVal = isPreview ? fighter.GetPreviewModifier(previewId, StatType.Defense) : 0;
+            float previewVal = isPreview ? Fighter.GetPreviewModifier(previewId, StatType.Defense) : 0;
             defense.text = "Defense: " + stats.deffense + (previewVal != 0 ? " (" + (previewVal > 0 ? "+" : "") + previewVal + ")" : "");
             defense.color = previewVal > 0 ? Color.green : (previewVal < 0 ? Color.red : Color.white);
         }
 
         if (speed != null)
         {
-            float previewVal = isPreview ? fighter.GetPreviewModifier(previewId, StatType.Speed) : 0;
+            float previewVal = isPreview ? Fighter.GetPreviewModifier(previewId, StatType.Speed) : 0;
             speed.text = "Speed: " + stats.speed + (previewVal != 0 ? " (" + (previewVal > 0 ? "+" : "") + previewVal + ")" : "");
             speed.color = previewVal > 0 ? Color.green : (previewVal < 0 ? Color.red : Color.white);
         }
@@ -118,7 +127,7 @@ public class PlayerUI : MonoBehaviour
             // Comprobación de nulidad robusta para SkillUI
             if (skillsUI[i] == null) continue;
 
-            skillsUI[i].player = fighter.gameObject;
+            skillsUI[i].player = Fighter.gameObject;
             skillsUI[i].skill = null;
             skillsUI[i].UpdateUI();
         }
@@ -142,6 +151,18 @@ public class PlayerUI : MonoBehaviour
 
     private void OnPartyChanged() => UpdatePlayerStats(false, "");
     private void RefreshStats() => UpdatePlayerStats(false, "");
+
+    /// <summary>
+    /// Asigna dinámicamente el fighter a mostrar y actualiza la UI.
+    /// </summary>
+    public void SetFighter(PlayerFighter newFighter)
+    {
+        if (GameManager.Instance == null) return;
+        var party = GameManager.Instance.GetPartyMembers();
+        partyIndex = party != null ? party.IndexOf(newFighter) : 0;
+        if (partyIndex < 0) partyIndex = 0;
+        UpdatePlayerStats();
+    }
 
     /// <summary>
     /// Unregisters runtime listeners when the component becomes inactive.
