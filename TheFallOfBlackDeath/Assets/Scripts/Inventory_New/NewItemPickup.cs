@@ -21,10 +21,6 @@ namespace InventoryNew
         [SerializeField] private string pickupMessage = "Presiona E para recoger ";
         [SerializeField] private bool destroyOnPickup = true;
         
-        [Header("UI Feedback (Optional)")]
-        [SerializeField] private GameObject interactionPrompt;
-        [SerializeField] private TextMeshProUGUI promptText;
-
         private bool playerInRange = false;
 
         private void OnValidate()
@@ -52,8 +48,6 @@ namespace InventoryNew
                 return;
             }
 
-            if (interactionPrompt != null) interactionPrompt.SetActive(false);
-            
             // Opcional: Podríamos intentar auto-detectar el nombre si no hay mensaje personalizado
             if (string.IsNullOrEmpty(pickupMessage) && itemData != null)
             {
@@ -88,6 +82,9 @@ namespace InventoryNew
                     GameManager.Instance.RegisterPickupCollected(GetPersistenceKey());
                 }
                 
+                // Ocultar el prompt antes de destruir/desactivar
+                InteractionPromptUI.Instance?.Hide();
+
                 if (destroyOnPickup)
                 {
                     Destroy(gameObject);
@@ -125,21 +122,14 @@ namespace InventoryNew
 
         private void ShowInteractionPrompt(bool show)
         {
-            if (interactionPrompt != null)
+            // Uso del nuevo InteractionPromptUI singleton
+            if (show && itemData != null)
             {
-                interactionPrompt.SetActive(show);
-                if (show && promptText != null && itemData != null)
-                {
-                    promptText.text = pickupMessage + itemData.itemName;
-                }
+                InteractionPromptUI.Instance?.Show($"[ E ]  Recoger {itemData.itemName}");
             }
-            else
+            else if (!show)
             {
-                // Fallback al log si no hay UI conectada
-                if (show && itemData != null)
-                {
-                    Debug.Log($"{pickupMessage} {itemData.itemName}");
-                }
+                InteractionPromptUI.Instance?.Hide();
             }
         }
 

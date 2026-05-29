@@ -11,12 +11,10 @@ public abstract class Interactable : MonoBehaviour
 {
     public Animator player_Animator;
     public PlayerControl playerControl;
-    public GameObject InteractMeessage;
     public GameObject ResponseMessage;
     [SerializeField]
     internal bool canInteract;
     internal Collider objCollider;
-    public TMP_InputField nameMessage;
     public TMP_InputField input_responseMessage;
     internal string message;
     internal string responseMessage;
@@ -28,7 +26,6 @@ public abstract class Interactable : MonoBehaviour
     /// </summary>
     public virtual void Start()
     {
-        InteractMeessage.SetActive(false);
         ResponseMessage.SetActive(false);
     }
 
@@ -43,10 +40,10 @@ public abstract class Interactable : MonoBehaviour
         {
             
             {
-                InteractMeessage.SetActive(true);
+                // MIGRADO: reemplaza InteractMeessage
+                InteractionPromptUI.Instance?.Show("[ E ] Recoger ítem");
                 objCollider = other;
                 canInteract = true;
-                nameMessage.text = "Press E to pick up item.";
                 Debug.Log("apreta e para interactuar");
                 return;
             }
@@ -57,10 +54,10 @@ public abstract class Interactable : MonoBehaviour
         {
             
             {
-                InteractMeessage.SetActive(true);
+                // MIGRADO: reemplaza InteractMeessage
+                InteractionPromptUI.Instance?.Show("[ E ] Abrir puerta");
                 objCollider = other;
                 canInteract = true;
-                nameMessage.text = "Press E to open gate.";
                 Debug.Log("apreta e para interactuar");
                 return;
             }
@@ -71,10 +68,10 @@ public abstract class Interactable : MonoBehaviour
         {
             if (other.GetComponent<Portal>() != null)
             {
-                InteractMeessage.SetActive(true);
+                // MIGRADO: reemplaza InteractMeessage
+                InteractionPromptUI.Instance?.Show("[ E ] Usar portal");
                 objCollider = other;
                 canInteract = true;
-                nameMessage.text = "Press E to use portal.";
                 Debug.Log("apreta e para interactuar");
                 return;
             }
@@ -85,10 +82,10 @@ public abstract class Interactable : MonoBehaviour
         {
             if (other.GetComponent<DialogueInteractable>() != null)
             {
-                InteractMeessage.SetActive(true);
+                // MIGRADO: reemplaza InteractMeessage
+                InteractionPromptUI.Instance?.Show("[ E ] Hablar");
                 objCollider = other;
                 canInteract = true;
-                nameMessage.text = "Press E to talk";
                 Debug.Log("apreta e para interactuar");
                 return;
             }
@@ -102,7 +99,8 @@ public abstract class Interactable : MonoBehaviour
     /// <param name="other">The other.</param>
     private void OnTriggerExit(Collider other)
     {
-        InteractMeessage.SetActive(false);
+        // MIGRADO: reemplaza InteractMeessage
+        InteractionPromptUI.Instance?.Hide();
         canInteract = false;
 
     }
@@ -144,7 +142,6 @@ public abstract class Interactable : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         ResponseMessage.SetActive(false);
-        InteractMeessage.SetActive(false);
 
     }
 }

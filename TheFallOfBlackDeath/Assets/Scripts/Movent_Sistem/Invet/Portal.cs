@@ -7,6 +7,15 @@ using UnityEngine;
 /// </summary>
 public class Portal : MonoBehaviour
 {
+    /// <summary>
+    /// Ejecuta la acción de usar el portal.
+    /// </summary>
+    public void Interact()
+    {
+        Debug.Log("Usando portal hacia otro mundo: " + gotoWorld);
+        // Aquí iría la lógica para cambiar de escena o teletransportar
+    }
+
     // Start is called before the first frame update
     public bool gotoWorld;
     /// <summary>

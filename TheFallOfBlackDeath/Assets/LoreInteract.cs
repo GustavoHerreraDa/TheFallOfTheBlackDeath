@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Handles lore interact for the current project workflow.
 /// </summary>
-public class LoreInteract : Interactable
+/*public class LoreInteract : Interactable
 {
     public TextMeshProUGUI titleLoreMessage;
     public TMP_InputField loreDescription;
@@ -72,3 +72,4 @@ public class LoreInteract : Interactable
     }
 
 }
+*/
