@@ -939,11 +939,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5320866082512089743, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.000061035156
+      value: -0.0006713867
       objectReference: {fileID: 0}
     - target: {fileID: 5320866082512089743, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00001116842
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5348380595859706900, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_SortingLayer
@@ -1547,11 +1547,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8819955638357395988, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000036239624
+      value: 0.00008392334
       objectReference: {fileID: 0}
     - target: {fileID: 8819955638357395988, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0000076293945
+      value: 0.000045776367
       objectReference: {fileID: 0}
     - target: {fileID: 8823414789293631226, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       propertyPath: m_SortingLayer
@@ -1623,10 +1623,10 @@ PrefabInstance:
     - {fileID: 5557603207441381614, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8043468644220128231, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
-      insertIndex: 7
+      insertIndex: 6
       addedObject: {fileID: 4948464548537502933}
     - targetCorrespondingSourceObject: {fileID: 8043468644220128231, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
-      insertIndex: 8
+      insertIndex: 7
       addedObject: {fileID: 4889154226639365407}
     - targetCorrespondingSourceObject: {fileID: 7314490404717684871, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
       insertIndex: 0
@@ -1659,9 +1659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2653398d3a2eab54da61e7902cb469ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterPreviewUI
-  previewCamera: {fileID: 3973856940719807988}
-  cameraOffset: {x: 0, y: 1.5, z: -2}
-  lookAtOffset: {x: 0, y: 1, z: 0}
+  logCambiosEnConsola: 0
 --- !u!1 &2264982600409756486 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4284724116938930378, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
@@ -1680,9 +1678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterDisplayManager
   memberSelector: {fileID: 8986834521189737171}
-  previewModels:
-  - {fileID: 2422232701983721976, guid: 0e562f6e2ac575146a9050d4da25694b, type: 3}
-  - {fileID: 8527043809939477154, guid: 61b95e2a8e59d3b40afe66d18cbe054a, type: 3}
+  previewModelEntries: []
 --- !u!114 &4790522457151464797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1695,14 +1691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2653398d3a2eab54da61e7902cb469ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterPreviewUI
-  previewCamera: {fileID: 8706840429215230435}
-  cameraOffset: {x: 0, y: 1.5, z: -2}
-  lookAtOffset: {x: 0, y: 1, z: 0}
---- !u!20 &3973856940719807988 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 1386345194575599224, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
-  m_PrefabInstance: {fileID: 2601022636837079948}
-  m_PrefabAsset: {fileID: 0}
+  logCambiosEnConsola: 0
 --- !u!224 &4727365681335493387 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7314490404717684871, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
@@ -1711,11 +1700,6 @@ RectTransform:
 --- !u!224 &5456274033128980587 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8043468644220128231, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
-  m_PrefabInstance: {fileID: 2601022636837079948}
-  m_PrefabAsset: {fileID: 0}
---- !u!20 &8706840429215230435 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 6686817900987064943, guid: f5a4e3478c9da3e48913d3bb9c2fe2cf, type: 3}
   m_PrefabInstance: {fileID: 2601022636837079948}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &8986834521189737171 stripped
