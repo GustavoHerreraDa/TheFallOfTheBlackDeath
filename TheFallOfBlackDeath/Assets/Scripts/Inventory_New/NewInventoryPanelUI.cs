@@ -29,9 +29,14 @@ namespace InventoryNew
             if (memberSelector != null)
             {
                 memberSelector.OnMemberSelected += SetActiveTarget;
+
+                // Sincronizar inmediatamente con el personaje seleccionado actualmente
+                if (memberSelector.CurrentSelected != null)
+                {
+                    SetActiveTarget(memberSelector.CurrentSelected);
+                }
             }
 
-            // ... tu lógica actual de target ...
             StartCoroutine(EnsureManagerReady());
         }
 

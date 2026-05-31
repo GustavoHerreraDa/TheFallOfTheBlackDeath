@@ -29,6 +29,12 @@ namespace InventoryNew
             if (memberSelector != null)
             {
                 memberSelector.OnMemberSelected += Setup;
+
+                // Sincronizar inmediatamente con el personaje seleccionado actualmente
+                if (memberSelector.CurrentSelected != null)
+                {
+                    Setup(memberSelector.CurrentSelected);
+                }
             }
 
             if (activeFighter == null && GameManager.Instance != null)
@@ -45,6 +51,7 @@ namespace InventoryNew
             {
                 NewInventoryManager.Instance.OnInventoryChanged += RefreshUI;
             }
+            
         }
 
         // FALTABA ESTE MÉTODO PARA EVITAR ERRORES AL CERRAR EL PANEL
@@ -59,6 +66,7 @@ namespace InventoryNew
             {
                 NewInventoryManager.Instance.OnInventoryChanged -= RefreshUI;
             }
+            
         }
 
         public void SetNextFighter()

@@ -20,6 +20,7 @@ namespace InventoryNew
 
         private List<PartyMemberButtonUI> buttons = new List<PartyMemberButtonUI>();
         private int selectedFighterIndex = -1;
+        public PlayerFighter CurrentSelected { get; private set; }
 
         private void OnEnable()
         {
@@ -77,6 +78,7 @@ namespace InventoryNew
         /// </summary>
         public void SelectMember(PlayerFighter member)
         {
+            CurrentSelected = member;
             selectedFighterIndex = member.figherIndex;
             
             foreach (var btn in buttons)
@@ -85,36 +87,6 @@ namespace InventoryNew
             }
 
             OnMemberSelected?.Invoke(member);
-        }
-    }
-
-    /// <summary>
-    /// Componente interno para manejar el estado visual de cada botón de miembro.
-    /// </summary>
-    public class PartyMemberButtonUI : MonoBehaviour
-    {
-        public Image portraitImage;
-        public TMP_Text nameText;
-        public GameObject selectionOverlay;
-        public Button button;
-
-        public PlayerFighter Fighter { get; private set; }
-
-        public void Setup(PlayerFighter fighter, Sprite portrait, Action onClick)
-        {
-            Fighter = fighter;
-            if (portraitImage != null) portraitImage.sprite = portrait;
-            if (nameText != null) nameText.text = fighter.idName;
-            
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => onClick?.Invoke());
-            
-            SetSelected(false);
-        }
-
-        public void SetSelected(bool isSelected)
-        {
-            if (selectionOverlay != null) selectionOverlay.SetActive(isSelected);
         }
     }
 }
