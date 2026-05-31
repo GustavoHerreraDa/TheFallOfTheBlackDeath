@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using InventoryNew;
 
 /// <summary>
@@ -19,18 +20,20 @@ public class CharacterDisplayManager : MonoBehaviour
     [Header("Referencia al selector de party")]
     [SerializeField] private PartyMemberSelectorUI memberSelector;
 
-    [Header("Modelos de preview — índice coincide con figherIndex")]
-    [SerializeField] private List<GameObject> previewModels = new List<GameObject>();
+    [System.Serializable]
+    public struct FighterModelEntry
+    {
+       public int fighterIndex;    // el figherIndex del PlayerFighter
+       public GameObject model;    // el modelo 3D correspondiente
+    }
+
+    [Header("Modelos de preview — mapeados por figherIndex")]
+    [SerializeField] private List<FighterModelEntry> previewModelEntries = new List<FighterModelEntry>();
 
     /// <summary>
     /// Personaje actualmente mostrado.
     /// </summary>
     public PlayerFighter CurrentFighter { get; private set; }
-
-    /// <summary>
-    /// Lista de modelos de preview accesible para CharacterPreviewUI.
-    /// </summary>
-    public List<GameObject> PreviewModels => previewModels;
 
     private void Awake()
     {
@@ -45,9 +48,9 @@ public class CharacterDisplayManager : MonoBehaviour
     private void Start()
     {
         // Desactivar todos los modelos al inicio
-        foreach (var model in previewModels)
+        foreach (var entry in previewModelEntries)
         {
-            if (model != null) model.SetActive(false);
+            if (entry.model != null) entry.model.SetActive(false);
         }
 
         // Sincronizar con el personaje ya seleccionado si existe
@@ -70,6 +73,15 @@ public class CharacterDisplayManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Busca el modelo correspondiente a un fighterIndex.
+    /// </summary>
+    public GameObject GetModel(int fighterIndex)
+    {
+        var entry = previewModelEntries.FirstOrDefault(e => e.fighterIndex == fighterIndex);
+        return entry.model;
+    }
+
+    /// <summary>
     /// Activa el modelo correspondiente al fighter recibido y notifica a los suscriptores.
     /// </summary>
     private void SetDisplayedFighter(PlayerFighter fighter)
@@ -77,21 +89,22 @@ public class CharacterDisplayManager : MonoBehaviour
         if (fighter == null) return;
 
         // Desactivar todos los modelos
-        foreach (var model in previewModels)
+        foreach (var entry in previewModelEntries)
         {
-            if (model != null) model.SetActive(false);
+            if (entry.model != null) entry.model.SetActive(false);
         }
 
         // Activar el modelo que corresponde al figherIndex
-        if (fighter.figherIndex >= 0 && fighter.figherIndex < previewModels.Count)
+        GameObject targetModel = GetModel(fighter.figherIndex);
+        
+        if (targetModel != null)
         {
-            var targetModel = previewModels[fighter.figherIndex];
-            if (targetModel != null) targetModel.SetActive(true);
+            targetModel.SetActive(true);
         }
         else
         {
-            Debug.LogWarning($"[CharacterDisplayManager] figherIndex {fighter.figherIndex} fuera de rango. " +
-                             $"Modelos disponibles: {previewModels.Count}");
+            Debug.LogWarning($"[CharacterDisplayManager] No se encontró modelo para figherIndex {fighter.figherIndex}. " +
+                             $"Entradas configuradas: {previewModelEntries.Count}");
         }
 
         CurrentFighter = fighter;

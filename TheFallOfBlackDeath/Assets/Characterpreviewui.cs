@@ -1,62 +1,41 @@
 using UnityEngine;
 
 /// <summary>
-/// Componente reutilizable para paneles con cámara de preview.
-/// Escucha a CharacterDisplayManager y reposiciona la cámara frente al modelo activo.
-/// Agregar una instancia de este componente en cada panel que tenga su propia cámara de preview.
+/// Componente OPCIONAL para paneles que necesiten reaccionar al cambio de personaje.
+/// 
+/// La cámara de preview NO se mueve — debe estar posicionada en el editor apuntando
+/// al modelo correspondiente. Este componente solo sirve si el panel necesita
+/// hacer algo adicional cuando cambia el personaje (ej: actualizar texto de nombre).
+///
+/// Si tu panel solo muestra el modelo 3D via Render Texture y nada más,
+/// NO necesitás este componente — CharacterDisplayManager ya activa el modelo correcto.
 /// </summary>
 public class CharacterPreviewUI : MonoBehaviour
 {
-    [Header("Cámara de este panel")]
-    [SerializeField] private Camera previewCamera;
-
-    [Header("Posición relativa al modelo")]
-    [SerializeField] private Vector3 cameraOffset = new Vector3(0f, 1.5f, -2f);
-
-    [Header("Punto al que mira la cámara (relativo al modelo)")]
-    [SerializeField] private Vector3 lookAtOffset = new Vector3(0f, 1f, 0f);
+    [Header("Opcional: callback cuando cambia el personaje mostrado")]
+    [SerializeField] private bool logCambiosEnConsola = false;
 
     private void OnEnable()
     {
-        CharacterDisplayManager.OnDisplayedFighterChanged += UpdateCamera;
+        CharacterDisplayManager.OnDisplayedFighterChanged += OnFighterChanged;
 
-        // Sincronizar inmediatamente con el personaje actual al abrir el panel
-        if (CharacterDisplayManager.Instance != null)
-        {
-            UpdateCamera(CharacterDisplayManager.Instance.CurrentFighter);
-        }
+        // Sincronizar con el estado actual al activarse el panel
+        if (CharacterDisplayManager.Instance?.CurrentFighter != null)
+            OnFighterChanged(CharacterDisplayManager.Instance.CurrentFighter);
     }
 
     private void OnDisable()
     {
-        CharacterDisplayManager.OnDisplayedFighterChanged -= UpdateCamera;
+        CharacterDisplayManager.OnDisplayedFighterChanged -= OnFighterChanged;
     }
 
     /// <summary>
-    /// Reposiciona la cámara frente al modelo de preview del fighter recibido.
+    /// Sobreescribí este método en una subclase para reaccionar al cambio de personaje.
+    /// Por ejemplo: actualizar un TMP_Text con el nombre del personaje.
     /// </summary>
-    private void UpdateCamera(PlayerFighter fighter)
+    protected virtual void OnFighterChanged(PlayerFighter fighter)
     {
-        if (previewCamera == null)
-        {
-            Debug.LogWarning("[CharacterPreviewUI] No hay cámara asignada.");
-            return;
-        }
-
-        if (fighter == null) return;
-
-        if (CharacterDisplayManager.Instance == null) return;
-
-        var models = CharacterDisplayManager.Instance.PreviewModels;
-        if (models == null || fighter.figherIndex < 0 || fighter.figherIndex >= models.Count) return;
-
-        GameObject modelo = models[fighter.figherIndex];
-        if (modelo == null) return;
-
-        // Posicionar la cámara relativa al modelo
-        previewCamera.transform.position = modelo.transform.position + cameraOffset;
-
-        // La cámara mira al centro del modelo más el offset vertical
-        previewCamera.transform.LookAt(modelo.transform.position + lookAtOffset);
+        if (logCambiosEnConsola)
+            Debug.Log($"[CharacterPreviewUI] Personaje activo: {fighter?.idName ?? "ninguno"}");
     }
 }
