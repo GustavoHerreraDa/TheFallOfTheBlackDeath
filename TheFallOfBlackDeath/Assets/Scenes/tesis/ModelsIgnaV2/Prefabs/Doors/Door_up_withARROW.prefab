@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 471643749344534196}
+  - component: {fileID: 2522457476868399742}
+  - component: {fileID: 5298328490570765310}
   m_Layer: 0
   m_Name: Door_up_withARROW
   m_TagString: Untagged
@@ -35,6 +37,45 @@ Transform:
   - {fileID: 8495527317235074216}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2522457476868399742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21768565904585335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87a23e142b5de1a47b8311872ac7eb05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VerticalSlidingDoor
+  door: {fileID: 471643749344534196}
+  openHeight: 4
+  speed: 8
+  open: 0
+  customOpenSound: {fileID: 8300000, guid: 14b7c09e302cbdc40a1494dd6089ca10, type: 3}
+  customCloseSound: {fileID: 0}
+--- !u!65 &5298328490570765310
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21768565904585335}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 4.984566, z: 4.826523}
+  m_Center: {x: 0, y: 1.9922831, z: 2.5873184}
 --- !u!1 &6137107492877202795
 GameObject:
   m_ObjectHideFlags: 0
