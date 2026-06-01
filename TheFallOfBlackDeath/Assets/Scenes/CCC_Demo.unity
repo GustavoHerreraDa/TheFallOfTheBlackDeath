@@ -2260,6 +2260,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fb378c3cdf89b247a08f832dc38e553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &1684865307 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5888394720824411311, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+  m_PrefabInstance: {fileID: 8204355792642854230}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1689059307 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 872638076106294383, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+  m_PrefabInstance: {fileID: 8204355792642854230}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1689059308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1689059307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0eb4efbe1c4d58b81f91d7c5e73b40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FighterCombatAnimator
+  fighter: {fileID: 1523806086}
+  animator: {fileID: 1684865307}
+  isMissingLeftArmParam: IsMissingLeftArm
+  isMissingRightArmParam: IsMissingRightArm
+  isMissingOneLegParam: IsMissingOneLeg
+  isMissingBothLegsParam: IsMissingBothLegs
 --- !u!1001 &1691333297
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5445,6 +5473,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7000866621237896049, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8204355792642854237}
+    - targetCorrespondingSourceObject: {fileID: 872638076106294383, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1689059308}
   m_SourcePrefab: {fileID: 100100000, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
 --- !u!224 &8204355792642854231 stripped
 RectTransform:
