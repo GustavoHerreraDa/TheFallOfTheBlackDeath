@@ -1398,6 +1398,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -3763907160585819636, guid: 9ae30b3c01359b34693c0bb80f030fe2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 127eb16f938e5ce4ba4d539a71af69be, type: 2}
+    - target: {fileID: -3763907160585819636, guid: 9ae30b3c01359b34693c0bb80f030fe2, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 9a8446422dad053449aba4d2a1b7fd65, type: 2}
@@ -1523,7 +1527,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1852576806548013000, guid: 9ae30b3c01359b34693c0bb80f030fe2, type: 3}
       insertIndex: 0
       addedObject: {fileID: 221329666}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9ae30b3c01359b34693c0bb80f030fe2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1634889158}
   m_SourcePrefab: {fileID: 100100000, guid: 9ae30b3c01359b34693c0bb80f030fe2, type: 3}
 --- !u!4 &252717554 stripped
 Transform:
@@ -4541,6 +4548,30 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2089261528120453179, guid: 927f53248f192f74f910e77d41c72221, type: 3}
   m_PrefabInstance: {fileID: 1604682558087578931}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1634889157 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9ae30b3c01359b34693c0bb80f030fe2, type: 3}
+  m_PrefabInstance: {fileID: 252717553}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1634889158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634889157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0eb4efbe1c4d58b81f91d7c5e73b40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FighterCombatAnimator
+  fighter: {fileID: 1523806086}
+  animator: {fileID: 252717555}
+  baseWeightParam: BaseWeight
+  isMissingLeftArmParam: IsMissingLeftArm
+  isMissingRightArmParam: IsMissingRightArm
+  isMissingOneLegParam: IsMissingOneLeg
+  isMissingBothLegsParam: IsMissingBothLegs
 --- !u!1001 &1691333297
 PrefabInstance:
   m_ObjectHideFlags: 0

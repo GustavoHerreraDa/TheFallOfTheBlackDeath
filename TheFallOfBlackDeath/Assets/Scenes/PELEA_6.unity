@@ -1059,6 +1059,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89904d1b33b83e545be5e53dc384092a, type: 3}
+--- !u!1 &366782030 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6594096911584793953, guid: 9fe0834248dee124988577cfe5d3e2db, type: 3}
+  m_PrefabInstance: {fileID: 1562960975}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &372303679 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4688937874772146640, guid: e7987b78c4fec9b49aed036cd2ffbe7b, type: 3}
@@ -4277,7 +4282,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6594096911584793953, guid: 9fe0834248dee124988577cfe5d3e2db, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2076568395}
   m_SourcePrefab: {fileID: 100100000, guid: 9fe0834248dee124988577cfe5d3e2db, type: 3}
 --- !u!4 &1562960976 stripped
 Transform:
@@ -5372,6 +5380,25 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 443899559405327777, guid: 9fe0834248dee124988577cfe5d3e2db, type: 3}
   m_PrefabInstance: {fileID: 1562960975}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2076568395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366782030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0eb4efbe1c4d58b81f91d7c5e73b40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FighterCombatAnimator
+  fighter: {fileID: 1523806086}
+  animator: {fileID: 2076568394}
+  baseWeightParam: BaseWeight
+  isMissingLeftArmParam: IsMissingLeftArm
+  isMissingRightArmParam: IsMissingRightArm
+  isMissingOneLegParam: IsMissingOneLeg
+  isMissingBothLegsParam: IsMissingBothLegs
 --- !u!114 &2124753367 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2124753367, guid: 8d2201f27131eef40a39ce1614c69027, type: 3}
