@@ -3,6 +3,7 @@ Shader "Custom/MonitorFlicker"
     Properties
     {
         _BaseMap ("Texture", 2D) = "white" {}
+        _TintColor ("Tint Color", Color) = (1,1,1,1)
         _FlickerSpeed ("Flicker Speed", Float) = 8
         _Intensity ("Intensity", Float) = 0.25
         _EnableFlicker ("Enable Flicker", Float) = 1
@@ -27,6 +28,7 @@ Shader "Custom/MonitorFlicker"
             TEXTURE2D(_BaseMap);
             SAMPLER(sampler_BaseMap);
 
+            float4 _TintColor;
             float _FlickerSpeed;
             float _Intensity;
             float _EnableFlicker;
@@ -70,6 +72,8 @@ Shader "Custom/MonitorFlicker"
                         sampler_BaseMap,
                         IN.uv
                     );
+
+                col *= _TintColor;
 
                 float flicker =
                     1 +

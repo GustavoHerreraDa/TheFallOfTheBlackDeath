@@ -116,4 +116,60 @@ public class AudioManager : MonoBehaviour
         int index = Random.Range(0, footstepSounds.Length);
         PlaySFX(footstepSounds[index], volume, true);
     }
+
+    /// <summary>
+    /// Creates and returns a persistent AudioSource that can be stopped later.
+    /// </summary>
+    public AudioSource PlayPersistentSFX(
+        AudioClip clip,
+        float volume = 1f,
+        bool loop = true,
+        bool useRandomPitch = false
+    )
+    {
+        if (clip == null)
+        {
+            return null;
+        }
+
+        GameObject soundObj = new GameObject("PersistentAudio_" + clip.name);
+
+        AudioSource source = soundObj.AddComponent<AudioSource>();
+
+        source.clip = clip;
+        source.volume = volume;
+        source.loop = loop;
+
+        if (sfxGroup != null)
+        {
+            source.outputAudioMixerGroup = sfxGroup;
+        }
+
+        if (useRandomPitch)
+        {
+            source.pitch = Random.Range(
+                1f - pitchVariation,
+                1f + pitchVariation
+            );
+        }
+
+        source.Play();
+
+        return source;
+    }
+
+    /// <summary>
+    /// Stops and destroys a persistent AudioSource.
+    /// </summary>
+    public void StopPersistentSFX(AudioSource source)
+    {
+        if (source == null)
+        {
+            return;
+        }
+
+        source.Stop();
+
+        Destroy(source.gameObject);
+    }
 }
