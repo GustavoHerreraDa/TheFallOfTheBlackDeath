@@ -62,6 +62,82 @@ Transform:
   m_Children: []
   m_Father: {fileID: 77336396892191659}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5164798674011097654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7616009206844744054}
+  - component: {fileID: 4322687952769386146}
+  - component: {fileID: 785540098525207801}
+  m_Layer: 6
+  m_Name: Defense
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7616009206844744054
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5164798674011097654}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
+  m_LocalPosition: {x: 5.7599998, y: 1.41, z: -1.6998763}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7540624642153775675}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4322687952769386146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5164798674011097654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatusModSkill
+  skillName: Defense
+  rarity: 0
+  effectConfig: {fileID: 11400000, guid: 8bedb2d0824a31d4fa765387fdb58691, type: 2}
+  actionDelay: 1
+  targeting: 0
+  BodyPartTarget: 0
+  SkillDesc: A good defense can be the best attack
+  skillType: 0
+  iconUI: {fileID: 0}
+  animationName: 
+  HasItemInInventory: 0
+  ItemsNeeded: []
+  activationSound: {fileID: 0}
+  customImpactSound: {fileID: 0}
+  sanityCost: 0
+  requiredParts: 0400000005000000
+  message: raises his defense
+--- !u!114 &785540098525207801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5164798674011097654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatusMod
+  type: 1
+  amount: 10
 --- !u!1 &7497313298616647172
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +314,14 @@ PrefabInstance:
       propertyPath: effectConfig
       value: 
       objectReference: {fileID: 11400000, guid: fd1b60677ef49f847bc0acf206aa45cd, type: 2}
+    - target: {fileID: 4506396638307855813, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.203
+      objectReference: {fileID: 0}
+    - target: {fileID: 4506396638307855813, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.007
+      objectReference: {fileID: 0}
     - target: {fileID: 5055089207862759208, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       propertyPath: actionDelay
       value: 1.5
@@ -305,6 +389,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7305297877295874578, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 7616009206844744054}
     - targetCorrespondingSourceObject: {fileID: 4094641421508667832, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8893068570815636227}
@@ -348,6 +435,11 @@ Transform:
 --- !u!4 &7379702242858141821 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7759129900999919700, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
+  m_PrefabInstance: {fileID: 991934989853573161}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7540624642153775675 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7305297877295874578, guid: 9bb3188192a99e84799f40bc1254051d, type: 3}
   m_PrefabInstance: {fileID: 991934989853573161}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8892436773971595262 stripped
