@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Linq;
+using InventoryNew;
 
 /// <summary>
 /// Supports inventory and interaction flow by handling body status ui.
@@ -13,6 +14,8 @@ public class BodyStatusUI : MonoBehaviour
     public TextMeshProUGUI rightArmTxt;
     public TextMeshProUGUI leftLegTxt;
     public TextMeshProUGUI rightLegTxt;
+    
+    public PartyMemberSelectorUI memberSelector;
     
 
     private GameManager gm;
@@ -35,6 +38,16 @@ public class BodyStatusUI : MonoBehaviour
         {
             GameManager.Instance.OnPlayerStatsUpdated += Refresh;
         }
+
+        if (memberSelector != null)
+        {
+            memberSelector.OnMemberSelected += SetFighter;
+            if (memberSelector.CurrentSelected != null)
+            {
+                SetFighter(memberSelector.CurrentSelected);
+            }
+        }
+
         Refresh();
     }
 
@@ -45,6 +58,20 @@ public class BodyStatusUI : MonoBehaviour
         {
             GameManager.Instance.OnPlayerStatsUpdated -= Refresh;
         }
+
+        if (memberSelector != null)
+        {
+            memberSelector.OnMemberSelected -= SetFighter;
+        }
+    }
+
+    /// <summary>
+    /// Crea un método public void SetFighter(PlayerFighter newFighter) que reciba al personaje, lo asigne a la variable privada existente fighter, y luego ejecute Refresh().
+    /// </summary>
+    public void SetFighter(PlayerFighter newFighter)
+    {
+        fighter = newFighter;
+        Refresh();
     }
 
     /// <summary>
@@ -55,7 +82,10 @@ public class BodyStatusUI : MonoBehaviour
         if (GameManager.Instance == null)
             return;
 
-        fighter = GameManager.Instance.character1;
+        if (fighter == null)
+        {
+            fighter = GameManager.Instance.character1;
+        }
 
         if (fighter == null)
             return;

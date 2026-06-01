@@ -33,6 +33,7 @@ public class PlayerUI : MonoBehaviour
     public TextMeshProUGUI speed;
     public SkillUI[] skillsUI;
     public BodyStatusUI _boddyStatus;
+    public PartyMemberSelectorUI memberSelector;
 
     // Ya no usamos isMainCharacterUI para decidir qué fighter usar, 
     // ahora se asigna directamente vía Inspector o mediante SetFighter()
@@ -145,6 +146,15 @@ public class PlayerUI : MonoBehaviour
         {
             GameManager.Instance.OnPlayerStatsUpdated += RefreshStats;
         }
+
+        if (memberSelector != null)
+        {
+            memberSelector.OnMemberSelected += SetFighter;
+            if (memberSelector.CurrentSelected != null)
+            {
+                SetFighter(memberSelector.CurrentSelected);
+            }
+        }
         
         UpdatePlayerStats();
     }
@@ -174,6 +184,11 @@ public class PlayerUI : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnPlayerStatsUpdated -= RefreshStats;
+        }
+
+        if (memberSelector != null)
+        {
+            memberSelector.OnMemberSelected -= SetFighter;
         }
     }
 
