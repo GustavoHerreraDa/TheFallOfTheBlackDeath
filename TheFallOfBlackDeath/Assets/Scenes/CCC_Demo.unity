@@ -2284,6 +2284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FighterCombatAnimator
   fighter: {fileID: 1523806086}
   animator: {fileID: 1684865307}
+  baseWeightParam: BaseWeight
   isMissingLeftArmParam: IsMissingLeftArm
   isMissingRightArmParam: IsMissingRightArm
   isMissingOneLegParam: IsMissingOneLeg
@@ -5467,6 +5468,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8204355791575341872, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8204355792642854233}
+    - targetCorrespondingSourceObject: {fileID: 8204355791575341872, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8204355792642854239}
+    - targetCorrespondingSourceObject: {fileID: 8204355791575341872, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8204355792642854238}
     - targetCorrespondingSourceObject: {fileID: 996539238965934458, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8204355792642854236}
@@ -5548,6 +5555,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd59e7eba1ff18f429327d8eb54d703b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyScannerUI
+--- !u!65 &8204355792642854238
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8204355792642854232}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0.8}
+--- !u!54 &8204355792642854239
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8204355792642854232}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &8352410690929413886
 PrefabInstance:
   m_ObjectHideFlags: 0

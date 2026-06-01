@@ -2,7 +2,7 @@
 
 /// <summary>
 /// Se encarga exclusivamente de actualizar las posturas de combate (Idles y Stances) en el Animator
-/// dependiendo de las partes del cuerpo que le falten al Fighter.
+/// utilizando un Blend Tree de tipo Direct basado en Floats.
 /// </summary>
 public class FighterCombatAnimator : MonoBehaviour
 {
@@ -10,7 +10,8 @@ public class FighterCombatAnimator : MonoBehaviour
     [SerializeField] private Fighter fighter;
     [SerializeField] private Animator animator;
 
-    [Header("Animator Parameters")]
+    [Header("Animator Parameters (Must be FLOATS)")]
+    [SerializeField] private string baseWeightParam = "BaseWeight";
     [SerializeField] private string isMissingLeftArmParam = "IsMissingLeftArm";
     [SerializeField] private string isMissingRightArmParam = "IsMissingRightArm";
     [SerializeField] private string isMissingOneLegParam = "IsMissingOneLeg";
@@ -45,37 +46,57 @@ public class FighterCombatAnimator : MonoBehaviour
 
     private void Start()
     {
-        // Forzar actualización inicial por si ya está herido al empezar
         UpdateCombatStance();
     }
 
-    /// <summary>
-    /// Suscripción al evento de destrucción de partes del cuerpo.
-    /// </summary>
     private void HandleBodyPartDestroyed(BodyPart part)
     {
         UpdateCombatStance();
     }
 
     /// <summary>
-    /// Fuerza la actualización de los parámetros del Animator basándose en el estado actual del Fighter.
+    /// Fuerza la actualización de los parámetros Float del Animator.
     /// </summary>
     public void UpdateCombatStance()
     {
         if (fighter == null || animator == null) return;
 
-        // Brazos
-        bool missingLeftArm = IsPartDestroyed(BodyPart.LeftArm);
-        bool missingRightArm = IsPartDestroyed(BodyPart.RightArm);
+        // 1. Empezamos con todos los pesos en 0
+        float baseWeight = 0f;
+        float leftArmWeight = 0f;
+        float rightArmWeight = 0f;
+        float oneLegWeight = 0f;
+        float bothLegsWeight = 0f;
 
-        animator.SetBool(isMissingLeftArmParam, missingLeftArm);
-        animator.SetBool(isMissingRightArmParam, missingRightArm);
+        // 2. Evaluamos desde la herida más grave a la más leve
+        if (fighter.bothLegsBroken)
+        {
+            bothLegsWeight = 1f; // Pierde las dos piernas (Postura en el suelo)
+        }
+        else if (fighter.oneLegBroken)
+        {
+            oneLegWeight = 1f; // Pierde una pierna (Postura cojeando)
+        }
+        else if (IsPartDestroyed(BodyPart.RightArm))
+        {
+            rightArmWeight = 1f; // Pierde brazo derecho
+        }
+        else if (IsPartDestroyed(BodyPart.LeftArm))
+        {
+            leftArmWeight = 1f; // Pierde brazo izquierdo
+        }
+        else
+        {
+            baseWeight = 1f; // Personaje sano (Postura normal)
+        }
 
-        // Piernas (usando las propiedades existentes del Fighter)
-        animator.SetBool(isMissingOneLegParam, fighter.oneLegBroken);
-        animator.SetBool(isMissingBothLegsParam, fighter.bothLegsBroken);
+        // 3. Enviamos los valores al Animator (Solo UNO va a ser 1f, el resto 0f)
+        animator.SetFloat(baseWeightParam, baseWeight);
+        animator.SetFloat(isMissingLeftArmParam, leftArmWeight);
+        animator.SetFloat(isMissingRightArmParam, rightArmWeight);
+        animator.SetFloat(isMissingOneLegParam, oneLegWeight);
+        animator.SetFloat(isMissingBothLegsParam, bothLegsWeight);
     }
-
     private bool IsPartDestroyed(BodyPart partType)
     {
         var partData = fighter.GetBodyPart(partType);
