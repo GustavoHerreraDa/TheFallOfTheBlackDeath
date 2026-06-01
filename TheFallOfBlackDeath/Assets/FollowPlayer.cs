@@ -10,7 +10,7 @@ public class FollowPlayer : MonoBehaviour
     /// <summary>
     /// Defines the named values used by enemy state.
     /// </summary>
-    public enum EnemyState { Idle, Patrol, Chase, Death }
+    public enum EnemyState { Idle, Patrol, Chase, Death, Stunned }
 
     [Header("Estado actual del enemigo")]
     public EnemyState currentState = EnemyState.Idle;
@@ -243,6 +243,7 @@ public class FollowPlayer : MonoBehaviour
         anim.SetBool("Patrol", currentState == EnemyState.Patrol);
         anim.SetBool("Chase", currentState == EnemyState.Chase);
         anim.SetBool("Death", currentState == EnemyState.Death);
+        anim.SetBool("Stunned", currentState == EnemyState.Stunned);
     }
 
     public void StopEnemyForTransition()
@@ -279,7 +280,7 @@ public class FollowPlayer : MonoBehaviour
             agent.velocity = Vector3.zero;
         }
 
-        currentState = EnemyState.Idle;
+        currentState = EnemyState.Stunned;
         SetAnimationBooleans();
 
         yield return new WaitForSeconds(duration);
@@ -287,7 +288,6 @@ public class FollowPlayer : MonoBehaviour
         isStunned = false;
 
         EnemyState nextState = (puntoA != null && puntoB != null) ? EnemyState.Patrol : EnemyState.Idle;
-        currentState = nextState == EnemyState.Patrol ? EnemyState.Idle : EnemyState.Patrol;
         ChangeState(nextState);
         stunRoutine = null;
     }

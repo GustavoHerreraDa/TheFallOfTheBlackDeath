@@ -6,6 +6,9 @@ using UnityEngine;
 /// </summary>
 public class ApplySCSkill : BodyPartTargetSkill
 {
+    [Header("Synergy Settings")]
+    public PartStatus statusToApply = PartStatus.None;
+
     [Header("Initial Body Part Damage")]
     public float damageAmount = 0f;
     public DamageType damageType = DamageType.Kinetic;
@@ -55,7 +58,7 @@ public class ApplySCSkill : BodyPartTargetSkill
             -damageAmount, // Será 0 si la habilidad no hace daño directo
             this.modType,
             this.damageType,
-            PartStatus.None,
+            this.statusToApply,
             this.baseCritChance,
             this.spiritSoftCap,
             this.maxSpiritCritBonus,

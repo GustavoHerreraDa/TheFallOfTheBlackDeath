@@ -46,10 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Left Punch
   rarity: 0
-  animationDuration: 1
+  effectConfig: {fileID: 0}
+  actionDelay: 1
   targeting: 4
   BodyPartTarget: 0
-  effectPrfb: {fileID: 5627696518775099638, guid: 4567f1a4893865a4e99367437ee729af, type: 3}
   SkillDesc: <color=#FFCC00><Left Arm Required></color> 40 True Damage no miss chances
   skillType: 4
   iconUI: {fileID: 0}
@@ -114,10 +114,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Impact Shot
   rarity: 1
-  animationDuration: 1
+  effectConfig: {fileID: 0}
+  actionDelay: 1
   targeting: 4
   BodyPartTarget: 2
-  effectPrfb: {fileID: 725748389856807714, guid: 4bda94453d2ca7444a0fff05b2d425f5, type: 3}
   SkillDesc: <color=#FFCC00><Right Arm Required></color><color=#FF00FF>50 damage</color>(<color=#FF00FF>
     50%</color> critical chance)
   skillType: 5
@@ -343,10 +343,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Oil Shoot
   rarity: 1
-  animationDuration: 1
+  effectConfig: {fileID: 0}
+  actionDelay: 1
   targeting: 4
   BodyPartTarget: 0
-  effectPrfb: {fileID: 725748389856807714, guid: 4bda94453d2ca7444a0fff05b2d425f5, type: 3}
   SkillDesc: <color=#FFCC00><Right Arm Required></color> Covers the enemy in oil
     and deals  10 True Damage
   skillType: 5
@@ -639,74 +639,6 @@ MonoBehaviour:
   glitchPlayerOnDamage: 0
   normalHitVolume: 0.7
   criticalHitVolume: 1
---- !u!1 &8987339969749546392
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1900893002487740563}
-  - component: {fileID: 9101847917751485330}
-  m_Layer: 6
-  m_Name: Tackle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1900893002487740563
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8987339969749546392}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
-  m_LocalPosition: {x: 7, y: 1.41, z: 2.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7305297877295874578}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9101847917751485330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8987339969749546392}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd512efa830145a2a8f36d1adbcb72ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillName: Tackle
-  rarity: 0
-  animationDuration: 1
-  targeting: 4
-  BodyPartTarget: 0
-  effectPrfb: {fileID: 5627696518775099638, guid: 4567f1a4893865a4e99367437ee729af, type: 3}
-  SkillDesc: <color=#FFCC00><Torso Required></color> 20 True Damage no miss chances
-  skillType: 4
-  iconUI: {fileID: 0}
-  animationName: Left Punch
-  HasItemInInventory: 0
-  ItemsNeeded: []
-  activationSound: {fileID: 8300000, guid: 5357356d2fe42d9498d22abb01ff8e39, type: 3}
-  customImpactSound: {fileID: 8300000, guid: b9252d72e21413841a0ead4552eacb5a, type: 3}
-  sanityCost: 0
-  requiredParts: 02000000
-  damageType: 3
-  statusToApply: 0
-  amount: -20
-  modType: 1
-  baseCritChance: 0
-  spiritSoftCap: 50
-  maxSpiritCritBonus: 0.4
-  missChance: 0
 --- !u!1001 &5584372795537390924
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1303,3 +1235,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3457708684886828793, guid: b79cefb028e24bc43aadf56d547af90a, type: 3}
   m_PrefabInstance: {fileID: 6059164482642525411}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7652304396101453331
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7305297877295874578}
+    m_Modifications:
+    - target: {fileID: 1624392469063857035, guid: a0d976894785c2340a45ce2f2ab087ac, type: 3}
+      propertyPath: m_Name
+      value: Tackle
+      objectReference: {fileID: 0}
+    - target: {fileID: 8093855083366137472, guid: a0d976894785c2340a45ce2f2ab087ac, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8093855083366137472, guid: a0d976894785c2340a45ce2f2ab087ac, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.41
+      objectReference: {fileID: 0}
+    - target: {fileID: 8093855083366137472, guid: a0d976894785c2340a45ce2f2ab087ac, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8093855083366137472, guid: a0d976894785c2340a45ce2f2ab087ac, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.73276305
+      objectReference: {fileID: 0}
+    - target: {fileID: 8093855083366137472, guid: a0d976894785c2340a45ce2f2ab087ac, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8093855083366137472, guid: a0d976894785c2340a45ce2f2ab087ac, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.6804839
+      objectReference: {fileID: 0}
+    - target: {fileID: 8093855083366137472, guid: a0d976894785c2340a45ce2f2ab087ac, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8093855083366137472, guid: a0d976894785c2340a45ce2f2ab087ac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8093855083366137472, guid: a0d976894785c2340a45ce2f2ab087ac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8093855083366137472, guid: a0d976894785c2340a45ce2f2ab087ac, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a0d976894785c2340a45ce2f2ab087ac, type: 3}
+--- !u!4 &1900893002487740563 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8093855083366137472, guid: a0d976894785c2340a45ce2f2ab087ac, type: 3}
+  m_PrefabInstance: {fileID: 7652304396101453331}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9101847917751485330 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1468789449243313537, guid: a0d976894785c2340a45ce2f2ab087ac, type: 3}
+  m_PrefabInstance: {fileID: 7652304396101453331}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd512efa830145a2a8f36d1adbcb72ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
