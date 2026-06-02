@@ -48,7 +48,6 @@ namespace InventoryNew
                 return;
             }
 
-            // Opcional: Podríamos intentar auto-detectar el nombre si no hay mensaje personalizado
             if (string.IsNullOrEmpty(pickupMessage) && itemData != null)
             {
                 pickupMessage = "Recoger " + itemData.itemName;
@@ -76,6 +75,17 @@ namespace InventoryNew
                 NewInventoryManager.Instance.AddItem(itemData, amount);
                 Debug.Log($"[NewItemPickup] Recogido: {itemData.itemName} x{amount}");
                 
+                // ── NOTIFICATION ────────────────────────────────────────────
+                if (ItemNotificationManager.Instance != null)
+                {
+                    ItemNotificationManager.Instance.NotifyPickup(itemData, amount);
+                }
+                else
+                {
+                    Debug.LogWarning($"[NewItemPickup] No se pudo notificar pickup de '{itemData.itemName}' porque ItemNotificationManager.Instance es null.");
+                }
+                // ────────────────────────────────────────────────────────────
+
                 // Registrar recogida en el GameManager
                 if (GameManager.Instance != null)
                 {
@@ -105,8 +115,6 @@ namespace InventoryNew
             if (other.CompareTag("Charecter"))
             {
                 playerInRange = true;
-                // Si tienes un sistema de UI de interacción global, podrías mostrar el mensaje aquí
-                // Por ejemplo, buscando un componente en el jugador o un singleton de UI
                 ShowInteractionPrompt(true);
             }
         }
@@ -122,7 +130,6 @@ namespace InventoryNew
 
         private void ShowInteractionPrompt(bool show)
         {
-            // Uso del nuevo InteractionPromptUI singleton
             if (show && itemData != null)
             {
                 InteractionPromptUI.Instance?.Show($"[ E ]  Recoger {itemData.itemName}");

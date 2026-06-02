@@ -347,18 +347,29 @@ public class CombatManager : MonoBehaviour
                      
                         // ── 5. Grant items to inventory (NEW SYSTEM ONLY) ──────────────
                         // The legacy InventoryManager path has been removed.
+                        
                         if (InventoryNew.NewInventoryManager.Instance != null)
                         {
                             foreach (var entry in allLoot)
                             {
                                 if (entry.newItemData == null)
                                 {
-                                    // Skip entries that haven't been migrated to NewItemData
                                     Debug.LogWarning("Loot entry without NewItemData was skipped. Please assign a NewItemData in the BodyPartLootTable.");
                                     continue;
                                 }
-
+ 
                                 InventoryNew.NewInventoryManager.Instance.AddItem(entry.newItemData, entry.amount);
+ 
+                                // ── NOTIFICATION (queued — shown when world scene loads) ──
+                                if (ItemNotificationManager.Instance != null)
+                                {
+                                    ItemNotificationManager.Instance.NotifyLoot(entry.newItemData, entry.amount);
+                                }
+                                else
+                                {
+                                    Debug.LogWarning($"[CombatManager] No se pudo notificar loot de '{entry.newItemData.itemName}' porque ItemNotificationManager.Instance es null.");
+                                }
+                                // ──────────────────────────────────────────────────────────
                             }
                         }
                      
