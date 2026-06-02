@@ -33,6 +33,11 @@ public class PlayerFighter : Fighter
     [Header("New Inventory System")]
     public EquipmentHandler equipmentHandler;
 
+    [Header("Skill Loadout")]
+    public int maxActiveSkills = 4; // NUEVO: cantidad maxima de skills activas visibles/ejecutables.
+    public Skill[] allLearnedSkills = new Skill[0]; // NUEVO: pool total de skills base + skills otorgadas por equipo.
+    private readonly List<string> requestedActiveLoadoutIds = new List<string>(); // NUEVO: IDs pedidos para restaurar loadouts persistidos.
+
     /// <summary>
     /// Devuelve el modificador de un ítem para una estadística específica.
     /// Útil para previsualizar cambios.
@@ -113,10 +118,20 @@ public class PlayerFighter : Fighter
             Debug.Log($"[PlayerFighter.Awake] Skipping DB init because saved data exists for figherIndex={figherIndex}");
         }
 
-        // Always fetch skills from children (include inactive) to be the single source of truth
-        this.skills = GetComponentsInChildren<Skill>(true);
+        // MODIFICADO: inicializar equipo antes de reconstruir el pool de skills.
+        if (equipmentHandler == null)
+            equipmentHandler = GetComponent<EquipmentHandler>();
+
+        if (equipmentHandler != null)
+        {
+            equipmentHandler.Initialize(this);
+            equipmentHandler.OnEquipChanged -= HandleEquipmentChanged;
+            equipmentHandler.OnEquipChanged += HandleEquipmentChanged;
+        }
+
+        RebuildSkillPool(); // NUEVO
         int skillsCountInit = (this.skills != null) ? this.skills.Length : 0;
-        Debug.Log($"[PlayerFighter.Awake] fetched skills from children (includeInactive=true): count={skillsCountInit}");
+        Debug.Log($"[PlayerFighter.Awake] active loadout skills count={skillsCountInit}");
 
         allies = new List<Fighter>();
         allies.Add(this); // Agregar al jugador actual como el primer aliado activo
@@ -137,6 +152,167 @@ public class PlayerFighter : Fighter
                 Debug.Log($"[PlayerFighter.Awake] Not saving in Awake to avoid overwriting restored state for figherIndex={figherIndex}");
             }
         }
+    }
+
+    private void OnDestroy() // NUEVO
+    {
+        if (equipmentHandler != null)
+            equipmentHandler.OnEquipChanged -= HandleEquipmentChanged;
+    }
+
+    private void HandleEquipmentChanged() // NUEVO
+    {
+        RebuildSkillPool();
+    }
+
+    public void RebuildSkillPool() // NUEVO
+    {
+        List<string> loadoutIdsToKeep = requestedActiveLoadoutIds.Count > 0
+            ? new List<string>(requestedActiveLoadoutIds)
+            : GetActiveLoadoutIds();
+
+        var rebuiltPool = new List<Skill>();
+        var seen = new HashSet<Skill>();
+
+        AddSkillsToPool(GetComponentsInChildren<Skill>(true), rebuiltPool, seen);
+
+        if (equipmentHandler != null)
+            AddSkillsToPool(equipmentHandler.GetGrantedSkills(), rebuiltPool, seen);
+
+        allLearnedSkills = rebuiltPool.ToArray();
+        ApplyActiveLoadout(loadoutIdsToKeep, true);
+
+        int poolCount = allLearnedSkills != null ? allLearnedSkills.Length : 0;
+        int activeCount = skills != null ? skills.Length : 0;
+        Debug.Log($"[PlayerFighter.RebuildSkillPool] pool={poolCount}, active={activeCount}, maxActive={maxActiveSkills}");
+    }
+
+    public void SetActiveLoadout(List<string> skillNames) // NUEVO
+    {
+        requestedActiveLoadoutIds.Clear();
+
+        if (skillNames != null)
+        {
+            foreach (string skillName in skillNames)
+            {
+                if (string.IsNullOrEmpty(skillName) || requestedActiveLoadoutIds.Contains(skillName))
+                    continue;
+
+                requestedActiveLoadoutIds.Add(skillName);
+            }
+        }
+
+        if (allLearnedSkills == null || allLearnedSkills.Length == 0)
+            RebuildSkillPool();
+        else
+            ApplyActiveLoadout(requestedActiveLoadoutIds, true);
+    }
+
+    public List<string> GetActiveLoadoutIds() // NUEVO
+    {
+        var ids = new List<string>();
+        if (skills == null) return ids;
+
+        foreach (var skill in skills)
+        {
+            if (skill == null) continue;
+
+            string id = GetSkillIdentifier(skill);
+            if (!string.IsNullOrEmpty(id))
+                ids.Add(id);
+        }
+
+        return ids;
+    }
+
+    private void AddSkillsToPool(Skill[] sourceSkills, List<Skill> pool, HashSet<Skill> seen) // NUEVO
+    {
+        if (sourceSkills == null) return;
+
+        foreach (var skill in sourceSkills)
+        {
+            if (skill == null || seen.Contains(skill))
+                continue;
+
+            seen.Add(skill);
+            pool.Add(skill);
+        }
+    }
+
+    private void ApplyActiveLoadout(List<string> loadoutIds, bool fillEmptySlots) // NUEVO
+    {
+        int slotLimit = Mathf.Max(0, maxActiveSkills);
+        var activeSkills = new List<Skill>(slotLimit);
+        var used = new HashSet<Skill>();
+
+        if (loadoutIds != null)
+        {
+            foreach (string loadoutId in loadoutIds)
+            {
+                if (activeSkills.Count >= slotLimit)
+                    break;
+
+                Skill skill = FindSkillInPool(loadoutId, used);
+                if (skill == null)
+                    continue;
+
+                used.Add(skill);
+                activeSkills.Add(skill);
+            }
+        }
+
+        if (fillEmptySlots && allLearnedSkills != null)
+        {
+            foreach (var skill in allLearnedSkills)
+            {
+                if (activeSkills.Count >= slotLimit)
+                    break;
+
+                if (skill == null || used.Contains(skill))
+                    continue;
+
+                used.Add(skill);
+                activeSkills.Add(skill);
+            }
+        }
+
+        skills = activeSkills.ToArray();
+    }
+
+    private Skill FindSkillInPool(string skillId, HashSet<Skill> ignoredSkills) // NUEVO
+    {
+        if (string.IsNullOrEmpty(skillId) || allLearnedSkills == null)
+            return null;
+
+        foreach (var skill in allLearnedSkills)
+        {
+            if (skill == null || ignoredSkills.Contains(skill))
+                continue;
+
+            if (SkillMatchesId(skill, skillId))
+                return skill;
+        }
+
+        return null;
+    }
+
+    private bool SkillMatchesId(Skill skill, string skillId) // NUEVO
+    {
+        if (skill == null || string.IsNullOrEmpty(skillId))
+            return false;
+
+        string stableId = GetSkillIdentifier(skill);
+        if (string.Equals(stableId, skillId, System.StringComparison.Ordinal))
+            return true;
+
+        return !string.IsNullOrEmpty(skill.skillName) &&
+               string.Equals(skill.skillName, skillId, System.StringComparison.Ordinal);
+    }
+
+    private string GetSkillIdentifier(Skill skill) // NUEVO
+    {
+        if (skill == null) return string.Empty;
+        return !string.IsNullOrEmpty(skill.skillId) ? skill.skillId : skill.skillName;
     }
 
     /// <summary>

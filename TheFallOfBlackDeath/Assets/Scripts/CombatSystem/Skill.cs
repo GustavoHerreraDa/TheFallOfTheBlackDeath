@@ -30,6 +30,7 @@ public abstract class Skill : MonoBehaviour
 {
     [Header("Base Skill")]
     public string skillName;
+    public string skillId; // NUEVO: ID estable opcional; si queda vacio se usa skillName como fallback.
 
     [Header("Rarity")]
     public SkillRarity rarity;

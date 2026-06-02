@@ -15,9 +15,19 @@ namespace InventoryNew
         // Current totals for quick access
         private Dictionary<StatType, float> totalModifiers = new Dictionary<StatType, float>();
 
+        [SerializeField] private PlayerFighter owner; // NUEVO: Fighter que recibe las skills otorgadas por equipo.
+        private Dictionary<EquipmentSlot, List<GameObject>> grantedSkillInstances = new Dictionary<EquipmentSlot, List<GameObject>>(); // NUEVO
+
         private void Awake()
         {
             EnsureInitialized();
+        }
+
+        public void Initialize(PlayerFighter owner) // NUEVO
+        {
+            this.owner = owner;
+            EnsureInitialized();
+            RebuildGrantedSkillInstances();
         }
 
         private void EnsureInitialized()
@@ -26,11 +36,17 @@ namespace InventoryNew
             {
                 InitializeSlots();
             }
+            else
+            {
+                EnsureEquipmentSlotKeys(); // NUEVO
+            }
 
             if (totalModifiers == null || totalModifiers.Count == 0)
             {
                 InitializeStats();
             }
+
+            EnsureGrantedSkillSlotCache(); // NUEVO
         }
 
         private void InitializeSlots()
@@ -39,6 +55,15 @@ namespace InventoryNew
             foreach (EquipmentSlot slot in Enum.GetValues(typeof(EquipmentSlot)))
             {
                 equippedItems[slot] = null;
+            }
+        }
+
+        private void EnsureEquipmentSlotKeys() // NUEVO
+        {
+            foreach (EquipmentSlot slot in Enum.GetValues(typeof(EquipmentSlot)))
+            {
+                if (!equippedItems.ContainsKey(slot))
+                    equippedItems[slot] = null;
             }
         }
 
@@ -73,6 +98,8 @@ namespace InventoryNew
             }
 
             equippedItems[equipment.slot] = equipment;
+            DestroyGrantedSkillsForSlot(equipment.slot); // NUEVO
+            CreateGrantedSkillsForEquipment(equipment); // NUEVO
             RecalculateStats();
             OnEquipChanged?.Invoke();
             
@@ -89,6 +116,7 @@ namespace InventoryNew
             {
                 var item = equippedItems[slot];
                 equippedItems[slot] = null;
+                DestroyGrantedSkillsForSlot(slot); // NUEVO
 
                 // Devolver al inventario
                 if (NewInventoryManager.Instance != null)
@@ -108,6 +136,7 @@ namespace InventoryNew
             foreach (var item in equippedItems.Values)
             {
                 if (item == null) continue;
+                if (item.modifiers == null) continue; // MODIFICADO: equipos que solo otorgan skills pueden no tener modificadores.
 
                 foreach (var mod in item.modifiers)
                 {
@@ -131,6 +160,8 @@ namespace InventoryNew
             EnsureInitialized();
             if (equippedItems.ContainsKey(slot) && equippedItems[slot] != null)
             {
+                if (equippedItems[slot].modifiers == null) return 0; // MODIFICADO
+
                 float total = 0;
                 foreach (var mod in equippedItems[slot].modifiers)
                 {
@@ -160,6 +191,7 @@ namespace InventoryNew
         public void ClearAllEquipped()
         {
             EnsureInitialized();
+            ClearAllGrantedSkillInstances(); // NUEVO
             InitializeSlots();
             RecalculateStats();
             OnEquipChanged?.Invoke();
@@ -173,9 +205,112 @@ namespace InventoryNew
         {
             EnsureInitialized();
             if (equipment == null) return;
+            DestroyGrantedSkillsForSlot(equipment.slot); // NUEVO
             equippedItems[equipment.slot] = equipment;
+            CreateGrantedSkillsForEquipment(equipment); // NUEVO
             RecalculateStats();
             OnEquipChanged?.Invoke();
+        }
+
+        public Skill[] GetGrantedSkills() // NUEVO
+        {
+            EnsureInitialized();
+            var skills = new List<Skill>();
+
+            foreach (var instances in grantedSkillInstances.Values)
+            {
+                if (instances == null) continue;
+
+                foreach (var instance in instances)
+                {
+                    if (instance == null) continue;
+                    skills.AddRange(instance.GetComponentsInChildren<Skill>(true));
+                }
+            }
+
+            return skills.ToArray();
+        }
+
+        private void EnsureGrantedSkillSlotCache() // NUEVO
+        {
+            if (grantedSkillInstances == null)
+                grantedSkillInstances = new Dictionary<EquipmentSlot, List<GameObject>>();
+
+            foreach (EquipmentSlot slot in Enum.GetValues(typeof(EquipmentSlot)))
+            {
+                if (!grantedSkillInstances.ContainsKey(slot) || grantedSkillInstances[slot] == null)
+                    grantedSkillInstances[slot] = new List<GameObject>();
+            }
+        }
+
+        private void RebuildGrantedSkillInstances() // NUEVO
+        {
+            ClearAllGrantedSkillInstances();
+            if (owner == null) return;
+
+            foreach (var item in equippedItems.Values)
+            {
+                if (item == null) continue;
+                CreateGrantedSkillsForEquipment(item);
+            }
+        }
+
+        private void CreateGrantedSkillsForEquipment(NewEquipmentData equipment) // NUEVO
+        {
+            if (owner == null || equipment == null || equipment.grantedSkillPrefabs == null)
+                return;
+
+            EnsureGrantedSkillSlotCache();
+
+            foreach (var prefab in equipment.grantedSkillPrefabs)
+            {
+                if (prefab == null) continue;
+
+                var instance = Instantiate(prefab, owner.transform);
+                instance.name = $"{prefab.name} (Granted by {equipment.itemName})";
+                grantedSkillInstances[equipment.slot].Add(instance);
+
+                if (instance.GetComponentInChildren<Skill>(true) == null)
+                {
+                    Debug.LogWarning($"[EquipmentHandler] El prefab '{prefab.name}' otorgado por '{equipment.itemName}' no contiene ningun componente Skill.");
+                }
+            }
+        }
+
+        private void DestroyGrantedSkillsForSlot(EquipmentSlot slot) // NUEVO
+        {
+            EnsureGrantedSkillSlotCache();
+            if (!grantedSkillInstances.TryGetValue(slot, out var instances) || instances == null)
+                return;
+
+            foreach (var instance in instances)
+            {
+                DestroySkillInstance(instance);
+            }
+
+            instances.Clear();
+        }
+
+        private void ClearAllGrantedSkillInstances() // NUEVO
+        {
+            EnsureGrantedSkillSlotCache();
+
+            foreach (var slot in grantedSkillInstances.Keys)
+            {
+                DestroyGrantedSkillsForSlot(slot);
+            }
+        }
+
+        private void DestroySkillInstance(GameObject instance) // NUEVO
+        {
+            if (instance == null) return;
+
+            instance.transform.SetParent(null); // NUEVO: evita que el pool del PlayerFighter vea objetos pendientes de Destroy().
+
+            if (Application.isPlaying)
+                Destroy(instance);
+            else
+                DestroyImmediate(instance);
         }
     }
 }

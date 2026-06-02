@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
             public string itemId;
         }
         public List<EquippedItemData> equippedItems = new List<EquippedItemData>();
+        public List<string> activeSkillLoadoutIds = new List<string>(); // NUEVO: IDs de las skills activas para restaurar el loadout.
     }
     
     public event System.Action OnPlayerStatsUpdated;
@@ -1032,7 +1033,8 @@ public class GameManager : MonoBehaviour
             spirit = s.spirit,
             speed = s.speed,
             bodyPartsHealth = new List<float>(),
-            bodyPartsMaxHealth = new List<float>()
+            bodyPartsMaxHealth = new List<float>(),
+            activeSkillLoadoutIds = fighter.GetActiveLoadoutIds() // NUEVO
         };
 
         foreach (var part in fighter.bodyParts)
@@ -1136,6 +1138,12 @@ public class GameManager : MonoBehaviour
                     Debug.LogError($"[GameManager] ALERTA: No se pudo restaurar el equipo con ID '{itemData.itemId}'. ¿Olvidaste agregar el ScriptableObject al masterCatalog del NewInventoryManager o el ID está vacío?");
                 }
             }
+        }
+
+        fighter.RebuildSkillPool(); // NUEVO: asegura que el pool incluya las skills base y las otorgadas por el equipo restaurado.
+        if (savedPlayerStatus.activeSkillLoadoutIds != null && savedPlayerStatus.activeSkillLoadoutIds.Count > 0)
+        {
+            fighter.SetActiveLoadout(savedPlayerStatus.activeSkillLoadoutIds); // NUEVO
         }
 
         // Trigger recalculation of equipment stats in the fighter
