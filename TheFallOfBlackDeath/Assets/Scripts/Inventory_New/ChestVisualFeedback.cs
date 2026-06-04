@@ -4,7 +4,7 @@ using System.Collections;
 namespace InventoryNew
 {
     /// <summary>
-    /// Componente para manejar la retroalimentación visual de cofres.
+    /// Componente para manejar la retroalimentación visual y de audio de cofres.
     /// Proporciona animaciones para abrir la tapa del cofre y mantener
     /// la persistencia visual al cambiar de escenas.
     /// </summary>
@@ -17,7 +17,11 @@ namespace InventoryNew
         [SerializeField] private Vector3 openRotation = new Vector3(90f, 0f, 0f);
         [SerializeField] private float animationDuration = 0.5f;
 
+        [Header("Audio Settings")]
+        [SerializeField] private AudioClip chestOpenSound;
+
         private Coroutine openAnimationCoroutine;
+        private AudioSource audioSource;
 
         private void OnValidate()
         {
@@ -27,8 +31,18 @@ namespace InventoryNew
             }
         }
 
+        private void Awake()
+        {
+            // Obtener o crear AudioSource
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
+        }
+
         /// <summary>
-        /// Abre el cofre con una animación suave usando Lerp.
+        /// Abre el cofre con una animación suave usando Lerp y reproduce el sonido.
         /// </summary>
         public void OpenChestAnimated()
         {
@@ -37,6 +51,9 @@ namespace InventoryNew
             {
                 StopCoroutine(openAnimationCoroutine);
             }
+
+            // Reproducir sonido de apertura
+            PlayChestOpenSound();
 
             openAnimationCoroutine = StartCoroutine(OpenChestAnimatedCoroutine());
         }
@@ -54,6 +71,29 @@ namespace InventoryNew
             }
 
             chestLid.localEulerAngles = openRotation;
+        }
+
+        /// <summary>
+        /// Reproduce el sonido de apertura del cofre usando AudioManager.
+        /// </summary>
+        private void PlayChestOpenSound()
+        {
+            if (chestOpenSound == null)
+            {
+                Debug.LogWarning("[ChestVisualFeedback] No hay sonido de apertura asignado.");
+                return;
+            }
+
+            // Intentar usar AudioManager si está disponible
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySoundEffect(chestOpenSound);
+            }
+            else if (audioSource != null)
+            {
+                // Fallback: reproducir localmente
+                audioSource.PlayOneShot(chestOpenSound);
+            }
         }
 
         /// <summary>
