@@ -34,6 +34,7 @@ namespace InventoryNew
 
         [Header("Audio Settings")]
         [SerializeField] private AudioClip pickupSound;
+        [SerializeField] private float pickupVolume = 1f;
 
         [Header("Events")]
         public UnityEvent onPickup = new UnityEvent();
@@ -182,12 +183,12 @@ namespace InventoryNew
             // Intentar usar AudioManager si está disponible
             if (AudioManager.Instance != null)
             {
-                AudioManager.Instance.PlaySoundEffect(pickupSound);
+                AudioManager.Instance.PlaySFX(pickupSound, pickupVolume, useRandomPitch: true);
             }
             else if (audioSource != null)
             {
                 // Fallback: reproducir localmente
-                audioSource.PlayOneShot(pickupSound);
+                audioSource.PlayOneShot(pickupSound, pickupVolume);
             }
         }
 
