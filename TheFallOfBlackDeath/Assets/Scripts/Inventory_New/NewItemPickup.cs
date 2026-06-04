@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using UnityEngine;
+using UnityEngine.Events;
 using InventoryNew;
 using TMPro;
 
@@ -10,6 +11,16 @@ namespace InventoryNew
     /// </summary>
     public class NewItemPickup : MonoBehaviour
     {
+        /// <summary>
+        /// Define el comportamiento del objeto después de ser recogido.
+        /// </summary>
+        public enum PostPickupAction
+        {
+            Destroy,      // Destruye el objeto
+            Deactivate,   // Desactiva el objeto
+            KeepVisible   // Mantiene el objeto visible pero sin collider
+        }
+
         [Header("Persistence")]
         public string pickupId;
 
@@ -19,9 +30,14 @@ namespace InventoryNew
 
         [Header("Interaction Settings")]
         [SerializeField] private string pickupMessage = "Presiona E para recoger ";
-        [SerializeField] private bool destroyOnPickup = true;
-        
+        [SerializeField] private PostPickupAction postPickupAction = PostPickupAction.Destroy;
+
+        [Header("Events")]
+        public UnityEvent onPickup = new UnityEvent();
+        public UnityEvent onAlreadyCollected = new UnityEvent();
+
         private bool playerInRange = false;
+        private Collider pickupCollider;
 
         private void OnValidate()
         {
@@ -37,6 +53,8 @@ namespace InventoryNew
             {
                 pickupId = System.Guid.NewGuid().ToString();
             }
+
+            pickupCollider = GetComponent<Collider>();
         }
 
         private void Start()
@@ -44,7 +62,18 @@ namespace InventoryNew
             // Comprobar si ya fue recogido
             if (GameManager.Instance != null && GameManager.Instance.IsPickupCollected(GetPersistenceKey()))
             {
-                Destroy(gameObject);
+                // Desactivar el collider
+                if (pickupCollider != null)
+                {
+                    pickupCollider.enabled = false;
+                }
+
+                // Disparar el evento de ya recogido
+                onAlreadyCollected?.Invoke();
+
+                // Ejecutar la acción según el enum
+                ExecutePostPickupAction();
+
                 return;
             }
 
@@ -84,7 +113,7 @@ namespace InventoryNew
                 {
                     Debug.LogWarning($"[NewItemPickup] No se pudo notificar pickup de '{itemData.itemName}' porque ItemNotificationManager.Instance es null.");
                 }
-                // ────────────────────────────────────────────────────────────
+                // ───────────────────────────────────────────────────────────
 
                 // Registrar recogida en el GameManager
                 if (GameManager.Instance != null)
@@ -92,21 +121,42 @@ namespace InventoryNew
                     GameManager.Instance.RegisterPickupCollected(GetPersistenceKey());
                 }
                 
-                // Ocultar el prompt antes de destruir/desactivar
+                // Ocultar el prompt antes de procesar
                 InteractionPromptUI.Instance?.Hide();
 
-                if (destroyOnPickup)
+                // Desactivar el collider
+                if (pickupCollider != null)
                 {
-                    Destroy(gameObject);
+                    pickupCollider.enabled = false;
                 }
-                else
-                {
-                    gameObject.SetActive(false);
-                }
+
+                // Disparar el evento de recogida
+                onPickup?.Invoke();
+
+                // Ejecutar la acción según el enum
+                ExecutePostPickupAction();
             }
             else
             {
                 Debug.LogError("[NewItemPickup] No se encontró NewInventoryManager en la escena.");
+            }
+        }
+
+        private void ExecutePostPickupAction()
+        {
+            switch (postPickupAction)
+            {
+                case PostPickupAction.Destroy:
+                    Destroy(gameObject);
+                    break;
+
+                case PostPickupAction.Deactivate:
+                    gameObject.SetActive(false);
+                    break;
+
+                case PostPickupAction.KeepVisible:
+                    // El objeto permanece en la escena sin collider (ya está desactivado)
+                    break;
             }
         }
 
