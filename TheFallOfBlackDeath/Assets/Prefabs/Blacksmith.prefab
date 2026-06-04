@@ -493,83 +493,6 @@ MonoBehaviour:
   spiritSoftCap: 50
   maxSpiritCritBonus: 0.4
   missChance: 0
---- !u!1 &5016783432725412600
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 115035783429502368}
-  - component: {fileID: 4893867992798957565}
-  - component: {fileID: 8948735299607136836}
-  m_Layer: 6
-  m_Name: Defense
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &115035783429502368
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5016783432725412600}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
-  m_LocalPosition: {x: 5.7599998, y: 1.41, z: -1.6998763}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7305297877295874578}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4893867992798957565
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5016783432725412600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb388f505dcd7c142b94ee84944b0e1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StatusModSkill
-  skillName: Defense
-  skillId: 
-  rarity: 0
-  effectConfig: {fileID: 11400000, guid: 8bedb2d0824a31d4fa765387fdb58691, type: 2}
-  actionDelay: 1
-  targeting: 0
-  BodyPartTarget: 0
-  SkillDesc: A good defense can be the best attack
-  skillType: 0
-  iconUI: {fileID: 0}
-  animationName: 
-  HasItemInInventory: 0
-  ItemsNeeded: []
-  activationSound: {fileID: 0}
-  customImpactSound: {fileID: 0}
-  sanityCost: 0
-  requiredParts: 0400000005000000
-  message: raises his defense
---- !u!114 &8948735299607136836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5016783432725412600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef35ef11d10b7ac4ab99c73025fe1866, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StatusMod
-  type: 1
-  amount: 10
 --- !u!1 &6161406991422890182
 GameObject:
   m_ObjectHideFlags: 0
@@ -700,7 +623,6 @@ Transform:
   m_Children:
   - {fileID: 3187800595016478409}
   - {fileID: 7922925822324754533}
-  - {fileID: 115035783429502368}
   - {fileID: 9220406930678221090}
   - {fileID: 4259703240449388098}
   - {fileID: 1900893002487740563}
@@ -774,7 +696,8 @@ MonoBehaviour:
   - {fileID: 5055089207862759208}
   - {fileID: 2499414552199274266}
   - {fileID: 9101847917751485330}
-  - {fileID: 4893867992798957565}
+  - {fileID: 0}
+  - {fileID: 0}
   statusCondition: {fileID: 0}
   uiAnchor: {fileID: 8173117086739188547}
   scannerAnchor: {fileID: 0}
@@ -795,7 +718,8 @@ MonoBehaviour:
   - {fileID: 5055089207862759208}
   - {fileID: 2499414552199274266}
   - {fileID: 9101847917751485330}
-  - {fileID: 4893867992798957565}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &5569997717537428410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -837,7 +761,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d937ec9bfb6bf184bad8674f401eae56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryNew.EquipmentHandler
-  owner: {fileID: 0}
+  owner: {fileID: 1830900076}
 --- !u!95 &1954430940256263937
 Animator:
   serializedVersion: 7
@@ -1366,6 +1290,10 @@ PrefabInstance:
       propertyPath: targetFighter
       value: 
       objectReference: {fileID: 1830900076}
+    - target: {fileID: 1033528178189505126, guid: b79cefb028e24bc43aadf56d547af90a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1146939459314253955, guid: b79cefb028e24bc43aadf56d547af90a, type: 3}
       propertyPath: targetFighter
       value: 
@@ -1374,6 +1302,10 @@ PrefabInstance:
       propertyPath: targetFighter
       value: 
       objectReference: {fileID: 1830900076}
+    - target: {fileID: 4297488574388553458, guid: b79cefb028e24bc43aadf56d547af90a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5087218112169103098, guid: b79cefb028e24bc43aadf56d547af90a, type: 3}
       propertyPath: targetFighter
       value: 
@@ -1382,6 +1314,10 @@ PrefabInstance:
       propertyPath: targetFighter
       value: 
       objectReference: {fileID: 1830900076}
+    - target: {fileID: 6012188968592490117, guid: b79cefb028e24bc43aadf56d547af90a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6100344093138885650, guid: b79cefb028e24bc43aadf56d547af90a, type: 3}
       propertyPath: targetFighter
       value: 
@@ -1462,6 +1398,10 @@ PrefabInstance:
       propertyPath: targetFighter
       value: 
       objectReference: {fileID: 1830900076}
+    - target: {fileID: 9185472292441235181, guid: b79cefb028e24bc43aadf56d547af90a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9203478046663368837, guid: b79cefb028e24bc43aadf56d547af90a, type: 3}
       propertyPath: targetFighter
       value: 

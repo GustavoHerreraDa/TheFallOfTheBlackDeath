@@ -50,7 +50,7 @@ MonoBehaviour:
   applyMessage: "sufrio da\xF1o de envenenamiento"
   expireMessage: ya no esta mas envenenado
   turnDuration: 3
-  poisonDamage: 20
+  poisonDamage: 50
 --- !u!1 &7509448153517707569
 GameObject:
   m_ObjectHideFlags: 0
@@ -76,14 +76,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7509448153517707569}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.6804839, z: -0, w: 0.73276305}
+  m_LocalRotation: {x: 0, y: -0.68048424, z: 0, w: 0.7327628}
   m_LocalPosition: {x: 7, y: 1.41, z: 2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5796870715647116095}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -85.763, z: 0}
 --- !u!114 &3454669566438010426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,9 +96,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f388bc7c2fb01d844a273a5e7e6d338c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ApplySCSkill
-  skillName: Toxic Punch
+  skillName: Spoiled blood
+  skillId: 
   rarity: 1
-  effectConfig: {fileID: 0}
+  effectConfig: {fileID: 11400000, guid: 7c19d594b7fba1d4f9649f3b17d287f5, type: 2}
   actionDelay: 1
   targeting: 4
   BodyPartTarget: 0
@@ -111,11 +112,12 @@ MonoBehaviour:
   activationSound: {fileID: 0}
   customImpactSound: {fileID: 0}
   sanityCost: 0
-  requiredParts: 02000000
-  damageAmount: 10
+  requiredParts: 04000000
+  statusToApply: 1
+  damageAmount: 0
   damageType: 0
   modType: 1
   baseCritChance: 0.05
-  spiritSoftCap: 50
+  spiritSoftCap: 40
   maxSpiritCritBonus: 0.4
   missChance: 0
