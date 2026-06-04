@@ -19,6 +19,7 @@ namespace InventoryNew
 
         [Header("Audio Settings")]
         [SerializeField] private AudioClip chestOpenSound;
+        [SerializeField] private float chestOpenVolume = 1f;
 
         private Coroutine openAnimationCoroutine;
         private AudioSource audioSource;
@@ -87,12 +88,12 @@ namespace InventoryNew
             // Intentar usar AudioManager si está disponible
             if (AudioManager.Instance != null)
             {
-                AudioManager.Instance.PlaySoundEffect(chestOpenSound);
+                AudioManager.Instance.PlaySFX(chestOpenSound, chestOpenVolume, useRandomPitch: false);
             }
             else if (audioSource != null)
             {
                 // Fallback: reproducir localmente
-                audioSource.PlayOneShot(chestOpenSound);
+                audioSource.PlayOneShot(chestOpenSound, chestOpenVolume);
             }
         }
 
