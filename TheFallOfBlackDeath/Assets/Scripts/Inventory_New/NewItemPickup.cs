@@ -32,6 +32,9 @@ namespace InventoryNew
         [SerializeField] private string pickupMessage = "Presiona E para recoger ";
         [SerializeField] private PostPickupAction postPickupAction = PostPickupAction.Destroy;
 
+        [Header("Audio Settings")]
+        [SerializeField] private AudioClip pickupSound;
+
         [Header("Events")]
         public UnityEvent onPickup = new UnityEvent();
         public UnityEvent onAlreadyCollected = new UnityEvent();
@@ -39,6 +42,7 @@ namespace InventoryNew
         private bool playerInRange = false;
         private bool isCollected = false;
         private Collider pickupCollider;
+        private AudioSource audioSource;
 
         private void OnValidate()
         {
@@ -56,6 +60,13 @@ namespace InventoryNew
             }
 
             pickupCollider = GetComponent<Collider>();
+            
+            // Obtener o crear AudioSource
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
         }
 
         private void Start()
@@ -143,6 +154,9 @@ namespace InventoryNew
                     pickupCollider.enabled = false;
                 }
 
+                // Reproducir sonido de recogida
+                PlayPickupSound();
+
                 // Disparar el evento de recogida
                 onPickup?.Invoke();
 
@@ -152,6 +166,28 @@ namespace InventoryNew
             else
             {
                 Debug.LogError("[NewItemPickup] No se encontró NewInventoryManager en la escena.");
+            }
+        }
+
+        /// <summary>
+        /// Reproduce el sonido de recogida usando AudioManager.
+        /// </summary>
+        private void PlayPickupSound()
+        {
+            if (pickupSound == null)
+            {
+                return; // Sin sonido asignado, es opcional
+            }
+
+            // Intentar usar AudioManager si está disponible
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySoundEffect(pickupSound);
+            }
+            else if (audioSource != null)
+            {
+                // Fallback: reproducir localmente
+                audioSource.PlayOneShot(pickupSound);
             }
         }
 
