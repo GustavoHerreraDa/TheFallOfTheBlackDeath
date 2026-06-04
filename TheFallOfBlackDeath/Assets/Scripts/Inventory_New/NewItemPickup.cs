@@ -37,6 +37,7 @@ namespace InventoryNew
         public UnityEvent onAlreadyCollected = new UnityEvent();
 
         private bool playerInRange = false;
+        private bool isCollected = false;
         private Collider pickupCollider;
 
         private void OnValidate()
@@ -62,6 +63,9 @@ namespace InventoryNew
             // Comprobar si ya fue recogido
             if (GameManager.Instance != null && GameManager.Instance.IsPickupCollected(GetPersistenceKey()))
             {
+                // Marcar como ya recogido
+                isCollected = true;
+
                 // Desactivar el collider
                 if (pickupCollider != null)
                 {
@@ -85,7 +89,7 @@ namespace InventoryNew
 
         private void Update()
         {
-            if (playerInRange && Input.GetKeyDown(KeyCode.E))
+            if (playerInRange && !isCollected && Input.GetKeyDown(KeyCode.E))
             {
                 Pickup();
             }
@@ -93,6 +97,12 @@ namespace InventoryNew
 
         public void Pickup()
         {
+            // Evitar loots múltiples
+            if (isCollected)
+            {
+                return;
+            }
+
             if (itemData == null)
             {
                 Debug.LogWarning($"[NewItemPickup] {gameObject.name} no tiene ItemData asignado.");
@@ -114,6 +124,9 @@ namespace InventoryNew
                     Debug.LogWarning($"[NewItemPickup] No se pudo notificar pickup de '{itemData.itemName}' porque ItemNotificationManager.Instance es null.");
                 }
                 // ───────────────────────────────────────────────────────────
+
+                // Marcar como recogido
+                isCollected = true;
 
                 // Registrar recogida en el GameManager
                 if (GameManager.Instance != null)
@@ -162,7 +175,7 @@ namespace InventoryNew
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Charecter"))
+            if (other.CompareTag("Charecter") && !isCollected)
             {
                 playerInRange = true;
                 ShowInteractionPrompt(true);
