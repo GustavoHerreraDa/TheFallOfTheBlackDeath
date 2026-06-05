@@ -24,7 +24,13 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private string brokenLegsParameter = "BrokenLegs";
     [SerializeField] private string oneLegBrokenParameter = "OneLegBroken";
     [SerializeField] private string bothLegsBrokenParameter = "BothLegsBroken";
+    
+    // --- NUEVAS VARIABLES PARA IDLE ---
     [SerializeField] private float idleAnimValue = 0f;
+    [SerializeField] private float oneLegBrokenIdleAnimValue = 0.5f; // Ajusta este valor en el Inspector
+    [SerializeField] private float bothLegsBrokenIdleAnimValue = 0.6f; // Ajusta este valor en el Inspector
+    // ----------------------------------
+    
     [SerializeField] private float walkAnimValue = 0.1f;
     [SerializeField] private float runAnimValue = 0.2f;
     [SerializeField] private float oneLegBrokenMoveAnimValue = 0.3f;
@@ -46,6 +52,7 @@ public class PlayerControl : MonoBehaviour
 
     public Animator anim;
     Rigidbody playerRB;
+    
     /// <summary>
     /// Initializes the component once the scene dependencies are ready.
     /// </summary>
@@ -74,7 +81,6 @@ public class PlayerControl : MonoBehaviour
         if (GameManager.Instance != null)
             GameManager.Instance.canGetEncounter = isWalking;
 
-
         tocaPiso = Physics.CheckSphere(detectaPiso.position, distanciaPiso, mascaraPiso);
 
         if (tocaPiso && velocity.y < 0)
@@ -102,7 +108,8 @@ public class PlayerControl : MonoBehaviour
 
             if (isInspectingCharacter)
             {
-                SetMovementAnimation(idleAnimValue);
+                // Ahora evalúa el Idle correcto basado en las piernas rotas
+                SetMovementAnimation(GetIdleAnimValueForLegState(brokenLegs));
                 if (GameManager.Instance != null)
                     GameManager.Instance.isWalking = false;
 
@@ -128,10 +135,9 @@ public class PlayerControl : MonoBehaviour
             }
             else
             {
-                
-                SetMovementAnimation(idleAnimValue);
+                // Ahora evalúa el Idle correcto basado en las piernas rotas
+                SetMovementAnimation(GetIdleAnimValueForLegState(brokenLegs));
                 if (GameManager.Instance != null)
-
                     GameManager.Instance.isWalking = false;
             }
         }
@@ -145,7 +151,6 @@ public class PlayerControl : MonoBehaviour
         stop = false;
         playerRB.isKinematic = false;
         if (GameManager.Instance != null)
-
             GameManager.Instance.isWalking = isWalking;
     }
 
@@ -155,7 +160,10 @@ public class PlayerControl : MonoBehaviour
     /// <param name="seconds">The seconds.</param>
     public void StopPlayer(float seconds)
     {
-        SetMovementAnimation(idleAnimValue);
+        // También actualizamos el Idle aquí por si el jugador se detiene
+        int brokenLegs = GetBrokenLegCount();
+        SetMovementAnimation(GetIdleAnimValueForLegState(brokenLegs));
+        
         stop = true;
         playerRB.isKinematic = true;
         StartCoroutine(WaitSeconds(seconds));
@@ -188,15 +196,14 @@ public class PlayerControl : MonoBehaviour
     /// <param name="other">The other.</param>
     private void OnTriggerStay(Collider other)
     {
-
         if (other.tag == "region1" && isWalking)
         {
             if (GameManager.Instance != null)
-
                 GameManager.Instance.canGetEncounter = true;
             Debug.Log("Se produjo un encuentro");
         }
     }
+    
     /// <summary>
     /// Responds to the corresponding Unity trigger callback for this component.
     /// </summary>
@@ -215,7 +222,6 @@ public class PlayerControl : MonoBehaviour
         if (other.tag == "region1")
         {
             if (GameManager.Instance != null)
-
                 GameManager.Instance.cuRegions = 0;
         }
     }
@@ -226,7 +232,6 @@ public class PlayerControl : MonoBehaviour
     /// <param name="destinoPosition">The destino position.</param>
     public void TeleportPlayer(Vector3 destinoPosition)
     {
-
         controller.enabled = false;
         transform.position = destinoPosition;
         controller.enabled = true;
@@ -236,6 +241,19 @@ public class PlayerControl : MonoBehaviour
     {
         return fighter != null ? fighter.brokenLegCount : 0;
     }
+
+    // --- NUEVO MÉTODO PARA EVALUAR EL IDLE ---
+    private float GetIdleAnimValueForLegState(int brokenLegs)
+    {
+        if (brokenLegs >= 2)
+            return bothLegsBrokenIdleAnimValue;
+
+        if (brokenLegs == 1)
+            return oneLegBrokenIdleAnimValue;
+
+        return idleAnimValue; // Idle normal (0 piernas rotas)
+    }
+    // -----------------------------------------
 
     private float GetMovementSpeedForLegState(int brokenLegs, bool wantsRun)
     {
@@ -292,5 +310,4 @@ public class PlayerControl : MonoBehaviour
 
         return false;
     }
-
 }
