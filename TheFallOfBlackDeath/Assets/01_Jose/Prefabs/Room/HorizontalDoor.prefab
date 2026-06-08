@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8780134870447357583}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -6.98126, y: -1.78329, z: -4.0362244}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3626961850676201035, guid: bd49da5f8f50604448ae7a12cab2cb42, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3626961850676201035, guid: bd49da5f8f50604448ae7a12cab2cb42, type: 3}
       propertyPath: m_IsActive
@@ -142,7 +142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7399145043262624357, guid: bd49da5f8f50604448ae7a12cab2cb42, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7399145043262624357, guid: bd49da5f8f50604448ae7a12cab2cb42, type: 3}
       propertyPath: m_IsActive
@@ -154,7 +154,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: efa462eca2451ab42b5e6ffb9a949efc, type: 2}
     - target: {fileID: 8466201914345756195, guid: bd49da5f8f50604448ae7a12cab2cb42, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8466201914345756195, guid: bd49da5f8f50604448ae7a12cab2cb42, type: 3}
       propertyPath: m_IsActive
@@ -225,9 +225,14 @@ MonoBehaviour:
   panel: {fileID: 0}
   controller: {fileID: 0}
   doorIndex: 2
+  doorStatusText: {fileID: 0}
+  openDoorButton: {fileID: 0}
   requiresItem: 1
   requiredItemId: Key_ID
   consumeItemOnUse: 1
+  messageHasKey: "\xBFEst\xE1s seguro de usar la llave?"
+  messageNeedsKey: Necesitas una llave para abrir esta puerta.
+  messageNoKeyNeeded: "\xBFAbrir puerta?"
 --- !u!1 &2430328910965786465 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7399145043262624357, guid: bd49da5f8f50604448ae7a12cab2cb42, type: 3}

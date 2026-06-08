@@ -12,6 +12,7 @@ namespace InventoryNew
         public TMP_Text descriptionText;
         public BodyPartHealPanel bodyPartHealPanel;
         public PartyMemberSelectorUI memberSelector;
+        public InventoryStatsUI inventoryStatsUI;
 
         [Header("Category Selection")]
         public ItemCategory currentCategory = ItemCategory.Consumable;
@@ -26,6 +27,11 @@ namespace InventoryNew
 
         private void OnEnable()
         {
+            if (inventoryStatsUI != null)
+            {
+                inventoryStatsUI.RefreshStatsUI();
+            }
+
             if (memberSelector != null)
             {
                 memberSelector.OnMemberSelected += SetActiveTarget;

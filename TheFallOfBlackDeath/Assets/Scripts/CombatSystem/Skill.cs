@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using InventoryNew;
@@ -43,6 +44,9 @@ public abstract class Skill : MonoBehaviour
 
     [Tooltip("Delay before the next action in the combat loop. Replaces the old animationDuration.")]
     public float actionDelay = 1.0f;
+
+    [Tooltip("Tiempo en segundos antes de aplicar el impacto numérico (daño/curación/estado) tras iniciar el VFX.")]
+    public float impactDelay = 0.0f;
 
     // ── Targeting & body ──────────────────────────────────────────────────────
     public SkillTargeting targeting;
@@ -182,11 +186,14 @@ public abstract class Skill : MonoBehaviour
 
         foreach (var receiver in this.receivers)
         {
+            // Cache local por objetivo para evitar sobrescrituras entre múltiples targets.
+            BodyPart bodyPartTargetForReceiver = this.BodyPartTarget;
+
             if (resolveBodyPartTargetOnRun && this is BodyPartTargetSkill)
             {
-                this.BodyPartTarget = GetRandomTargetableBodyPart(receiver);
+                bodyPartTargetForReceiver = GetRandomTargetableBodyPart(receiver);
 
-                if (this.BodyPartTarget == BodyPart.None)
+                if (bodyPartTargetForReceiver == BodyPart.None)
                 {
                     string receiverName = receiver != null ? receiver.idName : "Target";
                     this.messages.Enqueue($"{receiverName} has no targetable body parts.");
@@ -194,11 +201,31 @@ public abstract class Skill : MonoBehaviour
                 }
             }
 
-            this.Animate(receiver);     // ← VFX (new system)
-            this.OnRun(receiver);       // ← Damage / healing / status logic
+            // 1) El VFX se dispara inmediatamente al iniciar la habilidad.
+            this.Animate(receiver);
+
+            // 2) La lógica numérica se aplica sincronizada con el momento de impacto.
+            StartCoroutine(ApplyDamageDelayed(receiver, bodyPartTargetForReceiver));
         }
 
         this.receivers.Clear();
+    }
+
+    /// <summary>
+    /// Espera <see cref="impactDelay"/> para sincronizar el impacto real con la animación.
+    /// Mantiene el BodyPartTarget cacheado por objetivo para evitar condiciones de sobrescritura.
+    /// </summary>
+    private IEnumerator ApplyDamageDelayed(Fighter receiver, BodyPart cachedBodyPartTarget)
+    {
+        if (impactDelay > 0f)
+            yield return new WaitForSeconds(impactDelay);
+
+        BodyPart previousBodyPartTarget = this.BodyPartTarget;
+        this.BodyPartTarget = cachedBodyPartTarget;
+
+        this.OnRun(receiver);
+
+        this.BodyPartTarget = previousBodyPartTarget;
     }
 
     // ──────────────────────────────────────────────────────────────────────────

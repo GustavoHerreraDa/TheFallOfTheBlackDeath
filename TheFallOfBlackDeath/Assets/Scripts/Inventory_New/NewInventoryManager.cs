@@ -100,6 +100,11 @@ namespace InventoryNew
         {
             if (itemData == null) return;
 
+            if (global::ProgressionStats.StatsManager.Instance != null)
+            {
+                global::ProgressionStats.StatsManager.Instance.RegisterItemCollected(itemData.id, amount);
+            }
+
             var existingItem = items.FirstOrDefault(i => i != null && i.data != null && i.data.id == itemData.id);
 
             if (existingItem != null)

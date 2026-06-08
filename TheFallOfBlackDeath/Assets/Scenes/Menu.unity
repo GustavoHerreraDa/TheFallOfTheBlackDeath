@@ -2157,13 +2157,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8055b8603ec962d47a486ae1cab10237, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PatchNotesManager
-  currentVersion: 1.0.3
+  currentVersion: 1.0.4
   patchNotesPanel: {fileID: 624687796}
   titleText: {fileID: 471354205}
   bodyText: {fileID: 2019426765}
-  patchNotesContent: "- Corregido un bug que romp\xEDa el inventario.\n- Ajustada
-    la iluminaci\xF3n retro/dithering en el escenario principal.\n- Se agreg\xF3
-    soporte para pantallas wide.\n- Mejoras generales de optimizaci\xF3n. y"
+  patchNotesContent: "-Sistema de counter attack, el primer enemigo y el jefe al
+    sufrir da\xF1o te pueden devolver el ataque si tienen los brazos intactos buscando
+    darle mas importancia al sistema de destruccion por partes del cuerpo\n\n- Ahora
+    se pueden equipar items y ver los stats de los compa\xF1eros reclutados en el
+    inventario, tambien se agrego como feedback la representacion del modelo en el
+    inventario\n\n- Ahora los enemigos te pueden dropear sus habilidades, si en el
+    combate previo al jefe no le destruis la mano izquierda al enemigo te dropea
+    el item que si te lo equipas te da la posbilidad de usar su habilidad\n\n- Se
+    agrego panel de notificaciones cuando recoges un item\n\n- Se mejoro el sistema
+    de pick up de recolectable del mundo\n\n- Ahora tanto el personaje como el enemigo
+    reacionan a las partes del cuerpo faltantes mediantes animaciones si le sacas
+    las 2 piernas al enemigo se ve representado en su postura\n\n-Blocking del segundo
+    nivel y el compa\xF1ero ya no desaparece\n\n-Por la ruta central hay 2 modelos
+    de personajes nuevos que cumplen la funcion unicamente de mostrar como quedarian
+    los cascos nuevos para el sistema de equipables con feedback visual en el modelo"
 --- !u!4 &646502704
 Transform:
   m_ObjectHideFlags: 0
@@ -4413,7 +4425,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 39, y: -98}
+  m_AnchoredPosition: {x: 39, y: 12}
   m_SizeDelta: {x: 1575, y: 778}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2019426765
@@ -4438,8 +4450,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 036300537f6d84d4f9dda489b733123e, type: 2}
-  m_sharedMaterial: {fileID: 2450275178915320918, guid: 036300537f6d84d4f9dda489b733123e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
+  m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4463,8 +4475,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

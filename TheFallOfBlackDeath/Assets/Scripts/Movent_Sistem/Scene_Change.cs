@@ -52,22 +52,27 @@ public class Scene_Change : MonoBehaviour
         var player = other.GetComponent<PlayerControl>();
         if (player)
         {
+            if (GameManager.Instance != null)
+            {
+                // Captura instantánea en el frame exacto del trigger (líder + party)
+                GameManager.Instance.SaveCurrentPosition(player.transform.position);
+            }
+
             FollowPlayer enemyScript = GetComponent<FollowPlayer>();
             if (enemyScript != null)
             {
                 enemyScript.StopEnemyForTransition();
             }
             
-            StartCoroutine(DirectGlitchTransition(player.transform.position));
+            StartCoroutine(DirectGlitchTransition());
         }
     }
 
     /// <summary>
     /// Executes the direct glitch transition workflow.
     /// </summary>
-    /// <param name="playerPos">The player pos.</param>
     /// <returns>An enumerator that drives the coroutine sequence.</returns>
-private IEnumerator DirectGlitchTransition(Vector3 playerPos)
+private IEnumerator DirectGlitchTransition()
 {
     Debug.Log("[DirectGlitchTransition] Started");
 
@@ -86,10 +91,6 @@ private IEnumerator DirectGlitchTransition(Vector3 playerPos)
         analogGlitch.horizontalShake.Override(0.2f);
         digitalGlitch.intensity.Override(0.2f);
     }
-
-    Debug.Log("[DirectGlitchTransition] Saving player position");
-
-    GameManager.Instance.SaveCurrentPosition(playerPos);
 
     EnemiesGroup enemiesGroup = GetEncounterGroup();
     if (enemiesGroup != null)

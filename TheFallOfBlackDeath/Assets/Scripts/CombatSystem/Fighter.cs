@@ -371,6 +371,11 @@ public abstract class Fighter : MonoBehaviour
     /// </summary>
     protected void Die()
     {
+        if (team == Team.ENEMIES && global::ProgressionStats.StatsManager.Instance != null)
+        {
+            global::ProgressionStats.StatsManager.Instance.RegisterEnemyDefeat(idName);
+        }
+
         this.statusPanel.gameObject.SetActive(false);
         this.gameObject.SetActive(false);
     }
@@ -444,6 +449,11 @@ public abstract class Fighter : MonoBehaviour
         {
             if (animator != null)
                 animator.Play("Damages");
+
+            if (bodyPart != BodyPart.None && global::ProgressionStats.StatsManager.Instance != null)
+            {
+                global::ProgressionStats.StatsManager.Instance.RegisterBodyPartAttack(bodyPart);
+            }
             
             if (this.GetComponent<PlayerFighter>() != null) 
             {

@@ -1311,7 +1311,6 @@ public class GameManager : MonoBehaviour
         
         Debug.Log($"[GameManager] Guardadas {savedPartyPositions.Count} posiciones de la party.");
     }
-
     public void RestorePartyPositions()
     {
         if (savedPartyPositions == null || savedPartyPositions.Count == 0) return;
@@ -1330,13 +1329,6 @@ public class GameManager : MonoBehaviour
             hasLeaderPos = true;
         }
 
-        Vector3[] offsets =
-        {
-            new Vector3(-1.5f, 0, -1.5f),
-            new Vector3(1.5f, 0, -1.5f)
-        };
-
-        int followerCount = 0;
         var members = GetPartyMembers();
 
         foreach (var data in savedPartyPositions)
@@ -1355,17 +1347,9 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                // Followers: usar offset alrededor del líder para evitar overlap/jitter
-                if (hasLeaderPos)
-                {
-                    Vector3 offset = (followerCount < offsets.Length) ? offsets[followerCount] : new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
-                    fighter.transform.position = leaderPos + offset;
-                    followerCount++;
-                }
-                else
-                {
-                    fighter.transform.position = data.position;
-                }
+                // SOLUCIÓN: Aplicamos directamente la posición exacta guardada del compañero
+                // eliminando la lógica anterior que forzaba un "offset" predefinido.
+                fighter.transform.position = data.position;
             }
 
             if (controller != null)
@@ -1374,7 +1358,7 @@ public class GameManager : MonoBehaviour
             }
         }
         
-        Debug.Log("[GameManager] Posiciones de la party restauradas.");
+        Debug.Log("[GameManager] Posiciones de la party restauradas exactamente donde estaban.");
     }
 
     private IEnumerator ReenableController(CharacterController controller)
