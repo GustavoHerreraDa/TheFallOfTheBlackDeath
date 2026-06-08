@@ -214,8 +214,10 @@ public abstract class Skill : MonoBehaviour
     /// <summary>
     /// Espera <see cref="impactDelay"/> para sincronizar el impacto real con la animación.
     /// Mantiene el BodyPartTarget cacheado por objetivo para evitar condiciones de sobrescritura.
+    /// Las habilidades derivadas pueden sobrescribir este punto para inyectar lógica previa al impacto,
+    /// como ventanas de reacción o parry, sin duplicar el flujo de ejecución base.
     /// </summary>
-    private IEnumerator ApplyDamageDelayed(Fighter receiver, BodyPart cachedBodyPartTarget)
+    protected virtual IEnumerator ApplyDamageDelayed(Fighter receiver, BodyPart cachedBodyPartTarget)
     {
         if (impactDelay > 0f)
             yield return new WaitForSeconds(impactDelay);
