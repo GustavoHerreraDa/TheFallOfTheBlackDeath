@@ -376,6 +376,10 @@ PrefabInstance:
       propertyPath: poisonDamage
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 1425671951066774221, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
+      propertyPath: idName
+      value: Deformed
+      objectReference: {fileID: 0}
     - target: {fileID: 1425671951508095789, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
       propertyPath: m_Name
       value: Zombie Variant
@@ -2035,7 +2039,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LethalQTESkill
   skillName: Pulverizador de craneos
-  skillId: Pulverizador_!
+  skillId: Pulverizador_1
   rarity: 0
   effectConfig: {fileID: 11400000, guid: a2e4acb33e896024d80d4eef7fb71efa, type: 2}
   actionDelay: 0
@@ -2051,7 +2055,7 @@ MonoBehaviour:
   activationSound: {fileID: 0}
   customImpactSound: {fileID: 0}
   sanityCost: 0
-  requiredParts: 00000000
+  requiredParts: 04000000
   parryWindowDuration: 0.5
   slowMoTimeScale: 0.2
   lethalDamage: -9999
@@ -5856,17 +5860,25 @@ PrefabInstance:
       value: 0.0005
       objectReference: {fileID: 0}
     - target: {fileID: 9046612120080581514, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      propertyPath: _skills.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9046612120080581514, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: '_skills.Array.data[0]'
       value: 
       objectReference: {fileID: 8204355792642854235}
     - target: {fileID: 9046612120080581514, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: '_skills.Array.data[1]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1340352283}
     - target: {fileID: 9046612120080581514, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: '_skills.Array.data[2]'
       value: 
       objectReference: {fileID: 1340352283}
+    - target: {fileID: 9046612120080581514, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      propertyPath: '_skills.Array.data[3]'
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8263391865774088543, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
