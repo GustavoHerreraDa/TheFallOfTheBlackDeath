@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 /// Controls a decontamination zone.
 /// When a character enters, all vents start spinning and all decontamination VFX are enabled.
@@ -9,7 +10,7 @@ public class DecontaminationZone : MonoBehaviour
     [SerializeField] private RotatingVent[] vents;
 
     [Header("Decontamination VFX")]
-    [SerializeField] private ParticleSystem[] decontaminationVfx;
+    [SerializeField] private VisualEffect[] decontaminationVfx;
 
     private int charactersInside;
 
@@ -68,14 +69,11 @@ public class DecontaminationZone : MonoBehaviour
 
             if (active)
             {
-                if (!vfx.isPlaying)
-                {
-                    vfx.Play();
-                }
+                vfx.Play();
             }
             else
             {
-                vfx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                vfx.Stop();
             }
         }
     }
