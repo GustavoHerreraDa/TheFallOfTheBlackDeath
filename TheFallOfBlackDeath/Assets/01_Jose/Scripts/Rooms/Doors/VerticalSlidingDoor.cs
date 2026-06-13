@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 /// Single-piece vertical sliding door (moves up/down like a shutter)
 public class VerticalSlidingDoor : MonoBehaviour
@@ -15,7 +16,7 @@ public class VerticalSlidingDoor : MonoBehaviour
     [Header("Audio (Optional Overrides)")]
     [SerializeField] private AudioClip customOpenSound;
     [SerializeField] private AudioClip customCloseSound;
-
+    [SerializeField] private NavMeshObstacle obstacle;
     private Vector3 closedPos;
     private Vector3 openPos;
 
@@ -23,6 +24,7 @@ public class VerticalSlidingDoor : MonoBehaviour
     {
         closedPos = door.localPosition;
         openPos = closedPos + Vector3.up * openHeight;
+        obstacle.enabled = true;
     }
 
     private void Update()
@@ -42,6 +44,7 @@ public class VerticalSlidingDoor : MonoBehaviour
         if (open) return; // Evitar disparar sonido si ya estÃ¡ abierta
         open = true;
         PlayDoorSound(true);
+        obstacle.enabled = false;
     }
 
     public void Close()
@@ -49,6 +52,7 @@ public class VerticalSlidingDoor : MonoBehaviour
         if (!open) return; // Evitar disparar sonido si ya estÃ¡ cerrada
         open = false;
         PlayDoorSound(false);
+        obstacle.enabled = true;
     }
 
     private void PlayDoorSound(bool isOpen)
