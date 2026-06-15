@@ -335,6 +335,7 @@ public class GameManager : MonoBehaviour
     public bool hasRecruitedSecondary = false;
     public bool hasValidLastPos = false;
     public Vector3 lastPos;
+    private int lastExplorationSceneIndex = 1;
     public Transform startPost;
     public List<string> groupEnemyDefeat;
     public List<string> objectsPickup;
@@ -912,9 +913,23 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="scene">The scene.</param>
     /// <param name="mode">The mode.</param>
+    /// <summary>
+    /// Saves the build index of the current exploration scene so combat can return to it dynamically.
+    /// </summary>
+    /// <param name="buildIndex">The build index of the exploration scene.</param>
+    public void SaveCurrentExplorationScene(int buildIndex)
+    {
+        lastExplorationSceneIndex = buildIndex;
+    }
+
+    /// <summary>
+    /// Returns the build index of the last exploration scene visited.
+    /// </summary>
+    public int LastExplorationSceneIndex => lastExplorationSceneIndex;
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.buildIndex == 1)
+        if (scene.buildIndex == lastExplorationSceneIndex)
         {
             // Asegurar que los NPCs reclutados no aparezcan como interactuables en la nueva escena
             StartCoroutine(HideRecruitedNPCs());

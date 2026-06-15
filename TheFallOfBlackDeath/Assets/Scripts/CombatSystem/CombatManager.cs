@@ -400,7 +400,7 @@ public class CombatManager : MonoBehaviour
                         PlayerPrefs.SetString("GrupoEnemigo", realName);
                      
                         Debug.Log("Guardando enemigo derrotado REAL: " + realName);
-                        SceneManager.LoadScene(1);
+                        SceneManager.LoadScene(GameManager.Instance.LastExplorationSceneIndex);
                     }
 
                     if (defeat)
@@ -672,7 +672,7 @@ public class CombatManager : MonoBehaviour
             isCombatActive = false;
             CursorManager.Instance?.ReleaseCursor(this);
             yield return new WaitForSeconds(escapeResultDelay);
-            SceneManager.LoadScene(explorationSceneIndex);
+            SceneManager.LoadScene(GameManager.Instance.LastExplorationSceneIndex);
             yield break;
         }
 

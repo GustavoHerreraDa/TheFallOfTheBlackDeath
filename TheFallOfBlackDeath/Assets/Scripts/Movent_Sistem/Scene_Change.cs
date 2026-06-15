@@ -105,6 +105,12 @@ private IEnumerator DirectGlitchTransition()
     Time.timeScale = 1f;
     Time.fixedDeltaTime = 0.02f;
 
+    // Guardar el índice de la escena de exploración actual antes de ir al combate
+    if (GameManager.Instance != null)
+    {
+        GameManager.Instance.SaveCurrentExplorationScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     SceneManager.LoadScene(fightSceneIndex);
     
     Cursor.visible = true;
