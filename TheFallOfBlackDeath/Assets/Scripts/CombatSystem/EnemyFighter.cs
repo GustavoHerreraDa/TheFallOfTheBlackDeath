@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +23,13 @@ public class EnemyFighter : Fighter
     [Tooltip("Modify this specific enemy's stats. Set to 0.5 to make it half as strong (e.g. for a tutorial).")]
     public float healthMultiplier = 1f;
     public float attackMultiplier = 1f;
+
+    // PARTE 2 — Turn result tracking for combat memory
+    private bool _lastWasParried;
+    private bool _lastWasMiss;
+    private BodyPart _lastHitPart;
+    private bool _lastTargetUsedHeal;
+    private Fighter _subscribedTarget;
 
     /// <summary>
     /// Initializes cached references and runtime state before the component starts running.
@@ -53,7 +60,7 @@ public class EnemyFighter : Fighter
         }
         else
         {
-            Debug.LogWarning($"[EnemyFighter.Awake] EnemyDateBase null or EnemyIndex out of range ({EnemyIndex}). Using safe defaults.");
+            Debug.LogWarning($"[EnemyFighter] EnemyDateBase null or EnemyIndex out of range ({EnemyIndex}). Using safe defaults.");
             this.stats = safeDefaults;
         }
 
@@ -67,15 +74,113 @@ public class EnemyFighter : Fighter
     }
 
     /// <summary>
+    /// Subscribes to IA phase change events.
+    /// </summary>
+    void Start()
+    {
+        if (_IAEnemySimple != null)
+        {
+            _IAEnemySimple.OnPhaseChanged += OnPhaseChanged;
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (_IAEnemySimple != null)
+        {
+            _IAEnemySimple.OnPhaseChanged -= OnPhaseChanged;
+        }
+
+        UnsubscribeFromTarget();
+    }
+
+    /// <summary>
+    /// Handles phase change events from the IA.
+    /// </summary>
+    private void OnPhaseChanged(int phase)
+    {
+        Debug.Log($"[EnemyFighter] {idName} entró en fase {phase}");
+
+        if (narrativeData != null)
+        {
+            try
+            {
+                string line = narrativeData.GetRandom(narrativeData.turnMessages);
+                if (!string.IsNullOrEmpty(line))
+                    Debug.Log($"[EnemyFighter] {idName} narrative: {line}");
+            }
+            catch
+            {
+                // fail silencioso
+            }
+        }
+    }
+
+    /// <summary>
+    /// Subscribes to the target's OnDamageResolved to detect parries and misses.
+    /// </summary>
+    private void SubscribeToTarget(Fighter target)
+    {
+        if (target == _subscribedTarget) return;
+
+        UnsubscribeFromTarget();
+
+        if (target != null)
+        {
+            target.OnDamageResolved += OnTargetDamageResolved;
+            _subscribedTarget = target;
+        }
+    }
+
+    private void UnsubscribeFromTarget()
+    {
+        if (_subscribedTarget != null)
+        {
+            _subscribedTarget.OnDamageResolved -= OnTargetDamageResolved;
+            _subscribedTarget = null;
+        }
+    }
+
+    /// <summary>
+    /// Handles damage resolved on the target to detect parries and misses.
+    /// </summary>
+    private void OnTargetDamageResolved(DamageResult result)
+    {
+        // Only track results from our own attacks
+        if (result.attacker != this) return;
+
+        if (result.isMiss)
+        {
+            _lastWasMiss = true;
+        }
+        else if (result.appliedAmount == 0f && !result.isMiss)
+        {
+            _lastWasParried = true;
+        }
+
+        _lastHitPart = result.targetPart;
+    }
+
+    /// <summary>
     /// Starts the enemy decision flow for the current combat turn.
     /// </summary>
     public override void InitTurn()
     {
         if (!isAlive)
         {
-            Debug.Log($"{idName} está muerto, no puede iniciar turno.");
+            Debug.Log($"[EnemyFighter] {idName} está muerto, no puede iniciar turno.");
             combatManager.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
             return;
+        }
+
+        // Record previous turn result into combat memory
+        if (_IAEnemySimple != null)
+        {
+            _IAEnemySimple.RecordTurnResult(_lastWasParried, _lastWasMiss, _lastHitPart, _lastTargetUsedHeal);
+            _lastWasParried = false;
+            _lastWasMiss = false;
+            _lastHitPart = BodyPart.None;
+            _lastTargetUsedHeal = false;
         }
 
         if (_IAEnemySimple != null)
@@ -83,10 +188,10 @@ public class EnemyFighter : Fighter
 
         StartCoroutine(IA());
     }
+
     /// <summary>
     /// Executes the ia workflow.
     /// </summary>
-    /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator IA()
     {
         // Wait a small delay and also ensure combatManager and teams are ready
@@ -115,7 +220,7 @@ public class EnemyFighter : Fighter
                 skill = this.skills[Random.Range(0, this.skills.Length)];
             else
             {
-                Debug.LogWarning("[EnemyFighter.IA] No skills available for enemy. Skipping turn.");
+                Debug.LogWarning("[EnemyFighter] No skills available for enemy. Skipping turn.");
                 yield break;
             }
         }
@@ -129,7 +234,7 @@ public class EnemyFighter : Fighter
             Fighter[] targets = this.GetSkillTargets(skill);
             if (targets == null || targets.Length == 0)
             {
-                Debug.LogWarning("[EnemyFighter.IA] No manual targets available. Waiting one frame.");
+                Debug.LogWarning("[EnemyFighter] No manual targets available. Waiting one frame.");
                 yield return null;
             }
             else
@@ -151,17 +256,22 @@ public class EnemyFighter : Fighter
 
         if (target != null)
         {
-            BodyPart chosenPart = (_IAEnemySimple != null) ? _IAEnemySimple.ChooseTargetableBodyPart(target, attackPreference) : BodyPart.Torso;
+            // Subscribe to target for parry/miss detection
+            SubscribeToTarget(target);
+
+            BodyPart chosenPart = (_IAEnemySimple != null)
+                ? _IAEnemySimple.ChooseTargetableBodyPart(target, attackPreference, skill)
+                : BodyPart.Torso;
             skill.BodyPartTarget = chosenPart;
 
             if (skill is HealthModSkill healthSkill)
             {
-                Debug.Log($"{this.idName} eligió atacar {target.idName}'s {chosenPart}");
+                Debug.Log($"[EnemyFighter] {this.idName} eligió atacar {target.idName}'s {chosenPart}");
             }
         }
         else
         {
-            Debug.Log("[EnemyFighter.IA] No target selected. Proceeding without a direct target.");
+            Debug.Log("[EnemyFighter] No target selected. Proceeding without a direct target.");
         }
 
         if (this.combatManager != null)
