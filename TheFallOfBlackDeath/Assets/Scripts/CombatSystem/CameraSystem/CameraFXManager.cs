@@ -23,10 +23,16 @@ public class CameraFXManager : MonoBehaviour
     [SerializeField] private float glitchDuration = 0.2f;
     [SerializeField] private float maxGlitchIntensity = 1f;
 
-    [Header("Lethal Warning")]
+    [Header("Lethal Warning - Visuals")]
     [SerializeField] private Color lethalFilterColor = new Color(0.35f, 0.02f, 0.02f, 1f);
     [SerializeField] private float lethalVignetteIntensity = 0.65f;
     [SerializeField] private float lethalTransitionSpeed = 10f;
+    [Tooltip("Velocidad de la oscilación de la alarma/pulsación.")]
+    [SerializeField] private float pulseSpeed = 12f;
+
+    [Header("Lethal Warning - Audio")]
+    [SerializeField] private AudioClip lethalWarningSound;
+    [Range(0f, 1f)] [SerializeField] private float warningAudioVolume = 0.8f;
 
     private LensDistortion _lensDistortion;
     private ChromaticAberration _chromaticAberration;
@@ -39,12 +45,14 @@ public class CameraFXManager : MonoBehaviour
 
     private Color _originalFilterColor = Color.white;
     private float _originalVignetteIntensity;
+    
+    // Almacena el AudioSource persistente creado por el AudioManager
+    private AudioSource _activeLethalAudioSource;
 
     private void Awake()
     {
         if (globalVolume != null)
         {
-            // Acceso seguro a los componentes
             globalVolume.profile.TryGet(out _lensDistortion);
             globalVolume.profile.TryGet(out _chromaticAberration);
             globalVolume.profile.TryGet(out _colorAdjustments);
@@ -57,9 +65,6 @@ public class CameraFXManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Aplica una distorsión de lente suave al hacer hover sobre un objetivo.
-    /// </summary>
     public void SetHoverDistortion(bool active)
     {
         if (_distortionCoroutine != null) StopCoroutine(_distortionCoroutine);
@@ -71,7 +76,6 @@ public class CameraFXManager : MonoBehaviour
     {
         if (_lensDistortion == null) yield break;
 
-        // Uso de unscaledDeltaTime para que la UI/Hover responda bien incluso en HitStop
         while (Mathf.Abs(_lensDistortion.intensity.value - target) > 0.001f)
         {
             _lensDistortion.intensity.value = Mathf.Lerp(
@@ -84,29 +88,16 @@ public class CameraFXManager : MonoBehaviour
         _lensDistortion.intensity.value = target;
     }
 
-    /// <summary>
-    /// Dispara un screen shake via Cinemachine Impulse. No toca el TimeScale.
-    /// </summary>
     public void PlayShake(float shakeForce)
     {
         if (impulseSource == null || shakeForce <= 0f) return;
-
         Vector3 randomDir = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0f).normalized;
         impulseSource.GenerateImpulse(randomDir * shakeForce);
     }
 
-    /// <summary>
-    /// Frena el tiempo brevemente con recuperación elástica.
-    /// Solo arranca una nueva rutina si no hay una en curso, o si la nueva
-    /// duración es mayor a la que ya está corriendo (hits más fuertes ganan).
-    /// </summary>
     public void PlayHitStop(float duration)
     {
         if (duration <= 0f) return;
-
-        // Si ya hay un HitStop en curso y el nuevo es menos intenso, lo ignoramos
-        // para que la destrucción de parte (más dramática) no sea cancelada por
-        // el shake que Fighter.cs dispara en la línea siguiente.
         if (_hitStopCoroutine != null && _pendingHitStopDuration >= duration) return;
 
         if (_hitStopCoroutine != null) StopCoroutine(_hitStopCoroutine);
@@ -114,13 +105,8 @@ public class CameraFXManager : MonoBehaviour
         _hitStopCoroutine = StartCoroutine(HitStopRoutine(duration));
     }
 
-    // Guardamos la duración del HitStop activo para comparar en llamadas concurrentes
     private float _pendingHitStopDuration;
 
-    /// <summary>
-    /// Mantiene compatibilidad con llamadas legacy que pasaban ambos valores juntos.
-    /// Solo invoca los dos métodos separados — no contiene lógica propia.
-    /// </summary>
     public void PlayHitReactionEffects(float shakeForce, float hitStopDuration)
     {
         PlayShake(shakeForce);
@@ -129,29 +115,21 @@ public class CameraFXManager : MonoBehaviour
 
     private IEnumerator HitStopRoutine(float duration)
     {
-        // Descenso súbito del tiempo
         Time.timeScale = hitStopTimeScale;
         float elapsed = 0f;
 
         while (elapsed < duration)
         {
             elapsed += Time.unscaledDeltaTime;
-            
-            // Recuperación elástica/suavizada del tiempo hacia 1.0
             float t = elapsed / duration;
             Time.timeScale = Mathf.Lerp(hitStopTimeScale, 1.0f, t);
-            
-            // Sincronización del motor de física (importante para evitar stuttering en colisiones si las hubiera)
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
-            
             yield return null;
         }
 
-        // Aseguramos estado normal
         Time.timeScale = 1.0f;
         Time.fixedDeltaTime = 0.02f;
 
-        // Invocamos al director para retornar al estado base de Overview
         if (CameraDirector.Instance != null)
         {
             CameraDirector.Instance.ChangeState(CameraState.Overview);
@@ -161,9 +139,6 @@ public class CameraFXManager : MonoBehaviour
         _hitStopCoroutine = null;
     }
 
-    /// <summary>
-    /// Ejecuta un glitch cromático rápido al recibir daño.
-    /// </summary>
     public void TriggerDamageGlitch()
     {
         if (_chromaticAberration == null) return;
@@ -174,7 +149,6 @@ public class CameraFXManager : MonoBehaviour
     private IEnumerator GlitchRoutine()
     {
         float t = 0;
-        // Pico rápido
         float peakTime = 0.05f;
         while (t < peakTime)
         {
@@ -183,7 +157,6 @@ public class CameraFXManager : MonoBehaviour
             yield return null;
         }
 
-        // Recuperación suave
         t = 0;
         while (t < glitchDuration)
         {
@@ -197,20 +170,34 @@ public class CameraFXManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Activa o desactiva la advertencia visual de ataque letal.
-    /// Transiciona el color filter hacia rojo sangre y aumenta la viñeta.
+    /// Gestiona la alerta visual pulsante y el bucle de audio persistente del ataque letal.
     /// </summary>
     public void SetLethalWarning(bool active)
     {
         if (_lethalWarningCoroutine != null) StopCoroutine(_lethalWarningCoroutine);
-        _lethalWarningCoroutine = StartCoroutine(LethalWarningRoutine(active));
+        
+        // Gestión del audio persistente usando el AudioManager existente
+        if (active)
+        {
+            if (AudioManager.Instance != null && lethalWarningSound != null && _activeLethalAudioSource == null)
+            {
+                _activeLethalAudioSource = AudioManager.Instance.PlayPersistentSFX(lethalWarningSound, warningAudioVolume, true, false);
+            }
+        }
+        else
+        {
+            if (AudioManager.Instance != null && _activeLethalAudioSource != null)
+            {
+                AudioManager.Instance.StopPersistentSFX(_activeLethalAudioSource);
+                _activeLethalAudioSource = null;
+            }
+        }
+
+        _lethalWarningCoroutine = StartCoroutine(LethalWarningPulsingRoutine(active));
     }
 
-    private IEnumerator LethalWarningRoutine(bool active)
+    private IEnumerator LethalWarningPulsingRoutine(bool active)
     {
-        Color targetColor = active ? lethalFilterColor : _originalFilterColor;
-        float targetVignette = active ? lethalVignetteIntensity : _originalVignetteIntensity;
-
         bool hasColor = _colorAdjustments != null;
         bool hasVignette = _vignette != null;
 
@@ -219,34 +206,58 @@ public class CameraFXManager : MonoBehaviour
         if (hasColor) _colorAdjustments.colorFilter.overrideState = true;
         if (hasVignette) _vignette.intensity.overrideState = true;
 
-        while (true)
+        if (active)
         {
-            float dt = Time.unscaledDeltaTime;
-            float lerpFactor = 1f - Mathf.Exp(-lethalTransitionSpeed * dt);
-
-            bool colorDone = true;
-            bool vignetteDone = true;
-
-            if (hasColor)
+            // Bucle continuo de pulsación mientras la alerta esté activa
+            while (active)
             {
-                _colorAdjustments.colorFilter.value = Color.Lerp(
-                    _colorAdjustments.colorFilter.value, targetColor, lerpFactor);
-                colorDone = ColorApprox(_colorAdjustments.colorFilter.value, targetColor);
-            }
+                // Usamos unscaledTime para que la onda de seno mantenga su velocidad real durante el slow-mo del QTE
+                float sineWave = Mathf.Sin(Time.unscaledTime * pulseSpeed);
+                float pulseFactor = (sineWave + 1f) * 0.5f; // Convertimos rango de (-1, 1) a (0, 1)
 
-            if (hasVignette)
-            {
-                _vignette.intensity.value = Mathf.Lerp(
-                    _vignette.intensity.value, targetVignette, lerpFactor);
-                vignetteDone = Mathf.Abs(_vignette.intensity.value - targetVignette) < 0.005f;
-            }
+                if (hasColor)
+                {
+                    _colorAdjustments.colorFilter.value = Color.Lerp(_originalFilterColor, lethalFilterColor, pulseFactor);
+                }
 
-            if (colorDone && vignetteDone) break;
-            yield return null;
+                if (hasVignette)
+                {
+                    _vignette.intensity.value = Mathf.Lerp(_originalVignetteIntensity, lethalVignetteIntensity, pulseFactor);
+                }
+
+                yield return null;
+            }
         }
+        else
+        {
+            // Retorno limpio a los valores originales de la escena al desactivarse
+            while (true)
+            {
+                float dt = Time.unscaledDeltaTime;
+                float lerpFactor = 1f - Mathf.Exp(-lethalTransitionSpeed * dt);
 
-        if (hasColor) _colorAdjustments.colorFilter.value = targetColor;
-        if (hasVignette) _vignette.intensity.value = targetVignette;
+                bool colorDone = true;
+                bool vignetteDone = true;
+
+                if (hasColor)
+                {
+                    _colorAdjustments.colorFilter.value = Color.Lerp(_colorAdjustments.colorFilter.value, _originalFilterColor, lerpFactor);
+                    colorDone = ColorApprox(_colorAdjustments.colorFilter.value, _originalFilterColor);
+                }
+
+                if (hasVignette)
+                {
+                    _vignette.intensity.value = Mathf.Lerp(_vignette.intensity.value, _originalVignetteIntensity, lerpFactor);
+                    vignetteDone = Mathf.Abs(_vignette.intensity.value - _originalVignetteIntensity) < 0.005f;
+                }
+
+                if (colorDone && vignetteDone) break;
+                yield return null;
+            }
+
+            if (hasColor) _colorAdjustments.colorFilter.value = _originalFilterColor;
+            if (hasVignette) _vignette.intensity.value = _originalVignetteIntensity;
+        }
 
         _lethalWarningCoroutine = null;
     }
@@ -260,9 +271,15 @@ public class CameraFXManager : MonoBehaviour
 
     private void OnDisable()
     {
-        // Cleanup de seguridad
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
+        
+        if (AudioManager.Instance != null && _activeLethalAudioSource != null)
+        {
+            AudioManager.Instance.StopPersistentSFX(_activeLethalAudioSource);
+            _activeLethalAudioSource = null;
+        }
+
         if (_lensDistortion != null) _lensDistortion.intensity.value = 0f;
         if (_colorAdjustments != null) _colorAdjustments.colorFilter.value = _originalFilterColor;
         if (_vignette != null) _vignette.intensity.value = _originalVignetteIntensity;
