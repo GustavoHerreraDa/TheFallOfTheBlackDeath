@@ -1208,6 +1208,7 @@ GameObject:
   - component: {fileID: 8034112696857373658}
   - component: {fileID: 7538020622414746622}
   - component: {fileID: 2649606914542484976}
+  - component: {fileID: 7617865603733015132}
   m_Layer: 6
   m_Name: ButtonEnemyOne
   m_TagString: Untagged
@@ -1224,7 +1225,7 @@ RectTransform:
   m_GameObject: {fileID: 4186331691041709473}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6499898266936192337}
@@ -1348,6 +1349,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b457582b6f108564d9c6e7935b3b6b94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
+--- !u!114 &7617865603733015132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4186331691041709473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
+  m_IgnoreLayout: 0
+  m_MinWidth: 150
+  m_MinHeight: 60
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &4257892648860777681
 GameObject:
   m_ObjectHideFlags: 0
@@ -1822,7 +1843,7 @@ RectTransform:
   m_GameObject: {fileID: 5888074875734614557}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6187115028816541828}
@@ -2241,8 +2262,8 @@ RectTransform:
   m_GameObject: {fileID: 7027367558569961538}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5788066766332190058}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3743,7 +3764,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2534286636427124180, guid: 95cfba93ec55b2c4e85a78eeea735292, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5889700088917468420, guid: 95cfba93ec55b2c4e85a78eeea735292, type: 3}
       propertyPath: m_Color.b
@@ -3758,28 +3779,32 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5889700088917468420, guid: 95cfba93ec55b2c4e85a78eeea735292, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: f08c776681d86694aa36fbd04703a0b9, type: 2}
+    - target: {fileID: 5889700088917468420, guid: 95cfba93ec55b2c4e85a78eeea735292, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7866265184156156025, guid: 95cfba93ec55b2c4e85a78eeea735292, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7866265184156156025, guid: 95cfba93ec55b2c4e85a78eeea735292, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7866265184156156025, guid: 95cfba93ec55b2c4e85a78eeea735292, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7866265184156156025, guid: 95cfba93ec55b2c4e85a78eeea735292, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7866265184156156025, guid: 95cfba93ec55b2c4e85a78eeea735292, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8386308121933880003, guid: 95cfba93ec55b2c4e85a78eeea735292, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

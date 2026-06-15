@@ -70,6 +70,8 @@ public class EnemiesPanel : MonoBehaviour
             rectTransform.sizeDelta.x,
             baseHeight * enemyTargets.Length
         );
+
+        botonReturn.transform.SetAsLastSibling(); 
     }
 
     /// <summary>
