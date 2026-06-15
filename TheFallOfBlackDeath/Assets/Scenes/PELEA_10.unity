@@ -384,6 +384,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Zombie Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 1425671951508095789, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1425671951508528909, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.89
@@ -2056,8 +2060,8 @@ MonoBehaviour:
   customImpactSound: {fileID: 0}
   sanityCost: 0
   requiredParts: 04000000
-  parryWindowDuration: 0.5
-  slowMoTimeScale: 0.2
+  parryWindowDuration: 5
+  slowMoTimeScale: 0.1
   lethalDamage: -9999
   damageType: 0
 --- !u!1001 &1343617099
@@ -2385,7 +2389,7 @@ MonoBehaviour:
   qteContainer: {fileID: 1072781380}
   ringImage: {fileID: 329175955}
   parryButtonName: Jump
-  perfectWindowDuration: 0.5
+  perfectWindowDuration: 4
   perfectColor: {r: 1, g: 0.85, b: 0, a: 1}
   progressionGradient:
     serializedVersion: 2
@@ -4507,6 +4511,22 @@ PrefabInstance:
       propertyPath: globalVolume
       value: 
       objectReference: {fileID: 1371803038}
+    - target: {fileID: 7438085647819842305, guid: 816ab51c668a0984090343bb717271c4, type: 3}
+      propertyPath: lethalFilterColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7438085647819842305, guid: 816ab51c668a0984090343bb717271c4, type: 3}
+      propertyPath: lethalFilterColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7438085647819842305, guid: 816ab51c668a0984090343bb717271c4, type: 3}
+      propertyPath: lethalFilterColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8094557678511867408, guid: 816ab51c668a0984090343bb717271c4, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8432698635122401674, guid: 816ab51c668a0984090343bb717271c4, type: 3}
       propertyPath: m_Name
       value: CameraSystem

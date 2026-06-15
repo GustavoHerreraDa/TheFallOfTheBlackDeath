@@ -29,14 +29,20 @@ public class LethalQTESkill : BodyPartTargetSkill
         bool parried = false;
         QTEParryManager parryManager = QTEParryManager.Instance;
 
+        CameraFXManager fxManager = FindObjectOfType<CameraFXManager>();
+
         if (parryManager != null)
         {
+            if (fxManager != null) fxManager.SetLethalWarning(true);
+
             yield return parryManager.WaitForParry(parryWindowDuration, slowMoTimeScale, result => parried = result);
         }
         else
         {
             Debug.LogWarning("LethalQTESkill could not find a QTEParryManager in the scene.");
         }
+
+        if (fxManager != null) fxManager.SetLethalWarning(false);
 
         DamageResult result = parried
             ? CreateParryResult(receiver, cachedBodyPartTarget)

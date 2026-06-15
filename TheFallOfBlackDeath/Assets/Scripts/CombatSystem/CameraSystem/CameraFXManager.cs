@@ -23,11 +23,22 @@ public class CameraFXManager : MonoBehaviour
     [SerializeField] private float glitchDuration = 0.2f;
     [SerializeField] private float maxGlitchIntensity = 1f;
 
+    [Header("Lethal Warning")]
+    [SerializeField] private Color lethalFilterColor = new Color(0.35f, 0.02f, 0.02f, 1f);
+    [SerializeField] private float lethalVignetteIntensity = 0.65f;
+    [SerializeField] private float lethalTransitionSpeed = 10f;
+
     private LensDistortion _lensDistortion;
     private ChromaticAberration _chromaticAberration;
+    private ColorAdjustments _colorAdjustments;
+    private Vignette _vignette;
     private Coroutine _distortionCoroutine;
     private Coroutine _hitStopCoroutine;
     private Coroutine _glitchCoroutine;
+    private Coroutine _lethalWarningCoroutine;
+
+    private Color _originalFilterColor = Color.white;
+    private float _originalVignetteIntensity;
 
     private void Awake()
     {
@@ -36,6 +47,13 @@ public class CameraFXManager : MonoBehaviour
             // Acceso seguro a los componentes
             globalVolume.profile.TryGet(out _lensDistortion);
             globalVolume.profile.TryGet(out _chromaticAberration);
+            globalVolume.profile.TryGet(out _colorAdjustments);
+            globalVolume.profile.TryGet(out _vignette);
+
+            if (_colorAdjustments != null)
+                _originalFilterColor = _colorAdjustments.colorFilter.value;
+            if (_vignette != null)
+                _originalVignetteIntensity = _vignette.intensity.value;
         }
     }
 
@@ -178,11 +196,75 @@ public class CameraFXManager : MonoBehaviour
         _glitchCoroutine = null;
     }
 
+    /// <summary>
+    /// Activa o desactiva la advertencia visual de ataque letal.
+    /// Transiciona el color filter hacia rojo sangre y aumenta la viñeta.
+    /// </summary>
+    public void SetLethalWarning(bool active)
+    {
+        if (_lethalWarningCoroutine != null) StopCoroutine(_lethalWarningCoroutine);
+        _lethalWarningCoroutine = StartCoroutine(LethalWarningRoutine(active));
+    }
+
+    private IEnumerator LethalWarningRoutine(bool active)
+    {
+        Color targetColor = active ? lethalFilterColor : _originalFilterColor;
+        float targetVignette = active ? lethalVignetteIntensity : _originalVignetteIntensity;
+
+        bool hasColor = _colorAdjustments != null;
+        bool hasVignette = _vignette != null;
+
+        if (!hasColor && !hasVignette) yield break;
+
+        if (hasColor) _colorAdjustments.colorFilter.overrideState = true;
+        if (hasVignette) _vignette.intensity.overrideState = true;
+
+        while (true)
+        {
+            float dt = Time.unscaledDeltaTime;
+            float lerpFactor = 1f - Mathf.Exp(-lethalTransitionSpeed * dt);
+
+            bool colorDone = true;
+            bool vignetteDone = true;
+
+            if (hasColor)
+            {
+                _colorAdjustments.colorFilter.value = Color.Lerp(
+                    _colorAdjustments.colorFilter.value, targetColor, lerpFactor);
+                colorDone = ColorApprox(_colorAdjustments.colorFilter.value, targetColor);
+            }
+
+            if (hasVignette)
+            {
+                _vignette.intensity.value = Mathf.Lerp(
+                    _vignette.intensity.value, targetVignette, lerpFactor);
+                vignetteDone = Mathf.Abs(_vignette.intensity.value - targetVignette) < 0.005f;
+            }
+
+            if (colorDone && vignetteDone) break;
+            yield return null;
+        }
+
+        if (hasColor) _colorAdjustments.colorFilter.value = targetColor;
+        if (hasVignette) _vignette.intensity.value = targetVignette;
+
+        _lethalWarningCoroutine = null;
+    }
+
+    private static bool ColorApprox(Color a, Color b)
+    {
+        return Mathf.Abs(a.r - b.r) < 0.005f &&
+               Mathf.Abs(a.g - b.g) < 0.005f &&
+               Mathf.Abs(a.b - b.b) < 0.005f;
+    }
+
     private void OnDisable()
     {
         // Cleanup de seguridad
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
         if (_lensDistortion != null) _lensDistortion.intensity.value = 0f;
+        if (_colorAdjustments != null) _colorAdjustments.colorFilter.value = _originalFilterColor;
+        if (_vignette != null) _vignette.intensity.value = _originalVignetteIntensity;
     }
 }
