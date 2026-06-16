@@ -120,6 +120,7 @@ namespace InventoryNew
             {
                 if (slotUI == null) continue;
                 slotUI.OnSlotClicked -= HandleSlotClick;
+                slotUI.OnSlotRightClicked -= HandleSlotRightClick;
                 slotUI.OnSlotHover -= ShowStats;
                 slotUI.OnSlotHoverExit -= HideStats;
             }
@@ -131,6 +132,7 @@ namespace InventoryNew
             {
                 if (slotUI == null) continue;
                 slotUI.OnSlotClicked += HandleSlotClick;
+                slotUI.OnSlotRightClicked += HandleSlotRightClick;
                 slotUI.OnSlotHover += ShowStats;
                 slotUI.OnSlotHoverExit += HideStats;
             }
@@ -187,42 +189,77 @@ namespace InventoryNew
 
         private void ShowSelection(EquipmentSlot slot)
         {
-            Debug.Log($"[NewEquipmentPanelUI] ShowSelection para: {slot}");
-            if (NewInventoryManager.Instance == null)
-            {
-                Debug.LogWarning("[NewEquipmentPanelUI] No hay NewInventoryManager disponible.");
-                return;
-            }
+            if (NewInventoryManager.Instance == null) return;
 
             selectionPanel.SetActive(true);
-            
-            // Highlight the compatible slot
             foreach (var slotUI in slotUIs)
-            {
-                if (slotUI != null)
-                {
-                    slotUI.SetHighlight(slotUI.slot == slot);
-                }
-            }
-            
-            // Clear previous items
+                if (slotUI != null) slotUI.SetHighlight(slotUI.slot == slot);
+
             foreach (Transform child in selectionContent)
-            {
                 Destroy(child.gameObject);
-            }
 
-            // Get compatible items from inventory
-            var compatibleItems = NewInventoryManager.Instance.GetEquippableForSlot(slot);
+            // Determinar si el body part está destruido
+            BodyPart bodyPart = Fighter.EquipmentSlotToBodyPart(slot);
+            Fighter.BodyPartData partData = activeFighter?.GetBodyPart(bodyPart);
+            bool partIsDestroyed = partData != null && partData.IsDestroyed;
 
-            foreach (var item in compatibleItems)
+            var allCompatible = NewInventoryManager.Instance.GetEquippableForSlot(slot);
+
+            bool anyItemShown = false;
+            foreach (var item in allCompatible)
             {
+                bool isProsthetic = item is ProstheticData pd && pd.requiresDestroyedPart;
+                // Prótesis: solo si la parte está destruida
+                // Item normal: solo si la parte NO está destruida
+                bool shouldShow = isProsthetic ? partIsDestroyed : !partIsDestroyed;
+
+                if (!shouldShow) continue;
+
                 var go = Instantiate(itemPrefab, selectionContent);
                 var ui = go.GetComponent<NewInventoryItemUI>();
                 ui.Setup(item);
                 ui.OnClicked += () => EquipItem(item);
                 ui.OnHover += ShowPreview;
                 ui.OnHoverExit += HideStats;
+                anyItemShown = true;
             }
+
+            // Mensaje si no hay items disponibles
+            if (!anyItemShown && statsText != null)
+            {
+                statsText.text = partIsDestroyed
+                    ? "Este slot necesita una prótesis.\nNo tienes ninguna disponible."
+                    : "No tienes equipamiento para este slot.";
+            }
+        }
+
+        private void HandleSlotRightClick(EquipmentSlot slot)
+        {
+            if (activeFighter?.equipmentHandler == null) return;
+
+            var equipped = activeFighter.equipmentHandler.GetEquippedItem(slot);
+            if (equipped == null) return;
+
+            // No permitir desequipar una prótesis que esté en una parte destruida a menos que se reemplace
+            if (equipped is ProstheticData)
+            {
+                BodyPart bodyPart = Fighter.EquipmentSlotToBodyPart(slot);
+                var partData = activeFighter.GetBodyPart(bodyPart);
+                if (partData != null && partData.IsDestroyed)
+                {
+                    // Opcional: mostrar un aviso en lugar de bloquear silenciosamente
+                    if (statsText != null)
+                        statsText.text = "No puedes quitar una prótesis sin reemplazarla primero.";
+                    Debug.LogWarning($"[NewEquipmentPanelUI] Intento de quitar prótesis de parte destruida: {slot}");
+                    return;
+                }
+            }
+
+            activeFighter.equipmentHandler.Unequip(slot);
+            RefreshUI();
+
+            if (GameManager.Instance != null)
+                GameManager.Instance.SavePlayerState(activeFighter);
         }
 
         private void EquipItem(NewEquipmentData item)

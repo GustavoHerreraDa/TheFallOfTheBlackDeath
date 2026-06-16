@@ -263,7 +263,12 @@ public class PlayerControl : MonoBehaviour
         if (brokenLegs == 1)
             return velocidad * oneLegBrokenSpeedMultiplier;
 
-        return wantsRun ? velCorriendo : velocidad;
+        float baseSpeed = wantsRun ? velCorriendo : velocidad;
+        if (fighter is PlayerFighter player)
+        {
+            baseSpeed *= player.GetLegMobilityMultiplier();
+        }
+        return baseSpeed;
     }
 
     private float GetMovementAnimValueForLegState(int brokenLegs, bool wantsRun)

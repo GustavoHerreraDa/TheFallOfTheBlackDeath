@@ -76,8 +76,8 @@ public class StandardDamageCalculator : IDamageCalculator
             Fighter.BodyPartData rightLeg = context.receiver.GetBodyPart(BodyPart.RightLeg);
             Fighter.BodyPartData leftLeg = context.receiver.GetBodyPart(BodyPart.LeftLeg);
 
-            bool rightLegDestroyed = rightLeg != null && rightLeg.IsDestroyed;
-            bool leftLegDestroyed = leftLeg != null && leftLeg.IsDestroyed;
+            bool rightLegDestroyed = rightLeg != null && rightLeg.IsDestroyed && !rightLeg.HasActiveProsthetic;
+            bool leftLegDestroyed = leftLeg != null && leftLeg.IsDestroyed && !leftLeg.HasActiveProsthetic;
 
             if (leftLegDestroyed && rightLegDestroyed)
                 adjusted -= 1f;

@@ -80,6 +80,11 @@ public abstract class Fighter : MonoBehaviour
         [Header("Penalizaciones al destruirse")]
         public List<StatusMod> destructionPenalties = new List<StatusMod>();
 
+        [Header("Prótesis")]
+        public float prostheticCurrentHealth = 0f;   // 0 si no hay prótesis activa
+        public bool HasActiveProsthetic => prostheticCurrentHealth > 0f;
+        public bool IsEffectivelyFunctional => !IsDestroyed || HasActiveProsthetic;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BodyPartData"/> class.
         /// </summary>
@@ -113,7 +118,7 @@ public abstract class Fighter : MonoBehaviour
             return baseMaxHealth;
         }
 
-        private InventoryNew.EquipmentSlot MapPartToSlot(BodyPart part)
+        public InventoryNew.EquipmentSlot MapPartToSlot(BodyPart part)
         {
             switch (part)
             {
@@ -124,6 +129,20 @@ public abstract class Fighter : MonoBehaviour
                 case BodyPart.LeftLeg: return InventoryNew.EquipmentSlot.LeftLeg;
                 case BodyPart.RightLeg: return InventoryNew.EquipmentSlot.RightLeg;
                 default: return InventoryNew.EquipmentSlot.Accessory;
+            }
+        }
+
+        public BodyPart MapSlotToBodyPart(InventoryNew.EquipmentSlot slot)
+        {
+            switch (slot)
+            {
+                case InventoryNew.EquipmentSlot.Head: return BodyPart.Head;
+                case InventoryNew.EquipmentSlot.Torso: return BodyPart.Torso;
+                case InventoryNew.EquipmentSlot.LeftArm: return BodyPart.LeftArm;
+                case InventoryNew.EquipmentSlot.RightArm: return BodyPart.RightArm;
+                case InventoryNew.EquipmentSlot.LeftLeg: return BodyPart.LeftLeg;
+                case InventoryNew.EquipmentSlot.RightLeg: return BodyPart.RightLeg;
+                default: return BodyPart.None;
             }
         }
     }
@@ -155,14 +174,14 @@ public abstract class Fighter : MonoBehaviour
         get
         {
             if (bodyParts == null) return 0;
-
             int count = 0;
             foreach (var part in bodyParts)
             {
-                if ((part.part == BodyPart.LeftLeg || part.part == BodyPart.RightLeg) && part.IsDestroyed)
+                if ((part.part == BodyPart.LeftLeg || part.part == BodyPart.RightLeg)
+                    && part.IsDestroyed
+                    && !part.HasActiveProsthetic) // NUEVO: prótesis activa = no cuenta como rota
                     count++;
             }
-
             return count;
         }
     }
@@ -196,6 +215,35 @@ public abstract class Fighter : MonoBehaviour
     public BodyPartData GetBodyPart(BodyPart part)
     {
         return bodyParts.Find(p => p.part == part);
+    }
+
+    /// <summary>Convierte BodyPart a EquipmentSlot. Inverso del MapPartToSlot de BodyPartData.</summary>
+    public static InventoryNew.EquipmentSlot BodyPartToEquipmentSlot(BodyPart part)
+    {
+        switch (part)
+        {
+            case BodyPart.Head:     return InventoryNew.EquipmentSlot.Head;
+            case BodyPart.Torso:    return InventoryNew.EquipmentSlot.Torso;
+            case BodyPart.LeftArm:  return InventoryNew.EquipmentSlot.LeftArm;
+            case BodyPart.RightArm: return InventoryNew.EquipmentSlot.RightArm;
+            case BodyPart.LeftLeg:  return InventoryNew.EquipmentSlot.LeftLeg;
+            case BodyPart.RightLeg: return InventoryNew.EquipmentSlot.RightLeg;
+            default:                return InventoryNew.EquipmentSlot.Accessory;
+        }
+    }
+
+    public static BodyPart EquipmentSlotToBodyPart(InventoryNew.EquipmentSlot slot)
+    {
+        switch (slot)
+        {
+            case InventoryNew.EquipmentSlot.Head:     return BodyPart.Head;
+            case InventoryNew.EquipmentSlot.Torso:    return BodyPart.Torso;
+            case InventoryNew.EquipmentSlot.LeftArm:  return BodyPart.LeftArm;
+            case InventoryNew.EquipmentSlot.RightArm: return BodyPart.RightArm;
+            case InventoryNew.EquipmentSlot.LeftLeg:  return BodyPart.LeftLeg;
+            case InventoryNew.EquipmentSlot.RightLeg: return BodyPart.RightLeg;
+            default:                                   return BodyPart.None;
+        }
     }
 
     public bool isAlive
@@ -558,6 +606,16 @@ public abstract class Fighter : MonoBehaviour
 
 
         float prev = target.currentHealth;
+        
+        // Si la parte está destruida pero tiene prótesis activa, el daño va a la prótesis
+        if (target.IsDestroyed && target.HasActiveProsthetic)
+        {
+            DamageProsthetic(part, amount);
+            // Disparar el evento OnDamageResolved para que DamageFeedbackListener muestre el número
+            OnDamageResolved?.Invoke(damageResult.WithApplication(amount, target.prostheticCurrentHealth + Mathf.Abs(amount), target.prostheticCurrentHealth, true, target.prostheticCurrentHealth <= 0f));
+            return;
+        }
+
         target.currentHealth = Mathf.Clamp(target.currentHealth + amount, 0, target.GetMaxHealth(this));
         float modifiedAmount = target.currentHealth - prev;
         bool destroyedBodyPart = prev > 0 && target.IsDestroyed;
@@ -737,11 +795,30 @@ public abstract class Fighter : MonoBehaviour
             GameObject vfx = Instantiate(partDestroyedVFX, spawnLocation.position, spawnLocation.rotation, spawnLocation);
         }
         
-        //  Ocultar la malla
+        var playerFighter = GetComponent<PlayerFighter>();
+        
+        // Verificar si hay una prótesis que reemplace la parte destruida
+        InventoryNew.ProstheticData activeProsthetic = null;
+        if (playerFighter?.equipmentHandler != null)
+        {
+            InventoryNew.EquipmentSlot slot = BodyPartToEquipmentSlot(part.part);
+            activeProsthetic = playerFighter.equipmentHandler.GetEquippedItem(slot) as InventoryNew.ProstheticData;
+        }
+
+        if (activeProsthetic != null)
+        {
+            // La prótesis ya está equipada: inicializar su HP y mostrar su mesh
+            part.prostheticCurrentHealth = activeProsthetic.prostheticMaxHealth;
+            HideProstheticMesh(part.part);   // Asegurarse de ocultar primero por si acaso
+            ShowProstheticMesh(part.part);   // Activar el mesh de la prótesis
+            // NO ocultar la malla orgánica aquí; se oculta en ShowProstheticMesh
+            // NO ejecutar el switch de muerte/penalización (la prótesis absorbe el golpe de gracia)
+            return;
+        }
+
+        // Sin prótesis: flujo normal
         HidePartMesh(part.part);
 
-        
-        var playerFighter = GetComponent<PlayerFighter>();
         if (playerFighter != null)
         {
             playerFighter.SaveBodyPartState(part.part);
@@ -760,7 +837,7 @@ public abstract class Fighter : MonoBehaviour
             if (penalty != null)
             {
                 this.statusMods.Add(penalty);
-                Debug.Log($"{idName} sufriÃ³ una penalizaciÃ³n de {penalty.amount} en {penalty.type} por perder {part.part}");
+                Debug.Log($"{idName} sufrió una penalización de {penalty.amount} en {penalty.type} por perder {part.part}");
             }
         }
 
@@ -769,12 +846,12 @@ public abstract class Fighter : MonoBehaviour
         {
             case BodyPart.Head:
             case BodyPart.Torso:
-                Debug.Log($"{part.part} destruido â†’ muerte instantÃ¡nea");
+                Debug.Log($"{part.part} destruido → muerte instantánea");
                 ModifyHealth(-stats.health);
                 break;
             case BodyPart.LeftLeg:
             case BodyPart.RightLeg:
-                Debug.Log("Pierna destruida â†’ el jugador no podrÃ¡ correr");
+                Debug.Log("Pierna destruida → el jugador no podrá correr");
                 break;
         }
     }
@@ -853,7 +930,22 @@ public abstract class Fighter : MonoBehaviour
         foreach (var partData in bodyParts)
         {
             if (partData.IsDestroyed)
-                HidePartMesh(partData.part);
+            {
+                if (partData.HasActiveProsthetic)
+                {
+                    ShowProstheticMesh(partData.part); // Muestra prótesis, oculta malla orgánica
+                }
+                else
+                {
+                    HidePartMesh(partData.part);       // Sin prótesis: ocultar todo
+                    HideProstheticMesh(partData.part); // Asegurarse de que el mesh de prótesis también esté oculto
+                }
+            }
+            else
+            {
+                // Parte intacta: ocultar el mesh de prótesis si estuviera visible por algún error
+                HideProstheticMesh(partData.part);
+            }
         }
     }
 
@@ -878,6 +970,95 @@ public abstract class Fighter : MonoBehaviour
             Debug.Log($"Malla de {part} ocultada (Renderer desactivado).");
         }
     }
+
+    /// <summary>
+    /// Activa los renderers de prótesis para la parte dada.
+    /// Convención de nombres en el prefab: el GameObject de la malla de prótesis
+    /// debe llamarse "Prosthetic_LeftLeg", "Prosthetic_RightArm", etc. (BodyPart.ToString())
+    /// o tener el tag "ProstheticMesh" con un componente ProstheticMeshMarker que indique la part.
+    /// </summary>
+    protected void ShowProstheticMesh(BodyPart part)
+    {
+        string targetName = "Prosthetic_" + part.ToString();
+        foreach (Transform child in GetComponentsInChildren<Transform>(true))
+        {
+            if (child.name == targetName)
+            {
+                Renderer[] renderers = child.GetComponentsInChildren<Renderer>(true);
+                foreach (var r in renderers) r.enabled = true;
+                child.gameObject.SetActive(true);
+            }
+        }
+        // Ocultar la malla orgánica de la parte
+        HidePartMesh(part);
+    }
+
+    protected void HideProstheticMesh(BodyPart part)
+    {
+        string targetName = "Prosthetic_" + part.ToString();
+        foreach (Transform child in GetComponentsInChildren<Transform>(true))
+        {
+            if (child.name == targetName)
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Aplica daño a la prótesis activa de una parte destruida.
+    /// Cuando la prótesis llega a 0 HP, se desmonta y se reapiican las penalizaciones originales.
+    /// </summary>
+    public void DamageProsthetic(BodyPart part, float damageAmount)
+    {
+        var partData = GetBodyPart(part);
+        if (partData == null || !partData.HasActiveProsthetic) return;
+
+        partData.prostheticCurrentHealth = Mathf.Max(0f, partData.prostheticCurrentHealth + damageAmount);
+        // damageAmount es negativo (daño), así que la suma lo reduce.
+
+        if (partData.prostheticCurrentHealth <= 0f)
+        {
+            OnProstheticDestroyed(partData);
+        }
+    }
+
+    private void OnProstheticDestroyed(BodyPartData part)
+    {
+        part.prostheticCurrentHealth = 0f;
+        HideProstheticMesh(part.part);
+
+        // Desmontar la prótesis del equipmentHandler sin devolver al inventario (se destruyó)
+        var playerFighter = GetComponent<PlayerFighter>();
+        if (playerFighter?.equipmentHandler != null)
+        {
+            InventoryNew.EquipmentSlot slot = BodyPartToEquipmentSlot(part.part);
+            playerFighter.equipmentHandler.DestroyProsthetic(slot);
+        }
+
+        // Reaplicar penalizaciones originales de la parte
+        foreach (StatusMod penalty in part.destructionPenalties)
+        {
+            if (penalty != null)
+                this.statusMods.Add(penalty);
+        }
+
+        // Para piernas: reaplicar restricción de movilidad (brokenLegCount ya lo maneja automáticamente)
+        // Para Head/Torso sin prótesis: muerte
+        switch (part.part)
+        {
+            case BodyPart.Head:
+            case BodyPart.Torso:
+                ModifyHealth(-stats.health);
+                break;
+        }
+
+        CameraManager.Instance?.TriggerShake(0.5f);
+        CameraManager.Instance?.TriggerDamageGlitch();
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.armorBreakSound, 1f);
+    }
+
     public abstract void InitTurn();
     
     /// <summary>

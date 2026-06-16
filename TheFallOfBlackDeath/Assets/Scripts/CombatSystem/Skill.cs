@@ -242,7 +242,7 @@ public abstract class Skill : MonoBehaviour
         var targetableParts = new List<BodyPart>();
         foreach (var partData in receiver.bodyParts)
         {
-            if (partData != null && partData.part != BodyPart.None && !partData.IsDestroyed)
+            if (partData != null && partData.part != BodyPart.None && partData.IsEffectivelyFunctional)
                 targetableParts.Add(partData.part);
         }
 
@@ -300,7 +300,7 @@ public abstract class Skill : MonoBehaviour
         foreach (var part in requiredParts)
         {
             var bodyPart = fighter.GetBodyPart(part);
-            if (bodyPart == null || bodyPart.IsDestroyed)
+            if (bodyPart == null || (bodyPart.IsDestroyed && !bodyPart.HasActiveProsthetic))
             {
                 Debug.Log($"{fighter.idName} no puede usar {skillName}: {part} destruido");
                 return false;
@@ -316,7 +316,7 @@ public abstract class Skill : MonoBehaviour
             foreach (var part in requiredParts)
             {
                 var bodyPart = fighter.GetBodyPart(part);
-                if (bodyPart == null || bodyPart.IsDestroyed) return false;
+                if (bodyPart == null || (bodyPart.IsDestroyed && !bodyPart.HasActiveProsthetic)) return false;
             }
         }
         return HasRequiredItems();

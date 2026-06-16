@@ -81,6 +81,20 @@ namespace InventoryNew
             EnsureInitialized();
             if (equipment == null) return;
 
+            // Si el ítem es una prótesis con requiresDestroyedPart, verificar que el slot esté destruido
+            if (equipment is ProstheticData prosthetic && prosthetic.requiresDestroyedPart && owner != null)
+            {
+                BodyPart targetPart = Fighter.EquipmentSlotToBodyPart(equipment.slot);
+                var partData = owner.GetBodyPart(targetPart);
+                if (partData == null || !partData.IsDestroyed)
+                {
+                    Debug.LogWarning($"[EquipmentHandler] No se puede equipar la prótesis '{equipment.itemName}': la parte '{targetPart}' no está destruida.");
+                    return;
+                }
+                // Inicializar HP de la prótesis en el BodyPartData
+                partData.prostheticCurrentHealth = prosthetic.prostheticMaxHealth;
+            }
+
             var currentItem = equippedItems[equipment.slot];
 
             if (NewInventoryManager.Instance != null)
@@ -205,6 +219,21 @@ namespace InventoryNew
         {
             EnsureInitialized();
             if (equipment == null) return;
+
+            // Validación de Prótesis en EquipForce (restauración/guardado)
+            if (equipment is ProstheticData prosthetic && prosthetic.requiresDestroyedPart && owner != null)
+            {
+                BodyPart targetPart = Fighter.EquipmentSlotToBodyPart(equipment.slot);
+                var partData = owner.GetBodyPart(targetPart);
+                if (partData == null || !partData.IsDestroyed)
+                {
+                    Debug.LogWarning($"[EquipmentHandler] EquipForce: No se puede equipar {equipment.itemName} porque {targetPart} no está destruida.");
+                    return;
+                }
+                // Inicializar HP de la prótesis en el BodyPartData
+                partData.prostheticCurrentHealth = prosthetic.prostheticMaxHealth;
+            }
+
             DestroyGrantedSkillsForSlot(equipment.slot); // NUEVO
             equippedItems[equipment.slot] = equipment;
             CreateGrantedSkillsForEquipment(equipment); // NUEVO
@@ -311,6 +340,20 @@ namespace InventoryNew
                 Destroy(instance);
             else
                 DestroyImmediate(instance);
+        }
+        /// <summary>
+        /// Desmonta una prótesis destruida en combate, sin devolver el ítem al inventario.
+        /// </summary>
+        public void DestroyProsthetic(EquipmentSlot slot)
+        {
+            EnsureInitialized();
+            if (equippedItems.ContainsKey(slot) && equippedItems[slot] is ProstheticData)
+            {
+                DestroyGrantedSkillsForSlot(slot);
+                equippedItems[slot] = null;
+                RecalculateStats();
+                OnEquipChanged?.Invoke();
+            }
         }
     }
 }

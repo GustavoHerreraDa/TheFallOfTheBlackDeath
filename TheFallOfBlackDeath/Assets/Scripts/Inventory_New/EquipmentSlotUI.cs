@@ -19,6 +19,7 @@ namespace InventoryNew
         public float pulseSpeed = 2.0f;
 
         public event Action<EquipmentSlot> OnSlotClicked;
+        public event Action<EquipmentSlot> OnSlotRightClicked;
         public event Action<NewEquipmentData> OnSlotHover;
         public event Action OnSlotHoverExit;
 
@@ -85,8 +86,16 @@ namespace InventoryNew
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            Debug.Log($"[EquipmentSlotUI] Click en slot: {slot}");
-            OnSlotClicked?.Invoke(slot);
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                Debug.Log($"[EquipmentSlotUI] Click izquierdo en slot: {slot}");
+                OnSlotClicked?.Invoke(slot);
+            }
+            else if (eventData.button == PointerEventData.InputButton.Right)
+            {
+                Debug.Log($"[EquipmentSlotUI] Click derecho en slot: {slot} → desequipar");
+                OnSlotRightClicked?.Invoke(slot);
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)

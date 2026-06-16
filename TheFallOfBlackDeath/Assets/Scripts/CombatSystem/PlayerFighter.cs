@@ -789,5 +789,28 @@ public class PlayerFighter : Fighter
         if (GameManager.Instance != null)
             GameManager.Instance.ApplySavedStatusToFighter(this);
     }
+
+    /// <summary>
+    /// Retorna el multiplicador de movilidad considerando prótesis de piernas.
+    /// 1.0 = normal, 0.5 = mitad, etc.
+    /// </summary>
+    public float GetLegMobilityMultiplier()
+    {
+        if (bodyParts == null) return 1.0f;
+        float multiplier = 1.0f;
+        foreach (var part in bodyParts)
+        {
+            if ((part.part == BodyPart.LeftLeg || part.part == BodyPart.RightLeg)
+                && part.IsDestroyed && part.HasActiveProsthetic
+                && equipmentHandler != null)
+            {
+                var slot = BodyPartToEquipmentSlot(part.part);
+                var prosthetic = equipmentHandler.GetEquippedItem(slot) as InventoryNew.ProstheticData;
+                if (prosthetic != null)
+                    multiplier = Mathf.Min(multiplier, prosthetic.mobilityRestorePercent);
+            }
+        }
+        return multiplier;
+    }
 }
 

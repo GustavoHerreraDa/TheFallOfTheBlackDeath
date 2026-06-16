@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
 
         public List<float> bodyPartsHealth = new List<float>();
         public List<float> bodyPartsMaxHealth = new List<float>();
+        public List<float> prostheticHealths = new List<float>(); // NUEVO: salud de las prótesis
 
         [System.Serializable]
         public struct EquippedItemData
@@ -1049,6 +1050,7 @@ public class GameManager : MonoBehaviour
             speed = s.speed,
             bodyPartsHealth = new List<float>(),
             bodyPartsMaxHealth = new List<float>(),
+            prostheticHealths = new List<float>(),
             activeSkillLoadoutIds = fighter.GetActiveLoadoutIds() // NUEVO
         };
 
@@ -1056,6 +1058,7 @@ public class GameManager : MonoBehaviour
         {
             data.bodyPartsHealth.Add(part.currentHealth);
             data.bodyPartsMaxHealth.Add(part.GetMaxHealth(fighter));
+            data.prostheticHealths.Add(part.prostheticCurrentHealth);
         }
 
         // Persistencia de equipo: Guardar los IDs de los objetos equipados
@@ -1123,6 +1126,12 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < fighter.bodyParts.Count && i < savedPlayerStatus.bodyPartsHealth.Count; i++)
         {
             fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
+            
+            // Restaurar salud de prótesis si existe
+            if (savedPlayerStatus.prostheticHealths != null && i < savedPlayerStatus.prostheticHealths.Count)
+            {
+                fighter.bodyParts[i].prostheticCurrentHealth = savedPlayerStatus.prostheticHealths[i];
+            }
         }
 
         if (savedPlayerStatus.bodyPartsMaxHealth == null ||
