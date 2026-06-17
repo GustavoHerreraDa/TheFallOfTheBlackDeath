@@ -21,6 +21,9 @@ public class FollowPlayer : MonoBehaviour
     public AudioSource audioSource;
     public Transform player;
 
+    [Header("Stun VFX")]
+    [SerializeField] private GameObject stunEffect;
+
     [Header("Ajustes")]
     public float chaseEnterDistance = 5f;
     public float chaseExitDistance = 8f;
@@ -280,15 +283,30 @@ public class FollowPlayer : MonoBehaviour
             agent.velocity = Vector3.zero;
         }
 
+        if (stunEffect != null)
+        {
+            stunEffect.SetActive(true);
+        }
+
         currentState = EnemyState.Stunned;
         SetAnimationBooleans();
 
         yield return new WaitForSeconds(duration);
 
+        if (stunEffect != null)
+        {
+            stunEffect.SetActive(false);
+        }
+
         isStunned = false;
 
-        EnemyState nextState = (puntoA != null && puntoB != null) ? EnemyState.Patrol : EnemyState.Idle;
+        EnemyState nextState =
+            (puntoA != null && puntoB != null)
+                ? EnemyState.Patrol
+                : EnemyState.Idle;
+
         ChangeState(nextState);
+
         stunRoutine = null;
     }
 }
