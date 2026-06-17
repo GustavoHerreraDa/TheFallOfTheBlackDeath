@@ -80,6 +80,9 @@ public class GameManager : MonoBehaviour
     public PlayerFighter character1;
     public PlayerFighter character2;
 
+    [Header("Debug")]
+    [SerializeField] private bool enableDebugTools = true;
+
     [Header("Party System")]
     [SerializeField] private List<int> activePartyIds = new List<int>();
     [SerializeField] private List<int> recruitedCharacterIds = new List<int>();
@@ -783,6 +786,13 @@ public class GameManager : MonoBehaviour
             Hero.name = "Character";
         }
 
+        if (enableDebugTools)
+        {
+            if (GetComponent<FighterDebugTools>() == null)
+            {
+                gameObject.AddComponent<FighterDebugTools>();
+            }
+        }
     }
 
     /// <summary>

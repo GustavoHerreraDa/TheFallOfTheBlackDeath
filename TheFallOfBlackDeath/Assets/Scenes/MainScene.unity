@@ -18384,6 +18384,43 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8054341967929913385, guid: fbed7615175637f41981de1ee0ada3d1, type: 3}
   m_PrefabInstance: {fileID: 1523405347}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &391740116 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5480911531806588927, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
+  m_PrefabInstance: {fileID: 1226162120}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &391740119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391740116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4deb6476563c4d64a5057f9057b2150e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FighterDebugTools
+  modifierKey: 257
+  onlyInEditor: 1
+  instructions: 'Mientras mantienes Shift:
+
+    1: Destruir Cabeza
+
+    2: Destruir
+    Torso
+
+    3: Destruir Brazo Izquierdo
+
+    4: Destruir Brazo Derecho
+
+    5:
+    Destruir Pierna Izquierda
+
+    6: Destruir Pierna Derecha
+
+    0: Restaurar todo
+    (Heal)'
 --- !u!1001 &392738921
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -65805,6 +65842,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5480911531806588926, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
+      propertyPath: enableDebugTools
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5480911531806588926, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
       propertyPath: defaultEscapedEnemyStunDuration
       value: 10
       objectReference: {fileID: 0}
@@ -65824,7 +65865,10 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 5480911532004275250, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5480911531806588927, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 391740119}
   m_SourcePrefab: {fileID: 100100000, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
 --- !u!1 &1227749775
 GameObject:
