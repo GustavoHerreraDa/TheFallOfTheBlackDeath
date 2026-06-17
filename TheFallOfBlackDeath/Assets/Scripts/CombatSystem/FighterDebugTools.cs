@@ -20,6 +20,11 @@ public class FighterDebugTools : MonoBehaviour
                                 "6: Destruir Pierna Derecha\n" +
                                 "0: Restaurar todo (Heal)";
 
+    private void Awake()
+    {
+        Debug.Log("[FighterDebugTools] Componente activo. Usa Shift + 1-6 para destruir partes, 0 para restaurar.");
+    }
+
     private void Update()
     {
         if (onlyInEditor && !Application.isEditor) return;
@@ -27,41 +32,71 @@ public class FighterDebugTools : MonoBehaviour
         if (Input.GetKey(modifierKey))
         {
             if (Input.GetKeyDown(KeyCode.Alpha1)) DestroyPart(BodyPart.Head);
-            if (Input.GetKeyDown(KeyCode.Alpha2)) DestroyPart(BodyPart.Torso);
-            if (Input.GetKeyDown(KeyCode.Alpha3)) DestroyPart(BodyPart.LeftArm);
-            if (Input.GetKeyDown(KeyCode.Alpha4)) DestroyPart(BodyPart.RightArm);
-            if (Input.GetKeyDown(KeyCode.Alpha5)) DestroyPart(BodyPart.LeftLeg);
-            if (Input.GetKeyDown(KeyCode.Alpha6)) DestroyPart(BodyPart.RightLeg);
-            if (Input.GetKeyDown(KeyCode.Alpha0)) RestoreAll();
+            else if (Input.GetKeyDown(KeyCode.Alpha2)) DestroyPart(BodyPart.Torso);
+            else if (Input.GetKeyDown(KeyCode.Alpha3)) DestroyPart(BodyPart.LeftArm);
+            else if (Input.GetKeyDown(KeyCode.Alpha4)) DestroyPart(BodyPart.RightArm);
+            else if (Input.GetKeyDown(KeyCode.Alpha5)) DestroyPart(BodyPart.LeftLeg);
+            else if (Input.GetKeyDown(KeyCode.Alpha6)) DestroyPart(BodyPart.RightLeg);
+            else if (Input.GetKeyDown(KeyCode.Alpha0)) RestoreAll();
         }
     }
 
     private void DestroyPart(BodyPart part)
     {
-        PlayerFighter player = FindFirstObjectByType<PlayerFighter>();
-        if (player == null) return;
+        PlayerFighter player = null;
+        
+        // Intentar obtener el personaje principal desde el GameManager primero
+        if (GameManager._instance != null)
+        {
+            player = GameManager._instance.character1;
+        }
 
+        // Fallback si no hay referencia en GameManager
+        if (player == null)
+        {
+            player = FindFirstObjectByType<PlayerFighter>();
+        }
+
+        if (player == null)
+        {
+            Debug.LogError("[FighterDebugTools] No se encontró el Main Character (character1) ni ningún PlayerFighter en la escena.");
+            return;
+        }
+        
         Fighter.BodyPartData partData = player.GetBodyPart(part);
-        if (partData == null) return;
+        if (partData == null)
+        {
+            Debug.LogError($"[FighterDebugTools] La parte {part} no existe en {player.idName}");
+            return;
+        }
 
-        Debug.Log($"[DebugTools] Destruyendo {part} de {player.idName}");
+        Debug.Log($"[FighterDebugTools] Destruyendo {part} de {player.idName} (Main Character)");
         
         // Aplicar daño letal a la parte específica para disparar OnBodyPartDestroyed
-        // Usamos un valor muy alto para asegurar que llegue a 0
         player.ModifyBodyPartHealth(part, -9999f, player, null);
     }
 
     private void RestoreAll()
     {
-        PlayerFighter player = FindFirstObjectByType<PlayerFighter>();
+        PlayerFighter player = null;
+        
+        if (GameManager._instance != null)
+        {
+            player = GameManager._instance.character1;
+        }
+
+        if (player == null)
+        {
+            player = FindFirstObjectByType<PlayerFighter>();
+        }
+
         if (player == null) return;
 
-        Debug.Log($"[DebugTools] Restaurando todas las partes y HP de {player.idName}");
+        Debug.Log($"[FighterDebugTools] Restaurando todas las partes y HP de {player.idName} (Main Character)");
 
         foreach (var part in player.bodyParts)
         {
             part.currentHealth = part.maxHealth;
-            // Si estaba destruida, reseteamos el flag y resincronizamos visuales
         }
         
         player.ModifyHealth(player.stats.maxHealth);

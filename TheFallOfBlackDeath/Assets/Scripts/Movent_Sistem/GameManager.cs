@@ -791,7 +791,12 @@ public class GameManager : MonoBehaviour
             if (GetComponent<FighterDebugTools>() == null)
             {
                 gameObject.AddComponent<FighterDebugTools>();
+                Debug.Log("[GameManager] FighterDebugTools añadido al GameManager.");
             }
+        }
+        else
+        {
+            Debug.Log("[GameManager] enableDebugTools está desactivado. No se añadirán las herramientas de debug.");
         }
     }
 
