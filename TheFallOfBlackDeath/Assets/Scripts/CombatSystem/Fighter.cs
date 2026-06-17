@@ -82,6 +82,8 @@ public abstract class Fighter : MonoBehaviour
 
         [Header("Prótesis")]
         public float prostheticCurrentHealth = 0f;   // 0 si no hay prótesis activa
+        [Tooltip("Renderer del mesh de prótesis de esta parte. Asignar en el Inspector del prefab del personaje. Debe estar desactivado (enabled=false) por defecto.")]
+        public Renderer prostheticRenderer;
         public bool HasActiveProsthetic => prostheticCurrentHealth > 0f;
         public bool IsEffectivelyFunctional => !IsDestroyed || HasActiveProsthetic;
 
@@ -610,7 +612,7 @@ public abstract class Fighter : MonoBehaviour
         // Si la parte está destruida pero tiene prótesis activa, el daño va a la prótesis
         if (target.IsDestroyed && target.HasActiveProsthetic)
         {
-            DamageProsthetic(part, amount);
+            DamageProsthetic(part, Mathf.Abs(amount));
             // Disparar el evento OnDamageResolved para que DamageFeedbackListener muestre el número
             OnDamageResolved?.Invoke(damageResult.WithApplication(amount, target.prostheticCurrentHealth + Mathf.Abs(amount), target.prostheticCurrentHealth, true, target.prostheticCurrentHealth <= 0f));
             return;
@@ -786,18 +788,11 @@ public abstract class Fighter : MonoBehaviour
     /// <param name="part">The part.</param>
     private void OnBodyPartDestroyed(BodyPartData part)
     {
-        //  Notificar al evento
+        // 1. Notificar evento (siempre)
         OnBodyPartDestroyedEvent?.Invoke(part.part);
-        
-        if (partDestroyedVFX != null)
-        {
-            Transform spawnLocation = GetHitPoint(part.part);
-            GameObject vfx = Instantiate(partDestroyedVFX, spawnLocation.position, spawnLocation.rotation, spawnLocation);
-        }
-        
+
+        // 2. Verificar prótesis PRIMERO — antes del VFX y antes de ocultar la malla
         var playerFighter = GetComponent<PlayerFighter>();
-        
-        // Verificar si hay una prótesis que reemplace la parte destruida
         InventoryNew.ProstheticData activeProsthetic = null;
         if (playerFighter?.equipmentHandler != null)
         {
@@ -807,31 +802,33 @@ public abstract class Fighter : MonoBehaviour
 
         if (activeProsthetic != null)
         {
-            // La prótesis ya está equipada: inicializar su HP y mostrar su mesh
+            // La prótesis absorbe el golpe: inicializar HP, mostrar mesh, NO disparar VFX de destrucción
             part.prostheticCurrentHealth = activeProsthetic.prostheticMaxHealth;
-            HideProstheticMesh(part.part);   // Asegurarse de ocultar primero por si acaso
-            ShowProstheticMesh(part.part);   // Activar el mesh de la prótesis
-            // NO ocultar la malla orgánica aquí; se oculta en ShowProstheticMesh
-            // NO ejecutar el switch de muerte/penalización (la prótesis absorbe el golpe de gracia)
+            HideProstheticMesh(part.part);
+            ShowProstheticMesh(part.part);
+            playerFighter?.SaveBodyPartState(part.part);
             return;
         }
 
-        // Sin prótesis: flujo normal
+        // 3. Sin prótesis: flujo normal — ahora sí instanciar VFX
+        if (partDestroyedVFX != null)
+        {
+            Transform spawnLocation = GetHitPoint(part.part);
+            Instantiate(partDestroyedVFX, spawnLocation.position, spawnLocation.rotation, spawnLocation);
+        }
+
         HidePartMesh(part.part);
 
         if (playerFighter != null)
-        {
             playerFighter.SaveBodyPartState(part.part);
-        }
-        
-        CameraManager.Instance.TriggerHitStop(1); // Hit stop 
-        CameraManager.Instance.TriggerShake(0.5f);    // Camera Shake
-        CameraManager.Instance.TriggerDamageGlitch(); // 
-        
+
+        CameraManager.Instance.TriggerHitStop(1);
+        CameraManager.Instance.TriggerShake(0.5f);
+        CameraManager.Instance.TriggerDamageGlitch();
+
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX(AudioManager.Instance.armorBreakSound, 1f);
-        
-        
+
         foreach (StatusMod penalty in part.destructionPenalties)
         {
             if (penalty != null)
@@ -841,7 +838,6 @@ public abstract class Fighter : MonoBehaviour
             }
         }
 
-        // 4. la logica de reglas "Duras" (Cosas que no son solo restas de stats)
         switch (part.part)
         {
             case BodyPart.Head:
@@ -932,19 +928,16 @@ public abstract class Fighter : MonoBehaviour
             if (partData.IsDestroyed)
             {
                 if (partData.HasActiveProsthetic)
-                {
-                    ShowProstheticMesh(partData.part); // Muestra prótesis, oculta malla orgánica
-                }
+                    ShowProstheticMesh(partData.part);
                 else
                 {
-                    HidePartMesh(partData.part);       // Sin prótesis: ocultar todo
-                    HideProstheticMesh(partData.part); // Asegurarse de que el mesh de prótesis también esté oculto
+                    HidePartMesh(partData.part);
+                    HideProstheticMesh(partData.part); // ← asegurar que el mesh de prótesis no quede visible
                 }
             }
             else
             {
-                // Parte intacta: ocultar el mesh de prótesis si estuviera visible por algún error
-                HideProstheticMesh(partData.part);
+                HideProstheticMesh(partData.part); // parte sana: nunca mostrar el mesh de prótesis
             }
         }
     }
@@ -979,48 +972,63 @@ public abstract class Fighter : MonoBehaviour
     /// </summary>
     protected void ShowProstheticMesh(BodyPart part)
     {
+        // Ocultar malla orgánica primero
+        HidePartMesh(part);
+
+        // Intentar usar la referencia directa (asignada en Inspector)
+        var partData = GetBodyPart(part);
+        if (partData?.prostheticRenderer != null)
+        {
+            partData.prostheticRenderer.enabled = true;
+            partData.prostheticRenderer.gameObject.SetActive(true);
+            return;
+        }
+
+        // Fallback: búsqueda por convención de nombre (si no hay referencia asignada)
         string targetName = "Prosthetic_" + part.ToString();
         foreach (Transform child in GetComponentsInChildren<Transform>(true))
         {
             if (child.name == targetName)
             {
-                Renderer[] renderers = child.GetComponentsInChildren<Renderer>(true);
-                foreach (var r in renderers) r.enabled = true;
                 child.gameObject.SetActive(true);
+                foreach (var r in child.GetComponentsInChildren<Renderer>(true))
+                    r.enabled = true;
             }
         }
-        // Ocultar la malla orgánica de la parte
-        HidePartMesh(part);
     }
 
     protected void HideProstheticMesh(BodyPart part)
     {
+        // Intentar usar la referencia directa
+        var partData = GetBodyPart(part);
+        if (partData?.prostheticRenderer != null)
+        {
+            partData.prostheticRenderer.enabled = false;
+            return;
+        }
+
+        // Fallback: búsqueda por nombre
         string targetName = "Prosthetic_" + part.ToString();
         foreach (Transform child in GetComponentsInChildren<Transform>(true))
         {
             if (child.name == targetName)
-            {
                 child.gameObject.SetActive(false);
-            }
         }
     }
 
     /// <summary>
-    /// Aplica daño a la prótesis activa de una parte destruida.
-    /// Cuando la prótesis llega a 0 HP, se desmonta y se reapiican las penalizaciones originales.
+    /// Aplica daño a la prótesis de la parte indicada.
+    /// <param name="rawDamage">Valor positivo. Se resta de prostheticCurrentHealth.</param>
     /// </summary>
-    public void DamageProsthetic(BodyPart part, float damageAmount)
+    public void DamageProsthetic(BodyPart part, float rawDamage)
     {
         var partData = GetBodyPart(part);
         if (partData == null || !partData.HasActiveProsthetic) return;
 
-        partData.prostheticCurrentHealth = Mathf.Max(0f, partData.prostheticCurrentHealth + damageAmount);
-        // damageAmount es negativo (daño), así que la suma lo reduce.
+        partData.prostheticCurrentHealth = Mathf.Max(0f, partData.prostheticCurrentHealth - rawDamage);
 
         if (partData.prostheticCurrentHealth <= 0f)
-        {
             OnProstheticDestroyed(partData);
-        }
     }
 
     private void OnProstheticDestroyed(BodyPartData part)

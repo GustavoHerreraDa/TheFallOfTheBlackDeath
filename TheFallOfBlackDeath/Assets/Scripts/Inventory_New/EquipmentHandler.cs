@@ -230,8 +230,10 @@ namespace InventoryNew
                     Debug.LogWarning($"[EquipmentHandler] EquipForce: No se puede equipar {equipment.itemName} porque {targetPart} no está destruida.");
                     return;
                 }
-                // Inicializar HP de la prótesis en el BodyPartData
-                partData.prostheticCurrentHealth = prosthetic.prostheticMaxHealth;
+                // Solo inicializar HP si no fue restaurada previamente (valor 0 = no hay dato guardado)
+                // Esto preserva la HP parcial restaurada por ApplySavedStatusToFighter
+                if (partData.prostheticCurrentHealth <= 0f)
+                    partData.prostheticCurrentHealth = prosthetic.prostheticMaxHealth;
             }
 
             DestroyGrantedSkillsForSlot(equipment.slot); // NUEVO

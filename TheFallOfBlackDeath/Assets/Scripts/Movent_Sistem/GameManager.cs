@@ -1126,12 +1126,6 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < fighter.bodyParts.Count && i < savedPlayerStatus.bodyPartsHealth.Count; i++)
         {
             fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
-            
-            // Restaurar salud de prótesis si existe
-            if (savedPlayerStatus.prostheticHealths != null && i < savedPlayerStatus.prostheticHealths.Count)
-            {
-                fighter.bodyParts[i].prostheticCurrentHealth = savedPlayerStatus.prostheticHealths[i];
-            }
         }
 
         if (savedPlayerStatus.bodyPartsMaxHealth == null ||
@@ -1161,6 +1155,19 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.LogError($"[GameManager] ALERTA: No se pudo restaurar el equipo con ID '{itemData.itemId}'. ¿Olvidaste agregar el ScriptableObject al masterCatalog del NewInventoryManager o el ID está vacío?");
                 }
+            }
+        }
+
+        // PASO 5: AHORA restaurar prostheticCurrentHealth, DESPUÉS de EquipForce
+        // EquipForce ya inicializó los valores a maxHealth para prótesis nuevas.
+        // Este paso sobreescribe con los valores guardados para prótesis con HP parcial.
+        if (savedPlayerStatus.prostheticHealths != null)
+        {
+            for (int i = 0; i < fighter.bodyParts.Count && i < savedPlayerStatus.prostheticHealths.Count; i++)
+            {
+                float savedProstheticHp = savedPlayerStatus.prostheticHealths[i];
+                if (savedProstheticHp > 0f) // solo sobreescribir si había una prótesis activa al guardar
+                    fighter.bodyParts[i].prostheticCurrentHealth = savedProstheticHp;
             }
         }
 
