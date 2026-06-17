@@ -7,7 +7,7 @@ public class FighterDebugTools : MonoBehaviour
 {
     [Header("Settings")]
     public KeyCode modifierKey = KeyCode.LeftShift;
-    public bool onlyInEditor = true;
+    public bool onlyInEditor = false;
 
     [Header("Instructions")]
     [TextArea(3, 10)]
