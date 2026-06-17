@@ -918,7 +918,7 @@ public abstract class Fighter : MonoBehaviour
     }
     
     /// <summary>
-    /// Executes the sync body part visuals workflow.
+    /// Syncs body part visuals by showing/hiding meshes based on destruction and prosthetics.
     /// </summary>
     public void SyncBodyPartVisuals()
     {
@@ -928,17 +928,35 @@ public abstract class Fighter : MonoBehaviour
             if (partData.IsDestroyed)
             {
                 if (partData.HasActiveProsthetic)
-                    ShowProstheticMesh(partData.part);
+                {
+                    ShowProstheticMesh(partData.part); // Muestra prótesis, oculta malla orgánica
+                }
                 else
                 {
-                    HidePartMesh(partData.part);
-                    HideProstheticMesh(partData.part); // ← asegurar que el mesh de prótesis no quede visible
+                    HidePartMesh(partData.part);       // Sin prótesis: ocultar todo
+                    HideProstheticMesh(partData.part); // Asegurarse de que el mesh de prótesis también esté oculto
                 }
             }
             else
             {
-                HideProstheticMesh(partData.part); // parte sana: nunca mostrar el mesh de prótesis
+                // Parte sana: mostrar malla orgánica y ocultar prótesis
+                ShowPartMesh(partData.part);
+                HideProstheticMesh(partData.part);
             }
+        }
+    }
+
+    /// <summary>
+    /// Shows the part mesh.
+    /// </summary>
+    /// <param name="part">The part.</param>
+    protected void ShowPartMesh(BodyPart part)
+    {
+        Renderer[] partRenderers = GetCachedBodyPartRenderers(part);
+        for (int i = 0; i < partRenderers.Length; i++)
+        {
+            if (partRenderers[i] != null)
+                partRenderers[i].enabled = true;
         }
     }
 

@@ -90,24 +90,33 @@ public class BodyStatusUI : MonoBehaviour
         if (fighter == null)
             return;
 
-        //obtiene cada parte del cuerpo como una lista de tuplas
-        var data = GameManager.Instance.BodyPartsIntegrity(fighter).ToList();
+        // Actualizamos cada texto individualmente
+        UpdatePartUI(BodyPart.Head, headTxt, "Head");
+        UpdatePartUI(BodyPart.Torso, torsoTxt, "Torso");
+        UpdatePartUI(BodyPart.LeftArm, leftArmTxt, "L-Arm");
+        UpdatePartUI(BodyPart.RightArm, rightArmTxt, "R-Arm");
+        UpdatePartUI(BodyPart.LeftLeg, leftLegTxt, "L-Leg");
+        UpdatePartUI(BodyPart.RightLeg, rightLegTxt, "R-Leg");
+    }
 
-        if (data.Count < 6) return;
+    private void UpdatePartUI(BodyPart part, TextMeshProUGUI textUI, string label)
+    {
+        if (textUI == null) return;
 
-        Debug.Log("paertes = " + data.Count);
+        Fighter.BodyPartData data = fighter.GetBodyPart(part);
+        if (data == null) return;
 
-        for (int i = 0; i < data.Count; i++)
+        if (data.IsDestroyed && data.HasActiveProsthetic)
         {
-            Debug.Log($"part {i}: {data[i].current}/{data[i].max}");
+            // Mostrar salud de la prótesis con un indicador [P]
+            textUI.text = $"{label}: [P] {Mathf.Round(data.prostheticCurrentHealth)}";
+            textUI.color = Color.cyan; // Color distintivo para prótesis
         }
-        //se actualiza
-        headTxt.text = $"Head: {data[0].current}/{data[0].max}";
-        torsoTxt.text = $"Torso: {data[1].current}/{data[1].max}";
-        leftArmTxt.text = $"L-Arm: {data[2].current}/{data[2].max}";
-        rightArmTxt.text = $"R-Arm: {data[3].current}/{data[3].max}";
-        leftLegTxt.text = $"L-Leg: {data[4].current}/{data[4].max}";
-        rightLegTxt.text = $"R-Leg: {data[5].current}/{data[5].max}";
+        else
+        {
+            textUI.text = $"{label}: {Mathf.Round(data.currentHealth)}/{Mathf.Round(data.maxHealth)}";
+            textUI.color = data.IsDestroyed ? Color.red : Color.white;
+        }
     }
 
 
