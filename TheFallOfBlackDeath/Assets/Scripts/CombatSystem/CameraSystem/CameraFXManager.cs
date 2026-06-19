@@ -10,6 +10,8 @@ using System.Collections;
 /// </summary>
 public class CameraFXManager : MonoBehaviour
 {
+    public static CameraFXManager Instance { get; private set; }
+
     [Header("Post-Processing (URP)")]
     [SerializeField] private Volume globalVolume;
     [SerializeField] private float distortionSpeed = 8f;
@@ -34,6 +36,13 @@ public class CameraFXManager : MonoBehaviour
     [SerializeField] private AudioClip lethalWarningSound;
     [Range(0f, 1f)] [SerializeField] private float warningAudioVolume = 0.8f;
 
+    [Header("Scan Effect")]
+    [SerializeField] private Color scanFilterColor = new Color(0.05f, 0.55f, 0.25f, 1f);
+    [SerializeField] private float scanFlashDuration = 0.08f;
+    [SerializeField] private float scanDecayDuration = 0.6f;
+    [SerializeField] private float scanHueShift = 80f;       // grados, verde = ~80-120
+    [SerializeField] private float scanSaturation = 30f;     // boost de saturación
+
     private LensDistortion _lensDistortion;
     private ChromaticAberration _chromaticAberration;
     private ColorAdjustments _colorAdjustments;
@@ -45,12 +54,17 @@ public class CameraFXManager : MonoBehaviour
 
     private Color _originalFilterColor = Color.white;
     private float _originalVignetteIntensity;
+    private float _originalHueShift;
+    private float _originalSaturation;
     
     // Almacena el AudioSource persistente creado por el AudioManager
     private AudioSource _activeLethalAudioSource;
+    private Coroutine _scanCoroutine;
 
     private void Awake()
     {
+        if (Instance == null) Instance = this; else Destroy(gameObject);
+
         if (globalVolume != null)
         {
             globalVolume.profile.TryGet(out _lensDistortion);
@@ -59,7 +73,11 @@ public class CameraFXManager : MonoBehaviour
             globalVolume.profile.TryGet(out _vignette);
 
             if (_colorAdjustments != null)
+            {
                 _originalFilterColor = _colorAdjustments.colorFilter.value;
+                _originalHueShift = _colorAdjustments.hueShift.value;
+                _originalSaturation = _colorAdjustments.saturation.value;
+            }
             if (_vignette != null)
                 _originalVignetteIntensity = _vignette.intensity.value;
         }
@@ -130,7 +148,7 @@ public class CameraFXManager : MonoBehaviour
         Time.timeScale = 1.0f;
         Time.fixedDeltaTime = 0.02f;
 
-        if (CameraDirector.Instance != null)
+        if (CameraDirector.Instance != null && CameraDirector.Instance.CurrentState != CameraState.Ui)
         {
             CameraDirector.Instance.ChangeState(CameraState.Overview);
         }
@@ -269,6 +287,63 @@ public class CameraFXManager : MonoBehaviour
                Mathf.Abs(a.b - b.b) < 0.005f;
     }
 
+    public void SetScanEffect(bool active)
+    {
+        if (_scanCoroutine != null) StopCoroutine(_scanCoroutine);
+        _scanCoroutine = StartCoroutine(ScanEffectRoutine(active));
+    }
+
+    private IEnumerator ScanEffectRoutine(bool active)
+    {
+        if (_colorAdjustments == null) yield break;
+
+        _colorAdjustments.colorFilter.overrideState = true;
+        _colorAdjustments.hueShift.overrideState = true;
+        _colorAdjustments.saturation.overrideState = true;
+
+        if (active)
+        {
+            // Flash inmediato al color de escaneo
+            _colorAdjustments.colorFilter.value = scanFilterColor;
+            _colorAdjustments.hueShift.value = scanHueShift;
+            _colorAdjustments.saturation.value = _originalSaturation + scanSaturation;
+
+            yield return new WaitForSecondsRealtime(scanFlashDuration);
+
+            // Decay suave hacia el color original
+            float elapsed = 0f;
+            Color startColor = scanFilterColor;
+            float startHue = scanHueShift;
+            float startSat = _originalSaturation + scanSaturation;
+
+            while (elapsed < scanDecayDuration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float t = elapsed / scanDecayDuration;
+
+                _colorAdjustments.colorFilter.value = Color.Lerp(startColor, _originalFilterColor, t);
+                _colorAdjustments.hueShift.value = Mathf.Lerp(startHue, _originalHueShift, t);
+                _colorAdjustments.saturation.value = Mathf.Lerp(startSat, _originalSaturation, t);
+
+                yield return null;
+            }
+
+            // Snap final para evitar drift numérico
+            _colorAdjustments.colorFilter.value = _originalFilterColor;
+            _colorAdjustments.hueShift.value = _originalHueShift;
+            _colorAdjustments.saturation.value = _originalSaturation;
+        }
+        else
+        {
+            // Cierre: restaurar inmediatamente
+            _colorAdjustments.colorFilter.value = _originalFilterColor;
+            _colorAdjustments.hueShift.value = _originalHueShift;
+            _colorAdjustments.saturation.value = _originalSaturation;
+        }
+
+        _scanCoroutine = null;
+    }
+
     private void OnDisable()
     {
         Time.timeScale = 1f;
@@ -281,7 +356,12 @@ public class CameraFXManager : MonoBehaviour
         }
 
         if (_lensDistortion != null) _lensDistortion.intensity.value = 0f;
-        if (_colorAdjustments != null) _colorAdjustments.colorFilter.value = _originalFilterColor;
+        if (_colorAdjustments != null)
+        {
+            _colorAdjustments.colorFilter.value = _originalFilterColor;
+            _colorAdjustments.hueShift.value = _originalHueShift;
+            _colorAdjustments.saturation.value = _originalSaturation;
+        }
         if (_vignette != null) _vignette.intensity.value = _originalVignetteIntensity;
     }
 }

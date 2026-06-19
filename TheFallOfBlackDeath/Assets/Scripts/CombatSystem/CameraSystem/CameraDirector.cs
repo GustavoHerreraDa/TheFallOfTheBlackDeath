@@ -15,6 +15,7 @@ public class CameraDirector : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera enemyOverviewCam;
     [SerializeField] private CinemachineVirtualCamera actionCam;
     [SerializeField] private CinemachineVirtualCamera diegeticUiCam;
+    [SerializeField] private Vector3 diegeticUiFollowOffset = new Vector3(0, 0, -1.5f);
 
     [Header("Technical Cameras")]
     [SerializeField] private Camera mainCamera;
@@ -32,9 +33,16 @@ public class CameraDirector : MonoBehaviour
     private const int PriorityActive = 50;
     private const int PriorityInactive = 10;
 
+    public CameraState CurrentState => _currentState;
+    private CameraState _stateBeforeUi = CameraState.Overview;
+    public CameraState StateBeforeUi => _stateBeforeUi;
+
     private List<CinemachineVirtualCamera> _allVirtualCameras = new List<CinemachineVirtualCamera>();
     private CameraState _currentState;
     private CombatManager _combatManager;
+
+    private ICinemachineCamera _cachedVCam;
+    private CinemachineCameraModifier _cachedModifier;
 
     private void Awake()
     {
@@ -116,14 +124,15 @@ public class CameraDirector : MonoBehaviour
         if (brain != null)
         {
             ICinemachineCamera activeVCam = brain.ActiveVirtualCamera;
-            if (activeVCam != null)
+            if (activeVCam != _cachedVCam)
             {
-                // Buscamos el modificador en el objeto de la cámara virtual activa
-                var modifier = activeVCam.VirtualCameraGameObject.GetComponent<CinemachineCameraModifier>();
-                if (modifier != null)
-                {
-                    modifier.panicFactor = panic;
-                }
+                _cachedVCam = activeVCam;
+                _cachedModifier = activeVCam?.VirtualCameraGameObject.GetComponent<CinemachineCameraModifier>();
+            }
+
+            if (_cachedModifier != null)
+            {
+                _cachedModifier.panicFactor = panic;
             }
         }
     }
@@ -133,6 +142,16 @@ public class CameraDirector : MonoBehaviour
     /// </summary>
     public void ChangeState(CameraState newState)
     {
+        if (newState == CameraState.Ui)
+            _stateBeforeUi = _currentState;
+
+        var brain = mainCamera != null ? mainCamera.GetComponent<CinemachineBrain>() : null;
+        CinemachineCameraModifier mod = null;
+        if (brain != null)
+        {
+            mod = brain.ActiveVirtualCamera?.VirtualCameraGameObject.GetComponent<CinemachineCameraModifier>();
+        }
+
         _currentState = newState;
         ResetAllPriorities();
 
@@ -142,6 +161,7 @@ public class CameraDirector : MonoBehaviour
                 bool isPlayerTurn = _combatManager != null && _combatManager.CurrentFighter != null && 
                                    _combatManager.CurrentFighter.team == Team.PLAYERS;
                 SetCameraPriority(isPlayerTurn ? playerOverviewCam : enemyOverviewCam, PriorityActive);
+                if (mod != null) mod.enabled = true;
                 break;
 
             case CameraState.Action:
@@ -150,14 +170,21 @@ public class CameraDirector : MonoBehaviour
                     SetCameraPriority(targetSystem.GroupActionCam, PriorityActive);
                 else
                     SetCameraPriority(actionCam, PriorityActive);
+                if (mod != null) mod.enabled = true;
                 break;
 
             case CameraState.Ui:
                 SetCameraPriority(diegeticUiCam, PriorityActive);
+                if (mod != null) mod.enabled = false;
                 break;
 
             case CameraState.HitReaction:
                 // Generalmente se mantiene la cámara de acción pero el FXManager dispara el shake
+                if (mod != null) mod.enabled = true;
+                break;
+            
+            case CameraState.Cinematic:
+                if (mod != null) mod.enabled = true;
                 break;
         }
     }
@@ -187,6 +214,35 @@ public class CameraDirector : MonoBehaviour
         
         // Aquí se podría añadir lógica extra para que la cámara de Overview 
         // se incline levemente hacia el target usando un ThirdPersonFollow u Offset.
+    }
+
+    /// <summary>
+    /// Reasigna los objetivos Follow y LookAt de la cámara diegética de UI hacia el
+    /// ancla del personaje recibido, logrando que la cámara se desplace físicamente
+    /// de un monitor (espalda de un personaje) a otro en el entorno 3D.
+    /// </summary>
+    /// <param name="fighter">Personaje que pasa a estar seleccionado en el panel de estado.</param>
+    public void FocusDiegeticUiOn(Fighter fighter)
+    {
+        if (diegeticUiCam == null || fighter == null) return;
+
+        // Priorizamos el nuevo ancla específica para cámara, luego el uiAnchor, y finalmente el transform base.
+        Transform anchor = fighter.diegeticCamAnchor != null ? fighter.diegeticCamAnchor : 
+                         (fighter.uiAnchor != null ? fighter.uiAnchor : fighter.transform);
+
+        diegeticUiCam.m_Follow = anchor;
+        diegeticUiCam.m_LookAt = anchor;
+
+        // Ajustamos el offset del Transposer para asegurar una distancia correcta al monitor.
+        var transposer = diegeticUiCam.GetCinemachineComponent<CinemachineTransposer>();
+        if (transposer != null)
+        {
+            transposer.m_FollowOffset = diegeticUiFollowOffset;
+        }
+
+        // Aseguramos que la cámara de UI esté activa al enfocar un nuevo monitor.
+        if (_currentState != CameraState.Ui)
+            ChangeState(CameraState.Ui);
     }
 
     private void HandleTurnStarted(Fighter fighter)

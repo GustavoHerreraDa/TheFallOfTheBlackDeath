@@ -236,6 +236,7 @@ public abstract class Fighter : MonoBehaviour
     private bool renderersByBodyPartCacheReady;
 
     public Transform uiAnchor;
+    public Transform diegeticCamAnchor;
     public Transform scannerAnchor;
 
     [SerializeField]

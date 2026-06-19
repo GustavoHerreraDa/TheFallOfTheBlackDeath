@@ -804,7 +804,7 @@ public class CombatManager : MonoBehaviour
         }
 
         int spawnIdx = 0;
-        var uiController = FindObjectOfType<CombatStatusUIController>();
+        var uiController = FindObjectOfType<StatusPanelController>();
 
         if (InstantiateActivePartyFromGameManager(uiController))
         {
@@ -862,7 +862,7 @@ public class CombatManager : MonoBehaviour
                 
                 if (uiController != null)
                 {
-                    uiController.RegisterPlayer(playerFighter);
+                    // uiController.RegisterPlayer(playerFighter);
                 }
 
                 spawnIdx++;
@@ -870,7 +870,7 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    private bool InstantiateActivePartyFromGameManager(CombatStatusUIController uiController)
+    private bool InstantiateActivePartyFromGameManager(StatusPanelController uiController)
     {
         if (GameManager.Instance == null) return false;
 
@@ -923,7 +923,7 @@ public class CombatManager : MonoBehaviour
 
             if (uiController != null)
             {
-                uiController.RegisterPlayer(playerFighter);
+                // uiController.RegisterPlayer(playerFighter);
             }
 
             spawnIdx++;

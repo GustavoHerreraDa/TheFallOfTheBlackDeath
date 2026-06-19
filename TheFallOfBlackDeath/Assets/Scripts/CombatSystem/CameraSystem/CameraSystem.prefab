@@ -574,7 +574,7 @@ Transform:
   m_GameObject: {fileID: 2990306629114937719}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.8595581, y: 1.690365, z: -12.697193}
+  m_LocalPosition: {x: 0.6739478, y: -2.043675, z: 0.17312622}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -792,8 +792,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5036976912914478536}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.70710677, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 13.584391, y: 1.6959599, z: 20.15032}
+  m_LocalRotation: {x: 0, y: -0.7071069, z: 0, w: 0.7071067}
+  m_LocalPosition: {x: 14.77, y: 5.43, z: 7.2800007}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1045,7 +1045,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1229434722466877938
 Transform:
   m_ObjectHideFlags: 0
@@ -1247,6 +1247,7 @@ MonoBehaviour:
   enemyOverviewCam: {fileID: 7759075244047863687}
   actionCam: {fileID: 6894124821567289746}
   diegeticUiCam: {fileID: 5408215497490284982}
+  diegeticUiFollowOffset: {x: 0, y: 0, z: -3}
   mainCamera: {fileID: 8706096939704765933}
   shaderCamera: {fileID: 6994931382109351060}
   targetSystem: {fileID: 6628251666816856381}
@@ -1277,6 +1278,11 @@ MonoBehaviour:
   pulseSpeed: 1
   lethalWarningSound: {fileID: 8300000, guid: 9156a4dd8d2598c48814048f536c9fc5, type: 3}
   warningAudioVolume: 0.4
+  scanFilterColor: {r: 0.05, g: 0.55, b: 0.25, a: 1}
+  scanFlashDuration: 0.08
+  scanDecayDuration: 0.6
+  scanHueShift: 80
+  scanSaturation: 30
 --- !u!114 &6628251666816856381
 MonoBehaviour:
   m_ObjectHideFlags: 0
