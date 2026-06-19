@@ -43,28 +43,41 @@ public class HoloButtonFX : MonoBehaviour,
     private ButtonState _currentState  = ButtonState.Idle;
     private ButtonState _previousState = ButtonState.Idle;
     private float       _blendValue    = 0f;   // 0 = estado anterior, 1 = estado actual
-
-    // ── Inicialización ─────────────────────────────────────────────────────
+    
+// ── Inicialización ─────────────────────────────────────────────────────
     private void Awake()
     {
-        // Si no se asignó un material en el Inspector, lo buscamos
-        if (_mat == null)
+        // Si se asignó un material en el Inspector (asset), creamos una instancia
+        // para no modificar el archivo original y evitar el error al destruirlo.
+        if (_mat != null)
         {
-            // Intentamos primero en Image (UI Canvas)
+            _mat = new Material(_mat);
+            
+            // Asignamos esta nueva instancia al componente para que la use
             var img = GetComponent<Image>();
-            if (img != null)
+            if (img != null) img.material = _mat;
+            else
             {
-                // Instanciamos el material para no modificar el asset compartido
-                _mat = img.material = new Material(img.material);
-                return;
+                var mr = GetComponent<MeshRenderer>();
+                if (mr != null) mr.material = _mat;
             }
+            return;
+        }
 
-            // Si no hay Image, intentamos MeshRenderer (mundo 3D)
-            var mr = GetComponent<MeshRenderer>();
-            if (mr != null)
-            {
-                _mat = mr.material; // Unity ya instancia automáticamente aquí
-            }
+        // Si no se asignó un material en el Inspector, lo buscamos dinámicamente
+        var imageComponent = GetComponent<Image>();
+        if (imageComponent != null)
+        {
+            // Instanciamos el material para no modificar el asset compartido
+            _mat = imageComponent.material = new Material(imageComponent.material);
+            return;
+        }
+
+        // Si no hay Image, intentamos MeshRenderer (mundo 3D)
+        var meshRenderer = GetComponent<MeshRenderer>();
+        if (meshRenderer != null)
+        {
+            _mat = meshRenderer.material; // Unity instancia automáticamente al llamar .material
         }
     }
 
