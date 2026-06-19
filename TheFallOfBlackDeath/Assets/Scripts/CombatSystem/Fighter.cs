@@ -47,6 +47,26 @@ public struct DamageReceivedEventData
 }
 
 /// <summary>
+/// Payload for the Fighter.OnStatModApplied event.
+/// </summary>
+public struct StatModAppliedEvent
+{
+    public readonly Fighter fighter;
+    public readonly StatusModType modType;
+    /// <summary>
+    /// Positive = buff, negative = debuff. Same sign convention as StatusMod.amount.
+    /// </summary>
+    public readonly float amount;
+
+    public StatModAppliedEvent(Fighter fighter, StatusModType modType, float amount)
+    {
+        this.fighter = fighter;
+        this.modType = modType;
+        this.amount  = amount;
+    }
+}
+
+/// <summary>
 /// Defines the shared combatant model used by players and enemies, including stats, body-part damage, status conditions, and turn behavior.
 /// </summary>
 public abstract class Fighter : MonoBehaviour
@@ -161,6 +181,21 @@ public abstract class Fighter : MonoBehaviour
     public event System.Action<BodyPart> OnBodyPartDestroyedEvent;
     public event System.Action<DamageReceivedEventData> OnDamageReceived;
     public event System.Action<DamageResult> OnDamageResolved;
+
+    /// <summary>
+    /// Fired when a stat modifier is applied to this fighter.
+    /// Consumed by DamageFeedbackListener to show floating text.
+    /// </summary>
+    public event System.Action<StatModAppliedEvent> OnStatModApplied;
+
+    /// <summary>
+    /// Dispatches OnStatModApplied. Call this from StatusModSkill (or any
+    /// skill that mutates stats) right after adding the mod to statusMods.
+    /// </summary>
+    public void RaiseStatModApplied(StatusModType modType, float amount)
+    {
+        OnStatModApplied?.Invoke(new StatModAppliedEvent(this, modType, amount));
+    }
 
     public Team team;
     public string idName;
@@ -828,6 +863,7 @@ public abstract class Fighter : MonoBehaviour
 
         if (AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX(AudioManager.Instance.armorBreakSound, 1f);
+        
 
         foreach (StatusMod penalty in part.destructionPenalties)
         {
@@ -835,9 +871,13 @@ public abstract class Fighter : MonoBehaviour
             {
                 this.statusMods.Add(penalty);
                 Debug.Log($"{idName} sufrió una penalización de {penalty.amount} en {penalty.type} por perder {part.part}");
+                
+            
+                // Dispara el evento para que DamageFeedbackListener muestre el texto flotante
+                RaiseStatModApplied(penalty.type, penalty.amount);
             }
         }
-
+        
         switch (part.part)
         {
             case BodyPart.Head:

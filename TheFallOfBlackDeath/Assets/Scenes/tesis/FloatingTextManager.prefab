@@ -76,7 +76,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -150,9 +150,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textMesh: {fileID: 8019123811833079891}
-  normalSpeed: 1
-  criticalSpeed: 2
-  randomOffset: {x: 0.5, y: 0, z: 0}
+  normalSpeed: 0
+  criticalSpeed: 0
+  randomOffset: {x: 0, y: 0, z: 0}
   scaleCurve:
     serializedVersion: 2
     m_Curve:
@@ -183,28 +183,55 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.057995185
+      outSlope: -0.057995185
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.23659253
+      value: 0.9862788
+      inSlope: 0.005615849
+      outSlope: 0.005615849
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7322021
+      value: 1.0205883
+      inSlope: -0.2053523
+      outSlope: -0.2053523
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7666667
+      value: 1.0040476
+      inSlope: -0.24863926
+      outSlope: -0.24863926
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.017346999
+      outSlope: -0.017346999
       tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  normalSize: 0.75
-  criticalSize: 1
-  jitterAmount: 0.05
-  jitterSpeed: 35
+  normalSize: 2
+  criticalSize: 2.5
+  jitterAmount: 0
+  jitterSpeed: 5
 --- !u!1 &8192213419587336144
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,7 +284,6 @@ MonoBehaviour:
   floatingTextPrefab: {fileID: 3963934726973468794}
   container: {fileID: 437413724097027445}
   initialPoolSize: 10
-  textSpawnPoint: {fileID: 0}
 --- !u!1 &8305835490107256222
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,6 +296,7 @@ GameObject:
   - component: {fileID: 4445324441184451891}
   - component: {fileID: 8225412889590523637}
   - component: {fileID: 6684650175420025828}
+  - component: {fileID: 2218707662025715977}
   m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
@@ -360,3 +387,29 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2218707662025715977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8305835490107256222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 50
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0

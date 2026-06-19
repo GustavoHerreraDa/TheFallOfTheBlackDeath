@@ -8,11 +8,10 @@ public class FloatingTextManager : MonoBehaviour
 {
     public static FloatingTextManager Instance;
     
-    [Header("ConfiguraciÃ³n")]
+    [Header("Configuración")]
     public GameObject floatingTextPrefab;
     public Transform container;
     public int initialPoolSize = 20;
-    public Transform textSpawnPoint;
     
     private Stack<FloatingText> textPool = new Stack<FloatingText>();
 
@@ -21,72 +20,65 @@ public class FloatingTextManager : MonoBehaviour
     /// </summary>
     void Awake()
     {
+        // Guard contra duplicados: si ya existe una instancia, nos destruimos.
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
         InitializePool();
     }
 
     /// <summary>
-    /// Initializes the ialize pool.
+    /// Pre-instancia el pool inicial de FloatingTexts.
     /// </summary>
     void InitializePool()
     {
         for (int i = 0; i < initialPoolSize; i++)
         {
-            CreateNewText();
+            // Instanciamos y pusheamos al pool directamente.
+            textPool.Push(InstantiateText());
         }
     }
 
     /// <summary>
-    /// Creates the new text.
+    /// Instancia un FloatingText desactivado. No lo agrega al pool —
+    /// eso es responsabilidad del llamador.
     /// </summary>
-    /// <returns>The resulting value.</returns>
-    private FloatingText CreateNewText()
+    private FloatingText InstantiateText()
     {
-        
         GameObject obj = Instantiate(floatingTextPrefab, container);
-        FloatingText txt = obj.GetComponent<FloatingText>();
-        
-        
         obj.SetActive(false);
-        textPool.Push(txt); 
-        return txt;
+        return obj.GetComponent<FloatingText>();
     }
 
-    
     /// <summary>
-    /// Shows the text.
+    /// Muestra un texto flotante en la posición indicada.
+    /// Si el pool está vacío, instancia uno nuevo on-demand.
     /// </summary>
-    /// <param name="message">The message.</param>
-    /// <param name="position">The position.</param>
-    /// <param name="color">The color.</param>
-    /// <param name="isCritical">The is critical.</param>
-    public void ShowText(string message, Vector3 position, Color color, bool isCritical = false)
+    /// <param name="message">Texto a mostrar.</param>
+    /// <param name="position">Posición world-space donde aparece.</param>
+    /// <param name="color">Color del texto.</param>
+    /// <param name="isCritical">Si es true aplica escala y jitter de crítico.</param>
+    /// <param name="randomizePosition">Si es true aplica un offset aleatorio.</param>
+    public void ShowText(string message, Vector3 position, Color color, bool isCritical = false, bool randomizePosition = true)
     {
-        FloatingText txt;
+        // Si el pool está vacío, creamos uno nuevo on-demand sin pushearlo
+        // (ReturnToPool se encargará de devolverlo al pool al terminar).
+        FloatingText txt = textPool.Count > 0
+            ? textPool.Pop()
+            : InstantiateText();
 
-       
-        if (textPool.Count == 0)
-        {
-            txt = CreateNewText();
-            
-            textPool.Pop(); 
-        }
-        else
-        {
-            txt = textPool.Pop();
-        }
-
-        
         txt.gameObject.SetActive(true);
         txt.transform.position = position;
-        txt.Initialize(message, color, isCritical);
+        txt.Initialize(message, color, isCritical, randomizePosition);
     }
 
-    
     /// <summary>
-    /// Executes the return to pool workflow.
+    /// Devuelve un FloatingText al pool para su reutilización.
     /// </summary>
-    /// <param name="txt">The txt.</param>
     public void ReturnToPool(FloatingText txt)
     {
         txt.gameObject.SetActive(false);

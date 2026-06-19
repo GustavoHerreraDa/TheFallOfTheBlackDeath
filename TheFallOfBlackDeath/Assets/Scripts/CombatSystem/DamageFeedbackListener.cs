@@ -15,6 +15,15 @@ public class DamageFeedbackListener : MonoBehaviour
     [SerializeField] private Color missColor = Color.gray;
     [SerializeField] private Color healColor = Color.green;
 
+    [Header("Stat Mod Floating Text")]
+    [SerializeField] private Color buffColor   = new Color(0.4f, 0.9f, 1f);   // celeste
+    [SerializeField] private Color debuffColor = new Color(1f,   0.5f, 0f);   // naranja
+    [SerializeField] private float statTextHeightOffset = 2.5f;
+    [SerializeField] private float statTextStackSpacing = 0.5f;
+
+    private float lastStatModTime;
+    private int statModStackCount;
+
     [Header("Camera Feedback")]
     [SerializeField] private float normalShake = 0.6f;
     [SerializeField] private float criticalShake = 1f;
@@ -30,13 +39,19 @@ public class DamageFeedbackListener : MonoBehaviour
         ResolveFighter();
 
         if (fighter != null)
-            fighter.OnDamageResolved += HandleDamageResolved;
+        {
+            fighter.OnDamageResolved  += HandleDamageResolved;
+            fighter.OnStatModApplied  += HandleStatModApplied;
+        }
     }
 
     private void OnDisable()
     {
         if (fighter != null)
-            fighter.OnDamageResolved -= HandleDamageResolved;
+        {
+            fighter.OnDamageResolved  -= HandleDamageResolved;
+            fighter.OnStatModApplied  -= HandleStatModApplied;
+        }
     }
 
     private void ResolveFighter()
@@ -98,6 +113,42 @@ public class DamageFeedbackListener : MonoBehaviour
             anchor = target.transform;
 
         return anchor.position + textOffset;
+    }
+
+    private void HandleStatModApplied(StatModAppliedEvent e)
+    {
+        if (FloatingTextManager.Instance == null) return;
+
+        bool isBuff = e.amount >= 0f;
+        string sign  = isBuff ? "+" : "";   // float ya trae el '-' si es negativo
+        Color  color = isBuff ? buffColor : debuffColor;
+
+        string statLabel = e.modType switch
+        {
+            StatusModType.ATTACK_MOD  => "ATK",
+            StatusModType.DEFFENSE_MOD => "DEF",
+            StatusModType.SPEED_MOD   => "SPD",
+            _                         => e.modType.ToString()
+        };
+
+        string message = $"{sign}{Mathf.RoundToInt(e.amount)} {statLabel}";
+
+        // Lógica de apilamiento
+        if (Time.time - lastStatModTime > 0.1f)
+        {
+            statModStackCount = 0;
+        }
+        lastStatModTime = Time.time;
+
+        // Posición base sobre el personaje
+        Vector3 basePosition = (e.fighter != null ? e.fighter.transform.position : transform.position)
+                               + Vector3.up * statTextHeightOffset;
+        
+        // Posición final con apilamiento
+        Vector3 finalPosition = basePosition + Vector3.up * (statModStackCount * statTextStackSpacing);
+        statModStackCount++;
+
+        FloatingTextManager.Instance.ShowText(message, finalPosition, color, isCritical: false, randomizePosition: false);
     }
 
     private void PlayHitAudio(DamageResult result)

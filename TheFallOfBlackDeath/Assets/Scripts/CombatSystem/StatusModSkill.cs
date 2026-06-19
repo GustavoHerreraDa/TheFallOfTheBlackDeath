@@ -1,4 +1,3 @@
-
 using UnityEngine;
 //TP2 GUSTAVO TORRES
 /// <summary>
@@ -27,6 +26,9 @@ public class StatusModSkill : Skill
 
         receiver.statusMods.Add(this.mod);
         receiver.animator.Play("Buff");
+
+        // Notificar al sistema de feedback para mostrar texto flotante
+        receiver.RaiseStatModApplied(this.mod.type, this.mod.amount);
  
     }
 
