@@ -117,13 +117,10 @@ public class StatusPanelController : MonoBehaviour
             BuildTeamList();
         }
 
-        SetPanelsActive(isOpen);
-
         if (isOpen)
         {
-            RefreshAllUI();
-
-            // Selección inicial: el primer miembro válido del equipo.
+            // Solo activar el panel del fighter que se va a seleccionar, no todos.
+            // SelectFighter se encarga de activar el panel correcto.
             if (teamMembers.Count > 0)
             {
                 selectedIndex = Mathf.Clamp(selectedIndex < 0 ? 0 : selectedIndex, 0, teamMembers.Count - 1);
@@ -136,6 +133,14 @@ public class StatusPanelController : MonoBehaviour
         }
         else
         {
+            // Desactivar solo el panel actualmente visible
+            if (selectedIndex >= 0 && selectedIndex < teamMembers.Count)
+            {
+                Fighter current = teamMembers[selectedIndex];
+                if (current != null && current.statusPanel != null)
+                    current.statusPanel.gameObject.SetActive(false);
+            }
+
             // Restaurar estado de cámara previo
             if (CameraDirector.Instance != null)
                 CameraDirector.Instance.ChangeState(CameraDirector.Instance.StateBeforeUi);
@@ -158,13 +163,22 @@ public class StatusPanelController : MonoBehaviour
         Fighter selected = teamMembers[index];
         if (selected == null) return;
 
-        // 1) Actualiza los datos en pantalla con las estadísticas del nuevo Fighter.
+        // Desactivar el panel del fighter anteriormente seleccionado
+        // (selectedIndex ya fue actualizado en CycleSelection antes de llegar aquí,
+        //  por eso usamos el parámetro index y recorremos para encontrar el previo)
+        foreach (Fighter member in teamMembers)
+        {
+            if (member != null && member != selected && member.statusPanel != null)
+                member.statusPanel.gameObject.SetActive(false);
+        }
+
+        // Activar y actualizar solo el panel del fighter seleccionado
         if (selected.statusPanel != null)
         {
+            selected.statusPanel.gameObject.SetActive(true);
             selected.statusPanel.SetStats(selected.idName, selected.stats);
         }
 
-        // 2) Reasigna los objetivos de la cámara diegética hacia el nuevo personaje.
         if (CameraDirector.Instance != null)
         {
             CameraDirector.Instance.FocusDiegeticUiOn(selected);
