@@ -359,7 +359,14 @@ public class PlayerFighter : Fighter
         int count = (this.skills != null) ? this.skills.Length : 0;
         Debug.Log($"[PlayerFighter.InitTurn] skills count={count} for {idName}");
 
-        this.skillPanel.ShowForPlayer(this);
+        if (this.skillPanel != null)
+        {
+            this.skillPanel.InitializeTurnUI(this);
+        }
+        else
+        {
+            Debug.LogError($"[PlayerFighter.InitTurn] skillPanel is null on {idName}");
+        }
         //statusPanel?.gameObject.SetActive(true);
     }
 

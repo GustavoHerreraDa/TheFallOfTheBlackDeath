@@ -11,6 +11,11 @@ public class PlayerSkillPanel : MonoBehaviour
     public GameObject[] skillButtons;
     public TextMeshProUGUI[] skillButtonLabels;
 
+    [Header("New Main Menu")]
+    public GameObject mainSkillsMenuButton;
+    public GameObject scanButton;
+    public GameObject backButton;
+
     [Header("Escape")]
     public GameObject runButton;
     public TextMeshProUGUI runButtonLabel;
@@ -194,6 +199,62 @@ public class PlayerSkillPanel : MonoBehaviour
         targetFigther.AttemptRun();
     }
 
+    public void InitializeTurnUI(PlayerFighter fighter)
+    {
+        this.targetFigther = fighter;
+        this.gameObject.SetActive(true);
+
+        // Estado Inicial: Mostrar menú de opciones (Skills, Run, Scan)
+        // Ocultar el panel de habilidades individual y el botón de Volver
+        foreach (var btn in skillButtons)
+        {
+            if (btn != null) btn.SetActive(false);
+        }
+        
+        if (backButton != null) backButton.SetActive(false);
+
+        // Configurar y mostrar botones raíz
+        if (mainSkillsMenuButton != null)
+        {
+            mainSkillsMenuButton.SetActive(true);
+            var button = mainSkillsMenuButton.GetComponent<Button>();
+            if (button != null)
+            {
+                button.onClick.RemoveAllListeners();
+                button.onClick.AddListener(() =>
+                {
+                    ShowForPlayer(targetFigther);
+                });
+            }
+        }
+        
+        if (runButton != null)
+        {
+            runButton.SetActive(true);
+            var button = runButton.GetComponent<Button>();
+            if (button != null)
+            {
+                button.onClick.RemoveAllListeners();
+                button.onClick.AddListener(OnRunButtonClick);
+            }
+        }
+
+        if (scanButton != null)
+        {
+            scanButton.SetActive(true);
+            // El listener suele estar en CombatScannerButtonLinker, 
+            // pero nos aseguramos que sea visible.
+        }
+
+        if (targetFigther != null && targetFigther.uiAnchor != null)
+        {
+            Vector3 targetPosition = targetFigther.uiAnchor.position;
+            targetPosition.y = this.transform.position.y;
+            this.transform.position = targetPosition;
+            this.transform.rotation = targetFigther.uiAnchor.rotation;
+        }
+    }
+
     /// <summary>
     /// Gets the rarity color.
     /// </summary>
@@ -226,6 +287,23 @@ public class PlayerSkillPanel : MonoBehaviour
         if (targetFigther != null && targetFigther.combatManager != null)
         {
             targetFigther.combatManager.InvokeOnSkillMenuOpened();
+        }
+
+        // Ocultar botones raíz
+        if (mainSkillsMenuButton != null) mainSkillsMenuButton.SetActive(false);
+        if (runButton != null) runButton.SetActive(false);
+        if (scanButton != null) scanButton.SetActive(false);
+
+        // Mostrar botón de volver
+        if (backButton != null)
+        {
+            backButton.SetActive(true);
+            var btn = backButton.GetComponent<Button>();
+            if (btn != null)
+            {
+                btn.onClick.RemoveAllListeners();
+                btn.onClick.AddListener(() => InitializeTurnUI(targetFigther));
+            }
         }
 
         if (newTarget.uiAnchor != null)
@@ -329,6 +407,26 @@ public class PlayerSkillPanel : MonoBehaviour
         }
 
         this.gameObject.SetActive(false);
+
+        if (mainSkillsMenuButton != null)
+        {
+            var button = mainSkillsMenuButton.GetComponent<Button>();
+            if (button != null)
+                button.onClick.RemoveAllListeners();
+
+            mainSkillsMenuButton.SetActive(false);
+        }
+
+        if (scanButton != null) scanButton.SetActive(false);
+
+        if (backButton != null)
+        {
+            var button = backButton.GetComponent<Button>();
+            if (button != null)
+                button.onClick.RemoveAllListeners();
+
+            backButton.SetActive(false);
+        }
 
         foreach (var btn in this.skillButtons)
         {
