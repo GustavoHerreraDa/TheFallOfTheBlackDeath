@@ -288,6 +288,9 @@ public class PlayerSkillPanel : MonoBehaviour
         {
             targetFigther.combatManager.InvokeOnSkillMenuOpened();
         }
+        
+        if (CameraDirector.Instance != null)
+            CameraDirector.Instance.FocusSkillPanelOn(targetFigther);
 
         // Ocultar botones raíz
         if (mainSkillsMenuButton != null) mainSkillsMenuButton.SetActive(false);
@@ -404,6 +407,12 @@ public class PlayerSkillPanel : MonoBehaviour
         if (targetFigther != null && targetFigther.combatManager != null)
         {
             targetFigther.combatManager.InvokeOnSkillMenuClosed();
+        }
+
+        if (CameraDirector.Instance != null &&
+            CameraDirector.Instance.CurrentState == CameraState.SkillPanel)
+        {
+            CameraDirector.Instance.ChangeState(CameraDirector.Instance.StateBeforeUi);
         }
 
         this.gameObject.SetActive(false);

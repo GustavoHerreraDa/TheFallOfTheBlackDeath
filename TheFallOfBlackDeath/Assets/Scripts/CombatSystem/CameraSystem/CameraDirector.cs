@@ -17,6 +17,9 @@ public class CameraDirector : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera diegeticUiCam;
     [SerializeField] private Vector3 diegeticUiFollowOffset = new Vector3(0, 0, -1.5f);
 
+    [SerializeField] private CinemachineVirtualCamera skillPanelCam;
+    [SerializeField] private Vector3 skillPanelFollowOffset = new Vector3(0, 0.5f, -1.2f);
+
     [Header("Technical Cameras")]
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Camera shaderCamera;
@@ -28,6 +31,10 @@ public class CameraDirector : MonoBehaviour
     [Header("Panic Settings")]
     [Tooltip("Umbral de vida (0-1) bajo el cual se activa el efecto de respiración agitada.")]
     [SerializeField] private float lowHealthThreshold = 0.4f;
+
+    [Header("Overview Look Settings")]
+    [SerializeField] private float enemyLookBlend = 0.45f;
+    [SerializeField] private Transform overviewLookTarget;
     
     // Constantes de prioridad para evitar números mágicos
     private const int PriorityActive = 50;
@@ -43,6 +50,9 @@ public class CameraDirector : MonoBehaviour
 
     private ICinemachineCamera _cachedVCam;
     private CinemachineCameraModifier _cachedModifier;
+
+    private Transform _currentPlayerTransform;
+    private Transform _currentEnemyTransform;
 
     private void Awake()
     {
@@ -65,6 +75,7 @@ public class CameraDirector : MonoBehaviour
         if (enemyOverviewCam) _allVirtualCameras.Add(enemyOverviewCam);
         if (actionCam) _allVirtualCameras.Add(actionCam);
         if (diegeticUiCam) _allVirtualCameras.Add(diegeticUiCam);
+        if (skillPanelCam) _allVirtualCameras.Add(skillPanelCam);
         if (targetSystem && targetSystem.GroupActionCam) _allVirtualCameras.Add(targetSystem.GroupActionCam);
     }
 
@@ -95,6 +106,8 @@ public class CameraDirector : MonoBehaviour
 
         // Actualización dinámica del factor de pánico basado en el estado del combatiente actual
         UpdateModifierPanicFactor();
+
+        UpdateOverviewLookTarget();
     }
 
     private void UpdateModifierPanicFactor()
@@ -142,7 +155,7 @@ public class CameraDirector : MonoBehaviour
     /// </summary>
     public void ChangeState(CameraState newState)
     {
-        if (newState == CameraState.Ui)
+        if (newState == CameraState.Ui || newState == CameraState.SkillPanel)
             _stateBeforeUi = _currentState;
 
         var brain = mainCamera != null ? mainCamera.GetComponent<CinemachineBrain>() : null;
@@ -175,6 +188,11 @@ public class CameraDirector : MonoBehaviour
 
             case CameraState.Ui:
                 SetCameraPriority(diegeticUiCam, PriorityActive);
+                if (mod != null) mod.enabled = false;
+                break;
+
+            case CameraState.SkillPanel:
+                SetCameraPriority(skillPanelCam, PriorityActive);
                 if (mod != null) mod.enabled = false;
                 break;
 
@@ -211,9 +229,31 @@ public class CameraDirector : MonoBehaviour
         {
             fxManager.SetHoverDistortion(active);
         }
-        
-        // Aquí se podría añadir lógica extra para que la cámara de Overview 
-        // se incline levemente hacia el target usando un ThirdPersonFollow u Offset.
+
+        if (active && target != null)
+        {
+            _currentEnemyTransform = target.transform;
+            if (overviewLookTarget != null && _currentPlayerTransform != null)
+            {
+                overviewLookTarget.position = Vector3.Lerp(_currentPlayerTransform.position, _currentEnemyTransform.position, enemyLookBlend);
+            }
+        }
+        else
+        {
+            _currentEnemyTransform = null;
+            if (overviewLookTarget != null && _currentPlayerTransform != null)
+            {
+                overviewLookTarget.position = _currentPlayerTransform.position;
+            }
+        }
+    }
+
+    private void UpdateOverviewLookTarget()
+    {
+        if (_currentEnemyTransform != null && _currentPlayerTransform != null && overviewLookTarget != null)
+        {
+            overviewLookTarget.position = Vector3.Lerp(_currentPlayerTransform.position, _currentEnemyTransform.position, enemyLookBlend);
+        }
     }
 
     /// <summary>
@@ -245,6 +285,31 @@ public class CameraDirector : MonoBehaviour
             ChangeState(CameraState.Ui);
     }
 
+    /// <summary>
+    /// Enfoca la cámara diegética específica para el panel de habilidades en el ancla del personaje.
+    /// </summary>
+    /// <param name="fighter">Personaje activo.</param>
+    public void FocusSkillPanelOn(Fighter fighter)
+    {
+        if (skillPanelCam == null || fighter == null) return;
+
+        // Priorizamos el nuevo ancla específica para cámara, luego el uiAnchor, y finalmente el transform base.
+        Transform anchor = fighter.diegeticCamAnchor != null ? fighter.diegeticCamAnchor : 
+                         (fighter.uiAnchor != null ? fighter.uiAnchor : fighter.transform);
+
+        skillPanelCam.m_Follow = anchor;
+        skillPanelCam.m_LookAt = anchor;
+
+        var transposer = skillPanelCam.GetCinemachineComponent<CinemachineTransposer>();
+        if (transposer != null)
+        {
+            transposer.m_FollowOffset = skillPanelFollowOffset;
+        }
+
+        if (_currentState != CameraState.SkillPanel)
+            ChangeState(CameraState.SkillPanel);
+    }
+
     private void HandleTurnStarted(Fighter fighter)
     {
         // Cuando empieza un turno, volvemos a Overview y enfocamos al luchador actual
@@ -252,8 +317,9 @@ public class CameraDirector : MonoBehaviour
         {
             if (fighter.team == Team.PLAYERS && playerOverviewCam != null)
             {
+                _currentPlayerTransform = fighter.transform;
                 playerOverviewCam.m_Follow = fighter.CameraPivot != null ? fighter.CameraPivot : fighter.transform;
-                playerOverviewCam.m_LookAt = fighter.transform;
+                playerOverviewCam.m_LookAt = overviewLookTarget != null ? overviewLookTarget : fighter.transform;
             }
             else if (enemyOverviewCam != null)
             {
