@@ -89,17 +89,17 @@ public class PlayerSkillPanel : MonoBehaviour
 
             // Aplicar feedback visual
             var image = button.GetComponent<Image>();
+            var fx = button.GetComponent<HoloButtonFX>();
+            
+            if (fx != null) fx.ResetToIdle();
+
             if (image != null)
             {
                 Color rarityColor = GetRarityColor(skill.rarity);
-                if (synergyAvailable)
-                {
-                    image.color = synergyColor;
-                }
-                else
-                {
-                    image.color = rarityColor;
-                }
+                Color finalColor = synergyAvailable ? synergyColor : rarityColor;
+                
+                image.color = finalColor;
+                if (fx != null) fx.SetRarityColor(finalColor);
             }
         }
         this.skillButtonLabels[index].text = skillName;
@@ -157,17 +157,17 @@ public class PlayerSkillPanel : MonoBehaviour
 
             // Aplicar feedback visual
             var image = button.GetComponent<Image>();
+            var fx = button.GetComponent<HoloButtonFX>();
+            
+            if (fx != null) fx.ResetToIdle();
+
             if (image != null)
             {
                 Color rarityColor = GetRarityColor(skill.rarity);
-                if (synergyAvailable)
-                {
-                    image.color = synergyColor;
-                }
-                else
-                {
-                    image.color = rarityColor;
-                }
+                Color finalColor = synergyAvailable ? synergyColor : rarityColor;
+                
+                image.color = finalColor;
+                if (fx != null) fx.SetRarityColor(finalColor);
             }
         }
         this.skillButtonLabels[index].text = skillName;
@@ -388,8 +388,14 @@ public class PlayerSkillPanel : MonoBehaviour
             button.onClick.AddListener(OnRunButtonClick);
 
             var image = button.GetComponent<Image>();
+            var fx = button.GetComponent<HoloButtonFX>();
+            if (fx != null) fx.ResetToIdle();
+            
             if (image != null)
+            {
                 image.color = normalColor;
+                if (fx != null) fx.SetRarityColor(normalColor);
+            }
         }
 
         if (label == null)

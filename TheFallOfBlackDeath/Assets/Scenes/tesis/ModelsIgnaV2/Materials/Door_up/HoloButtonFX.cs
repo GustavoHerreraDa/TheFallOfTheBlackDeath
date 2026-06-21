@@ -36,6 +36,7 @@ public class HoloButtonFX : MonoBehaviour,
     // Usar el hash integer en vez de strings en SetFloat es ~5x más rápido
     private static readonly int PropState      = Shader.PropertyToID("_ButtonState");
     private static readonly int PropBlend      = Shader.PropertyToID("_StateBlend");
+    private static readonly int PropRarity     = Shader.PropertyToID("_RarityColor");
 
     // ── Máquina de estados ─────────────────────────────────────────────────
     private enum ButtonState { Idle = 0, Hover = 1, Press = 2 }
@@ -82,6 +83,11 @@ public class HoloButtonFX : MonoBehaviour,
     }
 
     // ── Update: interpola el blend en CPU cada frame ───────────────────────
+    private void OnDisable()
+    {
+        ResetToIdle();
+    }
+
     private void Update()
     {
         if (_mat == null) return;
@@ -94,6 +100,34 @@ public class HoloButtonFX : MonoBehaviour,
         // Escribimos al material de instancia (no al asset)
         _mat.SetFloat(PropState, (float)_currentState);
         _mat.SetFloat(PropBlend, _blendValue);
+    }
+
+    /// <summary>
+    /// Resetea el estado del botón a Idle de forma instantánea.
+    /// Útil para evitar que el botón se quede "trabado" en Press si se desactiva el panel.
+    /// </summary>
+    public void ResetToIdle()
+    {
+        _currentState = ButtonState.Idle;
+        _previousState = ButtonState.Idle;
+        _blendValue = 1f; // Forzamos a que esté en el estado actual (Idle)
+
+        if (_mat != null)
+        {
+            _mat.SetFloat(PropState, (float)_currentState);
+            _mat.SetFloat(PropBlend, _blendValue);
+        }
+    }
+
+    /// <summary>
+    /// Actualiza el color de rareza en el shader.
+    /// </summary>
+    public void SetRarityColor(Color color)
+    {
+        if (_mat != null)
+        {
+            _mat.SetColor(PropRarity, color);
+        }
     }
 
     // ── Cambio de estado ──────────────────────────────────────────────────
