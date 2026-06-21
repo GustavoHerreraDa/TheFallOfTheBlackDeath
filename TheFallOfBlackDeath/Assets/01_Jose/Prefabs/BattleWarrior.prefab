@@ -242,6 +242,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 347213020163082240, guid: e3be3b195764333428080e393481162c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5591715085651454795}
+    - targetCorrespondingSourceObject: {fileID: 9210104438916423097, guid: e3be3b195764333428080e393481162c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1558446849150157617}
   m_SourcePrefab: {fileID: 100100000, guid: e3be3b195764333428080e393481162c, type: 3}
 --- !u!4 &1838964995354164501 stripped
 Transform:
@@ -253,6 +256,27 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5806789225048547051, guid: e3be3b195764333428080e393481162c, type: 3}
   m_PrefabInstance: {fileID: 5262380176721291349}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3951741354301404652 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9210104438916423097, guid: e3be3b195764333428080e393481162c, type: 3}
+  m_PrefabInstance: {fileID: 5262380176721291349}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1558446849150157617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3951741354301404652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c26bacfc2e525b0469a6b13307d03de7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FighterHeadTrack
+  headBone: {fileID: 7777757825113947605}
+  maxLookAngle: 10
+  smoothSpeed: 2
+  mouseSensitivity: 0.5
 --- !u!4 &5424995239360641277 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 166297349109387432, guid: e3be3b195764333428080e393481162c, type: 3}
@@ -277,6 +301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
   dialogue: {fileID: 11400000, guid: 27224a7b5c710154e9fa48aa3d881509, type: 2}
   _canMove: 1
+  disableAfterTalking: 1
 --- !u!114 &2918154664534045204
 MonoBehaviour:
   m_ObjectHideFlags: 0

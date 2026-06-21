@@ -17,6 +17,8 @@ Shader "Custom/HoloButton_Diegetic"
         [HDR]
         _HoloColor          ("Color Idle HDR",  Color)          = (0.0,  1.8, 1.4, 1.0)
         [HDR]
+        _RarityColor        ("Color Rarity HDR", Color)         = (1.0, 1.0, 1.0, 1.0)
+        [HDR]
         _HoverColor         ("Color Hover HDR", Color)          = (0.2,  2.2, 2.0, 1.0)
         [HDR]
         _PressColor         ("Color Press HDR", Color)          = (1.0,  0.4, 0.1, 1.0)
@@ -82,6 +84,7 @@ Shader "Custom/HoloButton_Diegetic"
             CBUFFER_START(UnityPerMaterial)
                 float4 _MainTex_ST;
                 half4  _HoloColor;
+                half4  _RarityColor;
                 half4  _HoverColor;
                 half4  _PressColor;
                 float  _ButtonState;
@@ -195,10 +198,16 @@ Shader "Custom/HoloButton_Diegetic"
                 //   Idle→Hover con blend cuando state=1
                 //   Hover→Press con blend cuando state=2
                 half4 activeColor;
-                if (_ButtonState < 1.5)
+                if (_ButtonState < 0.5)
+                {
+                    // Estado Idle puro: mezclamos Holo con Rarity
+                    activeColor = _HoloColor * _RarityColor;
+                }
+                else if (_ButtonState < 1.5)
                 {
                     // Transición Idle ↔ Hover
-                    activeColor = lerp(_HoloColor, _HoverColor, _StateBlend);
+                    half4 idleColor = _HoloColor * _RarityColor;
+                    activeColor = lerp(idleColor, _HoverColor, _StateBlend);
                 }
                 else
                 {

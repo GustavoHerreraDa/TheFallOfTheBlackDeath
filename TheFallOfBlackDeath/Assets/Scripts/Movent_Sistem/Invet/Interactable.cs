@@ -26,7 +26,7 @@ public abstract class Interactable : MonoBehaviour
     /// </summary>
     public virtual void Start()
     {
-        ResponseMessage.SetActive(false);
+        if (ResponseMessage != null) ResponseMessage.SetActive(false);
     }
 
     /// <summary>
@@ -38,29 +38,23 @@ public abstract class Interactable : MonoBehaviour
         // OBJETO (pickup)
         if (other.gameObject.CompareTag("Object"))
         {
-            
-            {
-                // MIGRADO: reemplaza InteractMeessage
-                InteractionPromptUI.Instance?.Show("[ E ] Recoger ítem");
-                objCollider = other;
-                canInteract = true;
-                Debug.Log("apreta e para interactuar");
-                return;
-            }
+            // MIGRADO: reemplaza InteractMeessage
+            InteractionPromptUI.Instance?.Show("[ E ] Recoger ítem");
+            objCollider = other;
+            canInteract = true;
+            Debug.Log("apreta e para interactuar");
+            return;
         }
 
         // PUERTA
         if (other.gameObject.CompareTag("Gate"))
         {
-            
-            {
-                // MIGRADO: reemplaza InteractMeessage
-                InteractionPromptUI.Instance?.Show("[ E ] Abrir puerta");
-                objCollider = other;
-                canInteract = true;
-                Debug.Log("apreta e para interactuar");
-                return;
-            }
+            // MIGRADO: reemplaza InteractMeessage
+            InteractionPromptUI.Instance?.Show("[ E ] Abrir puerta");
+            objCollider = other;
+            canInteract = true;
+            Debug.Log("apreta e para interactuar");
+            return;
         }
 
         // PORTAL
@@ -102,7 +96,6 @@ public abstract class Interactable : MonoBehaviour
         // MIGRADO: reemplaza InteractMeessage
         InteractionPromptUI.Instance?.Hide();
         canInteract = false;
-
     }
 
     /// <summary>
@@ -110,13 +103,15 @@ public abstract class Interactable : MonoBehaviour
     /// </summary>
     void Update()
     {
-
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (!canInteract)
                 return;
             else
             {
+                // ---> NUEVA LÓGICA AÑADIDA <---
+                // Ocultar el panel inmediatamente al iniciar la interacción
+                InteractionPromptUI.Instance?.Hide();
                 this.Interact();
             }
         }
@@ -127,13 +122,16 @@ public abstract class Interactable : MonoBehaviour
     /// </summary>
     public void ShowResponseMessage()
     {
-        //Debug.Log("No se puede abrir cosa");
         Debug.Log("Mostrame la descripcion del item ctm 2");
 
-        ResponseMessage.SetActive(true);
-        input_responseMessage.text = responseMessage;
-        StartCoroutine(DissableResponseMessage());
+        if (ResponseMessage != null)
+        {
+            ResponseMessage.SetActive(true);
+            if (input_responseMessage != null) input_responseMessage.text = responseMessage;
+            StartCoroutine(DissableResponseMessage());
+        }
     }
+
     /// <summary>
     /// Executes the dissable response message workflow.
     /// </summary>
@@ -141,7 +139,6 @@ public abstract class Interactable : MonoBehaviour
     IEnumerator DissableResponseMessage()
     {
         yield return new WaitForSeconds(2f);
-        ResponseMessage.SetActive(false);
-
+        if (ResponseMessage != null) ResponseMessage.SetActive(false);
     }
 }

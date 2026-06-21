@@ -8,15 +8,21 @@ public class DialogueInteractable : MonoBehaviour
     public Dialogue dialogue;
     private Transform playerTransform;
     private bool canTalk;
+    
     [SerializeField]
     private bool _canMove;
+
+    [Header("Configuración de Interacción")]
+    [Tooltip("Si es verdadero, el componente se desactivará y no se podrá volver a hablar con el NPC.")]
+    public bool disableAfterTalking = true; 
+
     /// <summary>
     /// Responds to the corresponding Unity trigger callback for this component.
     /// </summary>
     /// <param name="other">The other.</param>
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Charecter"))
+        if (other.CompareTag("Charecter") && this.enabled)
         {
             Debug.Log("Presiona [E] para hablar");
             playerTransform = other.transform;
@@ -42,6 +48,10 @@ public class DialogueInteractable : MonoBehaviour
     /// </summary>
     public void Interact()
     {
+        // ---> BLOQUEO DE SEGURIDAD <---
+        // Previene que otros scripts (como PlayerControl) fuercen la interacción si este script ya está desactivado
+        if (!this.enabled) return; 
+
         if (DialogueManager.Instance.IsDialogueActive)
             return;
 
@@ -56,6 +66,20 @@ public class DialogueInteractable : MonoBehaviour
 
             DialogueManager.Instance.StartDialogue(dialogue, gameObject);
         }
+
+        // ---> DESACTIVACIÓN TOTAL <---
+        if (disableAfterTalking)
+        {
+            canTalk = false;
+            this.enabled = false; 
+            
+            // Opcional: Apagamos el Collider (si actúa como Trigger) para que el jugador ni siquiera choque o detecte al NPC al acercarse
+            Collider col = GetComponent<Collider>();
+            if (col != null && col.isTrigger) 
+            {
+                col.enabled = false;
+            }
+        }
     }
 
     /// <summary>
@@ -68,7 +92,6 @@ public class DialogueInteractable : MonoBehaviour
             Interact();
         }
     }
-
 
     /// <summary>
     /// Executes the look at player workflow.

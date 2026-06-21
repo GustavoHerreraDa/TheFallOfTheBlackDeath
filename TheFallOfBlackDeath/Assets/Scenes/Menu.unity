@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!23 &6223634 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1526509560930016547, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
+  m_PrefabInstance: {fileID: 13783561}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9448674
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -410,7 +415,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8256134651489076907, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
       propertyPath: m_Layer
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
       propertyPath: m_Name
@@ -424,6 +429,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8029106800918022278, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f08c776681d86694aa36fbd04703a0b9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -1015,7 +1024,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.08235294, g: 0.53333336, b: 0.039215688, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.990566, g: 0, b: 0, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -1924,12 +1933,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MenuMonitor
   swayPivot: {fileID: 267137663}
   meshMonitor: {fileID: 1798951725}
-  screenContent: {fileID: 2135998152}
+  screenRenderer: {fileID: 1376183949}
   swaySpeed: 1.5
   swayAngle: 3
   rotacionApagado: {x: 20, y: 0, z: 0}
   rotacionEncendido: {x: 0, y: 0, z: 0}
   rotationSpeed: 5
+  colorApagado: {r: 1, g: 1, b: 1, a: 1}
+  colorEncendido: {r: 0, g: 1, b: 1, a: 1}
+  colorTransitionSpeed: 8
 --- !u!1001 &563885776
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2441,7 +2453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8256134651489076907, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
       propertyPath: m_Layer
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
       propertyPath: m_Name
@@ -2459,6 +2471,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8029106800918022278, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f08c776681d86694aa36fbd04703a0b9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -3079,7 +3095,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8256134651489076907, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
       propertyPath: m_Layer
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
       propertyPath: m_Name
@@ -3097,6 +3113,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8029106800918022278, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f08c776681d86694aa36fbd04703a0b9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -3240,6 +3260,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b457582b6f108564d9c6e7935b3b6b94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
+--- !u!23 &1376183949 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1526509560930016547, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
+  m_PrefabInstance: {fileID: 2138131498}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1381358688 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 845475932587182741, guid: b24ac488e74cb6c429d77e96f52d2e07, type: 3}
@@ -3733,12 +3758,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MenuMonitor
   swayPivot: {fileID: 585490021}
   meshMonitor: {fileID: 1043087595}
-  screenContent: {fileID: 267817693}
+  screenRenderer: {fileID: 1976437212}
   swaySpeed: 1.5
   swayAngle: 3
   rotacionApagado: {x: 20, y: 0, z: 0}
   rotacionEncendido: {x: 0, y: 0, z: 0}
   rotationSpeed: 5
+  colorApagado: {r: 1, g: 1, b: 1, a: 1}
+  colorEncendido: {r: 0, g: 1, b: 1, a: 1}
+  colorTransitionSpeed: 8
 --- !u!65 &1454300907
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4296,6 +4324,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
   m_PrefabInstance: {fileID: 1197427299}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &1976437212 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1526509560930016547, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
+  m_PrefabInstance: {fileID: 869034736}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1987069315
 GameObject:
   m_ObjectHideFlags: 0
@@ -4344,12 +4377,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MenuMonitor
   swayPivot: {fileID: 2031999861}
   meshMonitor: {fileID: 1177116866}
-  screenContent: {fileID: 906029187}
+  screenRenderer: {fileID: 6223634}
   swaySpeed: 1.5
   swayAngle: 3
   rotacionApagado: {x: 20, y: 0, z: 0}
   rotacionEncendido: {x: 0, y: 0, z: 0}
   rotationSpeed: 5
+  colorApagado: {r: 1, g: 1, b: 1, a: 1}
+  colorEncendido: {r: 0, g: 1, b: 1, a: 1}
+  colorTransitionSpeed: 8
 --- !u!65 &1987069318
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4845,7 +4881,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8256134651489076907, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
       propertyPath: m_Layer
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
       propertyPath: m_Name
@@ -4863,6 +4899,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8029106800918022278, guid: 5acd7635bf5267c46bd4baf60f2905cf, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f08c776681d86694aa36fbd04703a0b9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
