@@ -22,12 +22,18 @@ public class DialogueInteractable : MonoBehaviour
     /// <param name="other">The other.</param>
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Charecter") && this.enabled)
-        {
-            Debug.Log("Presiona [E] para hablar");
-            playerTransform = other.transform;
-            canTalk = true;
-        }
+        if (!other.CompareTag("Charecter") || !this.enabled) return;
+
+        // Solo el líder del party activa la interacción
+        bool isLeader = GameManager.Instance == null ||
+                        GameManager.Instance.GetLeader() == null ||
+                        other.GetComponentInParent<PlayerFighter>() == GameManager.Instance.GetLeader();
+
+        if (!isLeader) return;
+
+        playerTransform = other.transform;
+        canTalk = true;
+        Debug.Log($"[DialogueInteractable] Presiona [E] para hablar con {gameObject.name}");
     }
 
     /// <summary>

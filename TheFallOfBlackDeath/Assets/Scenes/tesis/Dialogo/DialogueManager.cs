@@ -14,8 +14,6 @@ public class DialogueManager : MonoBehaviour
     public delegate void GiveItemHandler(string id, int amount);
     public static event GiveItemHandler OnGiveItem;
     
-    [Header("Player")]
-    public PlayerControl playerControl;
 
     // Cache del Rigidbody del jugador para restaurar su estado tras el diálogo
     private Rigidbody cachedPlayerRb;
@@ -26,6 +24,10 @@ public class DialogueManager : MonoBehaviour
     public delegate void RecruitEventHandler(GameObject npc, int fighterIndex);
     public static event RecruitEventHandler OnRecruitCharacter;
     public bool IsDialogueActive => currentDialogue != null;
+
+    private bool currentLineHasChoices;
+    private PlayerControl cachedPlayerControl;
+
     /// <summary>
     /// Initializes cached references and runtime state before the component starts running.
     /// </summary>
@@ -48,14 +50,15 @@ public class DialogueManager : MonoBehaviour
 
         ui.ShowUI(true);
 
-        if (playerControl != null)
+        cachedPlayerControl = ResolvePlayerControl();
+        if (cachedPlayerControl != null)
         {
-            playerControl.enabled = false;
-            playerControl.anim.SetFloat("Movent", 0f);
+            cachedPlayerControl.enabled = false;
+            cachedPlayerControl.anim.SetFloat("Movent", 0f);
             // Intentamos obtener el rigidbody (en el root o en hijos) para congelar al jugador
-            cachedPlayerRb = playerControl.GetComponent<Rigidbody>();
+            cachedPlayerRb = cachedPlayerControl.GetComponent<Rigidbody>();
             if (cachedPlayerRb == null)
-                cachedPlayerRb = playerControl.GetComponentInChildren<Rigidbody>();
+                cachedPlayerRb = cachedPlayerControl.GetComponentInChildren<Rigidbody>();
 
             if (cachedPlayerRb != null)
             {
@@ -68,8 +71,6 @@ public class DialogueManager : MonoBehaviour
                 cachedPlayerRb.useGravity = false;
                 cachedPlayerRb.constraints = RigidbodyConstraints.FreezeAll; 
             }
-
-
         }
 
         ShowLine();
@@ -107,23 +108,53 @@ public class DialogueManager : MonoBehaviour
         DialogueLine line = currentDialogue.lines[currentLineIndex];
 
         // VERIFICACIÓN DE FLAGS PARA LA LÍNEA
-        if (!string.IsNullOrEmpty(line.requiredFlag) && !GlobalState.Instance.HasFlag(line.requiredFlag))
+        if (GlobalState.Instance == null)
         {
-            SkipLine();
-            return;
+            Debug.LogError("[DialogueManager] GlobalState.Instance es null. Las condiciones de flags no pueden evaluarse.");
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(line.requiredFlag) && !GlobalState.Instance.HasFlag(line.requiredFlag))
+            {
+                SkipLine();
+                return;
+            }
+
+            if (line.requiredFlagSO != null && !GlobalState.Instance.HasFlag(line.requiredFlagSO))
+            {
+                SkipLine();
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(line.forbiddenFlag) && GlobalState.Instance.HasFlag(line.forbiddenFlag))
+            {
+                SkipLine();
+                return;
+            }
+
+            if (line.forbiddenFlagSO != null && GlobalState.Instance.HasFlag(line.forbiddenFlagSO))
+            {
+                SkipLine();
+                return;
+            }
         }
 
-        if (!string.IsNullOrEmpty(line.forbiddenFlag) && GlobalState.Instance.HasFlag(line.forbiddenFlag))
+        // Verificación de ítem requerido para mostrar la línea
+        if (!string.IsNullOrEmpty(line.requiredItemId))
         {
-            SkipLine();
-            return;
+            if (NewInventoryManager.Instance == null || !NewInventoryManager.Instance.HasItem(line.requiredItemId, line.requiredItemAmount))
+            {
+                SkipLine();
+                return;
+            }
         }
 
         ui.HideChoices();
+        currentLineHasChoices = line.hasChoices;
         ui.DisplayLine(line);
         ui.onTypingFinished = () =>
         {
-            if (line.hasChoices)
+            if (line.hasChoices && line.choices != null && line.choices.Count > 0)
                 ui.ShowChoices(line.choices);
         };
     }
@@ -149,8 +180,8 @@ public class DialogueManager : MonoBehaviour
         ui.ShowUI(false);
         currentDialogue = null;
 
-        if (playerControl != null)
-            playerControl.enabled = true;
+        if (cachedPlayerControl != null)
+            cachedPlayerControl.enabled = true;
         RestorePlayerRigidbody();
        
         if (currentNPC != null)
@@ -172,11 +203,32 @@ public class DialogueManager : MonoBehaviour
     {
         ui.HideChoices();
 
+        // Consumir ítem de costo si aplica
+        if (!string.IsNullOrEmpty(choice.costItemId))
+        {
+            if (NewInventoryManager.Instance != null && NewInventoryManager.Instance.HasItem(choice.costItemId, choice.costItemAmount))
+            {
+                NewInventoryManager.Instance.RemoveItem(choice.costItemId, choice.costItemAmount);
+                Debug.Log($"[DialogueManager] Consumido: {choice.costItemId} x{choice.costItemAmount}");
+            }
+            else
+            {
+                // Guard de seguridad: si llegó aquí sin el ítem, no procesar
+                Debug.LogWarning($"[DialogueManager] SelectChoice: el jugador no tenía {choice.costItemId} x{choice.costItemAmount} al confirmar. Abortando.");
+                return;
+            }
+        }
+
         // Flags logic...
         if (choice.addFlags != null)
             foreach (var f in choice.addFlags) GlobalState.Instance.AddFlag(f);
+        if (choice.addFlagsSO != null)
+            foreach (var f in choice.addFlagsSO) GlobalState.Instance.AddFlag(f);
+            
         if (choice.removeFlags != null)
             foreach (var f in choice.removeFlags) GlobalState.Instance.RemoveFlag(f);
+        if (choice.removeFlagsSO != null)
+            foreach (var f in choice.removeFlagsSO) GlobalState.Instance.RemoveFlag(f);
 
         // --- LÃ“GICA DE DAR ITEM ---
         if (choice.action == DialogueEvent.DialogueEndAction.GiveItem)
@@ -231,7 +283,7 @@ public class DialogueManager : MonoBehaviour
         ui.ShowUI(false);
         // Marcar diálogo como finalizado para permitir hablar con otros NPC
         currentDialogue = null;
-        if (playerControl != null) playerControl.enabled = true;
+        if (cachedPlayerControl != null) cachedPlayerControl.enabled = true;
         RestorePlayerRigidbody();
 
         if (currentNPC != null)
@@ -272,5 +324,27 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    private PlayerControl ResolvePlayerControl()
+    {
+        // Primero intentar desde el líder del party
+        if (GameManager.Instance != null)
+        {
+            var leader = GameManager.Instance.GetLeader();
+            if (leader != null)
+            {
+                var pc = leader.GetComponent<PlayerControl>();
+                if (pc != null) return pc;
+            }
+            // Fallback: character raíz del GameManager
+            if (GameManager.Instance.character != null)
+                return GameManager.Instance.character.GetComponent<PlayerControl>();
+        }
+        return null;
+    }
 
+    private void Update()
+    {
+        if (IsDialogueActive && !currentLineHasChoices && Input.GetKeyDown(KeyCode.E))
+            NextLine();
+    }
 }

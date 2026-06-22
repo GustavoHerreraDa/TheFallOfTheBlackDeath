@@ -1,8 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using InventoryNew;
 
 /// <summary>
 /// Supports branching dialogue flow by handling dialogue ui.
@@ -147,7 +149,7 @@ public class DialogueUI : MonoBehaviour
     /// Shows the choices.
     /// </summary>
     /// <param name="choices">The choices.</param>
-    public void ShowChoices(DialogueChoice[] choices)
+    public void ShowChoices(List<DialogueChoice> choices)
     {
         dialoguePanel.SetActive(false);
 
@@ -162,15 +164,64 @@ public class DialogueUI : MonoBehaviour
         foreach (DialogueChoice choice in choices)
         {
             // VERIFICACIÃ“N DE FLAGS
-            if (!string.IsNullOrEmpty(choice.requiredFlag) && !GlobalState.Instance.HasFlag(choice.requiredFlag))
-                continue; // Salta esta opciÃ³n si no tiene el flag requerido
+            if (GlobalState.Instance == null)
+            {
+                Debug.LogError("[DialogueUI] GlobalState.Instance es null. Las condiciones de flags no pueden evaluarse.");
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(choice.requiredFlag) && !GlobalState.Instance.HasFlag(choice.requiredFlag))
+                    continue; // Salta esta opciÃ³n si no tiene el flag requerido
 
-            if (!string.IsNullOrEmpty(choice.forbiddenFlag) && GlobalState.Instance.HasFlag(choice.forbiddenFlag))
-                continue; // Salta esta opciÃ³n si tiene el flag prohibido
+                if (choice.requiredFlagSO != null && !GlobalState.Instance.HasFlag(choice.requiredFlagSO))
+                    continue;
+
+                if (!string.IsNullOrEmpty(choice.forbiddenFlag) && GlobalState.Instance.HasFlag(choice.forbiddenFlag))
+                    continue; // Salta esta opciÃ³n si tiene el flag prohibido
+
+                if (choice.forbiddenFlagSO != null && GlobalState.Instance.HasFlag(choice.forbiddenFlagSO))
+                    continue;
+            }
+
+            // Verificar ítem requerido para VER la opción
+            if (!string.IsNullOrEmpty(choice.requiredItemId))
+            {
+                bool hasRequired = NewInventoryManager.Instance != null &&
+                                   NewInventoryManager.Instance.HasItem(choice.requiredItemId, choice.requiredItemAmount);
+                if (!hasRequired) continue; // Ocultar completamente si no tiene el ítem
+            }
+
+            // Verificar ítem de costo (puede mostrar bloqueado o directamente ocultar)
+            bool hasCost = true;
+            if (!string.IsNullOrEmpty(choice.costItemId))
+            {
+                hasCost = NewInventoryManager.Instance != null &&
+                          NewInventoryManager.Instance.HasItem(choice.costItemId, choice.costItemAmount);
+
+                if (!hasCost && !choice.showIfMissingCost)
+                    continue; // Ocultar si no tiene y no se quiere mostrar grayed
+            }
 
             GameObject btnObj = Instantiate(choiceButtonPrefab, choicesPanel.transform);
-            btnObj.GetComponentInChildren<TextMeshProUGUI>().text = choice.playerText;
-            ConfigureChoiceButton(btnObj.GetComponent<Button>(), choice);
+            var label = btnObj.GetComponentInChildren<TextMeshProUGUI>();
+
+            // Si no tiene el costo y se muestra como bloqueado, mostrar label de "falta ítem"
+            if (!hasCost && choice.showIfMissingCost)
+            {
+                string missing = string.IsNullOrEmpty(choice.missingCostLabel)
+                    ? $"[Falta: {choice.costItemId} x{choice.costItemAmount}]"
+                    : choice.missingCostLabel;
+                label.text = $"{choice.playerText}\n<size=70%><color=#FF6B6B>{missing}</color></size>";
+
+                // Deshabilitar el botón visualmente
+                var btn = btnObj.GetComponent<Button>();
+                if (btn != null) btn.interactable = false;
+            }
+            else
+            {
+                label.text = choice.playerText;
+                ConfigureChoiceButton(btnObj.GetComponent<Button>(), choice);
+            }
         }
 
         currentButtons = choicesPanel.GetComponentsInChildren<Button>();

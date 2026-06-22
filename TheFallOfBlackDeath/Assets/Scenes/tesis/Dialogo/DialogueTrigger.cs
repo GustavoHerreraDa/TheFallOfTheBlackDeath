@@ -6,6 +6,8 @@ using UnityEngine;
 public class DialogueTrigger : MonoBehaviour
 {
     public Dialogue dialogue;
+    public bool oneShot = true;
+    private bool triggered;
 
     /// <summary>
     /// Responds to the corresponding Unity trigger callback for this component.
@@ -13,9 +15,9 @@ public class DialogueTrigger : MonoBehaviour
     /// <param name="other">The other.</param>
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Charecter"))
-        {
-            DialogueManager.Instance.StartDialogue(dialogue);
-        }
+        if (!other.CompareTag("Charecter")) return;
+        if (oneShot && triggered) return;
+        triggered = true;
+        DialogueManager.Instance.StartDialogue(dialogue);
     }
 }
