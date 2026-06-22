@@ -58,6 +58,10 @@ public class CombatManager : MonoBehaviour
     [SerializeField] private float escapeResultDelay = 0.6f;
     [SerializeField] private float escapedEnemyStunDuration = 4f;
     [SerializeField] private int explorationSceneIndex = 1;
+    [SerializeField] private UnityEngine.Rendering.Volume postProcessVolume;
+    [SerializeField] private float glitchDuration = 0.2f;
+    private URPGlitch.AnalogGlitchVolume analogGlitch;
+    private URPGlitch.DigitalGlitchVolume digitalGlitch;
     private bool escapeInProgress;
 
     // --- EVENTOS PARA EL SISTEMA DE CÁMARAS ---
@@ -132,7 +136,23 @@ public class CombatManager : MonoBehaviour
         this.fighterIndex = -1;
         this.isCombatActive = true;
 
+        SetupGlitchComponents();
+
         StartCoroutine(this.CombatLoop());
+    }
+
+    private void SetupGlitchComponents()
+    {
+        if (postProcessVolume == null)
+        {
+            postProcessVolume = FindObjectOfType<UnityEngine.Rendering.Volume>();
+        }
+
+        if (postProcessVolume != null && postProcessVolume.profile != null)
+        {
+            postProcessVolume.profile.TryGet(out analogGlitch);
+            postProcessVolume.profile.TryGet(out digitalGlitch);
+        }
     }
 
     /// <summary>
@@ -669,6 +689,8 @@ public class CombatManager : MonoBehaviour
                 GameManager.Instance.enemyToBattle.Clear();
             }
 
+            yield return StartCoroutine(ApplyEscapeGlitch());
+
             isCombatActive = false;
             CursorManager.Instance?.ReleaseCursor(this);
             yield return new WaitForSeconds(escapeResultDelay);
@@ -679,6 +701,28 @@ public class CombatManager : MonoBehaviour
         LogPanel.Write("Could not escape!");
         combatStatus = CombatStatus.CHECK_FOR_VICTORY;
         escapeInProgress = false;
+    }
+
+    private IEnumerator ApplyEscapeGlitch()
+    {
+        Time.timeScale = 0.1f;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+
+        if (analogGlitch != null && digitalGlitch != null)
+        {
+            analogGlitch.active = true;
+            digitalGlitch.active = true;
+
+            analogGlitch.scanLineJitter.Override(0.2f);
+            analogGlitch.colorDrift.Override(0.4f);
+            analogGlitch.horizontalShake.Override(0.2f);
+            digitalGlitch.intensity.Override(0.2f);
+        }
+
+        yield return new WaitForSecondsRealtime(glitchDuration);
+
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
     }
 
     private float CalculateEscapeChance(PlayerFighter runner)

@@ -205,18 +205,22 @@ public class PlayerSkillPanel : MonoBehaviour
         this.gameObject.SetActive(true);
 
         // Estado Inicial: Mostrar menú de opciones (Skills, Run, Scan)
-        // Ocultar el panel de habilidades individual y el botón de Volver
+        // Ocultar el panel de habilidades individual y el botón de volver
         foreach (var btn in skillButtons)
         {
             if (btn != null) btn.SetActive(false);
         }
         
+        // El botón de volver NO debe estar en el menú raíz
         if (backButton != null) backButton.SetActive(false);
 
         // Configurar y mostrar botones raíz
         if (mainSkillsMenuButton != null)
         {
             mainSkillsMenuButton.SetActive(true);
+            var text = mainSkillsMenuButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (text != null) text.text = "SKILLS";
+            
             var button = mainSkillsMenuButton.GetComponent<Button>();
             if (button != null)
             {
@@ -231,6 +235,10 @@ public class PlayerSkillPanel : MonoBehaviour
         if (runButton != null)
         {
             runButton.SetActive(true);
+            if (runButtonLabel != null)
+            {
+                runButtonLabel.text = runButtonText;
+            }
             var button = runButton.GetComponent<Button>();
             if (button != null)
             {
@@ -242,6 +250,8 @@ public class PlayerSkillPanel : MonoBehaviour
         if (scanButton != null)
         {
             scanButton.SetActive(true);
+            var text = scanButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (text != null) text.text = "SCAN";
             // El listener suele estar en CombatScannerButtonLinker, 
             // pero nos aseguramos que sea visible.
         }
@@ -297,7 +307,7 @@ public class PlayerSkillPanel : MonoBehaviour
         if (runButton != null) runButton.SetActive(false);
         if (scanButton != null) scanButton.SetActive(false);
 
-        // Mostrar botón de volver
+        // Mostrar botón de volver al estar en el submenú de skills
         if (backButton != null)
         {
             backButton.SetActive(true);
@@ -356,53 +366,6 @@ public class PlayerSkillPanel : MonoBehaviour
                 button.onClick.AddListener(() => OnSkillButtonClick(captured));
             }
         }
-
-        ConfigureRunButton(shown);
-    }
-
-    private void ConfigureRunButton(int firstFreeButtonIndex)
-    {
-        GameObject buttonObject = runButton;
-        TextMeshProUGUI label = runButtonLabel;
-
-        if (buttonObject == null &&
-            firstFreeButtonIndex >= 0 &&
-            firstFreeButtonIndex < skillButtons.Length)
-        {
-            buttonObject = skillButtons[firstFreeButtonIndex];
-            if (firstFreeButtonIndex < skillButtonLabels.Length)
-                label = skillButtonLabels[firstFreeButtonIndex];
-        }
-
-        if (buttonObject == null)
-            return;
-
-        bool canRun = targetFigther != null && targetFigther.combatManager != null;
-        buttonObject.SetActive(canRun);
-
-        var button = buttonObject.GetComponent<Button>();
-        if (button != null)
-        {
-            button.onClick.RemoveAllListeners();
-            button.interactable = canRun;
-            button.onClick.AddListener(OnRunButtonClick);
-
-            var image = button.GetComponent<Image>();
-            var fx = button.GetComponent<HoloButtonFX>();
-            if (fx != null) fx.ResetToIdle();
-            
-            if (image != null)
-            {
-                image.color = normalColor;
-                if (fx != null) fx.SetRarityColor(normalColor);
-            }
-        }
-
-        if (label == null)
-            label = buttonObject.GetComponentInChildren<TextMeshProUGUI>();
-
-        if (label != null)
-            label.text = runButtonText;
     }
 
     /// <summary>
