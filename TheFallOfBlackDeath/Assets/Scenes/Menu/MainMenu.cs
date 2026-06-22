@@ -30,6 +30,9 @@ public class MainMenu : MonoBehaviour
     /// </summary>
     public void EscenaJuego()
     {
+        if (GameManager._instance != null)
+            GameManager._instance.ResetForNewGame();
+
         SceneManager.LoadSceneAsync(1);
     }
 }

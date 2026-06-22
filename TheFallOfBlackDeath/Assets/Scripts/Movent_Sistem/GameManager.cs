@@ -947,6 +947,13 @@ public class GameManager : MonoBehaviour
     {
         if (scene.buildIndex == lastExplorationSceneIndex)
         {
+            // Refrescar startPost para evitar referencia rota al objeto destruido de la escena anterior
+            var spawnObj = GameObject.FindWithTag("SpawnPoint");
+            if (spawnObj != null)
+                startPost = spawnObj.transform;
+            else
+                startPost = null;
+
             // Asegurar que los NPCs reclutados no aparezcan como interactuables en la nueva escena
             StartCoroutine(HideRecruitedNPCs());
 
@@ -1258,20 +1265,19 @@ public class GameManager : MonoBehaviour
                 controller.enabled = false;
                 
                 // Aplicar posición guardada o inicial
-                if (hasValidLastPos)
+                if (hasValidLastPos && lastPos != Vector3.zero)
                 {
                     character.transform.position = lastPos;
-                    Debug.Log($"Posición restaurada: {lastPos}");
+                    Debug.Log($"[GameManager] Posición restaurada: {lastPos}");
                 }
-        /// <summary>
-        /// Executes the if workflow.
-        /// </summary>
-        /// <param name="!">The !.</param>
-        /// <returns>The resulting value.</returns>
-                else if (startPost != null)
+                else if (startPost != null && startPost)  // 'startPost &&' detecta fake-null de objetos destruidos
                 {
                     character.transform.position = startPost.position;
-                    Debug.Log($"Posición inicial aplicada: {startPost.position}");
+                    Debug.Log($"[GameManager] Posición de spawn aplicada: {startPost.position}");
+                }
+                else
+                {
+                    Debug.LogWarning("[GameManager] Sin posición válida ni startPost. El player queda en su posición de prefab.");
                 }
                 
                 // Esperar un frame y reactivar
@@ -1281,16 +1287,11 @@ public class GameManager : MonoBehaviour
             else
             {
                 // Si no tiene CharacterController, aplicar directamente
-                if (hasValidLastPos)
+                if (hasValidLastPos && lastPos != Vector3.zero)
                 {
                     character.transform.position = lastPos;
                 }
-        /// <summary>
-        /// Executes the if workflow.
-        /// </summary>
-        /// <param name="!">The !.</param>
-        /// <returns>The resulting value.</returns>
-                else if (startPost != null)
+                else if (startPost != null && startPost)
                 {
                     character.transform.position = startPost.position;
                 }
@@ -1420,6 +1421,35 @@ public class GameManager : MonoBehaviour
     {
         hasValidLastPos = false;
         lastPos = Vector3.zero;
+    }
+
+    /// <summary>
+    /// Limpia el estado de sesión para iniciar una nueva partida desde cero.
+    /// Llamar desde el menú principal ANTES de cargar la escena de exploración.
+    /// No borra savedPlayersStatus, activePartyIds ni recruitedCharacterIds (eso es datos de save).
+    /// </summary>
+    public void ResetForNewGame()
+    {
+        // Limpiar posición
+        hasValidLastPos = false;
+        lastPos = Vector3.zero;
+        savedPartyPositions.Clear();
+
+        // Limpiar estado de combate y encuentros
+        enemyToBattle.Clear();
+        canGetEncounter = false;
+        gotAttacked = false;
+        isWalking = false;
+        currentEncounterGroupName = string.Empty;
+        pendingEscapedEnemyGroupName = string.Empty;
+        pendingEscapedEnemyStunDuration = 0f;
+
+        // Limpiar referencias de escena (se reasignan cuando carga la nueva escena)
+        character = null;
+        startPost = null;
+        activeParty.Clear();
+
+        Debug.Log("[GameManager] Estado reseteado para nueva partida.");
     }
 
     /// <summary>
