@@ -10,8 +10,9 @@ public class VerticalDoorTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Charecter") && !other.CompareTag("Enemy")) return;
-
-        door.Open();
+        if (other.CompareTag("Charecter") || other.CompareTag("Enemy"))
+        {
+            door.Open();
+        }
     }
 }
