@@ -64,6 +64,12 @@ public class PlayerControl : MonoBehaviour
             cameraMain = camara.GetComponent<Camera_Main>();
         anim = GetComponentInChildren<Animator>();
         playerRB = GetComponentInChildren<Rigidbody>();
+
+        // Forzar reset de estados críticos al iniciar (especialmente tras un respawn)
+        stop = false;
+        Time.timeScale = 1f;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     /// <summary>

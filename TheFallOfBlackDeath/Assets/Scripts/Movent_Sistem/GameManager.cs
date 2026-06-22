@@ -259,15 +259,19 @@ public class GameManager : MonoBehaviour
         NormalizePartyIds();
         activeParty.RemoveAll(p => p == null || !activePartyIds.Contains(p.figherIndex));
 
+        // Obtener todos los fighters de la escena
         var sceneFighters = FindObjectsOfType<PlayerFighter>();
+        
         foreach (int id in activePartyIds)
         {
+            // Si ya tenemos una referencia válida para este ID, no la buscamos de nuevo
             if (activeParty.Any(p => p != null && p.figherIndex == id)) continue;
 
             var match = sceneFighters.FirstOrDefault(p => p != null && p.figherIndex == id);
             if (match != null)
             {
                 activeParty.Add(match);
+                Debug.Log($"[GameManager] Referencia de party recuperada para ID {id}: {match.name}");
             }
         }
 
@@ -417,6 +421,12 @@ public class GameManager : MonoBehaviour
         RecoverSavedPartyAfterDefeat(defeatedTeam);
         ClearCombatTransitionState();
         SetGameState(GameStates.IDLE_STATE);
+
+        // Asegurar que el estado del juego sea consistente tras la derrota
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void PrepareForGameOverReturnToMenu()
@@ -424,6 +434,12 @@ public class GameManager : MonoBehaviour
         RecoverSavedPartyAfterDefeat(null);
         ClearCombatTransitionState();
         SetGameState(GameStates.IDLE_STATE);
+
+        // Asegurar que el juego no se quede en cámara lenta ni con el cursor libre tras morir
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void RecoverSavedPartyAfterDefeat(Fighter[] defeatedTeam)
@@ -1297,11 +1313,11 @@ public class GameManager : MonoBehaviour
                 }
             }
             
-            // Limpiar flag después de aplicar
-            hasValidLastPos = false;
-
             // Restaurar posiciones de la party después de posicionar al líder
             RestorePartyPositions();
+
+            // Limpiar flag después de aplicar TODO (líder y party)
+            hasValidLastPos = false;
         }
         else
         {
@@ -1360,6 +1376,9 @@ public class GameManager : MonoBehaviour
     }
     public void RestorePartyPositions()
     {
+        // Forzar refresco de referencias para asegurar que detectamos a los compañeros en la nueva escena
+        RefreshActivePartyReferencesFromScene();
+
         if (savedPartyPositions == null || savedPartyPositions.Count == 0) return;
 
         PlayerFighter leader = GetLeader();
@@ -1381,6 +1400,13 @@ public class GameManager : MonoBehaviour
         foreach (var data in savedPartyPositions)
         {
             PlayerFighter fighter = members.FirstOrDefault(m => m != null && m.figherIndex == data.fighterIndex);
+            
+            // Si el miembro no está en la lista de party actual, lo buscamos en toda la escena
+            if (fighter == null)
+            {
+                fighter = FindObjectsOfType<PlayerFighter>().FirstOrDefault(m => m != null && m.figherIndex == data.fighterIndex);
+            }
+
             if (fighter == null) continue;
 
             CharacterController controller = fighter.GetComponent<CharacterController>();
@@ -1388,14 +1414,15 @@ public class GameManager : MonoBehaviour
 
             if (fighter == leader)
             {
-                fighter.transform.position = data.position;
                 // Si venimos de un cambio de escena que define lastPos, priorizar esa para el líder
-                if (hasLeaderPos) fighter.transform.position = leaderPos;
+                if (hasLeaderPos) 
+                    fighter.transform.position = leaderPos;
+                else
+                    fighter.transform.position = data.position;
             }
             else
             {
                 // SOLUCIÓN: Aplicamos directamente la posición exacta guardada del compañero
-                // eliminando la lógica anterior que forzaba un "offset" predefinido.
                 fighter.transform.position = data.position;
             }
 

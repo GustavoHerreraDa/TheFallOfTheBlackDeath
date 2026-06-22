@@ -54,6 +54,9 @@ public class Scene_Change : MonoBehaviour
         {
             if (GameManager.Instance != null)
             {
+                // Guardar escena ANTES de guardar posición para asegurar consistencia
+                GameManager.Instance.SaveCurrentExplorationScene(SceneManager.GetActiveScene().buildIndex);
+
                 // Captura instantánea en el frame exacto del trigger (líder + party)
                 GameManager.Instance.SaveCurrentPosition(player.transform.position);
             }
@@ -104,12 +107,6 @@ private IEnumerator DirectGlitchTransition()
 
     Time.timeScale = 1f;
     Time.fixedDeltaTime = 0.02f;
-
-    // Guardar el índice de la escena de exploración actual antes de ir al combate
-    if (GameManager.Instance != null)
-    {
-        GameManager.Instance.SaveCurrentExplorationScene(SceneManager.GetActiveScene().buildIndex);
-    }
 
     SceneManager.LoadScene(fightSceneIndex);
     

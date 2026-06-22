@@ -255,11 +255,11 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8111781155169087978, guid: bced14332eb66fb48903277d291b4690, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 15c83dfd9e939d44395d833f48648a98, type: 2}
     - target: {fileID: 8111781155169087978, guid: bced14332eb66fb48903277d291b4690, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: f857a84ae6dd79645935db226c708d35, type: 2}
     - target: {fileID: 8324922376569700957, guid: bced14332eb66fb48903277d291b4690, type: 3}
@@ -292,9 +292,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bced14332eb66fb48903277d291b4690, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5458518229641162533}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bced14332eb66fb48903277d291b4690, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7873317176433971571}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bced14332eb66fb48903277d291b4690, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3328278858600190296}
@@ -350,29 +347,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fightSceneIndex: 2
---- !u!136 &7873317176433971571
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4407414319975109979}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  postProcessVolume: {fileID: 0}
+  glitchDuration: 0.2
 --- !u!82 &3328278858600190296
 AudioSource:
   m_ObjectHideFlags: 0
@@ -383,7 +359,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 248a8af626575fb4a845d8218a0af7f6, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 65690cc8f5827b7429ff29d59de91de7, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 65690cc8f5827b7429ff29d59de91de7, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.2
   m_Pitch: 1
@@ -499,10 +476,17 @@ MonoBehaviour:
   anim: {fileID: 6954045461956892059}
   audioSource: {fileID: 3328278858600190296}
   player: {fileID: 0}
+  stunEffect: {fileID: 0}
   chaseEnterDistance: 20
   chaseExitDistance: 8
   normalSpeed: 3.5
   chaseSpeed: 10
+  fieldOfView: 100
+  eyeHeight: 1.6
+  visionMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  lostSightGraceTime: 1
   puntoA: {fileID: 0}
   puntoB: {fileID: 0}
 --- !u!95 &6954045461956892059 stripped
@@ -703,11 +687,11 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8111781155169087978, guid: 9bb68e3194d7071448af235abaa6eae6, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7bf6225885499694c959a9f1ce655205, type: 2}
     - target: {fileID: 8111781155169087978, guid: 9bb68e3194d7071448af235abaa6eae6, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 746090e9794755e458ed80ce0ec44292, type: 2}
     - target: {fileID: 8324922376569700957, guid: 9bb68e3194d7071448af235abaa6eae6, type: 3}
