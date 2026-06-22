@@ -153,7 +153,6 @@ public class DialogueUI : MonoBehaviour
     {
         dialoguePanel.SetActive(false);
 
-
         foreach (Transform child in choicesPanel.transform)
             Destroy(child.gameObject);
 
@@ -163,50 +162,14 @@ public class DialogueUI : MonoBehaviour
 
         foreach (DialogueChoice choice in choices)
         {
-            // VERIFICACIÃ“N DE FLAGS
-            if (GlobalState.Instance == null)
-            {
-                Debug.LogError("[DialogueUI] GlobalState.Instance es null. Las condiciones de flags no pueden evaluarse.");
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(choice.requiredFlag) && !GlobalState.Instance.HasFlag(choice.requiredFlag))
-                    continue; // Salta esta opciÃ³n si no tiene el flag requerido
-
-                if (choice.requiredFlagSO != null && !GlobalState.Instance.HasFlag(choice.requiredFlagSO))
-                    continue;
-
-                if (!string.IsNullOrEmpty(choice.forbiddenFlag) && GlobalState.Instance.HasFlag(choice.forbiddenFlag))
-                    continue; // Salta esta opciÃ³n si tiene el flag prohibido
-
-                if (choice.forbiddenFlagSO != null && GlobalState.Instance.HasFlag(choice.forbiddenFlagSO))
-                    continue;
-            }
-
-            // Verificar ítem requerido para VER la opción
-            if (!string.IsNullOrEmpty(choice.requiredItemId))
-            {
-                bool hasRequired = NewInventoryManager.Instance != null &&
-                                   NewInventoryManager.Instance.HasItem(choice.requiredItemId, choice.requiredItemAmount);
-                if (!hasRequired) continue; // Ocultar completamente si no tiene el ítem
-            }
-
-            // Verificar ítem de costo (puede mostrar bloqueado o directamente ocultar)
-            bool hasCost = true;
-            if (!string.IsNullOrEmpty(choice.costItemId))
-            {
-                hasCost = NewInventoryManager.Instance != null &&
-                          NewInventoryManager.Instance.HasItem(choice.costItemId, choice.costItemAmount);
-
-                if (!hasCost && !choice.showIfMissingCost)
-                    continue; // Ocultar si no tiene y no se quiere mostrar grayed
-            }
+            if (!DialogueManager.Instance.IsChoiceVisible(choice, out bool hasCost))
+                continue;
 
             GameObject btnObj = Instantiate(choiceButtonPrefab, choicesPanel.transform);
             var label = btnObj.GetComponentInChildren<TextMeshProUGUI>();
 
             // Si no tiene el costo y se muestra como bloqueado, mostrar label de "falta ítem"
-            if (!hasCost && choice.showIfMissingCost)
+            if (!hasCost)
             {
                 string missing = string.IsNullOrEmpty(choice.missingCostLabel)
                     ? $"[Falta: {choice.costItemId} x{choice.costItemAmount}]"

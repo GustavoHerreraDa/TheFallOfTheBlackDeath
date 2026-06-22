@@ -8,9 +8,9 @@ public class DialogueChoice
 {
     public string playerText;
 
-    [Header("Condiciones de ApariciÃ³n")]
-    public string requiredFlag; // La opciÃ³n solo aparece si el jugador tiene este flag
-    public string forbiddenFlag; // La opciÃ³n desaparece si el jugador tiene este flag
+    [Header("Condiciones de Aparición")]
+    public string requiredFlag; // La opción solo aparece si el jugador tiene este flag
+    public string forbiddenFlag; // La opción desaparece si el jugador tiene este flag
     public GlobalFlag requiredFlagSO;
     public GlobalFlag forbiddenFlagSO;
 

@@ -31,6 +31,7 @@ public class InteractionPromptUI : MonoBehaviour
     /// <param name="message">Mensaje a mostrar.</param>
     public void Show(string message)
     {
+        CancelInvoke(nameof(Hide));
         if (promptText != null)
         {
             promptText.text = message;
@@ -40,6 +41,15 @@ public class InteractionPromptUI : MonoBehaviour
         {
             promptRoot.SetActive(true);
         }
+    }
+
+    /// <summary>
+    /// Muestra un mensaje y lo oculta automáticamente tras un tiempo.
+    /// </summary>
+    public void Show(string message, float duration)
+    {
+        Show(message);
+        Invoke(nameof(Hide), duration);
     }
 
     /// <summary>

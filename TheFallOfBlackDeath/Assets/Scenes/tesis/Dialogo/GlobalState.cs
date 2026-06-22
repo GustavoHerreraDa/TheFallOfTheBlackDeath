@@ -32,10 +32,22 @@ public class GlobalState : MonoBehaviour
     public static event Action<string, bool> OnFlagChanged;
     public static event Action<string, int> OnVariableChanged;
 
+    [Header("Debug & Editor")]
+    [Tooltip("Si está activo, el estado se borrará cada vez que pulses Play en el editor.")]
+    public bool resetOnPlay = false;
+
     private string SavePath => Path.Combine(Application.persistentDataPath, "global_state.json");
 
     private void Awake()
     {
+#if UNITY_EDITOR
+        if (resetOnPlay)
+        {
+            ClearPersistentFlags();
+            Debug.Log("[GlobalState] Estado reseteado automáticamente (Reset On Play activo).");
+        }
+#endif
+
         if (Instance == null)
         {
             Instance = this;
@@ -149,6 +161,33 @@ public class GlobalState : MonoBehaviour
         _flags.Clear();
         _intVariables.Clear();
         if (File.Exists(SavePath)) File.Delete(SavePath);
-        SaveState();
+        // No llamamos a SaveState aquí para evitar recrear el archivo vacío inmediatamente si no es necesario,
+        // o podemos llamarlo para asegurar que el archivo esté limpio pero exista.
+        Debug.Log("[GlobalState] Datos persistentes borrados correctamente.");
     }
 }
+
+#if UNITY_EDITOR
+[UnityEditor.CustomEditor(typeof(GlobalState))]
+public class GlobalStateEditor : UnityEditor.Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        GlobalState gs = (GlobalState)target;
+
+        GUILayout.Space(10);
+        GUI.color = Color.red;
+        if (GUILayout.Button("BORRAR TODO EL PROGRESO (Flags e Items)"))
+        {
+            if (UnityEditor.EditorUtility.DisplayDialog("Borrar Estado Global", 
+                "¿Estás seguro de que quieres borrar todos los flags y variables persistentes? Esto no se puede deshacer.", "Sí", "No"))
+            {
+                gs.ClearPersistentFlags();
+            }
+        }
+        GUI.color = Color.white;
+    }
+}
+#endif

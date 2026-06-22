@@ -14,7 +14,11 @@ public class DialogueInteractable : MonoBehaviour
 
     [Header("Configuración de Interacción")]
     [Tooltip("Si es verdadero, el componente se desactivará y no se podrá volver a hablar con el NPC.")]
-    public bool disableAfterTalking = true; 
+    public bool disableAfterTalking = true;
+    [Tooltip("Si es verdadero, el NPC solo hablará si tiene algo nuevo que decir (basado en condiciones de líneas).")]
+    public bool onlyTalkIfNewContent = true;
+    [Tooltip("Si no tiene nada nuevo que decir, se mostrará este mensaje rápido (opcional).")]
+    public string noContentMessage = "No tengo nada más que decirte por ahora.";
 
     /// <summary>
     /// Responds to the corresponding Unity trigger callback for this component.
@@ -60,6 +64,18 @@ public class DialogueInteractable : MonoBehaviour
 
         if (DialogueManager.Instance.IsDialogueActive)
             return;
+
+        // VERIFICACIÓN DE CONTENIDO NUEVO (PRO)
+        if (onlyTalkIfNewContent && !DialogueManager.Instance.HasAvailableContent(dialogue))
+        {
+            if (!string.IsNullOrEmpty(noContentMessage))
+            {
+                Debug.Log($"[DialogueInteractable] {gameObject.name}: {noContentMessage}");
+                // Aquí podrías mostrar un pequeño popup flotante en lugar de un diálogo completo
+                InteractionPromptUI.Instance?.Show(noContentMessage, 2f);
+            }
+            return;
+        }
 
         if (_canMove == false)
         {

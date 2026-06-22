@@ -101,52 +101,103 @@ public class DialogueManager : MonoBehaviour
 
 
     /// <summary>
+    /// Comprueba si el diálogo tiene alguna línea que pueda mostrarse según las condiciones actuales.
+    /// </summary>
+    public bool HasAvailableContent(Dialogue dialogue)
+    {
+        if (dialogue == null || dialogue.lines == null) return false;
+
+        // Si el diálogo ya fue leído por completo y no tiene flags que lo reinicien, se considera "sin contenido nuevo"
+        if (GlobalState.Instance != null && GlobalState.Instance.HasFlag("Read_" + dialogue.Id))
+        {
+            // Podríamos añadir lógica aquí para ver si hay ramas no exploradas,
+            // pero por simplicidad "pro", si el usuario no puso flags de condición
+            // en las líneas, asumimos que es el mismo diálogo de siempre.
+            return false;
+        }
+
+        foreach (var line in dialogue.lines)
+        {
+            if (IsLineVisible(line)) return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Evalúa si una opción específica es visible según flags e ítems.
+    /// </summary>
+    public bool IsChoiceVisible(DialogueChoice choice, out bool canPayCost)
+    {
+        canPayCost = true;
+
+        if (GlobalState.Instance != null)
+        {
+            if (!string.IsNullOrEmpty(choice.requiredFlag) && !GlobalState.Instance.HasFlag(choice.requiredFlag))
+                return false;
+            if (choice.requiredFlagSO != null && !GlobalState.Instance.HasFlag(choice.requiredFlagSO))
+                return false;
+            if (!string.IsNullOrEmpty(choice.forbiddenFlag) && GlobalState.Instance.HasFlag(choice.forbiddenFlag))
+                return false;
+            if (choice.forbiddenFlagSO != null && GlobalState.Instance.HasFlag(choice.forbiddenFlagSO))
+                return false;
+        }
+
+        if (!string.IsNullOrEmpty(choice.requiredItemId))
+        {
+            if (NewInventoryManager.Instance == null || !NewInventoryManager.Instance.HasItem(choice.requiredItemId, choice.requiredItemAmount))
+                return false;
+        }
+
+        if (!string.IsNullOrEmpty(choice.costItemId))
+        {
+            bool hasCost = NewInventoryManager.Instance != null && NewInventoryManager.Instance.HasItem(choice.costItemId, choice.costItemAmount);
+            if (!hasCost)
+            {
+                canPayCost = false;
+                if (!choice.showIfMissingCost) return false;
+            }
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Evalúa si una línea específica es visible según flags e ítems.
+    /// </summary>
+    private bool IsLineVisible(DialogueLine line)
+    {
+        if (GlobalState.Instance != null)
+        {
+            if (!string.IsNullOrEmpty(line.requiredFlag) && !GlobalState.Instance.HasFlag(line.requiredFlag))
+                return false;
+            if (line.requiredFlagSO != null && !GlobalState.Instance.HasFlag(line.requiredFlagSO))
+                return false;
+            if (!string.IsNullOrEmpty(line.forbiddenFlag) && GlobalState.Instance.HasFlag(line.forbiddenFlag))
+                return false;
+            if (line.forbiddenFlagSO != null && GlobalState.Instance.HasFlag(line.forbiddenFlagSO))
+                return false;
+        }
+
+        if (!string.IsNullOrEmpty(line.requiredItemId))
+        {
+            if (NewInventoryManager.Instance == null || !NewInventoryManager.Instance.HasItem(line.requiredItemId, line.requiredItemAmount))
+                return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
     /// Shows the line.
     /// </summary>
     private void ShowLine()
     {
         DialogueLine line = currentDialogue.lines[currentLineIndex];
 
-        // VERIFICACIÓN DE FLAGS PARA LA LÍNEA
-        if (GlobalState.Instance == null)
+        if (!IsLineVisible(line))
         {
-            Debug.LogError("[DialogueManager] GlobalState.Instance es null. Las condiciones de flags no pueden evaluarse.");
-        }
-        else
-        {
-            if (!string.IsNullOrEmpty(line.requiredFlag) && !GlobalState.Instance.HasFlag(line.requiredFlag))
-            {
-                SkipLine();
-                return;
-            }
-
-            if (line.requiredFlagSO != null && !GlobalState.Instance.HasFlag(line.requiredFlagSO))
-            {
-                SkipLine();
-                return;
-            }
-
-            if (!string.IsNullOrEmpty(line.forbiddenFlag) && GlobalState.Instance.HasFlag(line.forbiddenFlag))
-            {
-                SkipLine();
-                return;
-            }
-
-            if (line.forbiddenFlagSO != null && GlobalState.Instance.HasFlag(line.forbiddenFlagSO))
-            {
-                SkipLine();
-                return;
-            }
-        }
-
-        // Verificación de ítem requerido para mostrar la línea
-        if (!string.IsNullOrEmpty(line.requiredItemId))
-        {
-            if (NewInventoryManager.Instance == null || !NewInventoryManager.Instance.HasItem(line.requiredItemId, line.requiredItemAmount))
-            {
-                SkipLine();
-                return;
-            }
+            SkipLine();
+            return;
         }
 
         ui.HideChoices();
@@ -177,6 +228,12 @@ public class DialogueManager : MonoBehaviour
     /// </summary>
     private void EndDialogue()
     {
+        // Marcar diálogo como leído (Pro)
+        if (currentDialogue != null && GlobalState.Instance != null)
+        {
+            GlobalState.Instance.AddFlag("Read_" + currentDialogue.Id);
+        }
+
         ui.ShowUI(false);
         currentDialogue = null;
 
@@ -280,6 +337,12 @@ public class DialogueManager : MonoBehaviour
     /// <param name="action">The action.</param>
     private void EndDialogueWithAction(DialogueEvent.DialogueEndAction action)
     {
+        // Marcar diálogo como leído (Pro)
+        if (currentDialogue != null && GlobalState.Instance != null)
+        {
+            GlobalState.Instance.AddFlag("Read_" + currentDialogue.Id);
+        }
+
         ui.ShowUI(false);
         // Marcar diálogo como finalizado para permitir hablar con otros NPC
         currentDialogue = null;
@@ -344,7 +407,18 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (IsDialogueActive && !currentLineHasChoices && Input.GetKeyDown(KeyCode.E))
-            NextLine();
+        if (IsDialogueActive && Input.GetKeyDown(KeyCode.E))
+        {
+            // Si está escribiendo, siempre permitimos saltar el texto (incluso con opciones)
+            if (ui.IsTyping)
+            {
+                NextLine();
+            }
+            // Si no hay opciones, permitimos pasar a la siguiente línea
+            else if (!currentLineHasChoices)
+            {
+                NextLine();
+            }
+        }
     }
 }

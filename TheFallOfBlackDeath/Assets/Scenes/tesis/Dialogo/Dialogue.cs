@@ -7,4 +7,8 @@ using UnityEngine;
 public class Dialogue : ScriptableObject
 {
     public DialogueLine[] lines;
+    [Tooltip("El ID único para este diálogo. Se usa para rastrear si ya ha sido leído.")]
+    public string dialogueId;
+
+    public string Id => string.IsNullOrEmpty(dialogueId) ? name : dialogueId;
 }
