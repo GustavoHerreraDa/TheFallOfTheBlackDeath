@@ -118,5 +118,13 @@ public class MainPanel : MonoBehaviour
         controlesPanel.SetActive(false);
         introPanel.SetActive(true);
     }
+    
+    public void ClosePanel()
+    {
+        mainPanel.SetActive(false);
+        optionsPanel.SetActive(false);
+        controlesPanel.SetActive(false);
+        introPanel.SetActive(false);
+    }
 
 }
