@@ -7,6 +7,9 @@ using UnityEngine;
 /// </summary>
 public class LethalQTESkill : BodyPartTargetSkill
 {
+    public static event System.Action OnLethalSkillExecuted;
+    public static event System.Action OnLethalSkillFinished;
+
     [Header("Parry QTE")]
     [SerializeField] private float parryWindowDuration = 0.3f;
     [SerializeField] private float slowMoTimeScale = 0.2f;
@@ -23,6 +26,8 @@ public class LethalQTESkill : BodyPartTargetSkill
     /// <param name="cachedBodyPartTarget">Body part target cached by the base skill execution.</param>
     protected override IEnumerator ApplyDamageDelayed(Fighter receiver, BodyPart cachedBodyPartTarget)
     {
+        OnLethalSkillExecuted?.Invoke();
+
         if (impactDelay > 0f)
             yield return new WaitForSeconds(impactDelay);
 
@@ -50,6 +55,8 @@ public class LethalQTESkill : BodyPartTargetSkill
 
         receiver.ModifyHealth(result);
         EnqueueOutcomeMessage(receiver, parried);
+
+        OnLethalSkillFinished?.Invoke();
     }
 
     protected override void OnRun(Fighter receiver)

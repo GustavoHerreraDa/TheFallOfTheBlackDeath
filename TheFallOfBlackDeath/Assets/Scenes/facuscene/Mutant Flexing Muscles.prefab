@@ -177,11 +177,11 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2373833391630300687, guid: e07638867b31ba946a590de2585c4f88, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 15c83dfd9e939d44395d833f48648a98, type: 2}
     - target: {fileID: 2373833391630300687, guid: e07638867b31ba946a590de2585c4f88, type: 3}
-      propertyPath: m_Materials.Array.data[1]
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: f857a84ae6dd79645935db226c708d35, type: 2}
     - target: {fileID: 2715566404302941441, guid: e07638867b31ba946a590de2585c4f88, type: 3}
@@ -244,7 +244,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &5845931237460851605
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -258,6 +258,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -275,13 +276,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0197832d7eed0c649a48c7fa50b49d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  navMeshAgent: {fileID: 5809360958292167830}
-  player: {fileID: 0}
+  currentState: 0
+  agent: {fileID: 0}
+  anim: {fileID: 0}
   audioSource: {fileID: 0}
-  distanceToFollowPlayer: 5
-  velocidadNormal: 3.5
-  velocidadPersecucion: 6
-  patrullar: 1
+  player: {fileID: 0}
+  stunEffect: {fileID: 0}
+  chaseEnterDistance: 5
+  chaseExitDistance: 8
+  normalSpeed: 3.5
+  chaseSpeed: 6
+  fieldOfView: 100
+  eyeHeight: 1.6
+  visionMask:
+    serializedVersion: 2
+    m_Bits: 2043
+  lostSightGraceTime: 1
   puntoA: {fileID: 0}
   puntoB: {fileID: 0}
 --- !u!195 &5809360958292167830
