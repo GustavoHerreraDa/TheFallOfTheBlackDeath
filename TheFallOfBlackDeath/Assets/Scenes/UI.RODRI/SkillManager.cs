@@ -88,6 +88,8 @@ public class SkillManager : MonoBehaviour
 
         
         if (enemySelection != null) enemySelection.Hide();
+        if (bodyPartPanel != null) bodyPartPanel.Hide();
+        if (skillPanel != null) skillPanel.Hide();
 
         if (combatManager == null) combatManager = FindObjectOfType<CombatManager>();
         if (combatManager == null)
