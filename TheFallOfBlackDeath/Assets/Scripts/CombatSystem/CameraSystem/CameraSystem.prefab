@@ -162,7 +162,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60.000004
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -251,6 +251,7 @@ GameObject:
   - component: {fileID: 9111774295710815239}
   - component: {fileID: 5333029114116898740}
   - component: {fileID: 2405662897095940463}
+  - component: {fileID: 5110039939812646842}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -328,6 +329,23 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
+--- !u!114 &5110039939812646842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012104085964971097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Cinemachine::Cinemachine.CinemachineBasicMultiChannelPerlin
+  m_NoiseProfile: {fileID: 11400000, guid: 554b0ed52734c154eab51f6cedd3a7d7, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 1
+  m_FrequencyGain: 1
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1671362897106168196
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,14 +470,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1905142367274005131}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.62216, y: -0.015619993, z: 17.36722}
+  m_LocalRotation: {x: 0.70710707, y: -0, z: -0, w: 0.70710653}
+  m_LocalPosition: {x: 10.62216, y: 7.59, z: 17.36722}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7670262368780515330}
   m_Father: {fileID: 711520848031009751}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &7759075244047863687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,7 +499,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 40
+    FieldOfView: 60
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -649,7 +667,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1438879247205773636
 Transform:
   m_ObjectHideFlags: 0
@@ -658,14 +676,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3073211972284400266}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.013893948, y: -0.7126049, z: 0.028969185, w: 0.7008296}
-  m_LocalPosition: {x: 14.59944, y: 2.10596, z: 18.7159}
+  m_LocalRotation: {x: 0.092295796, y: -0.70105743, z: 0.09229579, w: 0.7010575}
+  m_LocalPosition: {x: 20.304743, y: 2.2735624, z: 20.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9111774295710815239}
   m_Father: {fileID: 711520848031009751}
-  m_LocalEulerAnglesHint: {x: 3.484, y: -90.918, z: 1.194}
+  m_LocalEulerAnglesHint: {x: 15, y: -90, z: 0}
 --- !u!114 &6894124821567289746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -687,7 +705,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 40
+    FieldOfView: 70
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -760,7 +778,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 37
+    FieldOfView: 45
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -913,7 +931,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5036976912914478536}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071069, z: 0, w: 0.7071067}
+  m_LocalRotation: {x: 0, y: -0.70710677, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 14.77, y: 5.43, z: 7.2800007}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -954,7 +972,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 37
+  field of view: 45
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
