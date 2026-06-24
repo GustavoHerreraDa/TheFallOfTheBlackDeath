@@ -198,11 +198,7 @@ public class DialogueManager : MonoBehaviour
         ui.HideChoices();
         currentLineHasChoices = line.hasChoices;
         ui.DisplayLine(line);
-        ui.onTypingFinished = () =>
-        {
-            if (line.hasChoices && line.choices != null && line.choices.Count > 0)
-                ui.ShowChoices(line.choices);
-        };
+        ui.onTypingFinished = null;
     }
 
     /// <summary>
@@ -392,18 +388,30 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (IsDialogueActive && Input.GetKeyDown(KeyCode.E))
+        if (!IsDialogueActive) return;
+        if (!Input.GetKeyDown(KeyCode.E)) return;
+
+        // Si está escribiendo, saltar el texto siempre
+        if (ui.IsTyping)
         {
-            // Si está escribiendo, siempre permitimos saltar el texto (incluso con opciones)
-            if (ui.IsTyping)
-            {
-                NextLine();
-            }
-            // Si no hay opciones, permitimos pasar a la siguiente línea
-            else if (!currentLineHasChoices)
-            {
-                NextLine();
-            }
+            ui.SkipTyping();
+            return;
         }
+
+        // Si la línea tiene choices y aún no se mostraron, mostrarlas ahora
+        if (currentLineHasChoices)
+        {
+            DialogueLine line = currentDialogue.lines[currentLineIndex];
+            if (!ui.IsShowingChoices && line.choices != null && line.choices.Count > 0)
+            {
+                ui.ShowChoices(line.choices);
+                return;
+            }
+            // Si las choices ya están visibles, E no hace nada (el jugador debe clickear)
+            return;
+        }
+
+        // Línea sin choices: avanzar normalmente
+        NextLine();
     }
 }

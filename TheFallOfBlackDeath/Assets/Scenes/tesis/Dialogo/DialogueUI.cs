@@ -25,6 +25,7 @@ public class DialogueUI : MonoBehaviour
 
     private Coroutine typingCoroutine;
     public bool IsTyping => isTyping;
+    public bool IsShowingChoices => choicesPanel != null && choicesPanel.activeSelf;
     private string currentSentence;
 
     [Header("Posibles Respuestas")]
