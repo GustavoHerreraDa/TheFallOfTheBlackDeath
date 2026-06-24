@@ -23,7 +23,8 @@ public class MainPanel : MonoBehaviour
     public GameObject statsPanel;
     public GameObject controlesPanel;
     public GameObject introPanel;
-
+    [Header("Digital Rain")]
+    public DigitalRainManager digitalRain; // arrastrá el DigitalRainRoot acá
     /// <summary>
     /// Initializes cached references and runtime state before the component starts running.
     /// </summary>
@@ -117,6 +118,10 @@ public class MainPanel : MonoBehaviour
         optionsPanel.SetActive(false);
         controlesPanel.SetActive(false);
         introPanel.SetActive(true);
+
+        // Arranca el efecto cuando el player presiona Play
+        if (digitalRain != null)
+            digitalRain.gameObject.SetActive(true);
     }
     
     public void ClosePanel()
@@ -124,6 +129,11 @@ public class MainPanel : MonoBehaviour
         mainPanel.SetActive(false);
         optionsPanel.SetActive(false);
         controlesPanel.SetActive(false);
+
+        // Detiene y oculta el efecto al cerrar
+        if (digitalRain != null)
+            digitalRain.gameObject.SetActive(false);
+
         introPanel.SetActive(false);
     }
 
