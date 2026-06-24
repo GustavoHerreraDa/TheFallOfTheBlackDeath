@@ -172,7 +172,7 @@ public class DialogueUI : MonoBehaviour
             if (!hasCost)
             {
                 string missing = string.IsNullOrEmpty(choice.missingCostLabel)
-                    ? $"[Falta: {choice.costItemId} x{choice.costItemAmount}]"
+                    ? $"[Falta: {choice.costItemSO?.itemName ?? "ítem"} x{choice.costItemAmount}]"
                     : choice.missingCostLabel;
                 label.text = $"{choice.playerText}\n<size=70%><color=#FF6B6B>{missing}</color></size>";
 

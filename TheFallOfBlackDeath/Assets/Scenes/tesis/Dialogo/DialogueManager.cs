@@ -102,24 +102,15 @@ public class DialogueManager : MonoBehaviour
 
     /// <summary>
     /// Comprueba si el diálogo tiene alguna línea que pueda mostrarse según las condiciones actuales.
+    /// Evalúa siempre todas las líneas para soportar misiones multi-visita (fetch quests).
     /// </summary>
     public bool HasAvailableContent(Dialogue dialogue)
     {
         if (dialogue == null || dialogue.lines == null) return false;
 
-        // Si el diálogo ya fue leído por completo y no tiene flags que lo reinicien, se considera "sin contenido nuevo"
-        if (GlobalState.Instance != null && GlobalState.Instance.HasFlag("Read_" + dialogue.Id))
-        {
-            // Podríamos añadir lógica aquí para ver si hay ramas no exploradas,
-            // pero por simplicidad "pro", si el usuario no puso flags de condición
-            // en las líneas, asumimos que es el mismo diálogo de siempre.
-            return false;
-        }
-
         foreach (var line in dialogue.lines)
-        {
             if (IsLineVisible(line)) return true;
-        }
+
         return false;
     }
 
@@ -132,25 +123,24 @@ public class DialogueManager : MonoBehaviour
 
         if (GlobalState.Instance != null)
         {
-            if (!string.IsNullOrEmpty(choice.requiredFlag) && !GlobalState.Instance.HasFlag(choice.requiredFlag))
-                return false;
-            if (choice.requiredFlagSO != null && !GlobalState.Instance.HasFlag(choice.requiredFlagSO))
-                return false;
-            if (!string.IsNullOrEmpty(choice.forbiddenFlag) && GlobalState.Instance.HasFlag(choice.forbiddenFlag))
-                return false;
-            if (choice.forbiddenFlagSO != null && GlobalState.Instance.HasFlag(choice.forbiddenFlagSO))
+            if (choice.requiredFlagsSO != null)
+                foreach (var f in choice.requiredFlagsSO)
+                    if (f != null && !GlobalState.Instance.HasFlag(f)) return false;
+
+            if (choice.forbiddenFlagsSO != null)
+                foreach (var f in choice.forbiddenFlagsSO)
+                    if (f != null && GlobalState.Instance.HasFlag(f)) return false;
+        }
+
+        if (choice.requiredItemSO != null)
+        {
+            if (NewInventoryManager.Instance == null || !NewInventoryManager.Instance.HasItem(choice.requiredItemSO.id, choice.requiredItemAmount))
                 return false;
         }
 
-        if (!string.IsNullOrEmpty(choice.requiredItemId))
+        if (choice.costItemSO != null)
         {
-            if (NewInventoryManager.Instance == null || !NewInventoryManager.Instance.HasItem(choice.requiredItemId, choice.requiredItemAmount))
-                return false;
-        }
-
-        if (!string.IsNullOrEmpty(choice.costItemId))
-        {
-            bool hasCost = NewInventoryManager.Instance != null && NewInventoryManager.Instance.HasItem(choice.costItemId, choice.costItemAmount);
+            bool hasCost = NewInventoryManager.Instance != null && NewInventoryManager.Instance.HasItem(choice.costItemSO.id, choice.costItemAmount);
             if (!hasCost)
             {
                 canPayCost = false;
@@ -168,19 +158,24 @@ public class DialogueManager : MonoBehaviour
     {
         if (GlobalState.Instance != null)
         {
-            if (!string.IsNullOrEmpty(line.requiredFlag) && !GlobalState.Instance.HasFlag(line.requiredFlag))
-                return false;
-            if (line.requiredFlagSO != null && !GlobalState.Instance.HasFlag(line.requiredFlagSO))
-                return false;
-            if (!string.IsNullOrEmpty(line.forbiddenFlag) && GlobalState.Instance.HasFlag(line.forbiddenFlag))
-                return false;
-            if (line.forbiddenFlagSO != null && GlobalState.Instance.HasFlag(line.forbiddenFlagSO))
+            if (line.requiredFlagsSO != null)
+                foreach (var f in line.requiredFlagsSO)
+                    if (f != null && !GlobalState.Instance.HasFlag(f)) return false;
+
+            if (line.forbiddenFlagsSO != null)
+                foreach (var f in line.forbiddenFlagsSO)
+                    if (f != null && GlobalState.Instance.HasFlag(f)) return false;
+        }
+
+        if (line.requiredItemSO != null)
+        {
+            if (NewInventoryManager.Instance == null || !NewInventoryManager.Instance.HasItem(line.requiredItemSO.id, line.requiredItemAmount))
                 return false;
         }
 
-        if (!string.IsNullOrEmpty(line.requiredItemId))
+        if (line.forbiddenItemSO != null)
         {
-            if (NewInventoryManager.Instance == null || !NewInventoryManager.Instance.HasItem(line.requiredItemId, line.requiredItemAmount))
+            if (NewInventoryManager.Instance != null && NewInventoryManager.Instance.HasItem(line.forbiddenItemSO.id, line.forbiddenItemAmount))
                 return false;
         }
 
@@ -261,46 +256,36 @@ public class DialogueManager : MonoBehaviour
         ui.HideChoices();
 
         // Consumir ítem de costo si aplica
-        if (!string.IsNullOrEmpty(choice.costItemId))
+        if (choice.costItemSO != null)
         {
-            if (NewInventoryManager.Instance != null && NewInventoryManager.Instance.HasItem(choice.costItemId, choice.costItemAmount))
+            if (NewInventoryManager.Instance != null && NewInventoryManager.Instance.HasItem(choice.costItemSO.id, choice.costItemAmount))
             {
-                NewInventoryManager.Instance.RemoveItem(choice.costItemId, choice.costItemAmount);
-                Debug.Log($"[DialogueManager] Consumido: {choice.costItemId} x{choice.costItemAmount}");
+                NewInventoryManager.Instance.RemoveItem(choice.costItemSO.id, choice.costItemAmount);
+                Debug.Log($"[DialogueManager] Consumido: {choice.costItemSO.itemName} x{choice.costItemAmount}");
             }
             else
             {
                 // Guard de seguridad: si llegó aquí sin el ítem, no procesar
-                Debug.LogWarning($"[DialogueManager] SelectChoice: el jugador no tenía {choice.costItemId} x{choice.costItemAmount} al confirmar. Abortando.");
+                Debug.LogWarning($"[DialogueManager] SelectChoice: el jugador no tenía {choice.costItemSO.itemName} x{choice.costItemAmount} al confirmar. Abortando.");
                 return;
             }
         }
 
-        // Flags logic...
-        if (choice.addFlags != null)
-            foreach (var f in choice.addFlags) GlobalState.Instance.AddFlag(f);
+        // Flags logic (SO only)
         if (choice.addFlagsSO != null)
             foreach (var f in choice.addFlagsSO) GlobalState.Instance.AddFlag(f);
-            
-        if (choice.removeFlags != null)
-            foreach (var f in choice.removeFlags) GlobalState.Instance.RemoveFlag(f);
+
         if (choice.removeFlagsSO != null)
             foreach (var f in choice.removeFlagsSO) GlobalState.Instance.RemoveFlag(f);
 
-        // --- LÃ“GICA DE DAR ITEM ---
+        // --- LÓGICA DE DAR ITEM ---
         if (choice.action == DialogueEvent.DialogueEndAction.GiveItem)
         {
-            // Disparamos el evento con los datos del ScriptableObject
-            Debug.Log($"Dialogo: Regalando item ID {choice.itemID}");
-            OnGiveItem?.Invoke(choice.itemID, choice.itemAmount);
-
-            if (NewInventoryManager.Instance != null)
+            if (choice.rewardItemSO != null && NewInventoryManager.Instance != null)
             {
-                var itemData = NewInventoryManager.Instance.GetItemDataById(choice.itemID);
-                if (itemData != null)
-                {
-                    NewInventoryManager.Instance.AddItem(itemData, choice.itemAmount);
-                }
+                NewInventoryManager.Instance.AddItem(choice.rewardItemSO, choice.itemAmount);
+                Debug.Log($"[DialogueManager] Recompensa entregada: {choice.rewardItemSO.itemName} x{choice.itemAmount}");
+                OnGiveItem?.Invoke(choice.rewardItemSO.id, choice.itemAmount);
             }
             
             // Si hay un diálogo siguiente, vamos a él en lugar de cerrar

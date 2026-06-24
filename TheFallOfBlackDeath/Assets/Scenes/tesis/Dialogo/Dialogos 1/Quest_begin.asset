@@ -14,93 +14,100 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dialogue
   lines:
   - speakerName: Jokyto
-    sentence: "Necesito una Pieza de Repuesto. \xBFPod\xE9s conseguirme una?"
-    requiredFlag: 
-    forbiddenFlag: 
-    requiredFlagSO: {fileID: 0}
-    forbiddenFlagSO: {fileID: 0}
-    requiredItemId: 
+    sentence: Sigo esperando esa Pieza de Repuesto...
+    requiredFlagsSO:
+    - {fileID: 11400000, guid: 4ccedf9654867444a946cfc49d01b452, type: 2}
+    forbiddenFlagsSO: []
+    requiredItemSO: {fileID: 0}
     requiredItemAmount: 0
-    hasChoices: 1
+    forbiddenItemSO: {fileID: 0}
+    forbiddenItemAmount: 0
+    hasChoices: 0
     choices:
-    - playerText: "\"Claro, lo buscar\xE9."
-      requiredFlag: 
-      forbiddenFlag: 
-      requiredFlagSO: {fileID: 0}
-      forbiddenFlagSO: {fileID: 0}
+    - playerText: Todavia no lo encuentro
+      requiredFlagsSO: []
+      forbiddenFlagsSO: []
       action: 0
       nextDialogue: {fileID: 0}
-      addFlags:
-      - '["mision_riko_activa"]'
-      removeFlags: []
-      addFlagsSO:
-      - {fileID: 11400000, guid: 4ccedf9654867444a946cfc49d01b452, type: 2}
-      removeFlagsSO: []
-      requiredItemId: pieza_repuesto
-      requiredItemAmount: 0
-      costItemId: 
-      costItemAmount: 0
-      showIfMissingCost: 0
-      missingCostLabel: 
-      itemID: 
-      itemAmount: 0
-    - playerText: Ahora no puedo.
-      requiredFlag: 
-      forbiddenFlag: 
-      requiredFlagSO: {fileID: 0}
-      forbiddenFlagSO: {fileID: 0}
-      action: 0
-      nextDialogue: {fileID: 0}
-      addFlags: []
-      removeFlags: []
       addFlagsSO: []
       removeFlagsSO: []
-      requiredItemId: 
+      requiredItemSO: {fileID: 0}
       requiredItemAmount: 0
-      costItemId: 
+      costItemSO: {fileID: 0}
       costItemAmount: 0
       showIfMissingCost: 0
       missingCostLabel: 
-      itemID: 
+      rewardItemSO: {fileID: 0}
       itemAmount: 0
   - speakerName: Jokyto
     sentence: "\"\xA1La encontraste! Gracias, tom\xE1 esto a cambio.\""
-    requiredFlag: '["mision_riko_activa"]'
-    forbiddenFlag: '["mision_riko_activa"]'
-    requiredFlagSO: {fileID: 11400000, guid: 267a6e08fb6b212449ad541395e2e25b, type: 2}
-    forbiddenFlagSO: {fileID: 0}
-    requiredItemId: pieza_repuesto
+    requiredFlagsSO: []
+    forbiddenFlagsSO: []
+    requiredItemSO: {fileID: 11400000, guid: 8d1945ec905047a4dbe332c604577246, type: 2}
     requiredItemAmount: 1
+    forbiddenItemSO: {fileID: 0}
+    forbiddenItemAmount: 0
     hasChoices: 1
     choices:
     - playerText: '"De nada."'
-      requiredFlag: 
-      forbiddenFlag: mision_riko_completada
-      requiredFlagSO: {fileID: 0}
-      forbiddenFlagSO: {fileID: 0}
+      requiredFlagsSO: []
+      forbiddenFlagsSO: []
       action: 4
       nextDialogue: {fileID: 0}
-      addFlags:
-      - '["mision_riko_completada"]'
-      removeFlags: []
-      addFlagsSO: []
+      addFlagsSO:
+      - {fileID: 11400000, guid: 0a011f5a7777f654b81deac157b928f7, type: 2}
       removeFlagsSO: []
-      requiredItemId: pieza_repuesto
+      requiredItemSO: {fileID: 11400000, guid: 8d1945ec905047a4dbe332c604577246, type: 2}
       requiredItemAmount: 1
-      costItemId: pieza_repuesto
+      costItemSO: {fileID: 11400000, guid: 8d1945ec905047a4dbe332c604577246, type: 2}
       costItemAmount: 1
       showIfMissingCost: 1
       missingCostLabel: 
-      itemID: '"credito_joykto'
-      itemAmount: 1
+      rewardItemSO: {fileID: 11400000, guid: 690ac2198abdded4ca0ff51f1e5113c5, type: 2}
+      itemAmount: 15
   - speakerName: Jokyto
-    sentence: Sigo esperando esa Pieza de Repuesto...
-    requiredFlag: '["mision_riko_activa"]'
-    forbiddenFlag: 
-    requiredFlagSO: {fileID: 11400000, guid: 4ccedf9654867444a946cfc49d01b452, type: 2}
-    forbiddenFlagSO: {fileID: 0}
-    requiredItemId: pieza_repuesto
-    requiredItemAmount: 1
-    hasChoices: 0
-    choices: []
-  dialogueId: 
+    sentence: "Necesito una Pieza de Repuesto. \xBFPod\xE9s conseguirme una?"
+    requiredFlagsSO: []
+    forbiddenFlagsSO:
+    - {fileID: 11400000, guid: 0a011f5a7777f654b81deac157b928f7, type: 2}
+    - {fileID: 11400000, guid: 4ccedf9654867444a946cfc49d01b452, type: 2}
+    requiredItemSO: {fileID: 0}
+    requiredItemAmount: 0
+    forbiddenItemSO: {fileID: 0}
+    forbiddenItemAmount: 0
+    hasChoices: 1
+    choices:
+    - playerText: "\"Claro, lo buscar\xE9."
+      requiredFlagsSO: []
+      forbiddenFlagsSO: []
+      action: 0
+      nextDialogue: {fileID: 0}
+      addFlagsSO:
+      - {fileID: 11400000, guid: 4ccedf9654867444a946cfc49d01b452, type: 2}
+      - {fileID: 11400000, guid: b27c6dbdd7a091041a0d3bc89152de55, type: 2}
+      removeFlagsSO: []
+      requiredItemSO: {fileID: 0}
+      requiredItemAmount: 0
+      costItemSO: {fileID: 0}
+      costItemAmount: 0
+      showIfMissingCost: 0
+      missingCostLabel: 
+      rewardItemSO: {fileID: 0}
+      itemAmount: 0
+    - playerText: Ahora no puedo.
+      requiredFlagsSO: []
+      forbiddenFlagsSO:
+      - {fileID: 11400000, guid: b27c6dbdd7a091041a0d3bc89152de55, type: 2}
+      action: 0
+      nextDialogue: {fileID: 0}
+      addFlagsSO: []
+      removeFlagsSO: []
+      requiredItemSO: {fileID: 0}
+      requiredItemAmount: 0
+      costItemSO: {fileID: 0}
+      costItemAmount: 0
+      showIfMissingCost: 0
+      missingCostLabel: 
+      rewardItemSO: {fileID: 0}
+      itemAmount: 0
+  dialogueId: jokyto_mision_01
