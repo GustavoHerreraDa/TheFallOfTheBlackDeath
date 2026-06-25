@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using InventoryNew;
 
 [System.Serializable]
@@ -16,6 +17,11 @@ public class DialogueChoice
     public GlobalFlag[] forbiddenFlagsSO;
 
     public DialogueEvent.DialogueEndAction action = DialogueEvent.DialogueEndAction.None;
+    
+    [Header("Eventos")]
+    [Tooltip("Evento que se dispara al seleccionar esta opción.")]
+    public UnityEvent onChoiceSelected;
+
     public Dialogue nextDialogue;
 
     public GlobalFlag[] addFlagsSO;

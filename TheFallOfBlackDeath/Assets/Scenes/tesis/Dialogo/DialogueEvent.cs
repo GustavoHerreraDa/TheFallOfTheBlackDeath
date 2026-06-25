@@ -50,10 +50,16 @@ public class DialogueEvent : MonoBehaviour
     /// </summary>
     public void TriggerEvent(DialogueEndAction actionOverride = DialogueEndAction.None)
     {
+        // 1. Determinar qué acción ejecutar (el override de la opción de diálogo tiene prioridad)
+        DialogueEndAction actionToExecute = actionOverride != DialogueEndAction.None ? actionOverride : onDialogueEnd;
+
+        // 2. Si la acción final es None, salimos de inmediato. 
+        // No marcamos eventTriggered como true para permitir que acciones futuras sí se ejecuten.
+        if (actionToExecute == DialogueEndAction.None) return;
+
+        // 3. Si ya se disparó una acción real anteriormente, bloqueamos ejecuciones duplicadas.
         if (eventTriggered) return;
         eventTriggered = true;
-
-        DialogueEndAction actionToExecute = actionOverride != DialogueEndAction.None ? actionOverride : onDialogueEnd;
 
         switch (actionToExecute)
         {

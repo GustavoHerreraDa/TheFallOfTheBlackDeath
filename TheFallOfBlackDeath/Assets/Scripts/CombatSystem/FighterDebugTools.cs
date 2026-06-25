@@ -31,12 +31,10 @@ public class FighterDebugTools : MonoBehaviour
 
         if (Input.GetKey(modifierKey))
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1)) DestroyPart(BodyPart.Head);
-            else if (Input.GetKeyDown(KeyCode.Alpha2)) DestroyPart(BodyPart.Torso);
-            else if (Input.GetKeyDown(KeyCode.Alpha3)) DestroyPart(BodyPart.LeftArm);
-            else if (Input.GetKeyDown(KeyCode.Alpha4)) DestroyPart(BodyPart.RightArm);
-            else if (Input.GetKeyDown(KeyCode.Alpha5)) DestroyPart(BodyPart.LeftLeg);
-            else if (Input.GetKeyDown(KeyCode.Alpha6)) DestroyPart(BodyPart.RightLeg);
+            if (Input.GetKeyDown(KeyCode.Alpha1)) DestroyPart(BodyPart.LeftArm);
+            else if (Input.GetKeyDown(KeyCode.Alpha2)) DestroyPart(BodyPart.RightArm);
+            else if (Input.GetKeyDown(KeyCode.Alpha3)) DestroyPart(BodyPart.LeftLeg);
+            else if (Input.GetKeyDown(KeyCode.Alpha4)) DestroyPart(BodyPart.RightLeg);
             else if (Input.GetKeyDown(KeyCode.Alpha0)) RestoreAll();
         }
     }

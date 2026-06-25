@@ -18,6 +18,6 @@ public class DialogueTrigger : MonoBehaviour
         if (!other.CompareTag("Charecter")) return;
         if (oneShot && triggered) return;
         triggered = true;
-        DialogueManager.Instance.StartDialogue(dialogue);
+        DialogueManager.Instance.StartDialogue(dialogue, gameObject);
     }
 }

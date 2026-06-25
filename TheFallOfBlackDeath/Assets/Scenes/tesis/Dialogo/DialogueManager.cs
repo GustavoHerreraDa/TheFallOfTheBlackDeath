@@ -269,6 +269,10 @@ public class DialogueManager : MonoBehaviour
     {
         ui.HideChoices();
 
+        // --- DISPARAR EVENTO DE OPCIÓN ---
+        choice.onChoiceSelected?.Invoke();
+        // ---------------------------------
+
         // Consumir ítem de costo si aplica
         if (choice.costItemSO != null)
         {
@@ -379,7 +383,18 @@ public class DialogueManager : MonoBehaviour
             }
 
             DialogueEvent evt = currentNPC.GetComponent<DialogueEvent>();
-            evt?.TriggerEvent(action);
+            if (evt != null)
+            {
+                evt.TriggerEvent(action);
+            }
+            else if (action != DialogueEvent.DialogueEndAction.None)
+            {
+                Debug.LogError($"<color=red><b>[DialogueManager]</b></color> ERROR CRÍTICO: La acción <b>{action}</b> no se pudo ejecutar porque el NPC <b>'{currentNPC.name}'</b> no tiene el componente <b>DialogueEvent</b>.");
+            }
+        }
+        else if (action != DialogueEvent.DialogueEndAction.None)
+        {
+            Debug.LogError($"<color=red><b>[DialogueManager]</b></color> ERROR CRÍTICO: Se intentó ejecutar la acción <b>{action}</b> pero <b>currentNPC es NULO</b>. Asegúrate de pasar el NPC al llamar a StartDialogue.");
         }
         currentNPC = null;
     }
