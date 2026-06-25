@@ -48,12 +48,14 @@ public class DialogueEvent : MonoBehaviour
     /// <summary>
     /// Executes the trigger event workflow.
     /// </summary>
-    public void TriggerEvent()
+    public void TriggerEvent(DialogueEndAction actionOverride = DialogueEndAction.None)
     {
         if (eventTriggered) return;
         eventTriggered = true;
 
-        switch (onDialogueEnd)
+        DialogueEndAction actionToExecute = actionOverride != DialogueEndAction.None ? actionOverride : onDialogueEnd;
+
+        switch (actionToExecute)
         {
             case DialogueEndAction.StartBattle:
                 StartCoroutine(FadeAndLoadScene());

@@ -66,11 +66,14 @@ MonoBehaviour:
       rewardItemSO: {fileID: 11400000, guid: 690ac2198abdded4ca0ff51f1e5113c5, type: 2}
       itemAmount: 15
   - speakerName: Jokyto
-    sentence: "Necesito una Pieza de Repuesto. \xBFPod\xE9s conseguirme una?"
+    sentence: Dios santo... tengo tanto miedo que tuve un terrible accidente me cague
+      encima... soy demasiado cobarde para salir de este lugar puedes conseguirme
+      algo para limpiarme?
     requiredFlagsSO: []
     forbiddenFlagsSO:
     - {fileID: 11400000, guid: 0a011f5a7777f654b81deac157b928f7, type: 2}
     - {fileID: 11400000, guid: 4ccedf9654867444a946cfc49d01b452, type: 2}
+    - {fileID: 11400000, guid: b27c6dbdd7a091041a0d3bc89152de55, type: 2}
     requiredItemSO: {fileID: 0}
     requiredItemAmount: 0
     forbiddenItemSO: {fileID: 0}
@@ -94,13 +97,71 @@ MonoBehaviour:
       missingCostLabel: 
       rewardItemSO: {fileID: 0}
       itemAmount: 0
-    - playerText: Ahora no puedo.
+    - playerText: Me das asco
       requiredFlagsSO: []
       forbiddenFlagsSO:
       - {fileID: 11400000, guid: b27c6dbdd7a091041a0d3bc89152de55, type: 2}
       action: 0
       nextDialogue: {fileID: 0}
-      addFlagsSO: []
+      addFlagsSO:
+      - {fileID: 11400000, guid: 4b605f4239c3f4948bd95d63e2824229, type: 2}
+      removeFlagsSO: []
+      requiredItemSO: {fileID: 0}
+      requiredItemAmount: 0
+      costItemSO: {fileID: 0}
+      costItemAmount: 0
+      showIfMissingCost: 0
+      missingCostLabel: 
+      rewardItemSO: {fileID: 0}
+      itemAmount: 0
+  - speakerName: Jokyto
+    sentence: Largate entonces o las cosas se van a poner feas
+    requiredFlagsSO:
+    - {fileID: 11400000, guid: 4b605f4239c3f4948bd95d63e2824229, type: 2}
+    forbiddenFlagsSO: []
+    requiredItemSO: {fileID: 0}
+    requiredItemAmount: 0
+    forbiddenItemSO: {fileID: 0}
+    forbiddenItemAmount: 0
+    hasChoices: 1
+    choices:
+    - playerText: '*IRTE*'
+      requiredFlagsSO:
+      - {fileID: 11400000, guid: 4b605f4239c3f4948bd95d63e2824229, type: 2}
+      forbiddenFlagsSO: []
+      action: 0
+      nextDialogue: {fileID: 0}
+      addFlagsSO:
+      - {fileID: 11400000, guid: 1348a3eecf2540e40940b0584ffa6223, type: 2}
+      removeFlagsSO: []
+      requiredItemSO: {fileID: 0}
+      requiredItemAmount: 0
+      costItemSO: {fileID: 0}
+      costItemAmount: 0
+      showIfMissingCost: 0
+      missingCostLabel: 
+      rewardItemSO: {fileID: 0}
+      itemAmount: 0
+  - speakerName: Jokyto
+    sentence: Tu te lo buscaste
+    requiredFlagsSO:
+    - {fileID: 11400000, guid: 1348a3eecf2540e40940b0584ffa6223, type: 2}
+    forbiddenFlagsSO:
+    - {fileID: 0}
+    requiredItemSO: {fileID: 0}
+    requiredItemAmount: 0
+    forbiddenItemSO: {fileID: 0}
+    forbiddenItemAmount: 0
+    hasChoices: 1
+    choices:
+    - playerText: "\xBFQue estas haciendo?"
+      requiredFlagsSO:
+      - {fileID: 11400000, guid: 1348a3eecf2540e40940b0584ffa6223, type: 2}
+      forbiddenFlagsSO: []
+      action: 1
+      nextDialogue: {fileID: 0}
+      addFlagsSO:
+      - {fileID: 11400000, guid: 1348a3eecf2540e40940b0584ffa6223, type: 2}
       removeFlagsSO: []
       requiredItemSO: {fileID: 0}
       requiredItemAmount: 0

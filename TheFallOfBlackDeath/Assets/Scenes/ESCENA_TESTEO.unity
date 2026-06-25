@@ -558,7 +558,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &15150840
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -32287,7 +32287,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &576117089
 Transform:
   m_ObjectHideFlags: 0
@@ -49261,7 +49261,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &884618122
 Transform:
   m_ObjectHideFlags: 0
@@ -52670,7 +52670,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &924842078
 Transform:
   m_ObjectHideFlags: 0
@@ -57964,7 +57964,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1028735762
 Transform:
   m_ObjectHideFlags: 0
@@ -68912,33 +68912,12 @@ PrefabInstance:
       propertyPath: character1
       value: 
       objectReference: {fileID: 1830958802}
-    - target: {fileID: 5480911531806588926, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
-      propertyPath: hasValidLastPos
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5480911531806588926, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
-      propertyPath: enableDebugTools
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5480911531806588926, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
-      propertyPath: defaultEscapedEnemyStunDuration
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 5480911531806588927, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 5480911532004275249, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 25.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9054148436050416948, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
-      propertyPath: m_NavMeshData
-      value: 
-      objectReference: {fileID: 23800000, guid: 4265e13a632d6d3479820ed32bddc753, type: 2}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 5480911532004275250, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
@@ -70276,7 +70255,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1268497448
 Transform:
   m_ObjectHideFlags: 0
@@ -73892,6 +73871,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 8a32b27e8f16c3143b5895f52bccd93d, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 8a32b27e8f16c3143b5895f52bccd93d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8a32b27e8f16c3143b5895f52bccd93d, type: 3}
       propertyPath: m_LocalScale.x
@@ -100133,6 +100116,31 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1478697005756664333, guid: 514aa1831df67d64686d4b1d61d46c93, type: 3}
+--- !u!1 &1685630260 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7163160239192320523, guid: 456d667c1c4881c48bb6c1e94b64512a, type: 3}
+  m_PrefabInstance: {fileID: 1875659534}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1685630266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685630260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ae4d63aeba30354a9e0e92453e321ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueEvent
+  onDialogueEnd: 0
+  battleSceneName: CCC_TESTEO
+  fadeDuration: 1
+  fadeCanvas: {fileID: 187074573}
+  npcDisappearDelay: 0.5
+  npcRenderer: {fileID: 0}
+  dissolveSpeed: 1.5
+  dissolveProperty: _DissolveAmount
 --- !u!1 &1685793571
 GameObject:
   m_ObjectHideFlags: 0
@@ -109271,7 +109279,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7163160239192320523, guid: 456d667c1c4881c48bb6c1e94b64512a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1685630266}
   m_SourcePrefab: {fileID: 100100000, guid: 456d667c1c4881c48bb6c1e94b64512a, type: 3}
 --- !u!1001 &1875905984
 PrefabInstance:
@@ -121606,6 +121617,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5224676143276007342, guid: bdc1a440511fc95409264490a5bdc1c4, type: 3}
+      propertyPath: bipPitchVariation
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8832752381763032401, guid: bdc1a440511fc95409264490a5bdc1c4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 99.07085
@@ -122967,7 +122982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!33 &2045653918266220568
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -127609,7 +127624,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &6717231880395181845
 GameObject:
   m_ObjectHideFlags: 0

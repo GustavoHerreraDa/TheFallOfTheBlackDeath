@@ -236,7 +236,7 @@ public class DialogueManager : MonoBehaviour
         {
             DialogueEvent evt = currentNPC.GetComponent<DialogueEvent>();
             if (evt != null)
-                evt.TriggerEvent();
+                evt.TriggerEvent(DialogueEvent.DialogueEndAction.None);
         }
 
         currentNPC = null;
@@ -349,7 +349,7 @@ public class DialogueManager : MonoBehaviour
             }
 
             DialogueEvent evt = currentNPC.GetComponent<DialogueEvent>();
-            evt?.TriggerEvent();
+            evt?.TriggerEvent(action);
         }
         currentNPC = null;
     }
