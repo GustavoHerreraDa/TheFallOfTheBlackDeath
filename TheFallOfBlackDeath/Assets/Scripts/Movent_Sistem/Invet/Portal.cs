@@ -5,8 +5,14 @@ using UnityEngine;
 /// <summary>
 /// Supports inventory and interaction flow by handling portal.
 /// </summary>
-public class Portal : MonoBehaviour
+public class Portal : MonoBehaviour, Assets.Scripts.Movent_Sistem.Invet.IInteractable
 {
+    [SerializeField] private string interactionPrompt = "[ E ] Usar portal";
+    /// <summary>
+    /// Mensaje de interacción para la interfaz IInteractable.
+    /// </summary>
+    public string InteractionPrompt => interactionPrompt;
+
     /// <summary>
     /// Ejecuta la acción de usar el portal.
     /// </summary>

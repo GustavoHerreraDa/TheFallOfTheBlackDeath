@@ -20,6 +20,9 @@ public class DialogueChoice
 
     public GlobalFlag[] addFlagsSO;
     public GlobalFlag[] removeFlagsSO;
+    
+    [Tooltip("Si se marca, el diálogo se cerrará inmediatamente tras elegir esta opción, evitando evaluar las siguientes líneas.")]
+    public bool endDialogueAfterChoice = false;
 
     [Header("Condición de Ítem para la Opción")]
     [Tooltip("El jugador solo ve esta opción si tiene este ítem. Dejar vacío = sin condición.")]

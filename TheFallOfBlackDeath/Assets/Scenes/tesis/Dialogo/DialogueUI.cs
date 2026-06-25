@@ -31,7 +31,7 @@ public class DialogueUI : MonoBehaviour
     [Header("Posibles Respuestas")]
     public GameObject choicesPanel;
     public GameObject choiceButtonPrefab;
-    private Button[] currentButtons;
+    private List<Button> pooledButtons = new List<Button>();
     public System.Action onTypingFinished;
     private bool isTyping;
     private bool hadStoredCursorState;
@@ -147,27 +147,31 @@ public class DialogueUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Shows the choices.
+    /// Shows the choices using a simple object pooling system.
     /// </summary>
     /// <param name="choices">The choices.</param>
     public void ShowChoices(List<DialogueChoice> choices)
     {
         dialoguePanel.SetActive(false);
 
-        foreach (Transform child in choicesPanel.transform)
-            Destroy(child.gameObject);
+        // Desactivar todos los botones del pool inicialmente
+        foreach (var btn in pooledButtons)
+            btn.gameObject.SetActive(false);
 
         choicesPanel.SetActive(true);
         EnableMouseChoiceInput();
         RefreshInvisibleRaycastBlockers();
 
+        int buttonIndex = 0;
         foreach (DialogueChoice choice in choices)
         {
             if (!DialogueManager.Instance.IsChoiceVisible(choice, out bool hasCost))
                 continue;
 
-            GameObject btnObj = Instantiate(choiceButtonPrefab, choicesPanel.transform);
-            var label = btnObj.GetComponentInChildren<TextMeshProUGUI>();
+            Button btn = GetOrCreateButton(buttonIndex);
+            btn.gameObject.SetActive(true);
+            
+            var label = btn.GetComponentInChildren<TextMeshProUGUI>();
 
             // Si no tiene el costo y se muestra como bloqueado, mostrar label de "falta ítem"
             if (!hasCost)
@@ -177,33 +181,50 @@ public class DialogueUI : MonoBehaviour
                     : choice.missingCostLabel;
                 label.text = $"{choice.playerText}\n<size=70%><color=#FF6B6B>{missing}</color></size>";
 
-                // Deshabilitar el botón visualmente
-                var btn = btnObj.GetComponent<Button>();
-                if (btn != null) btn.interactable = false;
+                btn.interactable = false;
             }
             else
             {
                 label.text = choice.playerText;
-                ConfigureChoiceButton(btnObj.GetComponent<Button>(), choice);
+                btn.interactable = true;
+                ConfigureChoiceButton(btn, choice);
             }
+
+            buttonIndex++;
         }
 
-        currentButtons = choicesPanel.GetComponentsInChildren<Button>();
-
-        if (currentButtons != null && currentButtons.Length > 0 && EventSystem.current != null)
+        if (buttonIndex > 0 && EventSystem.current != null)
         {
             EventSystem.current.SetSelectedGameObject(null);
         }
     }
 
     /// <summary>
-    /// Hides the choices.
+    /// Recupera un botón del pool o instancia uno nuevo si es necesario.
+    /// </summary>
+    private Button GetOrCreateButton(int index)
+    {
+        if (index < pooledButtons.Count)
+        {
+            return pooledButtons[index];
+        }
+
+        GameObject btnObj = Instantiate(choiceButtonPrefab, choicesPanel.transform);
+        Button btn = btnObj.GetComponent<Button>();
+        pooledButtons.Add(btn);
+        return btn;
+    }
+
+    /// <summary>
+    /// Hides the choices and deactivates buttons.
     /// </summary>
     public void HideChoices()
     {
         choicesPanel.SetActive(false);
         dialoguePanel.SetActive(true);
-        currentButtons = null;
+        
+        // No limpiamos el pool, solo ocultamos el panel (los botones ya se ocultan en ShowChoices)
+        
         RestoreCursorState();
         RefreshInvisibleRaycastBlockers();
     }

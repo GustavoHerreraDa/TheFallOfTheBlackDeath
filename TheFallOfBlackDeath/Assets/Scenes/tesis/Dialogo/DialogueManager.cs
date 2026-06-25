@@ -7,10 +7,47 @@ using InventoryNew;
 /// </summary>
 public class DialogueManager : MonoBehaviour
 {
+    [Header("Referencias")]
+    [SerializeField] private DialogueUI ui;
+
+    // --- NUEVO SISTEMA DE INPUT DESACOPLADO ---
+    /// <summary>
+    /// Entrada pública para avanzar en el diálogo. 
+    /// Permite que cualquier script (PlayerInteraction, UI, etc.) dispare el avance.
+    /// </summary>
+    public void OnInteractInputPressed()
+    {
+        if (!IsDialogueActive) return;
+
+        // Si está escribiendo, saltar el texto
+        if (ui.IsTyping)
+        {
+            ui.SkipTyping();
+            return;
+        }
+
+        // Si la línea tiene opciones
+        if (currentLineHasChoices)
+        {
+            // Si las opciones aún no se muestran, las mostramos ahora
+            if (!ui.IsShowingChoices)
+            {
+                DialogueLine line = currentDialogue.lines[currentLineIndex];
+                ui.ShowChoices(line.choices);
+                return;
+            }
+            // Si las opciones ya se muestran, no hacemos nada (el jugador debe elegir con el ratón/teclado)
+            return;
+        }
+
+        // Avanzar normalmente si no hay opciones
+        NextLine();
+    }
+    // ------------------------------------------
+
     public static DialogueManager Instance;
     private Dialogue currentDialogue;
     private int currentLineIndex;
-    private DialogueUI ui;
     public delegate void GiveItemHandler(string id, int amount);
     public static event GiveItemHandler OnGiveItem;
     
@@ -34,7 +71,8 @@ public class DialogueManager : MonoBehaviour
     private void Awake()
     {
         if (Instance == null) Instance = this;
-        ui = FindObjectOfType<DialogueUI>();
+        // Eliminamos FindObjectOfType para usar referencia serializada
+        if (ui == null) ui = FindObjectOfType<DialogueUI>();
     }
 
     /// <summary>
@@ -50,54 +88,18 @@ public class DialogueManager : MonoBehaviour
 
         ui.ShowUI(true);
 
+        // --- BLOQUEO SEGURO DEL JUGADOR ---
         cachedPlayerControl = ResolvePlayerControl();
         if (cachedPlayerControl != null)
         {
-            cachedPlayerControl.enabled = false;
-            cachedPlayerControl.anim.SetFloat("Movent", 0f);
-            // Intentamos obtener el rigidbody (en el root o en hijos) para congelar al jugador
-            cachedPlayerRb = cachedPlayerControl.GetComponent<Rigidbody>();
-            if (cachedPlayerRb == null)
-                cachedPlayerRb = cachedPlayerControl.GetComponentInChildren<Rigidbody>();
-
-            if (cachedPlayerRb != null)
-            {
-                // Guardamos estado previo para restaurarlo al finalizar
-                cachedUseGravity = cachedPlayerRb.useGravity;
-                cachedConstraints = cachedPlayerRb.constraints;
-
-                cachedPlayerRb.linearVelocity = Vector3.zero;
-                cachedPlayerRb.angularVelocity = Vector3.zero;
-                cachedPlayerRb.useGravity = false;
-                cachedPlayerRb.constraints = RigidbodyConstraints.FreezeAll; 
-            }
+            // Usamos el nuevo método que maneja físicas y animaciones internamente
+            cachedPlayerControl.ToggleDialogueState(true);
         }
+        // ------------------------------------
 
         ShowLine();
     }
 
-    /// <summary>
-    /// Advances the current dialogue, or skips the typing effect if the active line is still animating.
-    /// </summary>
-    public void NextLine()
-    {
-        Debug.Log("NEXT LINE CALLED");
-
-        if (ui.IsTyping)
-        {
-            Debug.Log("Skipping typing");
-            ui.SkipTyping();
-            return;
-        }
-
-        currentLineIndex++;
-        Debug.Log("Current index now: " + currentLineIndex);
-
-        if (currentLineIndex < currentDialogue.lines.Length)
-            ShowLine();
-        else
-            EndDialogue();
-    }
 
 
     /// <summary>
@@ -183,34 +185,51 @@ public class DialogueManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Shows the line.
+    /// Muestra la línea actual. Utiliza un bucle para saltar líneas que no cumplen condiciones,
+    /// evitando recursividad profunda.
     /// </summary>
     private void ShowLine()
     {
-        DialogueLine line = currentDialogue.lines[currentLineIndex];
-
-        if (!IsLineVisible(line))
+        // Bucle iterativo para encontrar la siguiente línea válida
+        while (currentLineIndex < currentDialogue.lines.Length)
         {
-            SkipLine();
-            return;
+            DialogueLine line = currentDialogue.lines[currentLineIndex];
+
+            if (IsLineVisible(line))
+            {
+                ui.HideChoices();
+                currentLineHasChoices = line.hasChoices;
+                ui.DisplayLine(line);
+
+                // Ya no mostramos las opciones automáticamente al terminar de escribir
+                // para que el jugador tenga tiempo de leer. Se mostrarán al pulsar 'E'.
+                ui.onTypingFinished = null;
+                
+                return; // Encontramos una línea visible, salimos del método
+            }
+
+            currentLineIndex++;
         }
 
-        ui.HideChoices();
-        currentLineHasChoices = line.hasChoices;
-        ui.DisplayLine(line);
-        ui.onTypingFinished = null;
+        // Si salimos del bucle sin encontrar líneas, terminamos el diálogo
+        EndDialogue();
     }
 
     /// <summary>
-    /// Executes the skip line workflow.
+    /// Avanza el índice de línea y muestra la siguiente.
+    /// </summary>
+    public void NextLine()
+    {
+        currentLineIndex++;
+        ShowLine();
+    }
+
+    /// <summary>
+    /// Método legacy para compatibilidad, ahora simplemente llama a NextLine.
     /// </summary>
     private void SkipLine()
     {
-        currentLineIndex++;
-        if (currentLineIndex < currentDialogue.lines.Length)
-            ShowLine();
-        else
-            EndDialogue();
+        NextLine();
     }
 
 
@@ -229,8 +248,7 @@ public class DialogueManager : MonoBehaviour
         currentDialogue = null;
 
         if (cachedPlayerControl != null)
-            cachedPlayerControl.enabled = true;
-        RestorePlayerRigidbody();
+            cachedPlayerControl.ToggleDialogueState(false);
        
         if (currentNPC != null)
         {
@@ -273,6 +291,18 @@ public class DialogueManager : MonoBehaviour
 
         if (choice.removeFlagsSO != null)
             foreach (var f in choice.removeFlagsSO) GlobalState.Instance.RemoveFlag(f);
+
+        // --- VALIDACIÓN DE CIERRE INMEDIATO ---
+        if (choice.endDialogueAfterChoice)
+        {
+            if (choice.action != DialogueEvent.DialogueEndAction.None)
+                EndDialogueWithAction(choice.action);
+            else
+                EndDialogue();
+
+            return;
+        }
+        // --------------------------------------
 
         // --- LÓGICA DE DAR ITEM ---
         if (choice.action == DialogueEvent.DialogueEndAction.GiveItem)
@@ -327,8 +357,8 @@ public class DialogueManager : MonoBehaviour
         ui.ShowUI(false);
         // Marcar diálogo como finalizado para permitir hablar con otros NPC
         currentDialogue = null;
-        if (cachedPlayerControl != null) cachedPlayerControl.enabled = true;
-        RestorePlayerRigidbody();
+        if (cachedPlayerControl != null)
+            cachedPlayerControl.ToggleDialogueState(false);
 
         if (currentNPC != null)
         {
@@ -388,30 +418,6 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (!IsDialogueActive) return;
-        if (!Input.GetKeyDown(KeyCode.E)) return;
-
-        // Si está escribiendo, saltar el texto siempre
-        if (ui.IsTyping)
-        {
-            ui.SkipTyping();
-            return;
-        }
-
-        // Si la línea tiene choices y aún no se mostraron, mostrarlas ahora
-        if (currentLineHasChoices)
-        {
-            DialogueLine line = currentDialogue.lines[currentLineIndex];
-            if (!ui.IsShowingChoices && line.choices != null && line.choices.Count > 0)
-            {
-                ui.ShowChoices(line.choices);
-                return;
-            }
-            // Si las choices ya están visibles, E no hace nada (el jugador debe clickear)
-            return;
-        }
-
-        // Línea sin choices: avanzar normalmente
-        NextLine();
+        // El input se gestiona ahora externamente via OnInteractInputPressed
     }
 }

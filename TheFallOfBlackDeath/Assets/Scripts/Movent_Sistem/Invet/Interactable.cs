@@ -1,144 +1,43 @@
-using System;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
 using System.Collections;
+using UnityEngine;
 
 /// <summary>
-/// Supports inventory and interaction flow by handling interactable.
+/// Clase base para objetos interactuables que maneja la lógica de triggers y la UI de prompts.
 /// </summary>
-public abstract class Interactable : MonoBehaviour
+public abstract class Interactable : MonoBehaviour, Assets.Scripts.Movent_Sistem.Invet.IInteractable
 {
-    public Animator player_Animator;
-    public PlayerControl playerControl;
-    public GameObject ResponseMessage;
-    [SerializeField]
-    internal bool canInteract;
-    internal Collider objCollider;
-    public TMP_InputField input_responseMessage;
-    internal string message;
-    internal string responseMessage;
+    [Header("Configuración Base de Interacción")]
+    [SerializeField] protected string interactionPrompt = "[ E ] Interactuar";
+    
+    /// <summary>
+    /// Propiedad de la interfaz IInteractable.
+    /// </summary>
+    public virtual string InteractionPrompt => interactionPrompt;
 
+    /// <summary>
+    /// Ejecuta la acción de interacción. Debe ser implementado por clases hijas.
+    /// </summary>
     public abstract void Interact();
 
     /// <summary>
-    /// Initializes the component once the scene dependencies are ready.
+    /// Detecta cuando el jugador entra en el área de interacción.
     /// </summary>
-    public virtual void Start()
-    {
-        if (ResponseMessage != null) ResponseMessage.SetActive(false);
-    }
-
-    /// <summary>
-    /// Responds to the corresponding Unity trigger callback for this component.
-    /// </summary>
-    /// <param name="other">The other.</param>
     protected virtual void OnTriggerEnter(Collider other)
     {
-        // OBJETO (pickup)
-        if (other.gameObject.CompareTag("Object"))
+        if (other.CompareTag("Charecter"))
         {
-            // MIGRADO: reemplaza InteractMeessage
-            InteractionPromptUI.Instance?.Show("[ E ] Recoger ítem");
-            objCollider = other;
-            canInteract = true;
-            Debug.Log("apreta e para interactuar");
-            return;
-        }
-
-        // PUERTA
-        if (other.gameObject.CompareTag("Gate"))
-        {
-            // MIGRADO: reemplaza InteractMeessage
-            InteractionPromptUI.Instance?.Show("[ E ] Abrir puerta");
-            objCollider = other;
-            canInteract = true;
-            Debug.Log("apreta e para interactuar");
-            return;
-        }
-
-        // PORTAL
-        if (other.gameObject.CompareTag("Portal"))
-        {
-            if (other.GetComponent<Portal>() != null)
-            {
-                // MIGRADO: reemplaza InteractMeessage
-                InteractionPromptUI.Instance?.Show("[ E ] Usar portal");
-                objCollider = other;
-                canInteract = true;
-                Debug.Log("apreta e para interactuar");
-                return;
-            }
-        }
-
-        // NPC
-        if (other.gameObject.CompareTag("NPC"))
-        {
-            if (other.GetComponent<DialogueInteractable>() != null)
-            {
-                // MIGRADO: reemplaza InteractMeessage
-                InteractionPromptUI.Instance?.Show("[ E ] Hablar");
-                objCollider = other;
-                canInteract = true;
-                Debug.Log("apreta e para interactuar");
-                return;
-            }
-        }
-    }
-
-
-    /// <summary>
-    /// Responds to the corresponding Unity trigger callback for this component.
-    /// </summary>
-    /// <param name="other">The other.</param>
-    private void OnTriggerExit(Collider other)
-    {
-        // MIGRADO: reemplaza InteractMeessage
-        InteractionPromptUI.Instance?.Hide();
-        canInteract = false;
-    }
-
-    /// <summary>
-    /// Updates the component each frame while it is active.
-    /// </summary>
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (!canInteract)
-                return;
-            else
-            {
-                // ---> NUEVA LÓGICA AÑADIDA <---
-                // Ocultar el panel inmediatamente al iniciar la interacción
-                InteractionPromptUI.Instance?.Hide();
-                this.Interact();
-            }
+            InteractionPromptUI.Instance?.Show(InteractionPrompt);
         }
     }
 
     /// <summary>
-    /// Shows the response message.
+    /// Detecta cuando el jugador sale del área de interacción.
     /// </summary>
-    public void ShowResponseMessage()
+    protected virtual void OnTriggerExit(Collider other)
     {
-        Debug.Log("Mostrame la descripcion del item ctm 2");
-
-        if (ResponseMessage != null)
+        if (other.CompareTag("Charecter"))
         {
-            ResponseMessage.SetActive(true);
-            if (input_responseMessage != null) input_responseMessage.text = responseMessage;
-            StartCoroutine(DissableResponseMessage());
+            InteractionPromptUI.Instance?.Hide();
         }
-    }
-
-    /// <summary>
-    /// Executes the dissable response message workflow.
-    /// </summary>
-    /// <returns>An enumerator that drives the coroutine sequence.</returns>
-    IEnumerator DissableResponseMessage()
-    {
-        yield return new WaitForSeconds(2f);
-        if (ResponseMessage != null) ResponseMessage.SetActive(false);
     }
 }

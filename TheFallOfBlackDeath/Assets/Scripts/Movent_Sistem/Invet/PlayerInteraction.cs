@@ -1,26 +1,54 @@
 ﻿using UnityEngine;
+using Assets.Scripts.Movent_Sistem.Invet;
 
 /// <summary>
-/// Clase que vive en el jugador y se encarga de delegar la interacción al objeto detectado.
-/// Hereda de Interactable para aprovechar la detección de triggers y la UI centralizada.
+/// Gestiona la detección de objetos interactuables y dispara la interacción.
+/// Vive en el objeto del jugador.
 /// </summary>
-public class PlayerInteraction : Interactable
+public class PlayerInteraction : MonoBehaviour
 {
+    [SerializeField] private float detectionRadius = 2f;
+    [SerializeField] private LayerMask interactableLayer;
+
+    private IInteractable currentInteractable;
+
     /// <summary>
-    /// Implementación de la acción de interactuar.
-    /// Busca en el objeto detectado (objCollider) componentes específicos que sepan interactuar.
+    /// Entrada pública para invocar la interacción.
+    /// Puede ser llamada por un sistema de inputs (ej. OnInteractButtonPressed).
     /// </summary>
-    public override void Interact()
+    public void OnInteractButtonPressed()
     {
-        if (objCollider == null) return;
+        if (DialogueManager.Instance != null && DialogueManager.Instance.IsDialogueActive)
+        {
+            DialogueManager.Instance.OnInteractInputPressed();
+            return;
+        }
 
-        // Intentar delegar al objeto específico según su tipo
-        var dialogue = objCollider.GetComponent<DialogueInteractable>();
-        if (dialogue != null) { dialogue.Interact(); return; }
+        if (currentInteractable != null)
+        {
+            // Ocultar el prompt inmediatamente al interactuar
+            InteractionPromptUI.Instance?.Hide();
+            currentInteractable.Interact();
+        }
+    }
 
-        var portal = objCollider.GetComponent<Portal>();
-        if (portal != null) { portal.Interact(); return; }
+    private void OnTriggerEnter(Collider other)
+    {
+        IInteractable interactable = other.GetComponent<IInteractable>();
+        if (interactable != null)
+        {
+            currentInteractable = interactable;
+            InteractionPromptUI.Instance?.Show(currentInteractable.InteractionPrompt);
+        }
+    }
 
-        // Agregar más tipos acá si se necesitan en el futuro
+    private void OnTriggerExit(Collider other)
+    {
+        IInteractable interactable = other.GetComponent<IInteractable>();
+        if (interactable != null && currentInteractable == interactable)
+        {
+            currentInteractable = null;
+            InteractionPromptUI.Instance?.Hide();
+        }
     }
 }

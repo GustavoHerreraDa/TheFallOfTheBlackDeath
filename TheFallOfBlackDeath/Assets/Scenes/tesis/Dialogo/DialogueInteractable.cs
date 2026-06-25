@@ -3,16 +3,21 @@ using UnityEngine;
 /// <summary>
 /// Supports branching dialogue flow by handling dialogue interactable.
 /// </summary>
-public class DialogueInteractable : MonoBehaviour
+public class DialogueInteractable : MonoBehaviour, Assets.Scripts.Movent_Sistem.Invet.IInteractable
 {
     public Dialogue dialogue;
     private Transform playerTransform;
-    private bool canTalk;
     
     [SerializeField]
     private bool _canMove;
 
     [Header("Configuración de Interacción")]
+    [SerializeField] private string interactionPrompt = "[ E ] Hablar";
+    /// <summary>
+    /// Mensaje de interacción para la interfaz IInteractable.
+    /// </summary>
+    public string InteractionPrompt => interactionPrompt;
+
     [Tooltip("Si es verdadero, el componente se desactivará y no se podrá volver a hablar con el NPC.")]
     public bool disableAfterTalking = true;
     [Tooltip("Si es verdadero, el NPC solo hablará si tiene algo nuevo que decir (basado en condiciones de líneas).")]
@@ -21,9 +26,8 @@ public class DialogueInteractable : MonoBehaviour
     public string noContentMessage = "No tengo nada más que decirte por ahora.";
 
     /// <summary>
-    /// Responds to the corresponding Unity trigger callback for this component.
+    /// Responde a la entrada del trigger.
     /// </summary>
-    /// <param name="other">The other.</param>
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Charecter") || !this.enabled) return;
@@ -36,19 +40,15 @@ public class DialogueInteractable : MonoBehaviour
         if (!isLeader) return;
 
         playerTransform = other.transform;
-        canTalk = true;
-        Debug.Log($"[DialogueInteractable] Presiona [E] para hablar con {gameObject.name}");
     }
 
     /// <summary>
-    /// Responds to the corresponding Unity trigger callback for this component.
+    /// Responde a la salida del trigger.
     /// </summary>
-    /// <param name="other">The other.</param>
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Charecter"))
         {
-            canTalk = false;
             playerTransform = null;
         }
     }
@@ -74,7 +74,6 @@ public class DialogueInteractable : MonoBehaviour
 
         if (!DialogueManager.Instance.HasAvailableContent(dialogue))
         {
-            canTalk = false;
             this.enabled = false;
 
             Collider col = GetComponent<Collider>();
@@ -124,7 +123,6 @@ public class DialogueInteractable : MonoBehaviour
         // ---> DESACTIVACIÓN TOTAL <---
         if (disableAfterTalking)
         {
-            canTalk = false;
             this.enabled = false; 
             
             // Opcional: Apagamos el Collider (si actúa como Trigger) para que el jugador ni siquiera choque o detecte al NPC al acercarse
@@ -141,10 +139,7 @@ public class DialogueInteractable : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (canTalk && Input.GetKeyDown(KeyCode.E))
-        {
-            Interact();
-        }
+        // El input se gestiona ahora externamente via PlayerInteraction.OnInteractButtonPressed
     }
 
     /// <summary>

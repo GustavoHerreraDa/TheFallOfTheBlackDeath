@@ -25,13 +25,20 @@ public class InteractionPromptUI : MonoBehaviour
         Hide();
     }
 
+    private Coroutine hideCoroutine;
+
     /// <summary>
     /// Asigna el texto y activa el panel de mensaje.
     /// </summary>
     /// <param name="message">Mensaje a mostrar.</param>
     public void Show(string message)
     {
-        CancelInvoke(nameof(Hide));
+        if (hideCoroutine != null)
+        {
+            StopCoroutine(hideCoroutine);
+            hideCoroutine = null;
+        }
+
         if (promptText != null)
         {
             promptText.text = message;
@@ -49,7 +56,14 @@ public class InteractionPromptUI : MonoBehaviour
     public void Show(string message, float duration)
     {
         Show(message);
-        Invoke(nameof(Hide), duration);
+        hideCoroutine = StartCoroutine(HideAfterDelay(duration));
+    }
+
+    private System.Collections.IEnumerator HideAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Hide();
+        hideCoroutine = null;
     }
 
     /// <summary>
@@ -57,6 +71,12 @@ public class InteractionPromptUI : MonoBehaviour
     /// </summary>
     public void Hide()
     {
+        if (hideCoroutine != null)
+        {
+            StopCoroutine(hideCoroutine);
+            hideCoroutine = null;
+        }
+
         if (promptRoot != null)
         {
             promptRoot.SetActive(false);

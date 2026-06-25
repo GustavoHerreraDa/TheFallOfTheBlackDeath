@@ -53,12 +53,15 @@ public class PlayerControl : MonoBehaviour
     public Animator anim;
     Rigidbody playerRB;
     
+    private PlayerInteraction playerInteraction;
+    
     /// <summary>
     /// Initializes the component once the scene dependencies are ready.
     /// </summary>
     private void Start()
     {
         controller = GetComponent<CharacterController>();
+        playerInteraction = GetComponent<PlayerInteraction>();
         camara = GameObject.FindGameObjectWithTag("MainCamera");
         if (camara != null)
             cameraMain = camara.GetComponent<Camera_Main>();
@@ -102,6 +105,11 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             stop = !stop;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            playerInteraction?.OnInteractButtonPressed();
         }
 
         velocity.y += gravedad * Time.deltaTime;
@@ -150,14 +158,32 @@ public class PlayerControl : MonoBehaviour
     }
 
     /// <summary>
+    /// Activa o desactiva el estado de diálogo en el jugador.
+    /// Maneja la inmovilización manteniendo la gravedad.
+    /// </summary>
+    public void ToggleDialogueState(bool state)
+    {
+        stop = state;
+        
+        if (state)
+        {
+            // Detener movimiento inmediatamente al entrar en diálogo
+            int brokenLegs = GetBrokenLegCount();
+            SetMovementAnimation(GetIdleAnimValueForLegState(brokenLegs));
+            
+            if (GameManager.Instance != null)
+                GameManager.Instance.isWalking = false;
+        }
+        
+        // El Rigidbody se maneja en LateUpdate basado en 'stop'
+    }
+
+    /// <summary>
     /// Executes the continue player workflow.
     /// </summary>
     public void ContinuePlayer()
     {
-        stop = false;
-        playerRB.isKinematic = false;
-        if (GameManager.Instance != null)
-            GameManager.Instance.isWalking = isWalking;
+        ToggleDialogueState(false);
     }
 
     /// <summary>
@@ -166,12 +192,7 @@ public class PlayerControl : MonoBehaviour
     /// <param name="seconds">The seconds.</param>
     public void StopPlayer(float seconds)
     {
-        // También actualizamos el Idle aquí por si el jugador se detiene
-        int brokenLegs = GetBrokenLegCount();
-        SetMovementAnimation(GetIdleAnimValueForLegState(brokenLegs));
-        
-        stop = true;
-        playerRB.isKinematic = true;
+        ToggleDialogueState(true);
         StartCoroutine(WaitSeconds(seconds));
     }
 

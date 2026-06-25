@@ -9,8 +9,21 @@ namespace InventoryNew
     /// Componente para permitir que el jugador recoja objetos del mundo físico
     /// y los añada al NewInventoryManager.
     /// </summary>
-    public class NewItemPickup : MonoBehaviour
+    public class NewItemPickup : MonoBehaviour, Assets.Scripts.Movent_Sistem.Invet.IInteractable
     {
+        /// <summary>
+        /// Implementación de la interfaz IInteractable.
+        /// </summary>
+        public string InteractionPrompt => $"[ E ] Recoger {itemData?.itemName ?? "ítem"}";
+
+        /// <summary>
+        /// Implementación de la interfaz IInteractable para realizar la recogida.
+        /// </summary>
+        public void Interact()
+        {
+            Pickup();
+        }
+
         /// <summary>
         /// Define el comportamiento del objeto después de ser recogido.
         /// </summary>
@@ -92,19 +105,11 @@ namespace InventoryNew
 
                 return;
             }
-
-            if (string.IsNullOrEmpty(pickupMessage) && itemData != null)
-            {
-                pickupMessage = "Recoger " + itemData.itemName;
-            }
         }
 
         private void Update()
         {
-            if (playerInRange && !isCollected && Input.GetKeyDown(KeyCode.E))
-            {
-                Pickup();
-            }
+            // El input ahora se gestiona globalmente via PlayerInteraction
         }
 
         public void Pickup()
@@ -212,32 +217,17 @@ namespace InventoryNew
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Charecter") && !isCollected)
-            {
-                playerInRange = true;
-                ShowInteractionPrompt(true);
-            }
+            // La detección ahora la hace PlayerInteraction centralizadamente
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.CompareTag("Charecter"))
-            {
-                playerInRange = false;
-                ShowInteractionPrompt(false);
-            }
+            // La detección ahora la hace PlayerInteraction centralizadamente
         }
 
         private void ShowInteractionPrompt(bool show)
         {
-            if (show && itemData != null)
-            {
-                InteractionPromptUI.Instance?.Show($"[ E ]  Recoger {itemData.itemName}");
-            }
-            else if (!show)
-            {
-                InteractionPromptUI.Instance?.Hide();
-            }
+            // El prompt ahora lo gestiona PlayerInteraction centralizadamente
         }
 
         public string GetPersistenceKey()
