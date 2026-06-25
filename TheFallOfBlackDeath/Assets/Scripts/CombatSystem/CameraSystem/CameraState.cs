@@ -10,5 +10,6 @@ public enum CameraState
     Ui,           // Vista enfocada cuando se abren menús de habilidades
     SkillPanel,   // Vista diegética para el panel de habilidades del jugador activo
     HitReaction,  // Vista de impacto/reacción al recibir daño
-    Cinematic     // Vista para momentos guionizados o ejecuciones
+    Cinematic,     // Vista para momentos guionizados o ejecuciones
+    Scanner       // Vista dedicada al escaneo de enemigos en combate
 }

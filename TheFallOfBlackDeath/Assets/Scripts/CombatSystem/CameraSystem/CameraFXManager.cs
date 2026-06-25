@@ -43,6 +43,16 @@ public class CameraFXManager : MonoBehaviour
     [SerializeField] private float scanHueShift = 80f;       // grados, verde = ~80-120
     [SerializeField] private float scanSaturation = 30f;     // boost de saturación
 
+    [Header("Combat Scanner Effect")]
+    [SerializeField] private Color combatScanColor = new Color(0f, 1f, 0.4f, 1f);
+    [SerializeField] private float combatScanHueShift = 100f;
+    [SerializeField] private float combatScanSaturation = 60f;
+    [SerializeField] private float combatScanFadeInDuration = 0.2f;
+    [SerializeField] private float combatScanFadeOutDuration = 0.15f;
+    [SerializeField] private float combatScanPulseIntensity = 0.2f;
+    [SerializeField] private float combatScanPulseSpeed = 8f;
+    [SerializeField] private AudioClip combatScanSound;
+
     private LensDistortion _lensDistortion;
     private ChromaticAberration _chromaticAberration;
     private ColorAdjustments _colorAdjustments;
@@ -60,6 +70,7 @@ public class CameraFXManager : MonoBehaviour
     // Almacena el AudioSource persistente creado por el AudioManager
     private AudioSource _activeLethalAudioSource;
     private Coroutine _scanCoroutine;
+    private Coroutine _combatScanCoroutine;
 
     private void Awake()
     {
@@ -293,6 +304,27 @@ public class CameraFXManager : MonoBehaviour
         _scanCoroutine = StartCoroutine(ScanEffectRoutine(active));
     }
 
+    /// <summary>
+    /// Efecto de escaneo persistente para el scanner de combate.
+    /// A diferencia de SetScanEffect, la pantalla se mantiene verde mientras
+    /// active == true. Llamar con false para restaurar.
+    /// </summary>
+    public void SetCombatScanEffect(bool active)
+    {
+        if (_combatScanCoroutine != null)
+        {
+            StopCoroutine(_combatScanCoroutine);
+            _combatScanCoroutine = null;
+        }
+
+        if (active && combatScanSound != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(combatScanSound);
+        }
+
+        _combatScanCoroutine = StartCoroutine(CombatScanRoutine(active));
+    }
+
     private IEnumerator ScanEffectRoutine(bool active)
     {
         if (_colorAdjustments == null) yield break;
@@ -344,6 +376,77 @@ public class CameraFXManager : MonoBehaviour
         _scanCoroutine = null;
     }
 
+    private IEnumerator CombatScanRoutine(bool active)
+    {
+        if (_colorAdjustments == null) yield break;
+
+        _colorAdjustments.colorFilter.overrideState = true;
+        _colorAdjustments.hueShift.overrideState    = true;
+        _colorAdjustments.saturation.overrideState  = true;
+
+        if (active)
+        {
+            // Fade in hacia el color de escaneo
+            float elapsed = 0f;
+            Color  startColor = _colorAdjustments.colorFilter.value;
+            float  startHue   = _colorAdjustments.hueShift.value;
+            float  startSat   = _colorAdjustments.saturation.value;
+
+            while (elapsed < combatScanFadeInDuration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float t = Mathf.Clamp01(elapsed / combatScanFadeInDuration);
+
+                _colorAdjustments.colorFilter.value  = Color.Lerp(startColor, combatScanColor, t);
+                _colorAdjustments.hueShift.value     = Mathf.Lerp(startHue, combatScanHueShift, t);
+                _colorAdjustments.saturation.value   = Mathf.Lerp(startSat, _originalSaturation + combatScanSaturation, t);
+
+                yield return null;
+            }
+
+            // Bucle continuo de pulsación mientras el scanner esté activo
+            while (active)
+            {
+                // Usamos unscaledTime para que la pulsación sea constante incluso en slow-motion
+                float sineWave = Mathf.Sin(Time.unscaledTime * combatScanPulseSpeed);
+                float pulseFactor = (sineWave + 1f) * 0.5f; // Rango (0, 1)
+                
+                // Variamos la saturación y el color ligeramente para el efecto de pulsación
+                _colorAdjustments.colorFilter.value = Color.Lerp(combatScanColor, Color.white, pulseFactor * combatScanPulseIntensity);
+                _colorAdjustments.saturation.value = (_originalSaturation + combatScanSaturation) + (sineWave * 10f);
+                
+                yield return null;
+            }
+        }
+        else
+        {
+            // Fade out hacia los valores originales
+            float elapsed    = 0f;
+            Color startColor = _colorAdjustments.colorFilter.value;
+            float startHue   = _colorAdjustments.hueShift.value;
+            float startSat   = _colorAdjustments.saturation.value;
+
+            while (elapsed < combatScanFadeOutDuration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                float t = Mathf.Clamp01(elapsed / combatScanFadeOutDuration);
+
+                _colorAdjustments.colorFilter.value  = Color.Lerp(startColor, _originalFilterColor, t);
+                _colorAdjustments.hueShift.value     = Mathf.Lerp(startHue, _originalHueShift, t);
+                _colorAdjustments.saturation.value   = Mathf.Lerp(startSat, _originalSaturation, t);
+
+                yield return null;
+            }
+
+            // Snap final
+            _colorAdjustments.colorFilter.value  = _originalFilterColor;
+            _colorAdjustments.hueShift.value     = _originalHueShift;
+            _colorAdjustments.saturation.value   = _originalSaturation;
+        }
+
+        _combatScanCoroutine = null;
+    }
+
     private void OnDisable()
     {
         Time.timeScale = 1f;
@@ -353,6 +456,12 @@ public class CameraFXManager : MonoBehaviour
         {
             AudioManager.Instance.StopPersistentSFX(_activeLethalAudioSource);
             _activeLethalAudioSource = null;
+        }
+
+        if (_combatScanCoroutine != null)
+        {
+            StopCoroutine(_combatScanCoroutine);
+            _combatScanCoroutine = null;
         }
 
         if (_lensDistortion != null) _lensDistortion.intensity.value = 0f;

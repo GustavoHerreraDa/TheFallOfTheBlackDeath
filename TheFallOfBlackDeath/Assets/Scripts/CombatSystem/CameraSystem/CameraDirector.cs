@@ -20,6 +20,8 @@ public class CameraDirector : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera skillPanelCam;
     [SerializeField] private Vector3 skillPanelFollowOffset = new Vector3(0, 0.5f, -1.2f);
 
+    [SerializeField] private CinemachineVirtualCamera scannerCam;
+
     [Header("Technical Cameras")]
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Camera shaderCamera;
@@ -76,6 +78,7 @@ public class CameraDirector : MonoBehaviour
         if (actionCam) _allVirtualCameras.Add(actionCam);
         if (diegeticUiCam) _allVirtualCameras.Add(diegeticUiCam);
         if (skillPanelCam) _allVirtualCameras.Add(skillPanelCam);
+        if (scannerCam) _allVirtualCameras.Add(scannerCam);
         if (targetSystem && targetSystem.GroupActionCam) _allVirtualCameras.Add(targetSystem.GroupActionCam);
     }
 
@@ -155,7 +158,14 @@ public class CameraDirector : MonoBehaviour
     /// </summary>
     public void ChangeState(CameraState newState)
     {
-        if (newState == CameraState.Ui || newState == CameraState.SkillPanel)
+        // Limpieza estricta: si salimos de Scanner por CUALQUIER motivo, apagamos el efecto.
+        if (_currentState == CameraState.Scanner && newState != CameraState.Scanner)
+        {
+            if (fxManager != null) fxManager.SetCombatScanEffect(false);
+            if (CombatScannerController.Instance != null) CombatScannerController.Instance.Deactivate();
+        }
+
+        if (newState == CameraState.Ui || newState == CameraState.SkillPanel || newState == CameraState.Scanner)
             _stateBeforeUi = _currentState;
 
         var brain = mainCamera != null ? mainCamera.GetComponent<CinemachineBrain>() : null;
@@ -173,7 +183,16 @@ public class CameraDirector : MonoBehaviour
             case CameraState.Overview:
                 bool isPlayerTurn = _combatManager != null && _combatManager.CurrentFighter != null && 
                                    _combatManager.CurrentFighter.team == Team.PLAYERS;
-                SetCameraPriority(isPlayerTurn ? playerOverviewCam : enemyOverviewCam, PriorityActive);
+                
+                CinemachineVirtualCamera cam = isPlayerTurn ? playerOverviewCam : enemyOverviewCam;
+                
+                // Si es el turno del jugador y ya tenemos el PlayerFighter correspondiente, lo enfocamos
+                if (isPlayerTurn && _currentPlayerTransform != null && playerOverviewCam != null)
+                {
+                    playerOverviewCam.m_Follow = _currentPlayerTransform;
+                }
+                
+                SetCameraPriority(cam, PriorityActive);
                 if (mod != null) mod.enabled = true;
                 break;
 
@@ -203,6 +222,11 @@ public class CameraDirector : MonoBehaviour
             
             case CameraState.Cinematic:
                 if (mod != null) mod.enabled = true;
+                break;
+
+            case CameraState.Scanner:
+                SetCameraPriority(scannerCam, PriorityActive);
+                if (mod != null) mod.enabled = false;
                 break;
         }
     }
@@ -308,6 +332,62 @@ public class CameraDirector : MonoBehaviour
 
         if (_currentState != CameraState.SkillPanel)
             ChangeState(CameraState.SkillPanel);
+    }
+
+    /// <summary>
+    /// Posiciona la scannerCam en el scannerCamAnchor de un enemigo específico.
+    /// </summary>
+    public void FocusScannerOnTarget(Fighter target)
+    {
+        if (scannerCam == null || target == null) return;
+
+        // Follow: donde se posiciona físicamente la cámara
+        Transform followAnchor = target.scannerCamAnchor != null
+            ? target.scannerCamAnchor
+            : target.transform;
+
+        // LookAt: hacia dónde apunta
+        Transform lookAtAnchor = target.scannerAnchor != null
+            ? target.scannerAnchor
+            : target.transform;
+
+        scannerCam.m_Follow = followAnchor;
+        scannerCam.m_LookAt = lookAtAnchor;
+
+        var transposer = scannerCam.GetCinemachineComponent<CinemachineTransposer>();
+        if (transposer != null)
+            transposer.m_FollowOffset = Vector3.zero;
+
+        if (_currentState != CameraState.Scanner)
+            ChangeState(CameraState.Scanner);
+    }
+
+    /// <summary>
+    /// Inicia el modo scanner enfocando al primer enemigo vivo y activando el controlador.
+    /// </summary>
+    public void FocusScannerOn(Fighter[] enemies)
+    {
+        if (scannerCam == null || enemies == null) return;
+
+        Fighter target = null;
+        foreach (Fighter enemy in enemies)
+        {
+            if (enemy != null && enemy.isAlive)
+            {
+                target = enemy;
+                break;
+            }
+        }
+
+        if (target == null) return;
+
+        FocusScannerOnTarget(target);
+        
+        // Activamos el controlador de navegación
+        if (CombatScannerController.Instance != null)
+        {
+            CombatScannerController.Instance.Activate(enemies);
+        }
     }
 
     private void HandleTurnStarted(Fighter fighter)

@@ -68,16 +68,41 @@ public class CombatScannerSystem : MonoBehaviour
     {
         if (!CanCurrentFighterUseScanner())
         {
-            scannerEnabled = false;
-            HideAll();
+            if (scannerEnabled)
+            {
+                scannerEnabled = false;
+                HideAll();
+                if (CameraFXManager.Instance != null)
+                    CameraFXManager.Instance.SetCombatScanEffect(false);
+                if (CameraDirector.Instance != null &&
+                    CameraDirector.Instance.CurrentState == CameraState.Scanner)
+                    CameraDirector.Instance.ChangeState(CameraDirector.Instance.StateBeforeUi);
+            }
             return;
         }
 
         scannerEnabled = !scannerEnabled;
 
-        if (!scannerEnabled)
+        if (scannerEnabled)
+        {
+            if (CameraDirector.Instance != null)
+                CameraDirector.Instance.FocusScannerOn(combatManager.enemyTeam);
+
+            if (CameraFXManager.Instance != null)
+                CameraFXManager.Instance.SetCombatScanEffect(true);
+        }
+        else
         {
             HideAll();
+
+            if (CameraFXManager.Instance != null)
+                CameraFXManager.Instance.SetCombatScanEffect(false);
+
+            if (CameraDirector.Instance != null &&
+                CameraDirector.Instance.CurrentState == CameraState.Scanner)
+            {
+                CameraDirector.Instance.ChangeState(CameraDirector.Instance.StateBeforeUi);
+            }
         }
     }
 

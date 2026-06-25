@@ -238,6 +238,8 @@ public abstract class Fighter : MonoBehaviour
     public Transform uiAnchor;
     public Transform diegeticCamAnchor;
     public Transform scannerAnchor;
+    [Tooltip("Posición world-space donde se sitúa la scannerCam. Hijo del Fighter, configurar en escena.")]
+    public Transform scannerCamAnchor;
 
     [SerializeField]
     public Transform CameraPivot;
