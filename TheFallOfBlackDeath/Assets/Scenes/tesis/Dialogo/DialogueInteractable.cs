@@ -54,6 +54,38 @@ public class DialogueInteractable : MonoBehaviour
     }
 
     /// <summary>
+    /// Al cargar la escena, se auto-desactiva si no hay contenido disponible para evitar
+    /// que NPCs sin diálogo nuevo sean interactuables tras volver de combate.
+    /// </summary>
+    private void Start()
+    {
+        if (!onlyTalkIfNewContent) return;
+        if (dialogue == null) return;
+
+        // Esperamos un frame para que GlobalState y DialogueManager terminen su Awake
+        StartCoroutine(AutoDisableIfNoContent());
+    }
+
+    private System.Collections.IEnumerator AutoDisableIfNoContent()
+    {
+        yield return null; // Esperar un frame
+
+        if (DialogueManager.Instance == null) yield break;
+
+        if (!DialogueManager.Instance.HasAvailableContent(dialogue))
+        {
+            canTalk = false;
+            this.enabled = false;
+
+            Collider col = GetComponent<Collider>();
+            if (col != null && col.isTrigger)
+                col.enabled = false;
+
+            Debug.Log($"[DialogueInteractable] {gameObject.name} auto-desactivado: sin contenido disponible.");
+        }
+    }
+
+    /// <summary>
     /// Inicia la interacción de diálogo.
     /// </summary>
     public void Interact()

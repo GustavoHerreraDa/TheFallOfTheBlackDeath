@@ -14,11 +14,13 @@ public class DamageFeedbackListener : MonoBehaviour
     [SerializeField] private Color criticalDamageColor = Color.yellow;
     [SerializeField] private Color missColor = Color.gray;
     [SerializeField] private Color healColor = Color.green;
+    [SerializeField] private Color limbDestroyColor = new Color(1f, 0.2f, 0.2f); // rojo intenso
+    [SerializeField] private Color limbDestroyLabelColor = new Color(1f, 0.6f, 0f); // naranja
+    [SerializeField] private float limbDestroyTextDuration = 2.5f;
 
     [Header("Stat Mod Floating Text")]
     [SerializeField] private Color buffColor   = new Color(0.4f, 0.9f, 1f);   // celeste
     [SerializeField] private Color debuffColor = new Color(1f,   0.5f, 0f);   // naranja
-    [SerializeField] private float statTextHeightOffset = 2.5f;
     [SerializeField] private float statTextStackSpacing = 0.5f;
 
     private float lastStatModTime;
@@ -33,6 +35,9 @@ public class DamageFeedbackListener : MonoBehaviour
     [Header("Audio")]
     [SerializeField, Range(0f, 1f)] private float normalHitVolume = 0.7f;
     [SerializeField, Range(0f, 1f)] private float criticalHitVolume = 1f;
+
+    [Header("Anchors")]
+    [SerializeField] private FloatingTextAnchorSet anchors;
 
     private void OnEnable()
     {
@@ -61,6 +66,9 @@ public class DamageFeedbackListener : MonoBehaviour
 
         if (fighter == null)
             fighter = GetComponentInParent<Fighter>();
+
+        if (anchors == null)
+            anchors = GetComponentInChildren<FloatingTextAnchorSet>();
     }
 
     private void HandleDamageResolved(DamageResult result)
@@ -86,9 +94,41 @@ public class DamageFeedbackListener : MonoBehaviour
         int displayDamage = Mathf.Abs(Mathf.RoundToInt(result.appliedAmount));
         Color color = result.isCritical ? criticalDamageColor : normalDamageColor;
 
+        if (result.destroyedBodyPart)
+            color = limbDestroyColor;
+
         ShowFloatingText($"-{displayDamage}", color, result.isCritical, result);
+
+        if (result.destroyedBodyPart)
+            ShowLimbDestroyText(result);
+
         PlayHitAudio(result);
         PlayCameraFeedback(result);
+    }
+
+    private void ShowLimbDestroyText(DamageResult result)
+    {
+        if (FloatingTextManager.Instance == null)
+            return;
+
+        string partName = result.targetPart switch
+        {
+            BodyPart.Head      => "HEAD",
+            BodyPart.LeftArm   => "L.ARM",
+            BodyPart.RightArm  => "R.ARM",
+            BodyPart.LeftLeg   => "L.LEG",
+            BodyPart.RightLeg  => "R.LEG",
+            BodyPart.Torso     => "TORSO",
+            _                  => result.targetPart.ToString().ToUpper()
+        };
+
+        FloatingTextManager.Instance.ShowText(
+            $"[{partName} DESTROYED]",
+            GetLimbDestroyPosition(result),
+            limbDestroyLabelColor,
+            isCritical: false,
+            randomizePosition: false,
+            duration: limbDestroyTextDuration);
     }
 
     private void ShowFloatingText(string message, Color color, bool isCritical, DamageResult result)
@@ -102,17 +142,32 @@ public class DamageFeedbackListener : MonoBehaviour
     private Vector3 GetTextPosition(DamageResult result)
     {
         Fighter target = result.receiver != null ? result.receiver : fighter;
-        if (target == null)
-            return transform.position + textOffset;
 
-        Transform anchor = result.targetPart != BodyPart.None
-            ? target.GetHitPoint(result.targetPart)
-            : target.DamagePivot;
+        FloatingTextAnchorSet targetAnchors = target != null
+            ? target.GetComponentInChildren<FloatingTextAnchorSet>()
+            : anchors;
 
-        if (anchor == null)
-            anchor = target.transform;
+        if (targetAnchors != null)
+            return targetAnchors.GetDamagePosition(result.isCritical);
 
-        return anchor.position + textOffset;
+        // Legacy fallback for Fighters without an AnchorSet
+        Transform pivot = (target != null ? target.transform : transform);
+        return pivot.position + textOffset;
+    }
+
+    private Vector3 GetLimbDestroyPosition(DamageResult result)
+    {
+        Fighter target = result.receiver != null ? result.receiver : fighter;
+
+        FloatingTextAnchorSet targetAnchors = target != null
+            ? target.GetComponentInChildren<FloatingTextAnchorSet>()
+            : anchors;
+
+        if (targetAnchors != null)
+            return targetAnchors.GetLimbDestroyPosition();
+
+        Transform pivot = (target != null ? target.transform : transform);
+        return pivot.position + textOffset;
     }
 
     private void HandleStatModApplied(StatModAppliedEvent e)
@@ -141,8 +196,14 @@ public class DamageFeedbackListener : MonoBehaviour
         lastStatModTime = Time.time;
 
         // Posición base sobre el personaje
-        Vector3 basePosition = (e.fighter != null ? e.fighter.transform.position : transform.position)
-                               + Vector3.up * statTextHeightOffset;
+        FloatingTextAnchorSet sourceAnchors = e.fighter != null
+            ? e.fighter.GetComponentInChildren<FloatingTextAnchorSet>()
+            : anchors;
+
+        Vector3 basePosition = sourceAnchors != null
+            ? sourceAnchors.GetStatModPosition()
+            : (e.fighter != null ? e.fighter.transform.position : transform.position)
+              + Vector3.up * 2f;
         
         // Posición final con apilamiento
         Vector3 finalPosition = basePosition + Vector3.up * (statModStackCount * statTextStackSpacing);

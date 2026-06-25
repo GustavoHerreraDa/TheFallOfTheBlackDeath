@@ -63,7 +63,8 @@ public class FloatingTextManager : MonoBehaviour
     /// <param name="color">Color del texto.</param>
     /// <param name="isCritical">Si es true aplica escala y jitter de crítico.</param>
     /// <param name="randomizePosition">Si es true aplica un offset aleatorio.</param>
-    public void ShowText(string message, Vector3 position, Color color, bool isCritical = false, bool randomizePosition = true)
+    /// <param name="duration">Duración del texto en pantalla (0 usa el default).</param>
+    public void ShowText(string message, Vector3 position, Color color, bool isCritical = false, bool randomizePosition = true, float duration = 0f)
     {
         // Si el pool está vacío, creamos uno nuevo on-demand sin pushearlo
         // (ReturnToPool se encargará de devolverlo al pool al terminar).
@@ -73,7 +74,7 @@ public class FloatingTextManager : MonoBehaviour
 
         txt.gameObject.SetActive(true);
         txt.transform.position = position;
-        txt.Initialize(message, color, isCritical, randomizePosition);
+        txt.Initialize(message, color, isCritical, randomizePosition, duration);
     }
 
     /// <summary>

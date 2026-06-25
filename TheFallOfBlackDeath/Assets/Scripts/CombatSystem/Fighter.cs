@@ -672,12 +672,6 @@ public abstract class Fighter : MonoBehaviour
             OnBodyPartDestroyed(target);
         }
 
-        if (target.currentHealth == 0)
-        {
-            Vector3 textPos = transform.position + Vector3.up * 3f;
-            FloatingTextManager.Instance.ShowText($"{part} destroyed!", textPos, Color.magenta);
-        }
-
         if (modifiedAmount < 0f)
         {
             DamageResult appliedResult = damageResult.WithApplication(
