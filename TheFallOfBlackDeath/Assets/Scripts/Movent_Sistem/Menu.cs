@@ -19,8 +19,8 @@ public class Menu : MonoBehaviour
     [SerializeField] AudioSource inventorySound;
     [SerializeField] AudioSource resumeSound;
 
-
-
+    [Header("Main Menu Reference")]
+    [SerializeField] private MainPanel mainPanelScript; // <-- NUEVA REFERENCIA
 
     bool inventory;
     bool Pause;
@@ -51,26 +51,28 @@ public class Menu : MonoBehaviour
     void Update()
     {
         // Cerrar inventario con Esc si está abierto
+// Cerrar inventario con Esc si está abierto
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (Inventorymenu.activeSelf)
             {
-                // Si el inventario está abierto, lo cerramos y no abrimos el menú de pausa
                 Inventorytrue();
                 return;
             }
 
-
-
+            // NUEVO: Si el juego está pausado y hay un subpanel abierto, volvemos atrás
+            if (Pause && mainPanelScript != null && mainPanelScript.IsAnySubPanelOpen())
+            {
+                mainPanelScript.ReturnToMainPanel();
+                return; // Cortamos la ejecución acá para que NO cierre la pausa completa
+            }
 
             if (Pause)
             {
-
                 Resumegame();
             }
             else
             {
-
                 PauseGame();
             }
         }
@@ -179,27 +181,18 @@ public class Menu : MonoBehaviour
     /// </summary>
     public void Resumegame()
     {
-
-        if (combatManager.isCombatActive == true)
+        resumeSound.Play();
+        CursorManager.Instance?.ReleaseCursor(Pausemenu);
+        
+        // NUEVO: Nos aseguramos de limpiar cualquier panel residual por si acaso
+        if (mainPanelScript != null)
         {
-            resumeSound.Play();
-            CursorManager.Instance?.ReleaseCursor(Pausemenu);
-            Pausemenu.SetActive(false);
-            Time.timeScale = 1f;
-            Pause = false;
-
-        }
-        else
-        {
-            resumeSound.Play();
-            CursorManager.Instance?.ReleaseCursor(Pausemenu);
-            Pausemenu.SetActive(false);
-            Time.timeScale = 1f;
-            Pause = false;
-
+            mainPanelScript.CloseAllPanels();
         }
 
-
+        Pausemenu.SetActive(false);
+        Time.timeScale = 1f;
+        Pause = false;
     }
 
 }

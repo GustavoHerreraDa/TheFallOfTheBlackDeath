@@ -136,5 +136,42 @@ public class MainPanel : MonoBehaviour
 
         introPanel.SetActive(false);
     }
+    
+    /// <summary>
+    /// Comprueba si alguno de los subpaneles secundarios está abierto.
+    /// </summary>
+    public bool IsAnySubPanelOpen()
+    {
+        return (optionsPanel != null && optionsPanel.activeSelf) ||
+               (controlesPanel != null && controlesPanel.activeSelf) ||
+               (statsPanel != null && statsPanel.activeSelf);
+    }
+
+    /// <summary>
+    /// Cierra los subpaneles secundarios y vuelve a mostrar el menú principal.
+    /// </summary>
+    public void ReturnToMainPanel()
+    {
+        if (optionsPanel != null) optionsPanel.SetActive(false);
+        if (controlesPanel != null) controlesPanel.SetActive(false);
+        if (statsPanel != null) statsPanel.SetActive(false);
+        
+        if (mainPanel != null) mainPanel.SetActive(true);
+        PlaySoundButton();
+    }
+
+    /// <summary>
+    /// Apaga absolutamente todos los paneles del menú (útil al despausar).
+    /// </summary>
+    public void CloseAllPanels()
+    {
+        if (mainPanel != null) mainPanel.SetActive(false);
+        if (optionsPanel != null) optionsPanel.SetActive(false);
+        if (controlesPanel != null) controlesPanel.SetActive(false);
+        if (statsPanel != null) statsPanel.SetActive(false);
+        if (introPanel != null) introPanel.SetActive(false);
+        
+        if (digitalRain != null) digitalRain.gameObject.SetActive(false);
+    }
 
 }
