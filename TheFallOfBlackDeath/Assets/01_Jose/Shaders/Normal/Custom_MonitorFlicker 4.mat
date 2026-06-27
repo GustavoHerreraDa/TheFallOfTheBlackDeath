@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_ServerElectricity 1
-  m_Shader: {fileID: 4800000, guid: 682312373b7a08a46b7e76b753738881, type: 3}
+  m_Name: Custom_MonitorFlicker 4
+  m_Shader: {fileID: 4800000, guid: ec8517485581f294483efcbe0171e55e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -22,11 +22,17 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _PulseSpeed: 5
+    - _EnableFlicker: 10
+    - _FlickerSpeed: 5
+    - _Intensity: 5
     m_Colors:
-    - _GlowColor: {r: 1, g: 0.07843137, b: 0.20398588, a: 1}
+    - _TintColor: {r: 0.44070897, g: 1, b: 0.1273585, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
