@@ -766,6 +766,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 096120544cf30334db43cb299d3b2175, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4981185598157918021}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 096120544cf30334db43cb299d3b2175, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6512691219641773712}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 096120544cf30334db43cb299d3b2175, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7996061014796612591}
   m_SourcePrefab: {fileID: 100100000, guid: 096120544cf30334db43cb299d3b2175, type: 3}
 --- !u!1 &7163160239192320523 stripped
 GameObject:
@@ -828,6 +834,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
   dialogue: {fileID: 11400000, guid: 8362fa7d0b728614db24ce84231ff9a1, type: 2}
   _canMove: 1
+  interactionPrompt: '[ E ] Hablar'
   disableAfterTalking: 0
   onlyTalkIfNewContent: 1
   noContentMessage: "No tengo nada m\xE1s que decirte por ahora."
+--- !u!114 &6512691219641773712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7163160239192320523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ae4d63aeba30354a9e0e92453e321ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueEvent
+  onDialogueEnd: 0
+  battleSceneName: CCC_TESTEO
+  fadeDuration: 1
+  fadeCanvas: {fileID: 0}
+  npcDisappearDelay: 0.5
+  npcRenderer: {fileID: 0}
+  dissolveSpeed: 1.5
+  dissolveProperty: _DissolveAmount
+--- !u!114 &7996061014796612591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7163160239192320523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e494086eb5cdea4b951503382d37d7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemiesGroup
+  GroupName: Jokyto

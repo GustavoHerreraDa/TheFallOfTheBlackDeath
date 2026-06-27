@@ -100996,44 +100996,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1478697005756664333, guid: 514aa1831df67d64686d4b1d61d46c93, type: 3}
---- !u!1 &1685630260 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7163160239192320523, guid: 456d667c1c4881c48bb6c1e94b64512a, type: 3}
-  m_PrefabInstance: {fileID: 1875659534}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1685630266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1685630260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ae4d63aeba30354a9e0e92453e321ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DialogueEvent
-  onDialogueEnd: 0
-  battleSceneName: CCC_TESTEO
-  fadeDuration: 1
-  fadeCanvas: {fileID: 187074573}
-  npcDisappearDelay: 0.5
-  npcRenderer: {fileID: 0}
-  dissolveSpeed: 1.5
-  dissolveProperty: _DissolveAmount
---- !u!114 &1685630267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1685630260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e494086eb5cdea4b951503382d37d7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemiesGroup
-  GroupName: Jokyto
 --- !u!1 &1685793571
 GameObject:
   m_ObjectHideFlags: 0
@@ -110125,6 +110087,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6512691219641773712, guid: 456d667c1c4881c48bb6c1e94b64512a, type: 3}
+      propertyPath: fadeCanvas
+      value: 
+      objectReference: {fileID: 187074573}
     - target: {fileID: 7163160239192320523, guid: 456d667c1c4881c48bb6c1e94b64512a, type: 3}
       propertyPath: m_Name
       value: personaje_alt (1)
@@ -110172,13 +110138,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7163160239192320523, guid: 456d667c1c4881c48bb6c1e94b64512a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1685630266}
-    - targetCorrespondingSourceObject: {fileID: 7163160239192320523, guid: 456d667c1c4881c48bb6c1e94b64512a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1685630267}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 456d667c1c4881c48bb6c1e94b64512a, type: 3}
 --- !u!1001 &1875905984
 PrefabInstance:
