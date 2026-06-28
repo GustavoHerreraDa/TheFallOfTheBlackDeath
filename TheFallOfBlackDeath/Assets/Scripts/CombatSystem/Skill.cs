@@ -322,6 +322,23 @@ public abstract class Skill : MonoBehaviour
         return HasRequiredItems();
     }
 
+    /// <summary>
+    /// Returns true when at least one required body part is destroyed and has no active
+    /// prosthetic, meaning this skill is blocked specifically by mutilation.
+    /// Distinct from <see cref="IsUsable"/> which also gates on item availability.
+    /// </summary>
+    public bool IsBlockedByBodyPart(Fighter fighter)
+    {
+        if (requiredParts == null || requiredParts.Count == 0) return false;
+        foreach (var part in requiredParts)
+        {
+            var bodyPart = fighter.GetBodyPart(part);
+            if (bodyPart == null || (bodyPart.IsDestroyed && !bodyPart.HasActiveProsthetic))
+                return true;
+        }
+        return false;
+    }
+
     public virtual bool CanTriggerSynergy(Fighter target, BodyPart part = BodyPart.None)
         => false;
 

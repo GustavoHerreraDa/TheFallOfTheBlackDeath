@@ -30,6 +30,10 @@ public class PlayerSkillPanel : MonoBehaviour
     public Color rareColor = Color.chartreuse;
     public Color epicColor = new Color(0.6f, 0f, 1f);
 
+    [Header("Mutilation Feedback")]
+    public Color mutilatedLabelColor = new Color(0.85f, 0.1f, 0.1f, 1f);
+    public string mutilatedTag = "MUTILATED";
+
     private PlayerFighter targetFigther;
 
     /// <summary>
@@ -102,7 +106,11 @@ public class PlayerSkillPanel : MonoBehaviour
                 if (fx != null) fx.SetRarityColor(finalColor);
             }
         }
-        this.skillButtonLabels[index].text = skillName;
+        bool mutilated = skill.IsBlockedByBodyPart(targetFigther);
+        string hexColor = ColorUtility.ToHtmlStringRGB(mutilatedLabelColor);
+        this.skillButtonLabels[index].text = mutilated
+            ? $"<s>{skillName}</s> <color=#{hexColor}>{mutilatedTag}</color>"
+            : skillName;
     }
 
     /// <summary>
@@ -170,7 +178,11 @@ public class PlayerSkillPanel : MonoBehaviour
                 if (fx != null) fx.SetRarityColor(finalColor);
             }
         }
-        this.skillButtonLabels[index].text = skillName;
+        bool mutilated = skill.IsBlockedByBodyPart(targetFigther);
+        string hexColor = ColorUtility.ToHtmlStringRGB(mutilatedLabelColor);
+        this.skillButtonLabels[index].text = mutilated
+            ? $"<s>{skillName}</s> <color=#{hexColor}>{mutilatedTag}</color>"
+            : skillName;
     }
 
     /// <summary>
