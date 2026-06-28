@@ -302,6 +302,34 @@ public class CombatManager : MonoBehaviour
                     bool victory = areEnemiesAlive == false;
                     bool defeat = arePlayersAlive == false;
 
+                    // [PERMADEATH FEATURE] Insta-Game Over if Main Character dies
+                    bool isMainCharacterAlive = true;
+                    if (globalDataBase != null && playerTeam.Length > 0)
+                    {
+                        // Validamos si el índice 0 o cualquiera con el flag isMainCharacter ha muerto
+                        foreach (var fighter in playerTeam)
+                        {
+                            if (fighter is PlayerFighter pf)
+                            {
+                                if (pf.figherIndex >= 0 && pf.figherIndex < globalDataBase.EnemyDB.Count)
+                                {
+                                    if (globalDataBase.EnemyDB[pf.figherIndex].isMainCharacter && !pf.isAlive)
+                                    {
+                                        isMainCharacterAlive = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (playerTeam.Length > 0 && !playerTeam[0].isAlive)
+                    {
+                        // Fallback si no hay DB: asumimos el índice 0 como MC
+                        isMainCharacterAlive = false;
+                    }
+
+                    if (!isMainCharacterAlive) defeat = true;
+
 
                     if (victory)
                     {
@@ -328,11 +356,18 @@ public class CombatManager : MonoBehaviour
                         }
                      
                         // ── 2. Save player state ────────────────────────────────────────
+                        // [PERMADEATH FEATURE] Process permanent deaths before saving
+                        if (GameManager.Instance != null && playerTeam != null)
+                        {
+                            GameManager.Instance.ProcessPermanentDeaths(playerTeam);
+                        }
+
                         if (playerTeam != null)
                         {
                             foreach (var f in playerTeam)
                             {
-                                if (f is PlayerFighter pf)
+                                // [PERMADEATH FEATURE] Save only if alive
+                                if (f is PlayerFighter pf && pf.isAlive)
                                     GameManager.Instance.SavePlayerState(pf);
                             }
                         }
@@ -680,6 +715,13 @@ public class CombatManager : MonoBehaviour
         if (escaped)
         {
             LogPanel.Write("Escaped!");
+            
+            // [PERMADEATH FEATURE] Process permanent deaths before saving on escape
+            if (GameManager.Instance != null && playerTeam != null)
+            {
+                GameManager.Instance.ProcessPermanentDeaths(playerTeam);
+            }
+
             SavePlayerTeamState();
 
             if (GameManager.Instance != null)
@@ -754,7 +796,11 @@ public class CombatManager : MonoBehaviour
         foreach (var fighter in playerTeam)
         {
             if (fighter is PlayerFighter playerFighter)
-                GameManager.Instance.SavePlayerState(playerFighter);
+            {
+                // [PERMADEATH FEATURE] Save only if alive
+                if (playerFighter.isAlive)
+                    GameManager.Instance.SavePlayerState(playerFighter);
+            }
         }
     }
 

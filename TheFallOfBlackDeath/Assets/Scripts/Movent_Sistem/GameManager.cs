@@ -1374,66 +1374,72 @@ public class GameManager : MonoBehaviour
         
         Debug.Log($"[GameManager] Guardadas {savedPartyPositions.Count} posiciones de la party.");
     }
-    public void RestorePartyPositions()
+   public void RestorePartyPositions()
+{
+    // Forzar refresco de referencias para asegurar que detectamos a los compañeros en la nueva escena
+    RefreshActivePartyReferencesFromScene(); //[cite: 1]
+
+    if (savedPartyPositions == null || savedPartyPositions.Count == 0) return; //[cite: 1]
+
+    PlayerFighter leader = GetLeader(); //[cite: 1]
+    Vector3 leaderPos = lastPos; //[cite: 1]
+    bool hasLeaderPos = hasValidLastPos; //[cite: 1]
+
+    if (leader != null && hasLeaderPos) //[cite: 1]
     {
-        // Forzar refresco de referencias para asegurar que detectamos a los compañeros en la nueva escena
-        RefreshActivePartyReferencesFromScene();
-
-        if (savedPartyPositions == null || savedPartyPositions.Count == 0) return;
-
-        PlayerFighter leader = GetLeader();
-        Vector3 leaderPos = lastPos;
-        bool hasLeaderPos = hasValidLastPos;
-
-        if (leader != null && hasLeaderPos)
-        {
-            leaderPos = lastPos;
-        }
-        else if (leader != null && !hasLeaderPos && startPost != null)
-        {
-            leaderPos = startPost.position;
-            hasLeaderPos = true;
-        }
-
-        var members = GetPartyMembers();
-
-        foreach (var data in savedPartyPositions)
-        {
-            PlayerFighter fighter = members.FirstOrDefault(m => m != null && m.figherIndex == data.fighterIndex);
-            
-            // Si el miembro no está en la lista de party actual, lo buscamos en toda la escena
-            if (fighter == null)
-            {
-                fighter = FindObjectsOfType<PlayerFighter>().FirstOrDefault(m => m != null && m.figherIndex == data.fighterIndex);
-            }
-
-            if (fighter == null) continue;
-
-            CharacterController controller = fighter.GetComponent<CharacterController>();
-            if (controller != null) controller.enabled = false;
-
-            if (fighter == leader)
-            {
-                // Si venimos de un cambio de escena que define lastPos, priorizar esa para el líder
-                if (hasLeaderPos) 
-                    fighter.transform.position = leaderPos;
-                else
-                    fighter.transform.position = data.position;
-            }
-            else
-            {
-                // SOLUCIÓN: Aplicamos directamente la posición exacta guardada del compañero
-                fighter.transform.position = data.position;
-            }
-
-            if (controller != null)
-            {
-                StartCoroutine(ReenableController(controller));
-            }
-        }
-        
-        Debug.Log("[GameManager] Posiciones de la party restauradas exactamente donde estaban.");
+        leaderPos = lastPos; //[cite: 1]
     }
+    else if (leader != null && !hasLeaderPos && startPost != null) //[cite: 1]
+    {
+        leaderPos = startPost.position; //[cite: 1]
+        hasLeaderPos = true; //[cite: 1]
+    }
+
+    var members = GetPartyMembers(); //[cite: 1]
+
+    foreach (var data in savedPartyPositions) //[cite: 1]
+    {
+        PlayerFighter fighter = members.FirstOrDefault(m => m != null && m.figherIndex == data.fighterIndex); //[cite: 1]
+        
+        // Si el miembro no está en la lista de party actual, lo buscamos en toda la escena
+        if (fighter == null) //[cite: 1]
+        {
+            fighter = FindObjectsOfType<PlayerFighter>().FirstOrDefault(m => m != null && m.figherIndex == data.fighterIndex); //[cite: 1]
+        }
+
+        if (fighter == null) continue; //[cite: 1]
+
+        CharacterController controller = fighter.GetComponent<CharacterController>(); //[cite: 1]
+        UnityEngine.AI.NavMeshAgent agent = fighter.GetComponent<UnityEngine.AI.NavMeshAgent>();
+
+        if (controller != null) controller.enabled = false; //[cite: 1]
+
+        // Determinamos la posición objetivo
+        Vector3 targetPosition = data.position;
+        if (fighter == leader) //[cite: 1]
+        {
+            targetPosition = hasLeaderPos ? leaderPos : data.position;
+        }
+
+        // Si tiene NavMeshAgent, lo teletransportamos de forma segura usando Warp
+        if (agent != null)
+        {
+            agent.Warp(targetPosition);
+        }
+        else
+        {
+            // Si no tiene NavMeshAgent, modificamos el transform directamente
+            fighter.transform.position = targetPosition; //[cite: 1]
+        }
+
+        if (controller != null) //[cite: 1]
+        {
+            StartCoroutine(ReenableController(controller)); //[cite: 1]
+        }
+    }
+    
+    Debug.Log("[GameManager] Posiciones de la party restauradas exactamente donde estaban."); //[cite: 1]
+}
 
     private IEnumerator ReenableController(CharacterController controller)
     {
@@ -1479,6 +1485,64 @@ public class GameManager : MonoBehaviour
         Debug.Log("[GameManager] Estado reseteado para nueva partida.");
     }
 
+    // [PERMADEATH FEATURE]
+    /// <summary>
+    /// Procesa la muerte permanente de los compañeros caídos en combate.
+    /// </summary>
+    /// <param name="team">El equipo de luchadores a procesar.</param>
+    public void ProcessPermanentDeaths(Fighter[] team)
+    {
+        if (team == null) return;
+
+        var db = globalGlobalDatabase;
+        if (db == null && character1 != null) db = character1.fightersDateBase;
+
+        foreach (var fighter in team)
+        {
+            if (fighter is PlayerFighter pf)
+            {
+                bool isMain = false;
+                if (db != null && pf.figherIndex >= 0 && pf.figherIndex < db.EnemyDB.Count)
+                {
+                    isMain = db.EnemyDB[pf.figherIndex].isMainCharacter;
+                }
+
+                // Si no es el protagonista y ha muerto
+                if (!isMain && !pf.isAlive)
+                {
+                    int index = pf.figherIndex;
+
+                    // 1. Retirar de la party (desvincular referencias)
+                    activePartyIds.Remove(index);
+                    
+                    // 2. Eliminar de recruitedCharacterIds
+                    recruitedCharacterIds.Remove(index);
+
+                    // 3. Borrar su HP/Estado del diccionario savedPlayersStatus
+                    if (savedPlayersStatus != null && savedPlayersStatus.ContainsKey(index))
+                    {
+                        savedPlayersStatus.Remove(index);
+                    }
+
+                    // 4. Marcar PlayerPrefs como muerto
+                    PlayerPrefs.SetInt("Flag_Muerto_" + index, 1);
+                    PlayerPrefs.Save();
+
+                    // 5. Sincronizar Flags de la base de datos si existe
+                    if (db != null && index >= 0 && index < db.EnemyDB.Count)
+                    {
+                        db.SetSecondaryCharacter(index, false);
+                    }
+
+                    Debug.Log($"[PERMADEATH] {pf.idName} (Index: {index}) ha muerto permanentemente.");
+                }
+            }
+        }
+
+        SyncDatabasePartyFlags();
+        RefreshUI();
+    }
+
     /// <summary>
     /// Hides the recruited np cs.
     /// </summary>
@@ -1491,6 +1555,13 @@ public class GameManager : MonoBehaviour
         var allFighters = FindObjectsOfType<PlayerFighter>();
         foreach (var pf in allFighters)
         {
+            // [PERMADEATH FEATURE]
+            if (PlayerPrefs.GetInt("Flag_Muerto_" + pf.figherIndex, 0) == 1)
+            {
+                Destroy(pf.gameObject);
+                continue;
+            }
+
             // Si este NPC ya está reclutado en la base de datos
             if (globalGlobalDatabase != null && pf.figherIndex < globalGlobalDatabase.EnemyDB.Count)
             {
