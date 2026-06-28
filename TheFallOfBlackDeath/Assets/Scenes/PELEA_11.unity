@@ -410,15 +410,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1425671951508528909, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.13
+      value: 0.28
       objectReference: {fileID: 0}
     - target: {fileID: 1425671951508528909, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 11.67
+      value: 0.26
       objectReference: {fileID: 0}
     - target: {fileID: 1425671951508528909, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 11.21
+      value: 11.280001
       objectReference: {fileID: 0}
     - target: {fileID: 1425671951508528909, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -476,6 +476,18 @@ PrefabInstance:
       propertyPath: damageAmount
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 8026555295945238870, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8026555295945238870, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 127eb16f938e5ce4ba4d539a71af69be, type: 2}
+    - target: {fileID: 8026555295945238870, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5b83f8503e52182468ee73a7f55f66bd, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8054353827029705063, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
@@ -484,7 +496,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5085042385562208030, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 901926184}
+      addedObject: {fileID: 901926188}
   m_SourcePrefab: {fileID: 100100000, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
 --- !u!114 &128378388 stripped
 MonoBehaviour:
@@ -1477,33 +1489,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5085042385562208030, guid: 51e7a5b895325b5438a217b49d07407c, type: 3}
   m_PrefabInstance: {fileID: 128378387}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &901926184
-Rigidbody:
+--- !u!114 &901926188
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901926180}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b17806da08d5fa479606fff2f7c99c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnDissolve
+  enemyParts: []
+  startHeight: 2
+  endHeight: -2
+  duration: 2.5
 --- !u!1001 &904173911
 PrefabInstance:
   m_ObjectHideFlags: 0
