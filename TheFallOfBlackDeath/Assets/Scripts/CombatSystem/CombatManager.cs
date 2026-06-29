@@ -450,11 +450,17 @@ public class CombatManager : MonoBehaviour
                         GameManager.Instance.SetGameState(GameManager.GameStates.TOWN_STATE);
                         GameManager.Instance.enemyToBattle.Clear();
                      
-                        var realName = enemyTeam[0].GetComponent<EnemiesGroup>().GroupName;
-                        ListEnemyDefeat.enemiesDefeat.Add(realName);
-                        PlayerPrefs.SetString("GrupoEnemigo", realName);
-                     
-                        Debug.Log("Guardando enemigo derrotado REAL: " + realName);
+                        var group = enemyTeam[0].GetComponent<EnemiesGroup>();
+                        if (group != null)
+                        {
+                            ListEnemyDefeat.enemiesDefeat.Add(group.GroupName);
+                            PlayerPrefs.SetString("GrupoEnemigo", group.GroupName);
+                            Debug.Log("Guardando enemigo derrotado REAL: " + group.GroupName);
+                        }
+                        else
+                        {
+                            Debug.LogWarning("[CombatManager] No se encontró EnemiesGroup en el equipo enemigo.");
+                        }
                         SceneManager.LoadScene(GameManager.Instance.LastExplorationSceneIndex);
                     }
 

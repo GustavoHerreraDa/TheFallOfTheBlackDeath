@@ -3100,7 +3100,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7894286329559360316, guid: 4c942c78fbb95274f960fef6fb0cb01b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0008650865
+      value: 0.000769513
       objectReference: {fileID: 0}
     - target: {fileID: 8324900592633403850, guid: 4c942c78fbb95274f960fef6fb0cb01b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -15498,7 +15498,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5608730332048236629, guid: 9af97e77cd1932f4a950094b6e385fed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1591500976}
   m_SourcePrefab: {fileID: 100100000, guid: 9af97e77cd1932f4a950094b6e385fed, type: 3}
 --- !u!1 &324480022 stripped
 GameObject:
@@ -82973,6 +82976,38 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1478697005756664333, guid: 514aa1831df67d64686d4b1d61d46c93, type: 3}
+--- !u!1 &1591500962 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5608730332048236629, guid: 9af97e77cd1932f4a950094b6e385fed, type: 3}
+  m_PrefabInstance: {fileID: 323986700}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1591500964 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 685318739063058444, guid: 9af97e77cd1932f4a950094b6e385fed, type: 3}
+  m_PrefabInstance: {fileID: 323986700}
+  m_PrefabAsset: {fileID: 0}
+--- !u!195 &1591500969 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 2707275983036987229, guid: 9af97e77cd1932f4a950094b6e385fed, type: 3}
+  m_PrefabInstance: {fileID: 323986700}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1591500976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1591500962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99609a71934845a1a2e6327436184154, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AllyFollower
+  agent: {fileID: 1591500969}
+  anim: {fileID: 1591500964}
+  target: {fileID: 577793064}
+  stoppingDistance: 2
+  sprintDistance: 6
 --- !u!1 &1592345728 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4270905871079961295, guid: 44eb2cf1805cea34eb326a80bdc85558, type: 3}
@@ -86499,6 +86534,22 @@ PrefabInstance:
       propertyPath: startPost
       value: 
       objectReference: {fileID: 425587412}
+    - target: {fileID: 5480911531806588926, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
+      propertyPath: groupEnemyDefeat.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5480911531806588926, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
+      propertyPath: 'groupEnemyDefeat.Array.data[0]'
+      value: PELEA__10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5480911531806588926, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
+      propertyPath: 'groupEnemyDefeat.Array.data[1]'
+      value: PELEA__11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5480911531806588926, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
+      propertyPath: 'groupEnemyDefeat.Array.data[2]'
+      value: Bos_2
+      objectReference: {fileID: 0}
     - target: {fileID: 5480911531806588927, guid: 63d1585a345cffe4599df2e6ef471d76, type: 3}
       propertyPath: m_Name
       value: GameManager

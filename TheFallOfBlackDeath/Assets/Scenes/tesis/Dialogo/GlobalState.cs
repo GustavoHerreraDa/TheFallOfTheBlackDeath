@@ -182,9 +182,14 @@ public class GlobalStateEditor : UnityEditor.Editor
         if (GUILayout.Button("BORRAR TODO EL PROGRESO (Flags e Items)"))
         {
             if (UnityEditor.EditorUtility.DisplayDialog("Borrar Estado Global", 
-                "¿Estás seguro de que quieres borrar todos los flags y variables persistentes? Esto no se puede deshacer.", "Sí", "No"))
+                    "¿Estás seguro de que quieres borrar todos los flags y variables persistentes? Esto no se puede deshacer.", "Sí", "No"))
             {
                 gs.ClearPersistentFlags();
+                
+                // Agrega estas líneas para limpiar los muertos y grupos enemigos del GameManager
+                PlayerPrefs.DeleteAll();
+                PlayerPrefs.Save();
+                Debug.Log("[GlobalState] PlayerPrefs borrados correctamente.");
             }
         }
         GUI.color = Color.white;

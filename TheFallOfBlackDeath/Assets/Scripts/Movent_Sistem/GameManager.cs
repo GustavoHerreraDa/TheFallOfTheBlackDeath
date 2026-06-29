@@ -961,6 +961,9 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // Siempre refrescar la lista de enemigos y objetos de la escena activa
+        FindEnemiesAndObjets();
+
         if (scene.buildIndex == lastExplorationSceneIndex)
         {
             // Refrescar startPost para evitar referencia rota al objeto destruido de la escena anterior
@@ -994,19 +997,14 @@ public class GameManager : MonoBehaviour
             if (nombre == string.Empty)
                 return;
 
-            // recorre la lista de los enemigos derrotados y los obj pickeado y los destruye de la escena
+            // recorre la lista de los enemigos derrotados y los destruye de la escena si existen en ella
             for (int i = 0; i < ListEnemyDefeat.enemiesDefeat.Count; i++)
             {
-                var enemy = enemies.Where(x => x.GroupName == ListEnemyDefeat.enemiesDefeat[i]).FirstOrDefault();
-                var info = (obj: enemy, name: enemy?.GroupName ?? "<no encontrado>");
-                // busca en la lista `enemies` si el GroupName es igual guardado.
-                if (info.obj != null) { Destroy(info.obj.gameObject); Debug.Log($"GrupoEnemigo {info.name} enemyIndex {i}"); }
-
-                Debug.Log("GrupoEnemigo " + ListEnemyDefeat.enemiesDefeat[i] + " enemyIndex " + i + enemy.GroupName);
+                var enemy = enemies.FirstOrDefault(x => x.GroupName == ListEnemyDefeat.enemiesDefeat[i]);
+                if (enemy == null) continue; // puede ser de otro nivel, se ignora sin crashear
                 Destroy(enemy.gameObject);
+                Debug.Log($"GrupoEnemigo {enemy.GroupName} destruido (índice {i})");
             }
-            // Limpia solo los pickups recogidos por su clave persistente.
-            RemoveCollectedPickupsFromScene();
         }
     }
 
