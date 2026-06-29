@@ -16,7 +16,7 @@ public class QTEParryManager : MonoBehaviour
     [SerializeField] private Image ringImage;          // El anillo radial (Debe configurarse como Image Type: Filled)
 
     [Header("Input")]
-    [SerializeField] private string parryButtonName = "Parry";
+    //[SerializeField] private string parryButtonName = "Parry";
 
     [Header("Chromatic Zones Config")]
     [Tooltip("Duración en segundos (tiempo real) de la ventana perfecta inicial.")]
@@ -87,7 +87,7 @@ public class QTEParryManager : MonoBehaviour
         while (elapsed < windowDuration)
         {
             // Registrar input del jugador
-            if (Input.GetButtonDown(parryButtonName))
+            if (Input.GetMouseButtonDown(0))
             {
                 parried = true;
                 break;
