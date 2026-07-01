@@ -93,6 +93,7 @@ public class GameManager : MonoBehaviour
     public void RegisterPartyMember(PlayerFighter fighter)
     {
         if (fighter == null) return;
+        if (IsCharacterPermanentlyDead(fighter.figherIndex)) return;
         NormalizePartyIds();
         if (!activePartyIds.Contains(fighter.figherIndex))
         {
@@ -168,6 +169,7 @@ public class GameManager : MonoBehaviour
     public void SetLeader(PlayerFighter fighter)
     {
         if (fighter == null) return;
+        if (IsCharacterPermanentlyDead(fighter.figherIndex)) return;
 
         NormalizePartyIds();
         MarkCharacterRecruited(fighter.figherIndex);
@@ -191,6 +193,7 @@ public class GameManager : MonoBehaviour
     public void MarkCharacterRecruited(int fighterIndex)
     {
         if (fighterIndex < 0) return;
+        if (IsCharacterPermanentlyDead(fighterIndex)) return;
         if (!recruitedCharacterIds.Contains(fighterIndex))
         {
             recruitedCharacterIds.Add(fighterIndex);
@@ -200,6 +203,11 @@ public class GameManager : MonoBehaviour
     public void RegisterSceneFighter(PlayerFighter fighter)
     {
         if (fighter == null) return;
+        if (IsCharacterPermanentlyDead(fighter.figherIndex))
+        {
+            Destroy(fighter.gameObject);
+            return;
+        }
 
         bool isMain = IsMainCharacterInDatabase(fighter.figherIndex, fighter.fightersDateBase);
         bool isActive = IsActivePartyMember(fighter.figherIndex) ||
@@ -320,6 +328,12 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        if (IsCharacterPermanentlyDead(fighterIndex))
+        {
+            db.SetSecondaryCharacter(fighterIndex, false);
+            return;
+        }
+
         db.SetSecondaryCharacter(fighterIndex, isActive);
     }
 
@@ -356,6 +370,7 @@ public class GameManager : MonoBehaviour
     
     // New persistent pickups using GUIDs
     [SerializeField] private List<string> collectedPickupGuids = new List<string>();
+    [SerializeField] private List<int> permanentlyDeadCharacterIds = new List<int>();
 
     public bool IsPickupCollected(string guid)
     {
@@ -370,6 +385,24 @@ public class GameManager : MonoBehaviour
         {
             collectedPickupGuids.Add(guid);
         }
+    }
+
+    public bool IsCharacterPermanentlyDead(int fighterIndex)
+    {
+        return fighterIndex >= 0 && permanentlyDeadCharacterIds.Contains(fighterIndex);
+    }
+
+    private void MarkCharacterPermanentlyDead(int fighterIndex)
+    {
+        if (fighterIndex < 0 || permanentlyDeadCharacterIds.Contains(fighterIndex)) return;
+        permanentlyDeadCharacterIds.Add(fighterIndex);
+    }
+
+    public void RegisterDefeatedEnemyGroup(string groupName)
+    {
+        if (string.IsNullOrEmpty(groupName)) return;
+        if (!ListEnemyDefeat.enemiesDefeat.Contains(groupName))
+            ListEnemyDefeat.enemiesDefeat.Add(groupName);
     }
 
     public void RegisterCurrentEncounterGroup(string groupName)
@@ -647,6 +680,7 @@ public class GameManager : MonoBehaviour
             RefreshUI();
             return;
         }
+        if (IsCharacterPermanentlyDead(pf.figherIndex)) return;
         
         if (!activePartyIds.Contains(pf.figherIndex))
         {
@@ -705,6 +739,7 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < db.EnemyDB.Count; i++)
             {
+                if (IsCharacterPermanentlyDead(i)) continue;
                 if (db.EnemyDB[i].isMainCharacter) mainIdx = i;
                 if (db.EnemyDB[i].isSecondaryCharacter) dbActiveIds.Add(i);
             }
@@ -869,17 +904,36 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void FindPlayer()
     {
+        TryCachePlayerReference(true);
+    }
+
+    private bool HasRuntimePlayerReference()
+    {
+        return character != null &&
+               character.scene.IsValid() &&
+               character.GetComponent<PlayerControl>() != null;
+    }
+
+    private bool TryCachePlayerReference(bool logIfMissing)
+    {
+        if (HasRuntimePlayerReference())
+            return true;
+
         var playerControl = FindObjectOfType<PlayerControl>();
         if (playerControl != null)
         {
             character = playerControl.gameObject;
             // REMOVIDO: No modificar posición aquí, se hace en RestorePlayerPositionSafely
             Debug.Log($"Player encontrado: {character.name}");
+            return true;
         }
-        else
+
+        if (logIfMissing)
         {
             Debug.LogWarning("PlayerControl no encontrado en la escena");
         }
+
+        return false;
     }
       /// <summary>
       /// Finds the enemies and objets.
@@ -923,17 +977,21 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < globalGlobalDatabase.EnemyDB.Count; i++)
         {
+            if (IsCharacterPermanentlyDead(i)) continue;
+
             string flag = "Reclutado_" + i;
-            if (PlayerPrefs.GetInt("Flag_" + flag, 0) == 1)
+            bool isRecruitedInMemory = recruitedCharacterIds.Contains(i) ||
+                                       (GlobalState.Instance != null && GlobalState.Instance.HasFlag(flag));
+
+            if (isRecruitedInMemory)
             {
-                Debug.Log($"Restaurando reclutamiento para index {i} desde Flags");
+                Debug.Log($"Restaurando reclutamiento para index {i} desde memoria");
                 MarkCharacterRecruited(i);
                 if (!activePartyIds.Contains(i) && activePartyIds.Count < maxActivePartySize)
                 {
                     activePartyIds.Add(i);
                 }
                 globalGlobalDatabase.SetSecondaryCharacter(i, activePartyIds.Contains(i));
-                if (GlobalState.Instance != null) GlobalState.Instance.AddFlag(flag);
             }
         }
 
@@ -992,9 +1050,7 @@ public class GameManager : MonoBehaviour
             RemoveCollectedPickupsFromScene();
             ApplyPendingEscapedEnemyStun();
 
-            string nombre = PlayerPrefs.GetString("GrupoEnemigo");
-
-            if (nombre == string.Empty)
+            if (ListEnemyDefeat.enemiesDefeat == null || ListEnemyDefeat.enemiesDefeat.Count == 0)
                 return;
 
             // recorre la lista de los enemigos derrotados y los destruye de la escena si existen en ella
@@ -1090,11 +1146,16 @@ public class GameManager : MonoBehaviour
             activeSkillLoadoutIds = fighter.GetActiveLoadoutIds() // NUEVO
         };
 
-        foreach (var part in fighter.bodyParts)
+        if (fighter.bodyParts != null)
         {
-            data.bodyPartsHealth.Add(part.currentHealth);
-            data.bodyPartsMaxHealth.Add(part.GetMaxHealth(fighter));
-            data.prostheticHealths.Add(part.prostheticCurrentHealth);
+            foreach (var part in fighter.bodyParts)
+            {
+                if (part == null) continue;
+
+                data.bodyPartsHealth.Add(part.currentHealth);
+                data.bodyPartsMaxHealth.Add(part.GetMaxHealth(fighter));
+                data.prostheticHealths.Add(part.prostheticCurrentHealth);
+            }
         }
 
         // Persistencia de equipo: Guardar los IDs de los objetos equipados
@@ -1152,25 +1213,48 @@ public class GameManager : MonoBehaviour
         if (s == null) return;
         s.level = savedPlayerStatus.level;
         s.experience = savedPlayerStatus.experience;
-        s.maxHealth = savedPlayerStatus.maxHealth;
+        s.maxHealth = savedPlayerStatus.maxHealth > 0f
+            ? savedPlayerStatus.maxHealth
+            : Mathf.Max(1f, s.maxHealth);
         s.health = Mathf.Clamp(savedPlayerStatus.currentHealth, 0, s.maxHealth);
         s.attack = savedPlayerStatus.attack;
         s.deffense = savedPlayerStatus.defense;
         s.spirit = savedPlayerStatus.spirit;
         s.speed = savedPlayerStatus.speed;
 
-        for (int i = 0; i < fighter.bodyParts.Count && i < savedPlayerStatus.bodyPartsHealth.Count; i++)
+        if (fighter.bodyParts != null && fighter.bodyParts.Count > 0)
         {
-            fighter.bodyParts[i].currentHealth = savedPlayerStatus.bodyPartsHealth[i];
-        }
+            if (savedPlayerStatus.bodyPartsHealth == null)
+                savedPlayerStatus.bodyPartsHealth = new List<float>();
 
-        if (savedPlayerStatus.bodyPartsMaxHealth == null ||
-            savedPlayerStatus.bodyPartsMaxHealth.Count != fighter.bodyParts.Count)
-        {
-            savedPlayerStatus.bodyPartsMaxHealth = new List<float>();
-            foreach (var part in fighter.bodyParts)
+            for (int i = 0; i < fighter.bodyParts.Count; i++)
             {
-                savedPlayerStatus.bodyPartsMaxHealth.Add(part.GetMaxHealth(fighter));
+                var part = fighter.bodyParts[i];
+                if (part == null) continue;
+
+                float maxPartHealth = part.GetMaxHealth(fighter);
+                float savedPartHealth = i < savedPlayerStatus.bodyPartsHealth.Count
+                    ? savedPlayerStatus.bodyPartsHealth[i]
+                    : part.currentHealth;
+
+                part.currentHealth = Mathf.Clamp(savedPartHealth, 0f, maxPartHealth);
+            }
+
+            if (savedPlayerStatus.bodyPartsMaxHealth == null)
+                savedPlayerStatus.bodyPartsMaxHealth = new List<float>();
+
+            while (savedPlayerStatus.bodyPartsMaxHealth.Count < fighter.bodyParts.Count)
+            {
+                int index = savedPlayerStatus.bodyPartsMaxHealth.Count;
+                var part = fighter.bodyParts[index];
+                savedPlayerStatus.bodyPartsMaxHealth.Add(part != null ? part.GetMaxHealth(fighter) : 0f);
+            }
+
+            if (savedPlayerStatus.bodyPartsMaxHealth.Count > fighter.bodyParts.Count)
+            {
+                savedPlayerStatus.bodyPartsMaxHealth.RemoveRange(
+                    fighter.bodyParts.Count,
+                    savedPlayerStatus.bodyPartsMaxHealth.Count - fighter.bodyParts.Count);
             }
 
             savedPlayersStatus[key] = savedPlayerStatus;
@@ -1197,10 +1281,15 @@ public class GameManager : MonoBehaviour
         // PASO 5: AHORA restaurar prostheticCurrentHealth, DESPUÉS de EquipForce
         // EquipForce ya inicializó los valores a maxHealth para prótesis nuevas.
         // Este paso sobreescribe con los valores guardados para prótesis con HP parcial.
-        if (savedPlayerStatus.prostheticHealths != null)
+        if (fighter.bodyParts != null &&
+            fighter.bodyParts.Count > 0 &&
+            savedPlayerStatus.prostheticHealths != null &&
+            savedPlayerStatus.prostheticHealths.Count > 0)
         {
             for (int i = 0; i < fighter.bodyParts.Count && i < savedPlayerStatus.prostheticHealths.Count; i++)
             {
+                if (fighter.bodyParts[i] == null) continue;
+
                 float savedProstheticHp = savedPlayerStatus.prostheticHealths[i];
                 if (savedProstheticHp > 0f) // solo sobreescribir si había una prótesis activa al guardar
                     fighter.bodyParts[i].prostheticCurrentHealth = savedProstheticHp;
@@ -1257,18 +1346,22 @@ public class GameManager : MonoBehaviour
         // Esperar un frame para que la escena termine de cargar
         yield return null;
         
-        int maxAttempts = 60; // 1 segundo máximo en 60fps
+        const int maxAttempts = 6;
         int attempts = 0;
+        WaitForSeconds retryDelay = new WaitForSeconds(0.1f);
         
         // Esperar hasta que el player esté completamente listo
-        while (character == null && attempts < maxAttempts)
+        while (!HasRuntimePlayerReference() && attempts < maxAttempts)
         {
-            FindPlayer();
-            yield return new WaitForFixedUpdate();
+            TryCachePlayerReference(false);
+            if (HasRuntimePlayerReference())
+                break;
+
             attempts++;
+            yield return retryDelay;
         }
         
-        if (character != null)
+        if (HasRuntimePlayerReference())
         {
             CharacterController controller = character.GetComponent<CharacterController>();
             
@@ -1319,7 +1412,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No se pudo encontrar el character después de cargar la escena");
+            Debug.LogError("No se pudo encontrar el PlayerControl después de cargar la escena");
         }
     }
     
@@ -1474,6 +1567,10 @@ public class GameManager : MonoBehaviour
         currentEncounterGroupName = string.Empty;
         pendingEscapedEnemyGroupName = string.Empty;
         pendingEscapedEnemyStunDuration = 0f;
+        collectedPickupGuids.Clear();
+        permanentlyDeadCharacterIds.Clear();
+        ListEnemyDefeat.enemiesDefeat.Clear();
+        ListEnemyDefeat.pickUpsInWorld.Clear();
 
         // Limpiar referencias de escena (se reasignan cuando carga la nueva escena)
         character = null;
@@ -1522,9 +1619,8 @@ public class GameManager : MonoBehaviour
                         savedPlayersStatus.Remove(index);
                     }
 
-                    // 4. Marcar PlayerPrefs como muerto
-                    PlayerPrefs.SetInt("Flag_Muerto_" + index, 1);
-                    PlayerPrefs.Save();
+                    // 4. Marcar muerte permanente solo en memoria de sesión.
+                    MarkCharacterPermanentlyDead(index);
 
                     // 5. Sincronizar Flags de la base de datos si existe
                     if (db != null && index >= 0 && index < db.EnemyDB.Count)
@@ -1554,7 +1650,7 @@ public class GameManager : MonoBehaviour
         foreach (var pf in allFighters)
         {
             // [PERMADEATH FEATURE]
-            if (PlayerPrefs.GetInt("Flag_Muerto_" + pf.figherIndex, 0) == 1)
+            if (IsCharacterPermanentlyDead(pf.figherIndex))
             {
                 Destroy(pf.gameObject);
                 continue;

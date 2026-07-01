@@ -53,7 +53,7 @@ public class SceneLoadManager : MonoBehaviour
     /// <returns>An enumerator that drives the coroutine sequence.</returns>
     IEnumerator LoadAsync(int sceneIndex)
     {
-        PlayerPrefs.SetString("GrupoEnemigo", string.Empty);
+        ListEnemyDefeat.enemiesDefeat.Clear();
 
         loadbar.value = 0;
         loadPanel.SetActive(true);

@@ -18,6 +18,8 @@ namespace InventoryNew
         public ItemCategory currentCategory = ItemCategory.Consumable;
 
         private PlayerFighter activeTarget;
+        private Coroutine ensureManagerReadyRoutine;
+        private bool subscribedToInventory;
 
         public void SetActiveTarget(PlayerFighter target)
         {
@@ -43,7 +45,8 @@ namespace InventoryNew
                 }
             }
 
-            StartCoroutine(EnsureManagerReady());
+            if (ensureManagerReadyRoutine == null)
+                ensureManagerReadyRoutine = StartCoroutine(EnsureManagerReady());
         }
 
         private System.Collections.IEnumerator EnsureManagerReady()
@@ -55,21 +58,50 @@ namespace InventoryNew
             }
 
             // Una vez que sale del bucle, el manager es seguro
-            NewInventoryManager.Instance.OnInventoryChanged += RefreshUI;
+            if (!isActiveAndEnabled)
+            {
+                ensureManagerReadyRoutine = null;
+                yield break;
+            }
+
+            SubscribeToInventory();
             RefreshUI();
+            ensureManagerReadyRoutine = null;
         }
 
         private void OnDisable()
         {
+            if (ensureManagerReadyRoutine != null)
+            {
+                StopCoroutine(ensureManagerReadyRoutine);
+                ensureManagerReadyRoutine = null;
+            }
+
             if (memberSelector != null)
             {
                 memberSelector.OnMemberSelected -= SetActiveTarget;
             }
 
-            if (NewInventoryManager.Instance != null)
+            UnsubscribeFromInventory();
+        }
+
+        private void SubscribeToInventory()
+        {
+            if (NewInventoryManager.Instance == null || subscribedToInventory)
+                return;
+
+            NewInventoryManager.Instance.OnInventoryChanged += RefreshUI;
+            subscribedToInventory = true;
+        }
+
+        private void UnsubscribeFromInventory()
+        {
+            if (NewInventoryManager.Instance != null && subscribedToInventory)
             {
                 NewInventoryManager.Instance.OnInventoryChanged -= RefreshUI;
             }
+
+            subscribedToInventory = false;
         }
 
         public void SetCategory(int categoryIndex)
@@ -146,6 +178,7 @@ namespace InventoryNew
                         bodyPartHealPanel.Show(target, healAmount, onPartSelected: (part) => 
                         {
                             target.ModifyBodyPartHealth(part, healAmount);
+                            GameManager.Instance.SavePlayerState(target);
                             NewInventoryManager.Instance.RemoveItem(item.data.id, 1);
                             RefreshUI();
                             Debug.Log($"[NewInventoryPanelUI] {part} curado en {target.idName} con {healAmount} HP");

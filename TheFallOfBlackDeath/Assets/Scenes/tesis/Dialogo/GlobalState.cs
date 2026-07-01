@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 /// <summary>
-/// Pro Blackboard System: Maneja el estado global del juego (flags, variables, persistencia).
+/// Pro Blackboard System: Maneja el estado global del juego en memoria.
 /// </summary>
 public class GlobalState : MonoBehaviour
 {
@@ -51,7 +51,6 @@ public class GlobalState : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            LoadState();
         }
         else
         {
@@ -68,7 +67,6 @@ public class GlobalState : MonoBehaviour
         if (_flags.Add(flag))
         {
             OnFlagChanged?.Invoke(flag, true);
-            SaveState();
         }
     }
 
@@ -82,7 +80,6 @@ public class GlobalState : MonoBehaviour
         if (_flags.Remove(flag))
         {
             OnFlagChanged?.Invoke(flag, false);
-            SaveState();
         }
     }
 
@@ -108,7 +105,6 @@ public class GlobalState : MonoBehaviour
         {
             _intVariables[key] = value;
             OnVariableChanged?.Invoke(key, value);
-            SaveState();
         }
     }
 
@@ -117,8 +113,8 @@ public class GlobalState : MonoBehaviour
         if (varSO != null) SetInt(varSO.Id, value);
     }
 
-    // --- Persistencia Pro (JSON) ---
-    public void SaveState()
+    // --- Persistencia manual (JSON) ---
+    public void SaveGameToDisk()
     {
         BlackboardData data = new BlackboardData();
         data.flags = new List<string>(_flags);
@@ -130,10 +126,10 @@ public class GlobalState : MonoBehaviour
 
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(SavePath, json);
-        // Debug.Log($"[GlobalState] Estado guardado en: {SavePath}");
+        Debug.Log($"[GlobalState] Estado guardado manualmente en: {SavePath}");
     }
 
-    public void LoadState()
+    public void LoadGameFromDisk()
     {
         if (!File.Exists(SavePath)) return;
 
@@ -142,13 +138,18 @@ public class GlobalState : MonoBehaviour
             string json = File.ReadAllText(SavePath);
             BlackboardData data = JsonUtility.FromJson<BlackboardData>(json);
 
-            _flags = new HashSet<string>(data.flags);
+            _flags = data != null && data.flags != null
+                ? new HashSet<string>(data.flags)
+                : new HashSet<string>();
             _intVariables.Clear();
-            foreach (var pair in data.intVariables)
+            if (data != null && data.intVariables != null)
             {
-                _intVariables[pair.key] = pair.value;
+                foreach (var pair in data.intVariables)
+                {
+                    _intVariables[pair.key] = pair.value;
+                }
             }
-            // Debug.Log("[GlobalState] Estado cargado correctamente.");
+            Debug.Log("[GlobalState] Estado cargado manualmente desde disco.");
         }
         catch (Exception e)
         {
@@ -185,11 +186,6 @@ public class GlobalStateEditor : UnityEditor.Editor
                     "¿Estás seguro de que quieres borrar todos los flags y variables persistentes? Esto no se puede deshacer.", "Sí", "No"))
             {
                 gs.ClearPersistentFlags();
-                
-                // Agrega estas líneas para limpiar los muertos y grupos enemigos del GameManager
-                PlayerPrefs.DeleteAll();
-                PlayerPrefs.Save();
-                Debug.Log("[GlobalState] PlayerPrefs borrados correctamente.");
             }
         }
         GUI.color = Color.white;

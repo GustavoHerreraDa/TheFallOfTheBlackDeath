@@ -453,9 +453,8 @@ public class CombatManager : MonoBehaviour
                         var group = enemyTeam[0].GetComponent<EnemiesGroup>();
                         if (group != null)
                         {
-                            ListEnemyDefeat.enemiesDefeat.Add(group.GroupName);
-                            PlayerPrefs.SetString("GrupoEnemigo", group.GroupName);
-                            Debug.Log("Guardando enemigo derrotado REAL: " + group.GroupName);
+                            GameManager.Instance.RegisterDefeatedEnemyGroup(group.GroupName);
+                            Debug.Log("Registrando enemigo derrotado en memoria: " + group.GroupName);
                         }
                         else
                         {
