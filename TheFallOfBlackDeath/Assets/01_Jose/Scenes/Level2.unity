@@ -3138,7 +3138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7894286329559360316, guid: 4c942c78fbb95274f960fef6fb0cb01b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0009045341
+      value: -0.00004802413
       objectReference: {fileID: 0}
     - target: {fileID: 8324900592633403850, guid: 4c942c78fbb95274f960fef6fb0cb01b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4004,7 +4004,7 @@ GameObject:
   m_Component:
   - component: {fileID: 76829276}
   m_Layer: 6
-  m_Name: ruta_boss
+  m_Name: ruta_boss_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4018,12 +4018,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 76829275}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.00043943882, y: 0, z: 25.619995}
+  m_LocalRotation: {x: -0, y: -0.00000035762784, z: -0, w: -1}
+  m_LocalPosition: {x: 248.6, y: 99.82, z: -322}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1745109104}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &77264926 stripped
 GameObject:
@@ -32061,6 +32061,7 @@ GameObject:
   m_Component:
   - component: {fileID: 562432939}
   - component: {fileID: 562432940}
+  - component: {fileID: 562432941}
   m_Layer: 0
   m_Name: Trigger
   m_TagString: Untagged
@@ -32104,6 +32105,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.8966064, y: 3.7438736, z: 10.52449}
   m_Center: {x: -0.97419786, y: 1.3719368, z: 0.13498163}
+--- !u!114 &562432941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562432938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 120c61f94038fee4586d21eb510be835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ImposingAngledDoor
+  doorObject: {fileID: 6119547615500724608}
+  openDistance: 5
+  diagonalAngle: 70
+  openSpeed: 2
+  openSound: {fileID: 8300000, guid: ad74a35d7e959cd469be9a363ad07e57, type: 3}
+  closeSound: {fileID: 0}
+  volume: 1
+  useRandomPitch: 0
+  obstacle: {fileID: 7152520739223856680}
+  isOpen: 0
 --- !u!1 &562636214 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2706272654569696748, guid: 9728e5085bb58b14e949ae63e10bc480, type: 3}
@@ -75432,8 +75455,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2043
   lostSightGraceTime: 1
-  puntoA: {fileID: 1745109104}
-  puntoB: {fileID: 76829276}
+  puntoA: {fileID: 76829276}
+  puntoB: {fileID: 1745109104}
 --- !u!114 &1287485952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75458,7 +75481,7 @@ Transform:
   m_GameObject: {fileID: 1287485950}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.00000035762784, z: -0, w: -1}
-  m_LocalPosition: {x: 248.63455, y: 99.43, z: -346.4313}
+  m_LocalPosition: {x: 248.63455, y: 99.43, z: -343.96063}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -79726,7 +79749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 709084728107057658, guid: 82f4b299bb956d744aeba021130b5bd6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.42
+      value: 4.17
       objectReference: {fileID: 0}
     - target: {fileID: 709084728107057658, guid: 82f4b299bb956d744aeba021130b5bd6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -103182,7 +103205,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1745109104}
   m_Layer: 6
-  m_Name: ruta_boss
+  m_Name: ruta_boss_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103197,11 +103220,10 @@ Transform:
   m_GameObject: {fileID: 1745109103}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.00000035762784, z: -0, w: -1}
-  m_LocalPosition: {x: 248.59955, y: 99.82, z: -344.82}
+  m_LocalPosition: {x: 248.59955, y: 99.82, z: -344}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 76829276}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1746958914
@@ -128219,7 +128241,7 @@ Transform:
   m_GameObject: {fileID: 6892425590904861498}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.70710677, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 243.78, y: 103.75, z: -350.99}
+  m_LocalPosition: {x: 243.78, y: 99.225266, z: -350.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -128415,7 +128437,7 @@ GameObject:
   - component: {fileID: 7152520739223856677}
   - component: {fileID: 4946690712765567727}
   - component: {fileID: 7152520739223856679}
-  - component: {fileID: 7152520739223856678}
+  - component: {fileID: 7152520739223856680}
   m_Layer: 0
   m_Name: Door_boos
   m_TagString: Untagged
@@ -128439,21 +128461,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6892425590904861498}
   m_Mesh: {fileID: 3767129638838706553, guid: 4f5ffb353057f7b4492fc25ad43d9535, type: 3}
---- !u!114 &7152520739223856678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6892425590904861498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd0149c9a0526494eaf42a1654142f6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Boss_Door_
-  openAngle: 45
-  duration: 1.5
-  rotationAxis: {x: 0, y: 1, z: 0}
 --- !u!64 &7152520739223856679
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -128476,6 +128483,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3767129638838706553, guid: 4f5ffb353057f7b4492fc25ad43d9535, type: 3}
+--- !u!208 &7152520739223856680
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6892425590904861498}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.085, y: 2.775, z: 4.827}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.165, y: 2.775, z: 4.827}
+  m_TimeToStationary: 0.5
 --- !u!23 &7341419463468671721
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -129263,6 +129286,7 @@ SceneRoots:
   - {fileID: 632606583}
   - {fileID: 6119547615500724608}
   - {fileID: 1312949928}
+  - {fileID: 76829276}
   - {fileID: 1745109104}
   - {fileID: 1287485953}
   - {fileID: 7717869936215960670}
