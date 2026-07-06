@@ -353,15 +353,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 9a8446422dad053449aba4d2a1b7fd65, type: 2}
     - target: {fileID: 1812732478650784849, guid: d3a08aa0cef7f4e47b5a7bbb35a6cad1, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.4999998
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 1812732478650784849, guid: d3a08aa0cef7f4e47b5a7bbb35a6cad1, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.4999996
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 1812732478650784849, guid: d3a08aa0cef7f4e47b5a7bbb35a6cad1, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.4999996
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 1812732478650784849, guid: d3a08aa0cef7f4e47b5a7bbb35a6cad1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3903,17 +3903,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1866749833 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5896051569801941314, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
-  m_PrefabInstance: {fileID: 8204355792642854230}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &1975841418
 GameObject:
   m_ObjectHideFlags: 0
@@ -5444,6 +5433,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1472180573}
     - target: {fileID: 2473935841179383842, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      propertyPath: healthLabel
+      value: 
+      objectReference: {fileID: 8204355792642854231}
+    - target: {fileID: 2473935841179383842, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: actualAttack
       value: 
       objectReference: {fileID: 292769078}
@@ -5958,13 +5951,12 @@ PrefabInstance:
     - target: {fileID: 9061775493202047084, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: actualAttack
       value: 
-      objectReference: {fileID: 1866749833}
+      objectReference: {fileID: 292769078}
     - target: {fileID: 9061775493202047084, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: actualDefense
       value: 
       objectReference: {fileID: 774654759}
-    m_RemovedComponents:
-    - {fileID: 9061775493202047084, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8263391865774088543, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
     - {fileID: 9103672684405813140, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
@@ -5993,10 +5985,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 996539238965934458, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8204355792642854236}
-    - targetCorrespondingSourceObject: {fileID: 7000866621237896049, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8204355792642854237}
   m_SourcePrefab: {fileID: 100100000, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+--- !u!114 &8204355792642854231 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6273997522077523439, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+  m_PrefabInstance: {fileID: 8204355792642854230}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8204355792642854232 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8204355791575341872, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
@@ -6016,11 +6016,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatusVisualController
   database: {fileID: 11400000, guid: b91972313dec3644abd544c8c92dcb5d, type: 2}
   pollInterval: 0.15
---- !u!1 &8204355792642854234 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7000866621237896049, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
-  m_PrefabInstance: {fileID: 8204355792642854230}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8204355792642854235 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 380670529944311470, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
@@ -6051,18 +6046,6 @@ MonoBehaviour:
   triggerChance: 0.2
   reactionStartDelay: 0.1
   requireAttackerAlive: 1
---- !u!114 &8204355792642854237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8204355792642854234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd59e7eba1ff18f429327d8eb54d703b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyScannerUI
 --- !u!65 &8204355792642854238
 BoxCollider:
   m_ObjectHideFlags: 0
