@@ -4284,31 +4284,15 @@ PrefabInstance:
       objectReference: {fileID: 1230804152}
     - target: {fileID: 2043745297321473010, guid: 816ab51c668a0984090343bb717271c4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.77
+      value: 14.58
       objectReference: {fileID: 0}
     - target: {fileID: 2043745297321473010, guid: 816ab51c668a0984090343bb717271c4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.43
+      value: 3.82842
       objectReference: {fileID: 0}
     - target: {fileID: 2043745297321473010, guid: 816ab51c668a0984090343bb717271c4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.2800007
-      objectReference: {fileID: 0}
-    - target: {fileID: 2043745297321473010, guid: 816ab51c668a0984090343bb717271c4, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 2043745297321473010, guid: 816ab51c668a0984090343bb717271c4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2043745297321473010, guid: 816ab51c668a0984090343bb717271c4, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.70710677
-      objectReference: {fileID: 0}
-    - target: {fileID: 2043745297321473010, guid: 816ab51c668a0984090343bb717271c4, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
+      value: 7.3999996
       objectReference: {fileID: 0}
     - target: {fileID: 7438085647819842305, guid: 816ab51c668a0984090343bb717271c4, type: 3}
       propertyPath: globalVolume
@@ -4320,7 +4304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8706096939704765933, guid: 816ab51c668a0984090343bb717271c4, type: 3}
       propertyPath: field of view
-      value: 45
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5157,7 +5141,7 @@ PrefabInstance:
     - target: {fileID: 2473935841179383842, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: nameTextLabel
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 715799643}
     - target: {fileID: 2528578188918320830, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5385,6 +5369,10 @@ PrefabInstance:
     - target: {fileID: 6397544192993770580, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6518312434022240297, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
+      propertyPath: m_text
+      value: ZOMBIE
       objectReference: {fileID: 0}
     - target: {fileID: 7000866621237896049, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       propertyPath: m_Name
@@ -5634,9 +5622,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 996539238965934458, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8204355792642854236}
-    - targetCorrespondingSourceObject: {fileID: 7000866621237896049, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8204355792642854237}
     - targetCorrespondingSourceObject: {fileID: 872638076106294383, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1689059308}
@@ -5660,11 +5645,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatusVisualController
   database: {fileID: 11400000, guid: b91972313dec3644abd544c8c92dcb5d, type: 2}
   pollInterval: 0.15
---- !u!1 &8204355792642854234 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7000866621237896049, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
-  m_PrefabInstance: {fileID: 8204355792642854230}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8204355792642854235 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 380670529944311470, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
@@ -5695,18 +5675,6 @@ MonoBehaviour:
   triggerChance: 0.2
   reactionStartDelay: 0.1
   requireAttackerAlive: 1
---- !u!114 &8204355792642854237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8204355792642854234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd59e7eba1ff18f429327d8eb54d703b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyScannerUI
 --- !u!65 &8204355792642854238
 BoxCollider:
   m_ObjectHideFlags: 0
