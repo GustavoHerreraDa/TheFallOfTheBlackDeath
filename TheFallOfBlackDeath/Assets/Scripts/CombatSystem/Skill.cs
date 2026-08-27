@@ -91,6 +91,12 @@ public abstract class Skill : MonoBehaviour
     protected Fighter emitter;
     protected List<Fighter> receivers;
     protected Queue<string> messages;
+    private int activeCoroutinesCount = 0;
+
+    /// <summary>
+    /// Indica si la habilidad está actualmente ejecutando corrutinas de impacto, VFX o reacciones/contraataques.
+    /// </summary>
+    public bool IsRunning => activeCoroutinesCount > 0;
 
     // ── Lazy effect player ────────────────────────────────────────────────────
     private SkillEffectPlayer _effectPlayer;
@@ -205,10 +211,23 @@ public abstract class Skill : MonoBehaviour
             this.Animate(receiver);
 
             // 2) La lógica numérica se aplica sincronizada con el momento de impacto.
-            StartCoroutine(ApplyDamageDelayed(receiver, bodyPartTargetForReceiver));
+            StartCoroutine(TrackedApplyDamageDelayed(receiver, bodyPartTargetForReceiver));
         }
 
         this.receivers.Clear();
+    }
+
+    private IEnumerator TrackedApplyDamageDelayed(Fighter receiver, BodyPart cachedBodyPartTarget)
+    {
+        activeCoroutinesCount++;
+        try
+        {
+            yield return StartCoroutine(ApplyDamageDelayed(receiver, cachedBodyPartTarget));
+        }
+        finally
+        {
+            activeCoroutinesCount = Mathf.Max(0, activeCoroutinesCount - 1);
+        }
     }
 
     /// <summary>

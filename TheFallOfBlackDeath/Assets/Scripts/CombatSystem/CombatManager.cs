@@ -246,6 +246,14 @@ public class CombatManager : MonoBehaviour
             switch (this.combatStatus)
             {
                 case CombatStatus.WAITING_FOR_FIGHTER:
+                    // Si ya no quedan enemigos o jugadores vivos tras una reacción/contraataque o estado, resolver victoria/derrota de inmediato
+                    if (!AreEnemiesAlive() || !ArePlayersAlive())
+                    {
+                        if (skillPanel != null)
+                            skillPanel.Hide();
+                        this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
+                        break;
+                    }
                     yield return null;
                     break;
 
@@ -259,8 +267,18 @@ public class CombatManager : MonoBehaviour
                     OnActionExecuted?.Invoke(this.fighters[this.fighterIndex], currentFighterSkill.MainTarget);
                     currentFighterSkill.Run();
 
+                    // Esperar a que las corrutinas de la habilidad (VFX, QTE, Parry, contraataque, etc.) finalicen
+                    while (currentFighterSkill != null && currentFighterSkill.IsRunning)
+                    {
+                        yield return null;
+                    }
+
                     // Wait for fighter skill animation
-                    yield return new WaitForSeconds(currentFighterSkill.actionDelay);
+                    if (currentFighterSkill != null && currentFighterSkill.actionDelay > 0f)
+                    {
+                        yield return new WaitForSeconds(currentFighterSkill.actionDelay);
+                    }
+
                     yield return StartCoroutine(ResolvePendingReactions());
 
                     this.combatStatus = CombatStatus.CHECK_ACTION_MESSAGES;
@@ -285,19 +303,11 @@ public class CombatManager : MonoBehaviour
                     break;
 
                 case CombatStatus.CHECK_FOR_VICTORY:
-                    bool arePlayersAlive = false;
-                    foreach (var figther in this.playerTeam)
-                    {
-                        arePlayersAlive |= figther.isAlive;
-                    }
+                    if (skillPanel != null)
+                        skillPanel.Hide();
 
-                    // if (this.playerTeam[0].isAlive OR this.playerTeam[1].isAlive)
-
-                    bool areEnemiesAlive = false;
-                    foreach (var figther in this.enemyTeam)
-                    {
-                        areEnemiesAlive |= figther.isAlive;
-                    }
+                    bool arePlayersAlive = ArePlayersAlive();
+                    bool areEnemiesAlive = AreEnemiesAlive();
 
                     bool victory = areEnemiesAlive == false;
                     bool defeat = arePlayersAlive == false;
@@ -493,6 +503,14 @@ public class CombatManager : MonoBehaviour
                     yield return null;
                     break;
                 case CombatStatus.NEXT_TURN:
+                    if (!AreEnemiesAlive() || !ArePlayersAlive())
+                    {
+                        if (skillPanel != null)
+                            skillPanel.Hide();
+                        this.combatStatus = CombatStatus.CHECK_FOR_VICTORY;
+                        break;
+                    }
+
                     SortFightersBySpeed();
                     yield return new WaitForSeconds(0.1f);
 
@@ -613,6 +631,34 @@ public class CombatManager : MonoBehaviour
         return this.returnBuffer.ToArray();
     }
 
+    /// <summary>
+    /// Retorna true si hay al menos un combatiente del equipo de jugadores con vida.
+    /// </summary>
+    public bool ArePlayersAlive()
+    {
+        if (this.playerTeam == null || this.playerTeam.Length == 0) return false;
+        foreach (var fighter in this.playerTeam)
+        {
+            if (fighter != null && fighter.isAlive)
+                return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Retorna true si hay al menos un combatiente del equipo enemigo con vida.
+    /// </summary>
+    public bool AreEnemiesAlive()
+    {
+        if (this.enemyTeam == null || this.enemyTeam.Length == 0) return false;
+        foreach (var fighter in this.enemyTeam)
+        {
+            if (fighter != null && fighter.isAlive)
+                return true;
+        }
+        return false;
+    }
+
     public void EnqueueReaction(IEnumerator reaction)
     {
         if (reaction == null || !isCombatActive)
@@ -673,6 +719,11 @@ public class CombatManager : MonoBehaviour
             skillToUse.SetEmitter(defender);
             skillToUse.AddReceiver(attacker);
             skillToUse.Run(resolveBodyPartTargetOnRun: true);
+
+            while (skillToUse.IsRunning)
+            {
+                yield return null;
+            }
 
             float delay = Mathf.Max(0.35f, skillToUse.actionDelay);
             yield return new WaitForSeconds(delay);
