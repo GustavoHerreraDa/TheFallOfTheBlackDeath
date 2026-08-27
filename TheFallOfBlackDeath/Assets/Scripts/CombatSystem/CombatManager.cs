@@ -621,6 +621,99 @@ public class CombatManager : MonoBehaviour
         pendingReactions.Enqueue(reaction);
     }
 
+    /// <summary>
+    /// Dispara inmediatamente la rutina de contraataque cuando se ejecuta un Parry exitoso.
+    /// </summary>
+    /// <param name="defender">El combatiente que realizó el Parry y ejecutará el contraataque.</param>
+    /// <param name="attacker">El atacante original que recibirá el contraataque.</param>
+    /// <param name="counterSkill">Habilidad específica opcional; si es null, usará el ataque básico del defensor.</param>
+    public Coroutine TriggerCounterAttack(Fighter defender, Fighter attacker, Skill counterSkill = null)
+    {
+        if (defender == null || attacker == null || !isCombatActive)
+            return null;
+
+        return StartCoroutine(ExecuteCounterAttackRoutine(defender, attacker, counterSkill));
+    }
+
+    /// <summary>
+    /// Corrutina que ejecuta el flujo del contraataque de forma inmediata con cálculo de daño, mensajes de log y efectos de cámara.
+    /// </summary>
+    public IEnumerator ExecuteCounterAttackRoutine(Fighter defender, Fighter attacker, Skill counterSkill = null)
+    {
+        if (defender == null || !defender.isAlive || attacker == null || !attacker.isAlive || !isCombatActive)
+            yield break;
+
+        LogPanel.Write($"¡PARRY! {defender.idName} ejecuta un Contraataque inmediato contra {attacker.idName}.");
+
+        // Jugosidad e impacto visual
+        if (CameraManager.Instance != null)
+        {
+            CameraManager.Instance.TriggerHitStop(0.08f);
+            CameraManager.Instance.TriggerShake(1.2f);
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        Skill skillToUse = counterSkill;
+        if (skillToUse == null && defender.skills != null && defender.skills.Length > 0)
+        {
+            // Usamos la primera habilidad utilizable (generalmente ataque básico)
+            foreach (Skill s in defender.skills)
+            {
+                if (s != null && s.IsUsable(defender))
+                {
+                    skillToUse = s;
+                    break;
+                }
+            }
+        }
+
+        if (skillToUse != null)
+        {
+            skillToUse.SetEmitter(defender);
+            skillToUse.AddReceiver(attacker);
+            skillToUse.Run(resolveBodyPartTargetOnRun: true);
+
+            float delay = Mathf.Max(0.35f, skillToUse.actionDelay);
+            yield return new WaitForSeconds(delay);
+
+            while (true)
+            {
+                string nextMessage = skillToUse.GetNextMessage();
+                if (nextMessage == null) break;
+                LogPanel.Write(nextMessage);
+            }
+        }
+        else
+        {
+            // Fallback numérico mediante StandardDamageCalculator si no hay componente Skill disponible
+            StandardDamageCalculator calculator = new StandardDamageCalculator();
+            float baseAtk = defender.GetCurrentStats().attack;
+            DamageCalculationContext ctx = new DamageCalculationContext(
+                defender,
+                attacker,
+                null,
+                BodyPart.Torso,
+                -baseAtk,
+                HealthModType.STAT_BASED,
+                DamageType.Kinetic,
+                PartStatus.None,
+                0.15f,
+                50f,
+                0.40f,
+                0f,
+                true);
+
+            DamageResult dmgResult = calculator.Calculate(ctx);
+            attacker.ModifyHealth(dmgResult);
+            LogPanel.Write($"{defender.idName} contraataca causando {-dmgResult.appliedAmount} de daño a {attacker.idName}.");
+
+            yield return new WaitForSeconds(0.4f);
+        }
+
+        UpdateStatsUI();
+    }
+
     private IEnumerator ResolvePendingReactions()
     {
         while (pendingReactions.Count > 0 && isCombatActive)
