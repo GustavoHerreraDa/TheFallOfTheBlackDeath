@@ -2312,7 +2312,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1288909444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2539,7 +2539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ba3092ce90f41ec9dc0c679171b7ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LethalQTESkill
-  skillName: Pulverizador de craneos
+  skillName: INSTA KILL
   skillId: Pulverizador_1
   rarity: 0
   effectConfig: {fileID: 11400000, guid: a2e4acb33e896024d80d4eef7fb71efa, type: 2}
@@ -2557,9 +2557,10 @@ MonoBehaviour:
   customImpactSound: {fileID: 0}
   sanityCost: 0
   requiredParts: 04000000
-  parryWindowDuration: 5
+  parryWindowDuration: 1.2
   slowMoTimeScale: 0.1
-  lethalDamage: -9999
+  lethalDamage: -50
+  guardDamage: -35
   damageType: 0
 --- !u!1001 &1343617099
 PrefabInstance:
@@ -2889,7 +2890,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QTEParryManager
   qteContainer: {fileID: 1072781380}
   ringImage: {fileID: 329175955}
-  perfectWindowDuration: 4
+  allowMouseInput: 1
+  parryKey: 32
+  perfectWindowDuration: 1
+  guardDamageMultiplier: 0.5
   perfectColor: {r: 1, g: 0.85, b: 0, a: 1}
   progressionGradient:
     serializedVersion: 2
@@ -2921,6 +2925,9 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  parryHitStopDuration: 0.1
+  parryShakeForce: 1.4
+  guardShakeForce: 0.5
 --- !u!114 &1472180573 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7617127442338973734, guid: 98fa51a319bc2dd4c815879e2faf497f, type: 3}
